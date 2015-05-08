@@ -5,14 +5,28 @@
 	<div class="page-header">
 		<h1>Items</h1>
 	</div>
-	<div class="alert" role="alert">
+	<div class="alert" role="alert" ng-show="{{ alertMsg }}">
+		{{ alertMsg }}
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		  <span aria-hidden="true">&times;</span>
 		</button>
 	</div>
 	<ul style="list-style: none; padding: 0; margin: 0">
-		<li class="panel panel-default" ng-repeat="task in tasks">
-			<div class="panel-heading">{{task.subject}}</div>
+		<li class="panel panel-default" ng-repeat="task in tasks._embedded['ora:task']">
+			<div class="panel-heading">
+				{{task.subject}}
+				<div class="dropdown pull-right context-menu">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right" role="menu">
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-if="task.members[currUser.id].role == 'owner'" ng-click="editTask(task.id)">Edit</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-if="task.members[currUser.id].role == 'owner'" ng-click="deleteTask(task.id)">Delete</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+					</ul>
+				</div>
+			</div>
 			<div class="panel-body">
 				<ul style="list-style: none; padding: 0; margin: 0">
 					<li>Created at {{ task.createdAt | date : 'short' }}</li>
@@ -27,8 +41,6 @@
 						<button ng-if="task._links['ora:join']" data-href="{{ task._links['ora:join'] }}" data-action="joinTask" class="btn btn-default">Join</button>
 						<button ng-if="task._links['ora:unjoin']" data-href="{{ task._links['ora:unjoin'] }}" data-action="unjoinTask" class="btn btn-default">Unjoin</button>
 						<button ng-if="task._links['ora:assignShares']" data-href="{{ task._links['ora:assignShares'] }}" data-toggle="modal" data-target="#assignSharesModal" class="btn btn-default">Assign share</button>
-						<button ng-if="task._links['ora:edit']" data-href="{{ task._links['ora:edit'] }}" data-toggle="modal" data-target="#editTaskModal" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button>
-						<button ng-if="task._links['ora:delete']" data-href="{{ task._links['ora:delete'] }}" data-action="deleteTask" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
 					</li>
 				</ul>
 			</div>

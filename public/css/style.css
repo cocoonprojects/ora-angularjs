@@ -1,0 +1,8 @@
+body { padding-top: 50px; }	/* From Bootstrap guide */
+
+.context-menu button {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	--webkit-appearance: none;
+}
