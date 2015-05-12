@@ -1,8 +1,50 @@
 body { padding-top: 50px; }	/* From Bootstrap guide */
 
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; } /* Required by Angular-UI */
+
+body {
+    color: #4d4d4d;
+}
+
 .context-menu button {
 	background: transparent;
 	border: 0;
 	padding: 0;
 	--webkit-appearance: none;
+}
+
+.activity-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.activity-list .timestamp {
+    font-size: x-small;
+    color: #8c8c8c;
+}
+
+.status .value {
+    font-size: x-large;
+}
+
+.stream {
+    font-size: small;
+    font-weight: normal;
+    color: #8c8c8c;
+}
+
+.estimation {
+    padding: 15px 0;
+    text-align: center;
+}
+
+.estimation-header {
+    display: block;
+}
+
+.estimation-value {
+    display: block;
+    font-size: x-large;
+    font-weight: bold;
 }

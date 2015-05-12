@@ -1,7 +1,69 @@
-<h1>{{task.subject}}</h1>
-
-<div>Members:
-	<ul>
-		<li ng-repeat="member in task.members">{{member.firstname}} {{member.lastname}}</li>
-	</ul>
+<div class="modal-header">
+	<button type="button" class="close" aria-label="Close"><span aria-hidden="true" ng-click="$dismiss()">&times;</span></button>
+	<h4 class="modal-title">{{task.subject}} <span class="stream">in stream <strong>{{ task.stream.subject }}</strong></span></h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-9">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="text-align: left">Members</th>
+						<th style="text-align: right">Estimate</th>
+						<th style="text-align: center">Avg</th>
+						<th style="text-align: center">&Delta;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="member in task.members">
+						<th>
+							<img ng-src="{{ member.picture }}" style="max-width: 16px; max-height: 16px;" class="img-circle">
+							{{ member.firstname }} {{ member.lastname }}
+							<span ng-if="member.role == 'owner'">(o)</span>
+						</th>
+						<td style="text-align: right">
+							<span ng-if="member.estimation.value == -2" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span ng-if="member.estimation.value == -1">Skipped</span>
+							<span ng-if="member.estimation.value >= 0">
+								{{ member.estimation.value }}
+								<button type="button" class="btn btn-default" style="padding: 0; background: transparent; border: 0 none" ng-if="task.status < 30">
+									<span class="glyphicon glyphicon-edit"></span>
+								</button>
+							</span>
+						</td>
+						<td style="text-align: center">{{ member.share * 100 | number : 2 }}</td>
+						<td style="text-align: center">{{ member.delta * 100 | number : 2 }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="activity-list">
+				<li><strong>{{ task.createdBy }}</strong> created this item {{ daysAgo(task.createdAt) }} days ago. <span class="timestamp">{{ task.createdAt | date : 'short' }}</span></li>
+			</ul>
+		</div>
+		<div class="col-md-3">
+			<div class="status">
+				<span class="value" ng-class="statusClass()">{{ { 20: 'Completed' }[task.status] }}</span>
+			</div>
+			<div class="estimation">
+				<span class="estimation-header">Estimation</span>
+				<span class="estimation-value">
+					<span ng-if="task.estimation == null">In progress</span>
+					<span ng-if="task.estimation == -1">Skipped</span>
+					<span ng-if="task.estimation >= 0 && task.estimation !== null">{{ task.estimation | number : 0 }} Credits</span>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<div class="btn-group" dropdown is-open="status.isopen">
+		<button class="btn btn-default dropdown-toggle" type="button" dropdown-toggle ng-disabled="disabled" aria-expanded="false">
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu dropdown-menu-right" role="menu">
+			<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="editTask(task.id)">Edit</a></li>
+			<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="deleteTask(task.id)">Delete</a></li>
+		</ul>
+	</div>
+	<button class="btn btn-primary" ng-click="ok()">Edit</button>
 </div>

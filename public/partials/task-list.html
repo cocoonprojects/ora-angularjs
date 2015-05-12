@@ -1,9 +1,8 @@
-<div style="position: fixed; bottom: 2em; right: 2em">
-	<a class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="modal" data-target="#createTaskModal" id="createTaskBtn"></a>
-</div>
 <div class="container" id="content" ng-controller="TaskListCtrl">
 	<div class="page-header">
-		<h1>Items</h1>
+		<h1>Items
+            <button type="button" class="btn btn-default pull-right" ng-click="openNewTask()" aria-label="New Task"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+        </h1>
 	</div>
 	<div class="alert" role="alert" ng-show="{{ alertMsg }}">
 		{{ alertMsg }}
@@ -14,9 +13,8 @@
 	<ul style="list-style: none; padding: 0; margin: 0">
 		<li class="panel panel-default" ng-repeat="task in tasks._embedded['ora:task']">
 			<div class="panel-heading">
-				{{task.subject}}
-				<div class="dropdown pull-right context-menu">
-					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+				<div class="btn-group pull-right context-menu" dropdown is-open="status.isopen">
+					<button class="btn btn-default dropdown-toggle" type="button" dropdown-toggle ng-disabled="disabled">
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -26,10 +24,10 @@
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
 					</ul>
 				</div>
+				<h3 class="panel-title"><a ng-click="openTaskDetail(task)">{{task.subject}}</a></h3>
 			</div>
 			<div class="panel-body">
 				<ul style="list-style: none; padding: 0; margin: 0">
-					<li>Created at {{ task.createdAt | date : 'short' }}</li>
 					<li>{{ task.status }}</li>
 					<li>estimation</li>
 					<li>Members: {{ count(task.members) }}</li>
@@ -47,42 +45,6 @@
 		</li>
 	</ul>
 </div>
-<div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Create new task</h4>
-				</div>
-				<div class="modal-body">
-					<div class="alert" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  <span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="form-group"> 
-						<label for="streamID">Stream</label>
-						<select name="streamID" class="form-control" required="required">
-							<option value=""></option>
-							<option value="00000000-1000-0000-0000-000000000000">O.R.A.</option>
-							<option value="00000000-1100-0000-0000-000000000000">Open Governance<option>
-						</select>
-					</div>
-					<div>
-						<label for="subject">Subject</label>
-						<input type="text" name="subject" class="form-control" required="required">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Create</button>
-				</div>
-			</form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div>
-
 <div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
