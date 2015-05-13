@@ -1,7 +1,7 @@
 angular.module('collaborationControllers', [])
-	.controller('TaskListCtrl', ['$scope', '$modal', '$log', 'Task',
-		function ($scope, $modal, $log, Task) {
-			$scope.tasks = Task.query();
+	.controller('TaskListCtrl', ['$scope', '$modal', '$log', 'taskService',
+		function ($scope, $modal, $log, taskService) {
+			$scope.tasks = taskService.updateCollection();
 			$scope.alertMsg = null;
 			$scope.$watch('currOrg', function(newValue, oldValue) {
 				if(newValue != undefined) {
@@ -25,24 +25,30 @@ angular.module('collaborationControllers', [])
 					animation: true,
 					templateUrl: "partials/task-detail.html",
 					controller: 'TaskDetailCtrl',
+					size: 'lg',
 					resolve: {
 						task: function() {
 							return task;
+						},
+						currUser: function() {
+							return $scope.currUser;
 						}
 					}
 				});
 			};
 			$scope.openEditTask = function(id) {
-				$scope.task = Task.query({ taskId: id });
-				var modalInstance = $modal.open({
-					templateUrl: "partials/task-detail.html",
-					controller: 'TaskDetailCtrl'
-				});
+				//$scope.task = Task.query({ taskId: id });
+				//var modalInstance = $modal.open({
+				//	templateUrl: "partials/task-detail.html",
+				//	controller: 'TaskDetailCtrl'
+				//});
 			}
 		}])
-	.controller('TaskDetailCtrl', ['$scope', '$modalInstance', '$log', 'task',
-		function ($scope, $modalInstance, $log, task) {
+	.controller('TaskDetailCtrl', ['$scope', '$modalInstance', '$log', 'AclService', 'task', 'currUser', 'taskService',
+		function ($scope, $modalInstance, $log, AclService, task, currUser, taskService) {
 			$scope.task = task;
+			$scope.currUser = currUser;
+			$scope.acl = AclService;
 			$scope.daysAgo = function(when) {
 				var now = new Date();
 				var d = new Date(Date.parse(when));
@@ -50,6 +56,8 @@ angular.module('collaborationControllers', [])
 			};
 			$scope.statusClass = function() {
 				switch ($scope.task.status) {
+					case 10:
+						return 'text-info';
 					case 20:
 					case 30:
 					case 40:
@@ -58,6 +66,15 @@ angular.module('collaborationControllers', [])
 						return 'text-muted';
 				}
 			};
+			$scope.joinTask = function() {
+				taskService.joinTask(task, currUser);
+			};
+			$scope.unjoinTask = function() {
+				if(task.members[$scope.currUser.id].estimation != null && !confirm("Unjoining this item will remove your estimation. Do you want to proceed?")) {
+					return;
+				}
+				taskService.unjoinTask(task, currUser);
+			}
 		}]);
 //
 //collaborationControllers.controller('TaskDetailCtrl', ['$scope', '$routeParams', 'Task',
@@ -77,7 +94,12 @@ identityControllers.controller('MyOrgsListCtrl', ['$scope', '$http', '$log',
 			$log.debug($scope.orgs._embedded['ora:organization-membership']);
 		});
 		$scope.currOrg = null;
-		$scope.currUser = { id: "34220c78-b054-4bd8-9a5c-70acc30d9ddc" };
+		$scope.currUser = {
+			id: "44220c78-b054-4bd8-9a5c-70acc30d9ddc",
+			firstname: "John",
+			lastname: "Doe",
+			picture: "http://lorempixel.com/337/337/people"
+		};
 	}]);
 
 var peopleControllers = angular.module('peopleControllers', []);

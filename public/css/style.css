@@ -24,8 +24,9 @@ body {
     color: #8c8c8c;
 }
 
-.status .value {
+.status {
     font-size: x-large;
+    text-align: center;
 }
 
 .stream {

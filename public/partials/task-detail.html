@@ -10,29 +10,36 @@
 					<tr>
 						<th style="text-align: left">Members</th>
 						<th style="text-align: right">Estimate</th>
-						<th style="text-align: center">Avg</th>
-						<th style="text-align: center">&Delta;</th>
+						<th style="text-align: center" ng-if="task.status == 50">Avg</th>
+						<th style="text-align: center" ng-if="task.status == 50">&Delta;</th>
+						<th style="width: 1px"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="member in task.members">
 						<th>
-							<img ng-src="{{ member.picture }}" style="max-width: 16px; max-height: 16px;" class="img-circle">
-							{{ member.firstname }} {{ member.lastname }}
+							<img ng-src="{{ member.picture }}" style="max-width: 30px; max-height: 30px;" class="img-circle">
+							<span class="firstname">{{ member.firstname }}</span>
+							<span class="lastname">{{ member.lastname }}</span>
 							<span ng-if="member.role == 'owner'">(o)</span>
 						</th>
-						<td style="text-align: right">
+						<td style="text-align: right; vertical-align: middle">
 							<span ng-if="member.estimation.value == -2" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							<span ng-if="member.estimation.value == -1">Skipped</span>
 							<span ng-if="member.estimation.value >= 0">
-								{{ member.estimation.value }}
+								{{ member.estimation.value | number : 0 }}
 								<button type="button" class="btn btn-default" style="padding: 0; background: transparent; border: 0 none" ng-if="task.status < 30">
 									<span class="glyphicon glyphicon-edit"></span>
 								</button>
 							</span>
 						</td>
-						<td style="text-align: center">{{ member.share * 100 | number : 2 }}</td>
-						<td style="text-align: center">{{ member.delta * 100 | number : 2 }}</td>
+						<td style="text-align: center; vertical-align: middle" ng-if="member.share">{{ member.share * 100 | number : 2 }}</td>
+						<td style="text-align: center; vertical-align: middle" ng-if="member.delta">{{ member.delta * 100 | number : 2 }}</td>
+						<td style="vertical-align: middle">
+							<button title="Unjoin Item" class="btn btn-default" ng-if="member.id == currUser.id && acl.isAllowed(currUser, task, 'unjoinTask')" ng-click="unjoinTask()" style="padding: 0; background: transparent; border: 0 none">
+								<span class="glyphicon glyphicon-minus-sign" style="color: red"></span>
+							</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -42,7 +49,7 @@
 		</div>
 		<div class="col-md-3">
 			<div class="status">
-				<span class="value" ng-class="statusClass()">{{ { 20: 'Completed' }[task.status] }}</span>
+				<span ng-class="statusClass()">{{ { 10: 'Ongoing', 20: 'Completed' }[task.status] }}</span>
 			</div>
 			<div class="estimation">
 				<span class="estimation-header">Estimation</span>
@@ -57,7 +64,7 @@
 </div>
 <div class="modal-footer">
 	<div class="btn-group" dropdown is-open="status.isopen">
-		<button class="btn btn-default dropdown-toggle" type="button" dropdown-toggle ng-disabled="disabled" aria-expanded="false">
+		<button class="btn btn-default dropdown-toggle" dropdown-toggle ng-disabled="disabled" aria-expanded="false">
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -65,5 +72,5 @@
 			<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="deleteTask(task.id)">Delete</a></li>
 		</ul>
 	</div>
-	<button class="btn btn-primary" ng-click="ok()">Edit</button>
+	<button class="btn btn-primary" ng-if="acl.isAllowed(currUser, task, 'joinTask')" ng-click="joinTask()">Join</button>
 </div>

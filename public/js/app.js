@@ -5,7 +5,8 @@ var oraApp = angular.module('oraApp', [
 	'identityControllers',
 	'peopleControllers',
 	'peopleServices',
-	'collaborationServices'
+	'collaborationServices',
+	'acl'
 ]);
 oraApp.config(['$routeProvider',
 	function($routeProvider) {
