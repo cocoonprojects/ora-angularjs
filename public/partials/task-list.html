@@ -4,12 +4,7 @@
             <button type="button" class="btn btn-default pull-right" ng-click="openNewTask()" aria-label="New Task"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
         </h1>
 	</div>
-	<div class="alert" role="alert" ng-show="{{ alertMsg }}">
-		{{ alertMsg }}
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		  <span aria-hidden="true">&times;</span>
-		</button>
-	</div>
+	<div class="alert" role="alert" data-ng-show="alertMsg" data-ng-bind="alertMsg"></div>
 	<ul style="list-style: none; padding: 0; margin: 0">
 		<li class="panel panel-default" ng-repeat="task in tasks._embedded['ora:task']">
 			<div class="panel-heading">
@@ -18,8 +13,8 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
-						<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-if="task.members[currUser.id].role == 'owner'" ng-click="editTask(task.id)">Edit</a></li>
-						<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-if="task.members[currUser.id].role == 'owner'" ng-click="deleteTask(task.id)">Delete</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-if="isAllowed.editTask(task)" ng-click="editTask(task)">Edit</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-if="isAllowed.deleteTask(task)" ng-click="deleteTask(task)">Delete</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
 					</ul>
@@ -32,13 +27,11 @@
 					<li>estimation</li>
 					<li>Members: {{ count(task.members) }}</li>
 					<li>
-						<button ng-if="task._links['ora:complete']" data-href="{{ task._links['ora:complete'] }}" data-action="completeTask" class="btn btn-default">Complete</button>
-						<button ng-if="task._links['ora:accept']" data-href="{{ task._links['ora:accept'] }}" data-action="acceptTask" class="btn btn-default">Accept</button>
-						<button ng-if="task._links['ora:execute']" data-href="{{ task._links['ora:execute'] }}" data-action="executeTask" class="btn btn-default">Ongoing</button>
-						<button ng-if="task._links['ora:estimate']" data-href="{{ task._links['ora:estimate'] }}" data-toggle="modal" data-target="#estimateTaskModal" class="btn btn-default">Estimate</button>
-						<button ng-if="task._links['ora:join']" data-href="{{ task._links['ora:join'] }}" data-action="joinTask" class="btn btn-default">Join</button>
-						<button ng-if="task._links['ora:unjoin']" data-href="{{ task._links['ora:unjoin'] }}" data-action="unjoinTask" class="btn btn-default">Unjoin</button>
-						<button ng-if="task._links['ora:assignShares']" data-href="{{ task._links['ora:assignShares'] }}" data-toggle="modal" data-target="#assignSharesModal" class="btn btn-default">Assign share</button>
+						<button ng-if="isAllowed.executeTask(task)" data-href="{{ task._links['ora:execute'] }}" data-action="executeTask" class="btn btn-default">Ongoing</button>
+						<button ng-if="isAllowed.completeTask(task)" data-href="{{ task._links['ora:complete'] }}" data-action="completeTask" class="btn btn-default">Complete</button>
+						<button ng-if="isAllowed.acceptTask(task)" data-href="{{ task._links['ora:accept'] }}" data-action="acceptTask" class="btn btn-default">Accept</button>
+						<button ng-if="isAllowed.estimateTask(task)" data-href="{{ task._links['ora:estimate'] }}" data-toggle="modal" data-target="#estimateTaskModal" class="btn btn-default">Estimate</button>
+						<button ng-if="isAllowed.assignShares(task)" data-href="{{ task._links['ora:assignShares'] }}" data-toggle="modal" data-target="#assignSharesModal" class="btn btn-default">Assign share</button>
 					</li>
 				</ul>
 			</div>

@@ -1,27 +1,25 @@
-<form action="">
+<form name="form" ng-submit="submit()" novalidate>
 	<div class="modal-header">
 		<button type="button" class="close" ng-click="$dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title">New Item</h4>
 	</div>
 	<div class="modal-body">
-		<div class="alert" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-		<div class="form-group">
+		<div class="alert" role="alert" data-ng-show="messages" data-ng-bind="messages"></div>
+		<div class="form-group" ng-class="error('subject')">
 			<label for="new-task-subject">Subject</label>
-			<input type="text" id="new-task-subject" name="subject" class="form-control" required="required">
+			<input type="text" id="new-task-subject" name="subject" class="form-control" required="required" data-ng-model="task.subject">
+			<span class="help-block" data-ng-show="form.subject.$error.required">Subject is required</span>
 		</div>
-		<div class="form-group">
+		<div class="form-group" ng-class="error('stream')">
 			<label for="new-task-stream">Stream</label>
-			<select id="new-task-stream" name="streamID" class="form-control" required="required">
+			<select id="new-task-stream" name="stream" class="form-control" required="required" data-ng-options="stream.subject for stream in streams._embedded['ora:stream']" data-ng-model="task['ora:stream']">
 				<option></option>
 			</select>
+			<span class="help-block" data-ng-show="form.stream.$error.required">Stream is required</span>
 		</div>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		<button type="submit" class="btn btn-primary">Create</button>
+		<button type="submit" class="btn btn-primary" ng-disabled="form.$invalid">Create</button>
 	</div>
 </form>

@@ -1,4 +1,4 @@
-var collaborationServices = angular.module('collaborationServices', ['ngResource'])
+angular.module('collaborationServices', ['ngResource'])
 	.factory('Task', ['$resource',
 		function($resource){
 			return $resource('data/task-management/tasks/:taskId.json', {}, {
@@ -14,27 +14,23 @@ var collaborationServices = angular.module('collaborationServices', ['ngResource
 
 			var backend = $resource('data/task-management/tasks/:taskId/:controller.json', { }, {
 				query:  { method: 'GET', isArray: false },
-				save:   { method: 'POST' },
-				delete: { method: 'DELETE' }
+				joinTask: { method: 'POST', params: { controller: 'members' } },
+				unjoinTask: { method: 'DELETE', params: { controller: 'members' } }
 			});
 
-			this.collection = {
-				_embedded: {
-					"ora:task": []
-				},
-				count: 0,
-				total: 0
+			this.getTasks = function() {
+				return this.tasks;
 			};
 
-			this.updateCollection = function() {
-				this.collection = backend.query({},
-					function() {
+			this.updateTasks = function() {
+				this.tasks = backend.query({},
+					function(value, responseHeaders) {
 						$log.debug('success');
 					},
-					function() {
+					function(httpResponse) {
 						$log.debug('error');
 					});
-				return this.collection;
+				return this.tasks;
 			};
 
 			this.joinTask = function(task, user) {
@@ -48,47 +44,68 @@ var collaborationServices = angular.module('collaborationServices', ['ngResource
 					role: ROLE_MEMBER,
 					picture: user.picture
 				}
-				backend.save({ taskId: task.id, controller: 'members' }, { },
-					function() {
+				backend.joinTask({ taskId: task.id }, { },
+					function(value, responseHeaders) {
 						$log.debug('success');
 					},
-					function() {
+					function(httpResponse) {
 						$log.debug('error');
 					});
 			};
+
 			this.unjoinTask = function(task, user) {
 				delete task.members[user.id];
-				backend.delete({ taskId: task.id, controller: 'members' }, { },
+				backend.unjoinTask({ taskId: task.id }, { },
+					function(value, responseHeaders) {
+						$log.debug('success');
+					},
+					function(httpResponse) {
+						$log.debug('error');
+					});
+			};
+
+			this.createTask = function(task, user) {
+				backend.save({ }, { subject: task.subject, streamID: task['ora:stream'].id },
+					function(value, responseHeaders) {
+						$log.debug(value);
+
+					},
+					function(httpResponse) {
+						$log.debug('error');
+					});
+			}
+
+			this.tasks = this.updateTasks();
+		}])
+	.service('streamService', ['$resource', '$log',
+		function($resource, $log) {
+			var backend = $resource('data/task-management/streams/:streamId/:controller.json', { }, {
+				query:  { method: 'GET', isArray: false },
+				save:   { method: 'POST' },
+				delete: { method: 'DELETE' }
+			});
+			this.updateStreams = function() {
+				this.streams = backend.query({},
 					function() {
 						$log.debug('success');
 					},
 					function() {
 						$log.debug('error');
 					});
+				return this.streams;
+			};
+			this.getStreams = function() {
+				return this.streams;
 			}
-		}
-	]);
+			this.streams = this.updateStreams();
+		}]);
 
-var peopleServices = angular.module('peopleServices', ['ngResource']);
+angular.module('peopleServices', ['ngResource'])
+	.factory('People', ['$resource',
+		function($resource) {
 
-peopleServices.factory('People', ['$resource',
-	function($resource) {
-
-		return $resource('data/people/organizations/:orgId/members/:id.json', { }, {
-				query: { method: 'GET',  params: { },  isArray: false }
-			}
-		);
-}]);
-
-angular.module('acl', [])
-.service('AclService', ['$log',
-		function($log) {
-			this.isAllowed = function(user, resource, privilege) {
-				switch(privilege) {
-					case 'joinTask':
-						return resource.status < 20 && resource.members[user.id] === undefined; // Manca il controlle sull'essere membro dell'organizzazione
-					case 'unjoinTask':
-						return resource.status < 20 && resource.members[user.id] !== undefined;
+			return $resource('data/people/organizations/:orgId/members/:id.json', { }, {
+					query: { method: 'GET',  params: { },  isArray: false }
 				}
-			}
-	}]);
+			);
+		}]);

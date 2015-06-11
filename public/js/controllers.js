@@ -1,7 +1,7 @@
 angular.module('collaborationControllers', [])
 	.controller('TaskListCtrl', ['$scope', '$modal', '$log', 'taskService',
 		function ($scope, $modal, $log, taskService) {
-			$scope.tasks = taskService.updateCollection();
+			$scope.tasks = taskService.getTasks();
 			$scope.alertMsg = null;
 			$scope.$watch('currOrg', function(newValue, oldValue) {
 				if(newValue != undefined) {
@@ -11,13 +11,14 @@ angular.module('collaborationControllers', [])
 			$scope.count = function($map) {
 				return Object.keys($map).length;
 			};
-			$scope.deleteTask = function(id) {
-				Task.delete(id);
+			$scope.deleteTask = function(task) {
+				Task.delete(task.id);
 			};
 			$scope.openNewTask = function() {
 				var modalInstance = $modal.open({
 					animation: true,
-					templateUrl: "partials/new-task.html"
+					templateUrl: "partials/new-task.html",
+					controller: 'NewTaskCtrl'
 				});
 			};
 			$scope.openTaskDetail = function(task) {
@@ -36,19 +37,23 @@ angular.module('collaborationControllers', [])
 					}
 				});
 			};
-			$scope.openEditTask = function(id) {
+			$scope.openEditTask = function(task) {
 				//$scope.task = Task.query({ taskId: id });
 				//var modalInstance = $modal.open({
 				//	templateUrl: "partials/task-detail.html",
 				//	controller: 'TaskDetailCtrl'
 				//});
 			}
+			$scope.setIdentity({
+				id: "44220c78-b054-4bd8-9a5c-70acc30d9ddc",
+				firstname: "John",
+				lastname: "Doe",
+				picture: "http://lorempixel.com/337/337/people"
+			});
 		}])
-	.controller('TaskDetailCtrl', ['$scope', '$modalInstance', '$log', 'AclService', 'task', 'currUser', 'taskService',
-		function ($scope, $modalInstance, $log, AclService, task, currUser, taskService) {
+	.controller('TaskDetailCtrl', ['$scope', '$modalInstance', '$log', 'task', 'taskService',
+		function ($scope, $modalInstance, $log, task, currUser, taskService) {
 			$scope.task = task;
-			$scope.currUser = currUser;
-			$scope.acl = AclService;
 			$scope.daysAgo = function(when) {
 				var now = new Date();
 				var d = new Date(Date.parse(when));
@@ -75,32 +80,22 @@ angular.module('collaborationControllers', [])
 				}
 				taskService.unjoinTask(task, currUser);
 			}
+		}])
+	.controller('NewTaskCtrl', ['$scope', '$modalInstance', '$log', 'taskService', 'streamService',
+		function ($scope, $modalInstance, $log, taskService, streamService) {
+			$scope.messages = null;
+			$scope.task = {};
+			$scope.streams = streamService.getStreams();
+
+			$scope.submit = function() {
+				taskService.createTask($scope.task);
+			};
+
+			$scope.error = function(name) {
+				var s = $scope.form[name];
+				return s.$invalid && s.$dirty ? "has-error" : "";
+			};
 		}]);
-//
-//collaborationControllers.controller('TaskDetailCtrl', ['$scope', '$routeParams', 'Task',
-//	function($scope, $routeParams, Task) {
-//		$scope.task = Task.get({taskId : $routeParams.taskId }, function(task) {
-//			
-//		});
-//	}
-//]);
-
-var identityControllers = angular.module('identityControllers', []);
-
-identityControllers.controller('MyOrgsListCtrl', ['$scope', '$http', '$log',
-	function ($scope, $http, $log) {
-		$http.get('data/memberships.json').success(function(data) {
-			$scope.orgs = data;
-			$log.debug($scope.orgs._embedded['ora:organization-membership']);
-		});
-		$scope.currOrg = null;
-		$scope.currUser = {
-			id: "44220c78-b054-4bd8-9a5c-70acc30d9ddc",
-			firstname: "John",
-			lastname: "Doe",
-			picture: "http://lorempixel.com/337/337/people"
-		};
-	}]);
 
 var peopleControllers = angular.module('peopleControllers', []);
 
