@@ -61,7 +61,26 @@ angular.module('oraApp.collaboration')
 				backend.save({ }, { subject: task.subject, streamID: task['ora:stream'].id },
 					function(value, responseHeaders) {
 						$log.debug(value);
+					},
+					function(httpResponse) {
+						$log.debug('error');
+					});
+			}
 
+			this.editTask = function(task, user) {
+				backend.edit({ taskId: task.id }, { subject: task.subject },
+					function(value, responseHeaders) {
+						$log.debug(value);
+					},
+					function(httpResponse) {
+						$log.debug('error');
+					});
+			}
+
+			this.deleteTask = function(task, user) {
+				backend.delete({ taskId: task.id }, null,
+					function(value, responseHeaders) {
+						$log.debug(value);
 					},
 					function(httpResponse) {
 						$log.debug('error');

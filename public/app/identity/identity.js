@@ -31,7 +31,7 @@ angular.module('oraApp.identity', [])
 			};
 
 			$scope.setIdentity({
-				id: "44220c78-b054-4bd8-9a5c-70acc30d9ddc",
+				id: "34220c78-b054-4bd8-9a5c-70acc30d9ddc",
 				firstname: "John",
 				lastname: "Doe",
 				picture: "http://lorempixel.com/337/337/people"

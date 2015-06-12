@@ -12,17 +12,19 @@ angular.module('oraApp.collaboration')
 				return Object.keys($map).length;
 			};
 			$scope.deleteTask = function(task) {
-				Task.delete(task.id);
+				if(confirm("Deleting this item will remove all its informations. This operation cannot be undone. Do you want to proceed?")) {
+					taskService.deleteTask(task, $scope.identity);
+				}
 			};
 			$scope.openNewTask = function() {
-				var modalInstance = $modal.open({
+				$modal.open({
 					animation: true,
 					templateUrl: "app/collaboration/partials/new-task.html",
 					controller: 'NewTaskController'
 				});
 			};
 			$scope.openTaskDetail = function(task) {
-				var modalInstance = $modal.open({
+				$modal.open({
 					animation: true,
 					templateUrl: "app/collaboration/partials/task-detail.html",
 					controller: 'TaskDetailController',
@@ -30,18 +32,20 @@ angular.module('oraApp.collaboration')
 					resolve: {
 						task: function() {
 							return task;
-						},
-						currUser: function() {
-							return $scope.currUser;
 						}
 					}
 				});
 			};
 			$scope.openEditTask = function(task) {
-				//$scope.task = Task.query({ taskId: id });
-				//var modalInstance = $modal.open({
-				//	templateUrl: "partials/task-detail.html",
-				//	controller: 'TaskDetailCtrl'
-				//});
+				$modal.open({
+					animation: true,
+					templateUrl: "app/collaboration/partials/edit-task.html",
+					controller: 'EditTaskController',
+					resolve: {
+						task: function() {
+							return task;
+						}
+					}
+				});
 			}
 		}]);
