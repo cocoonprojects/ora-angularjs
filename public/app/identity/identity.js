@@ -29,4 +29,11 @@ angular.module('oraApp.identity', [])
 				'estimateTask': function(task) { return $scope.isAuthenticated() },
 				'assignShares': function(task) { return $scope.isAuthenticated() }
 			};
+
+			$scope.setIdentity({
+				id: "44220c78-b054-4bd8-9a5c-70acc30d9ddc",
+				firstname: "John",
+				lastname: "Doe",
+				picture: "http://lorempixel.com/337/337/people"
+			});
 		}]);

@@ -1,12 +1,4 @@
-angular.module('collaborationServices', ['ngResource'])
-	.factory('Task', ['$resource',
-		function($resource){
-			return $resource('data/task-management/tasks/:taskId.json', {}, {
-				query: { method: 'GET' },
-				delete: { method: 'DELETE' },
-				edit: { method: 'UPDATE' }
-			});
-		}])
+angular.module('oraApp.collaboration')
 	.service('taskService', ['$resource', '$log',
 		function($resource, $log) {
 			var ROLE_MEMBER = 'member';
@@ -14,6 +6,7 @@ angular.module('collaborationServices', ['ngResource'])
 
 			var backend = $resource('data/task-management/tasks/:taskId/:controller.json', { }, {
 				query:  { method: 'GET', isArray: false },
+				edit: { method: 'UPDATE' },
 				joinTask: { method: 'POST', params: { controller: 'members' } },
 				unjoinTask: { method: 'DELETE', params: { controller: 'members' } }
 			});
@@ -76,36 +69,4 @@ angular.module('collaborationServices', ['ngResource'])
 			}
 
 			this.tasks = this.updateTasks();
-		}])
-	.service('streamService', ['$resource', '$log',
-		function($resource, $log) {
-			var backend = $resource('data/task-management/streams/:streamId/:controller.json', { }, {
-				query:  { method: 'GET', isArray: false },
-				save:   { method: 'POST' },
-				delete: { method: 'DELETE' }
-			});
-			this.updateStreams = function() {
-				this.streams = backend.query({},
-					function() {
-						$log.debug('success');
-					},
-					function() {
-						$log.debug('error');
-					});
-				return this.streams;
-			};
-			this.getStreams = function() {
-				return this.streams;
-			}
-			this.streams = this.updateStreams();
-		}]);
-
-angular.module('peopleServices', ['ngResource'])
-	.factory('People', ['$resource',
-		function($resource) {
-
-			return $resource('data/people/organizations/:orgId/members/:id.json', { }, {
-					query: { method: 'GET',  params: { },  isArray: false }
-				}
-			);
 		}]);

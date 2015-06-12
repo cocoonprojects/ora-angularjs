@@ -1,6 +1,6 @@
 <div class="page-header">
 	<h1>People</h1>
-	<ul ng-controller="OrgMemberListCtrl" class="list-group">
+	<ul class="list-group">
 		<li ng-repeat="member in members._embedded['ora:organization-member']" class="list-group-item" ng-class="{ admin: 'list-group-item-info'}[member.role]">
 			<img ng-src="{{ member.picture }}" class="img-circle" style="max-width: 60px">
 			<span class="firstname">{{ member.firstname }}</span> <span class="lastname">{{ member.lastname }}</span>

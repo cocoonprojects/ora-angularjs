@@ -18,10 +18,16 @@
 		<script src="components/angular-route/angular-route.js"></script>
 		<script src="components/angular-resource/angular-resource.js"></script>
 		<script src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/services.js"></script>
-		<script src="js/controllers.js"></script>
+		<script src="app/app.js"></script>
 		<script src="app/identity/identity.js"></script>
+		<script src="app/collaboration/collaboration.js"></script>
+		<script src="app/collaboration/services/TaskService.js"></script>
+		<script src="app/collaboration/services/StreamService.js"></script>
+		<script src="app/collaboration/controllers/TaskListController.js"></script>
+		<script src="app/collaboration/controllers/TaskDetailController.js"></script>
+		<script src="app/collaboration/controllers/NewTaskController.js"></script>
+		<script src="app/people/people.js"></script>
+		<link href="app/collaboration/collaboration.css" type="text/css" rel="stylesheet">
 	</head>
 	<body ng-controller="IdentityController">
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
