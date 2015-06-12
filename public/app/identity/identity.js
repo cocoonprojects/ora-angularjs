@@ -9,7 +9,7 @@ angular.module('oraApp.identity', [])
 				$scope.identity = user;
 				$http.get('data/memberships.json').success(function(data) {
 					$scope.memberships = data._embedded['ora:organization-membership'];
-					$log.debug('User ' + $scope.identity.lastname + ' is member of ' + $scope.memberships);
+					$log.debug('User ' + $scope.identity.lastname + ' is member of ' + $scope.memberships.length + " organizations");
 				});
 			}
 
