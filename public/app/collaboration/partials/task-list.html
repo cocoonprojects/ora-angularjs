@@ -13,7 +13,6 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
-						<li role="presentation"><a role="menuitem" tabindex="-1" ng-if="isAllowed.editTask(task)" ng-click="openEditTask(task)">Edit</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" ng-if="isAllowed.deleteTask(task)" ng-click="deleteTask(task)">Delete</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
@@ -30,40 +29,10 @@
 						<button ng-if="isAllowed.executeTask(task)" data-href="{{ task._links['ora:execute'] }}" data-action="executeTask" class="btn btn-default">Ongoing</button>
 						<button ng-if="isAllowed.completeTask(task)" data-href="{{ task._links['ora:complete'] }}" data-action="completeTask" class="btn btn-default">Complete</button>
 						<button ng-if="isAllowed.acceptTask(task)" data-href="{{ task._links['ora:accept'] }}" data-action="acceptTask" class="btn btn-default">Accept</button>
-						<button ng-if="isAllowed.estimateTask(task)" data-href="{{ task._links['ora:estimate'] }}" data-toggle="modal" data-target="#estimateTaskModal" class="btn btn-default">Estimate</button>
 						<button ng-if="isAllowed.assignShares(task)" data-href="{{ task._links['ora:assignShares'] }}" data-toggle="modal" data-target="#assignSharesModal" class="btn btn-default">Assign share</button>
 					</li>
 				</ul>
 			</div>
 		</li>
 	</ul>
-</div>
-
-<div class="modal fade" id='estimateTaskModal' tabindex="-1" role="dialog" aria-labelledby="estimateTaskModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class='sr-only'>Close</span></button>
-					<h4 class="modal-title">Estimate the task</h4>
-				</div>
-				<div class="modal-body">
-					<div class="alert" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  <span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="form-group">
-						<label for="estimation">Credits</label>
-						<input type="number" id="estimateTaskCredits" pattern="/^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/" class="form-control">
-					</div>
-					<div class="checkbox"><label><input type="checkbox" id="estimateTaskSkip">Skip</label></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</div>
-			</form>
-		</div>
-	</div>
 </div>

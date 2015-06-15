@@ -26,7 +26,7 @@ angular.module('oraApp.identity', [])
 				'executeTask': function(task) { return $scope.isAuthenticated() },
 				'completeTask': function(task) { return $scope.isAuthenticated() },
 				'acceptTask': function(task) { return $scope.isAuthenticated() },
-				'estimateTask': function(task) { return $scope.isAuthenticated() },
+				'estimateTask': function(task, member) { return $scope.isAuthenticated() && task.status < 30 && member.id == $scope.identity.id },
 				'assignShares': function(task) { return $scope.isAuthenticated() }
 			};
 

@@ -32,6 +32,12 @@ angular.module('oraApp.collaboration')
 					resolve: {
 						task: function() {
 							return task;
+						},
+						isAllowed: function() {
+							return $scope.isAllowed;
+						},
+						identity: function() {
+							return $scope.identity;
 						}
 					}
 				});
