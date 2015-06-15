@@ -7,6 +7,7 @@ angular.module('oraApp.collaboration')
 
 			$scope.submit = function() {
 				taskService.createTask($scope.task);
+				$modalInstance.close();	// in realtà va messo sulla callback del createTask
 			};
 
 			$scope.error = function(name) {

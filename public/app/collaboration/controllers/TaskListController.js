@@ -2,6 +2,7 @@ angular.module('oraApp.collaboration')
 	.controller('TaskListController', ['$scope', '$modal', '$log', 'taskService',
 		function ($scope, $modal, $log, taskService) {
 			$scope.tasks = taskService.getTasks();
+			$scope.statusLabel = taskService.statusLabel;
 			$scope.alertMsg = null;
 			$scope.$watch('currOrg', function(newValue, oldValue) {
 				if(newValue != undefined) {
@@ -32,20 +33,14 @@ angular.module('oraApp.collaboration')
 					resolve: {
 						task: function() {
 							return task;
+						},
+						isAllowed: function() {
+							return $scope.isAllowed;
+						},
+						identity: function() {
+							return $scope.identity;
 						}
 					}
 				});
 			};
-			$scope.openEditTask = function(task) {
-				$modal.open({
-					animation: true,
-					templateUrl: "app/collaboration/partials/edit-task.html",
-					controller: 'EditTaskController',
-					resolve: {
-						task: function() {
-							return task;
-						}
-					}
-				});
-			}
 		}]);

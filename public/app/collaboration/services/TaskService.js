@@ -1,6 +1,10 @@
 angular.module('oraApp.collaboration')
-	.service('taskService', ['$resource', '$log',
-		function($resource, $log) {
+	.constant('TASK_STATUS', {
+		'ONGOING': 10,
+		'COMPLETED': 20
+	})
+	.service('taskService', ['$resource', '$log', 'TASK_STATUS',
+		function($resource, $log, TASK_STATUS) {
 			var ROLE_MEMBER = 'member';
 			var ROLE_OWNER  = 'owner';
 
@@ -8,7 +12,9 @@ angular.module('oraApp.collaboration')
 				query:  { method: 'GET', isArray: false },
 				edit: { method: 'UPDATE' },
 				joinTask: { method: 'POST', params: { controller: 'members' } },
-				unjoinTask: { method: 'DELETE', params: { controller: 'members' } }
+				unjoinTask: { method: 'DELETE', params: { controller: 'members' } },
+				completeTask: { method: 'POST', params: { controller: 'transitions', action: 'complete' } },
+				acceptTask: { method: 'POST', params: { controller: 'transitions', action: 'accept' } }
 			});
 
 			this.getTasks = function() {
@@ -65,7 +71,7 @@ angular.module('oraApp.collaboration')
 					function(httpResponse) {
 						$log.debug('error');
 					});
-			}
+			};
 
 			this.editTask = function(task, user) {
 				backend.edit({ taskId: task.id }, { subject: task.subject },
@@ -75,7 +81,7 @@ angular.module('oraApp.collaboration')
 					function(httpResponse) {
 						$log.debug('error');
 					});
-			}
+			};
 
 			this.deleteTask = function(task, user) {
 				backend.delete({ taskId: task.id }, null,
@@ -85,6 +91,31 @@ angular.module('oraApp.collaboration')
 					function(httpResponse) {
 						$log.debug('error');
 					});
+			};
+
+			this.completeTask = function(task, user) {
+				backend.completeTask({ taskId: task.id }, null,
+					function(value, responseHeaders) {
+						$log.debug(value);
+					},
+					function(httpResponse) {
+						$log.debug('error');
+					});
+			};
+
+			this.acceptTask = function(task, user) {
+				backend.completeTask({ taskId: task.id }, null,
+					function(value, responseHeaders) {
+						$log.debug(value);
+					},
+					function(httpResponse) {
+						$log.debug('error');
+					});
+			};
+
+			this.statusLabel = {
+				10: 'Ongoing',
+				20: 'Completed'
 			}
 
 			this.tasks = this.updateTasks();
