@@ -71,7 +71,7 @@ angular.module('oraApp.collaboration')
 			};
 			$scope.completeTask = function(task) {
 				taskService.completeTask(task, identity);
-			}
+			};
 			$scope.acceptTask = function(task) {
 				taskService.acceptTask(task, identity);
 			}
