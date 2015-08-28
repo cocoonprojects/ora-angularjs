@@ -1,0 +1,28 @@
+<md-toolbar id="identityBox" class="md-theme-indigo">
+	<div layout-padding style="text-align: center"><img ng-if="identity.getAvatar()" ng-src="{{ identity.getAvatar() }}" style="width: 120px; height: 120px; border-radius: 60px"><div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div></div>
+</md-toolbar>
+<md-content layout-padding>
+	<!--
+	<md-menu>
+		<md-menu-content>
+			<md-menu-item ng-repeat="membership in identity.getMemberships()._embedded['ora:organization-membership']">
+				<md-button>
+					{{ membership.organization.name }}
+				</md-button>
+			</md-menu-item>
+			<md-menu-item>
+				<md-button>
+					<md-icon class="material-icons">&#xE8F9;</md-icon>All organizations
+				</md-button>
+			</md-menu-item>
+			<md-menu-item>
+				<md-button>Logout</md-button>
+			</md-menu-item>
+		</md-menu-content>
+	</md-menu>
+	-->
+	<span id="googleSignIn" data-ng-show="!identity.isAuthenticated()">
+		<span id="signInButton"></span>
+	</span>
+	<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
+</md-content>

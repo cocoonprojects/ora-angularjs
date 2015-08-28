@@ -1,60 +1,70 @@
 <!doctype html>
 <html lang="en" ng-app="oraApp">
-	<head>
-		<meta charset="utf-8">
-		<title>O.R.A.</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- 
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
-		<script type="text/javascript" src="https://code.angularjs.org/1.3.9/angular-route.min.js"></script>
-		<script type="text/javascript" src="https://code.angularjs.org/1.3.11/angular-resource.min.js"></script>
- -->
-		<link href="components/bootstrap/dist/css/bootstrap.css" type="text/css" rel="stylesheet">
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet">
-		<link href="css/style.css" type="text/css" rel="stylesheet">
-		<script src="components/angular/angular.js"></script>
-		<script src="components/angular-route/angular-route.js"></script>
-		<script src="components/angular-resource/angular-resource.js"></script>
-		<script src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-		<script src="app/app.js"></script>
-		<script src="app/identity/identity.js"></script>
-		<script src="app/collaboration/collaboration.js"></script>
-		<script src="app/collaboration/services/TaskService.js"></script>
-		<script src="app/collaboration/services/StreamService.js"></script>
-		<script src="app/collaboration/controllers/TaskListController.js"></script>
-		<script src="app/collaboration/controllers/TaskDetailController.js"></script>
-		<script src="app/collaboration/controllers/NewTaskController.js"></script>
-		<script src="app/people/people.js"></script>
-		<link href="app/collaboration/collaboration.css" type="text/css" rel="stylesheet">
-	</head>
-	<body ng-controller="IdentityController">
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="/">O.R.A</a>
-				</div>
-				<div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav" id="firstLevelMenu" role="menu">
-						<li><a href="#/tasks">Items</a></li>
-						<li><a href="#/accounting">Credits</a></li>
-						<li><a href="">Decisions</a></li>
-						<li><a href="#/people">People</a></li>
-					</ul>
-					<form class="navbar-form navbar-right">
-						<select ng-model="currOrg" ng-options="membership.organization.name for (id, membership) in memberships">
-							<option></option>
-						</select>
-					</form>
-				</div><!--/.nav-collapse -->
-			</div>
-		</nav>
-		<div class="container" ng-view></div>
-	</body>
+<head>
+	<meta charset="utf-8">
+	<title>O.R.A.</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<link rel="stylesheet" href="components/angular-material/angular-material.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="app/app.css" type="text/css">
+	<script src="components/angular/angular.js"></script>
+	<script src="components/angular-route/angular-route.js"></script>
+	<script src="components/angular-resource/angular-resource.js"></script>
+	<script src="components/angular-aria/angular-aria.min.js"></script>
+	<script src="components/angular-animate/angular-animate.min.js"></script>
+	<script src="components/angular-material/angular-material.min.js"></script>
+	<script src="app/app.js"></script>
+	<script src="app/identity/identity.js"></script>
+	<script src="app/identity/services/IdentityService.js"></script>
+	<script src="app/identity/controllers/IdentityController.js"></script>
+	<script src="app/identity/controllers/SignInController.js"></script>
+	<script src="app/collaboration/collaboration.js"></script>
+	<script src="app/collaboration/services/TaskService.js"></script>
+	<script src="app/collaboration/services/StreamService.js"></script>
+	<script src="app/collaboration/controllers/TaskListController.js"></script>
+	<script src="app/collaboration/controllers/TaskDetailController.js"></script>
+	<script src="app/collaboration/controllers/NewTaskController.js"></script>
+	<script src="app/people/people.js"></script>
+	<script src="app/flow/flow.js"></script>
+	<script src="app/flow/controllers/FlowController.js"></script>
+
+
+	<meta name="google-signin-client_id" content="539661597463-g8vv08j3f667ka6l8gpm0pn34kcmrvhk.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/client:plusone.js" async defer></script>
+</head>
+<body layout="column" ng-controller="AppCtrl">
+	<section layout="row" flex ng-controller="IdentityController">
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
+			<md-toolbar id="identityBox" class="md-theme-indigo">
+				<div layout-padding style="text-align: center"><img ng-if="identity.getAvatar()" ng-src="{{ identity.getAvatar() }}" style="width: 120px; height: 120px; border-radius: 60px"><div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div></div>
+			</md-toolbar>
+			<md-content layout-padding>
+				<!--
+				<md-menu>
+					<md-menu-content>
+						<md-menu-item ng-repeat="membership in identity.getMemberships()._embedded['ora:organization-membership']">
+							<md-button>
+								{{ membership.organization.name }}
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button>
+								<md-icon class="material-icons">&#xE8F9;</md-icon>All organizations
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button>Logout</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+				-->
+				<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
+			</md-content>
+		</md-sidenav>
+		<md-content flex ng-view></md-content>
+	</section>
+</body>
 </html>

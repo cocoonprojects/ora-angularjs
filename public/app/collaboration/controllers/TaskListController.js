@@ -1,6 +1,6 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskListController', ['$scope', '$modal', '$log', 'taskService',
-		function ($scope, $modal, $log, taskService) {
+	.controller('TaskListController', ['$scope', '$log', 'taskService',
+		function ($scope, $log, taskService) {
 			$scope.tasks = taskService.getTasks();
 			$scope.statusLabel = taskService.statusLabel;
 			$scope.alertMsg = null;
