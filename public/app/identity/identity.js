@@ -12,7 +12,7 @@ angular.module('oraApp.identity', ['ngRoute'])
 	function($rootScope, $location, $log, identity) {
 		$rootScope.$on("$routeChangeStart", function(event, next, current) {
 			if(identity.isAuthenticated()) {
-				$log.debug('Access granted: user authenticated');
+				$log.debug('Access to ' + next.templateUrl + ' granted: user authenticated');
 			} else {
 				// no logged user, we should be going to #sign-in
 				if(next.templateUrl != 'app/identity/partials/sign-in.html') {

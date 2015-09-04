@@ -4,7 +4,7 @@
 			<md-icon md-font-icon="menu" alt="menu" class="material-icons">&#xE5D2;</md-icon>
 		</md-button>
 		<h2>
-			<span>Organizzazione Pinko Pallino</span>
+			<span>{{ currOrg.name }}</span>
 		</h2>
 		<span flex></span>
 		<md-button class="md-icon-button" aria-label="Favorite">
@@ -16,9 +16,15 @@
 	</div>
 </md-toolbar>
 <div layout="column" layout-padding layout-fill layout-align="top center">
-	<p>
-		The left sidenav will 'lock open' on a medium (>=960px wide) device.
-	</p>
+	<md-card ng-repeat="task in tasks._embedded['ora:task']">
+		<md-card-content>
+			<h2 class="md-title">{{ task.subject }}</h2>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="end center">
+			<md-button>Action 1</md-button>
+			<md-button>Action 2</md-button>
+		</div>
+	</md-card>
 </div>
 <div flex></div>
 <!--

@@ -3,28 +3,32 @@ angular.module('oraApp.collaboration')
 		'ONGOING': 10,
 		'COMPLETED': 20
 	})
-	.service('taskService', ['$resource', '$log', 'TASK_STATUS',
-		function($resource, $log, TASK_STATUS) {
+	.service('taskService', ['$resource', '$log', 'identity', 'TASK_STATUS',
+		function($resource, $log, $identity, TASK_STATUS) {
 			var ROLE_MEMBER = 'member';
 			var ROLE_OWNER  = 'owner';
+			var organization = null;
+			var tasks = [];
 
-			var backend = $resource('data/task-management/tasks/:taskId/:controller.json', { }, {
-				query:  { method: 'GET', isArray: false },
-				edit: { method: 'UPDATE' },
-				joinTask: { method: 'POST', params: { controller: 'members' } },
-				unjoinTask: { method: 'DELETE', params: { controller: 'members' } },
-				completeTask: { method: 'POST', params: { controller: 'transitions', action: 'complete' } },
-				acceptTask: { method: 'POST', params: { controller: 'transitions', action: 'accept' } }
+			var backend = $resource('api/:orgId/task-management/tasks/:taskId/:controller', { orgId: '@orgId'}, {
+				query:  { method: 'GET', isArray: false, headers: { 'GOOGLE-JWT': $identity.getToken() } },
+				edit: { method: 'UPDATE', headers: { 'GOOGLE-JWT': $identity.getToken() } },
+				joinTask: { method: 'POST', params: { controller: 'members' }, headers: { 'GOOGLE-JWT': $identity.getToken() } },
+				unjoinTask: { method: 'DELETE', params: { controller: 'members' }, headers: { 'GOOGLE-JWT': $identity.getToken() } },
+				completeTask: { method: 'POST', params: { controller: 'transitions', action: 'complete' }, headers: { 'GOOGLE-JWT': $identity.getToken() } },
+				acceptTask: { method: 'POST', params: { controller: 'transitions', action: 'accept' }, headers: { 'GOOGLE-JWT': $identity.getToken() } }
 			});
 
 			this.getTasks = function() {
-				return this.tasks;
+				return tasks;
 			};
 
-			this.updateTasks = function() {
-				this.tasks = backend.query({},
+			this.updateTasks = function(org) {
+				this.tasks = backend.query({ orgId: org.id },
 					function(value, responseHeaders) {
-						$log.debug('success');
+						organization = org;
+						tasks = value;
+						$log.debug(org.id + ' organization tasks updated: ' + value.count);
 					},
 					function(httpResponse) {
 						$log.debug('error');
@@ -32,7 +36,7 @@ angular.module('oraApp.collaboration')
 				return this.tasks;
 			};
 
-			this.joinTask = function(task, user) {
+			this.joinTask = function(org, task, user) {
 				if(task.members === undefined) {
 					task.members = {};
 				}
@@ -43,7 +47,7 @@ angular.module('oraApp.collaboration')
 					role: ROLE_MEMBER,
 					picture: user.picture
 				}
-				backend.joinTask({ taskId: task.id }, { },
+				backend.joinTask({ orgId: org.id, taskId: task.id }, { },
 					function(value, responseHeaders) {
 						$log.debug('success');
 					},
@@ -52,9 +56,9 @@ angular.module('oraApp.collaboration')
 					});
 			};
 
-			this.unjoinTask = function(task, user) {
+			this.unjoinTask = function(org, task, user) {
 				delete task.members[user.id];
-				backend.unjoinTask({ taskId: task.id }, { },
+				backend.unjoinTask({ orgId: org.id, taskId: task.id }, { },
 					function(value, responseHeaders) {
 						$log.debug('success');
 					},
@@ -63,8 +67,8 @@ angular.module('oraApp.collaboration')
 					});
 			};
 
-			this.createTask = function(task, user) {
-				backend.save({ }, { subject: task.subject, streamID: task['ora:stream'].id },
+			this.createTask = function(org, task, user) {
+				backend.save({ orgId: org.id }, { subject: task.subject, streamID: task['ora:stream'].id },
 					function(value, responseHeaders) {
 						$log.debug(value);
 					},
@@ -73,8 +77,8 @@ angular.module('oraApp.collaboration')
 					});
 			};
 
-			this.editTask = function(task, user) {
-				backend.edit({ taskId: task.id }, { subject: task.subject },
+			this.editTask = function(org, task, user) {
+				backend.edit({ orgId: org.id, taskId: task.id }, { subject: task.subject },
 					function(value, responseHeaders) {
 						$log.debug(value);
 					},
@@ -83,8 +87,8 @@ angular.module('oraApp.collaboration')
 					});
 			};
 
-			this.deleteTask = function(task, user) {
-				backend.delete({ taskId: task.id }, null,
+			this.deleteTask = function(org, task, user) {
+				backend.delete({ orgId: org.id, taskId: task.id }, null,
 					function(value, responseHeaders) {
 						$log.debug(value);
 					},
@@ -93,8 +97,8 @@ angular.module('oraApp.collaboration')
 					});
 			};
 
-			this.completeTask = function(task, user) {
-				backend.completeTask({ taskId: task.id }, null,
+			this.completeTask = function(org, task, user) {
+				backend.completeTask({ orgId: org.id, taskId: task.id }, null,
 					function(value, responseHeaders) {
 						$log.debug(value);
 					},
@@ -103,8 +107,8 @@ angular.module('oraApp.collaboration')
 					});
 			};
 
-			this.acceptTask = function(task, user) {
-				backend.completeTask({ taskId: task.id }, null,
+			this.acceptTask = function(org, task, user) {
+				backend.acceptTask({ orgId: org.id, taskId: task.id }, null,
 					function(value, responseHeaders) {
 						$log.debug(value);
 					},
@@ -117,6 +121,4 @@ angular.module('oraApp.collaboration')
 				10: 'Ongoing',
 				20: 'Completed'
 			}
-
-			this.tasks = this.updateTasks();
 		}]);

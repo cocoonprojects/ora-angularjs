@@ -1,8 +1,16 @@
 angular.module('oraApp.identity')
-	.controller('IdentityController', ['$scope', '$log', '$location', 'identity',
-		function($scope, $log, $location, identity) {
+	.controller('IdentityController', ['$scope', '$log', '$location', '$routeParams', 'identity',
+		function($scope, $log, $location, $routeParams, identity) {
 			$scope.identity = identity;
-			$scope.currOrg = null;
+			$scope.currOrg;
+			$scope.$on('$routeChangeSuccess', function(event, next, current) {
+				if($routeParams.orgId) {
+					$scope.currOrg = identity.getMembership($routeParams.orgId);
+					$log.debug('Organization changed: ' + $scope.currOrg.id);
+				} else {
+					$scope.currOrg = null;
+				}
+			});
 
 			//$scope.isAllowed = {
 			//	'createTask': function(stream) { return $scope.isAuthenticated() }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
@@ -20,9 +28,11 @@ angular.module('oraApp.identity')
 			$scope.signOut = function() {
 				var auth2 = gapi.auth2.getAuthInstance();
 				auth2.signOut().then(function () {
-					identity.reset();
-					$log.info('User signed out.');
-					$location.path('/');
+					$scope.$apply(function() {
+						identity.reset();
+						$log.info('User signed out.');
+						$location.path('/');
+					});
 				});
 			}
 		}]);

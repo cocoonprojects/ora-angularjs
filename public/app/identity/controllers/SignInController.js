@@ -1,14 +1,14 @@
 angular.module('oraApp.identity')
 	.controller('SignInController', ['$scope', '$log', '$location', 'identity',
-		function($scope, $log, $location, identity) {
+		function($scope, $log, $location) {
 
 			$scope.onSuccess = function(googleUser) {
 				$scope.$apply(function() {
-					identity.signInFromGoogle(googleUser)
+					$scope.identity.signInFromGoogle(googleUser)
 					$log.info('User signed in');
 					var route = '/flow'; // TODO: bring back to requested route
-					//$location.path(route);
-					//$log.debug('Redirecting to ' + route);
+					$location.path(route);
+					$log.debug('Redirecting to ' + route);
 				});
 			}
 

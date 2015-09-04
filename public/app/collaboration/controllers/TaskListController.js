@@ -1,14 +1,19 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskListController', ['$scope', '$log', 'taskService',
-		function ($scope, $log, taskService) {
-			$scope.tasks = taskService.getTasks();
-			$scope.statusLabel = taskService.statusLabel;
-			$scope.alertMsg = null;
-			$scope.$watch('currOrg', function(newValue, oldValue) {
-				if(newValue != undefined) {
-					$log.debug("CurrOrg changed: " + newValue.organization.id);
+	.controller('TaskListController', ['$scope', '$log', '$routeParams', 'identity', 'taskService',
+		function ($scope, $log, $routeParams, identity, taskService) {
+			$scope.tasks = taskService.updateTasks($scope.currOrg);
+			$scope.$watch(taskService.getTasks(), function(newVal, oldVal) {
+				if(newVal) {
+					$scope.tasks = taskService.getTasks();
 				}
 			});
+			$scope.statusLabel = taskService.statusLabel;
+			$scope.alertMsg = null;
+			//$scope.$watch('currOrg', function(newValue, oldValue) {
+			//	if(newValue != undefined) {
+			//		$log.debug("CurrOrg changed: " + newValue.organization.id);
+			//	}
+			//});
 			$scope.count = function($map) {
 				return Object.keys($map).length;
 			};

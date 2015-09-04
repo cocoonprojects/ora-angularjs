@@ -1,62 +1,25 @@
 angular.module('oraApp.identity')
-	.service('identity', ['$resource', '$log',
-		function($resource, $log) {
+	.service('identity', ['$http', '$log',
+		function($http, $log) {
 			var token, firstname, lastname, email, avatar, memberships;
-/*
-			var memberships = {
-				"count":2,
-				"total":2,
-				"_embedded":{
-					"ora:organization-membership":[
-						{
-							"organization":{
-								"id":"db118cc7-f3de-47d1-bfd8-39a79f44e4ae",
-								"name":"Babba Rulez",
-								"_links":{
-									"self":{
-										"href":"\/people\/organizations\/db118cc7-f3de-47d1-bfd8-39a79f44e4ae"
-									},
-									"ora:organization-member":{
-										"href":"\/people\/organizations\/db118cc7-f3de-47d1-bfd8-39a79f44e4ae\/members"
-									}
-								}
-							},
-							"role":"admin",
-							"createdAt":"2015-04-24T09:20:06+00:00",
-							"createdBy":"Andrea Bandera"
-						},
-						{
-							"organization":{
-								"id":"b063a628-b1b0-4000-92fe-d3981139ea6e",
-								"name":"Seconda organizzazione del Babba",
-								"_links":{
-									"self":{
-										"href":"\/people\/organizations\/b063a628-b1b0-4000-92fe-d3981139ea6e"
-									},
-									"ora:organization-member":{
-										"href":"\/people\/organizations\/b063a628-b1b0-4000-92fe-d3981139ea6e\/members"
-									}
-								}
-							},
-							"role":"admin",
-							"createdAt":"2015-04-26T11:12:49+00:00",
-							"createdBy":"Andrea Bandera"
-						}
-					]
-				},
-				"_links":{
-					"self":{
-						"href":"\/memberships"
-					}
-				}
-			};*/
 
+			this.getToken        = function() { return token };
 			this.getFirstname    = function() { return firstname };
 			this.getLastname     = function() { return lastname };
 			this.getEmail        = function() { return email };
 			this.getAvatar       = function() { return avatar };
 			this.isAuthenticated = function() { return token ? true : false };
 			this.getMemberships  = function() { return memberships };
+
+			this.getMembership = function(orgId) {
+				var org = null;
+				angular.forEach(memberships, function(value, key) {
+					if(value.organization.id === orgId) {
+						org = value.organization;
+					}
+				});
+				return org;
+			}
 
 			this.reset = function() {
 				token = firstname = lastname = email = avatar = '';
@@ -72,14 +35,14 @@ angular.module('oraApp.identity')
 				firstname = profile.getName();
 				avatar = profile.getImageUrl();
 				email = profile.getEmail();
+
+				this.updateMemberships(token)
 			};
 
-			//$scope.setIdentity = function(user) {
-			//	$scope.identity = user;
-			//	$http.get('data/memberships.json').success(function(data) {
-			//		$scope.memberships = data._embedded['ora:organization-membership'];
-			//		$log.debug('User ' + $scope.identity.lastname + ' is member of ' + $scope.memberships.length + " organizations");
-			//	});
-			//}
-
+			this.updateMemberships = function(id_token) {
+				$http({method: 'GET', url: 'api/memberships', headers: {'GOOGLE-JWT': id_token}}).success(function(data) {
+					memberships = data._embedded['ora:organization-membership'];
+					$log.info('User ' + firstname + ' is member of ' + memberships.length + " organizations");
+				});
+			}
 		}]);

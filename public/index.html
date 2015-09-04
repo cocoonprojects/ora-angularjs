@@ -17,6 +17,8 @@
 	<script src="components/angular-animate/angular-animate.min.js"></script>
 	<script src="components/angular-material/angular-material.min.js"></script>
 	<script src="app/app.js"></script>
+	<script src="app/AppController.js"></script>
+	<script src="app/LeftController.js"></script>
 	<script src="app/identity/identity.js"></script>
 	<script src="app/identity/services/IdentityService.js"></script>
 	<script src="app/identity/controllers/IdentityController.js"></script>
@@ -35,13 +37,21 @@
 	<meta name="google-signin-client_id" content="539661597463-g8vv08j3f667ka6l8gpm0pn34kcmrvhk.apps.googleusercontent.com">
 	<script src="https://apis.google.com/js/client:plusone.js" async defer></script>
 </head>
-<body layout="column" ng-controller="AppCtrl">
+<body layout="column" ng-controller="AppController">
 	<section layout="row" flex ng-controller="IdentityController">
 		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
 			<md-toolbar id="identityBox" class="md-theme-indigo">
 				<div layout-padding style="text-align: center"><img ng-if="identity.getAvatar()" ng-src="{{ identity.getAvatar() }}" style="width: 120px; height: 120px; border-radius: 60px"><div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div></div>
 			</md-toolbar>
-			<md-content layout-padding>
+			<md-content ng-controller="LeftController">
+				<md-list layout-padding layout="column" ng-model="currOrg">
+					<md-item ng-repeat="membership in identity.getMemberships()">
+						<a href="#/{{membership.organization.id}}/tasks">{{membership.organization.name}}</a>
+					</md-item>
+					<md-item ng-if="identity.isAuthenticated()">
+						<md-button ng-click="signOut()">Logout</md-button>
+					</md-item>
+				</md-list>
 				<!--
 				<md-menu>
 					<md-menu-content>
@@ -61,10 +71,9 @@
 					</md-menu-content>
 				</md-menu>
 				-->
-				<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
 			</md-content>
 		</md-sidenav>
-		<md-content flex ng-view></md-content>
+		<md-content flex ng-view style="background-color: lightgray"></md-content>
 	</section>
 </body>
 </html>
