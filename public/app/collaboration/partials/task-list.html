@@ -1,3 +1,21 @@
+<!--<md-fab-speed-dial md-direction="up">-->
+	<!--<md-fab-trigger>-->
+		<!--<md-button aria-label="taskMenu" class="md-fab md-warn">-->
+			<!--<md-icon md-font-icon="menu" class="material-icons">&#xE145;</md-icon>-->
+		<!--</md-button>-->
+	<!--</md-fab-trigger>-->
+	<!--<md-fab-actions>-->
+		<!--<md-button aria-label="twitter" class="md-fab md-raised md-mini">-->
+			<!--<md-icon md-svg-src="img/icons/twitter.svg"></md-icon>-->
+		<!--</md-button>-->
+		<!--<md-button aria-label="facebook" class="md-fab md-raised md-mini">-->
+			<!--<md-icon md-svg-src="img/icons/facebook.svg"></md-icon>-->
+		<!--</md-button>-->
+		<!--<md-button aria-label="Google Hangout" class="md-fab md-raised md-mini">-->
+			<!--<md-icon md-svg-src="img/icons/hangout.svg"></md-icon>-->
+		<!--</md-button>-->
+	<!--</md-fab-actions>-->
+<!--</md-fab-speed-dial>-->
 <md-toolbar>
 	<div class="md-toolbar-tools">
 		<md-button class="md-icon-button" aria-label="Side Nav" ng-click="toggleLeft()" hide-gt-md>
@@ -7,45 +25,92 @@
 			<span>{{ currOrg.name }}</span>
 		</h2>
 		<span flex></span>
-		<md-button class="md-icon-button" aria-label="Favorite">
-			<md-icon md-font-icon="favorite" style="color: greenyellow;"></md-icon>
+		<md-button class="md-icon-button" aria-label="Search">
+			<md-icon md-font-icon="search" class="material-icons">&#xE8B6;</md-icon>
 		</md-button>
 		<md-button class="md-icon-button" aria-label="More">
-			<md-icon md-font-icon="more_vert"></md-icon>
+			<md-icon md-font-icon="more_vert" class="material-icons">&#xE5D4;</md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
-<div layout="column" layout-padding layout-fill layout-align="top center">
-	<md-card ng-repeat="task in tasks._embedded['ora:task']">
-		<md-card-content>
-			<h2 class="md-title">{{ task.subject }}</h2>
-		</md-card-content>
-		<div class="md-actions" layout="row" layout-align="end center">
-			<md-button>Action 1</md-button>
-			<md-button>Action 2</md-button>
-		</div>
-	</md-card>
-</div>
-<div flex></div>
+<md-tabs class="md-primary" md-dynamic-height md-border-bottom md-swipe-content>
+	<md-tab label="Tasks">
+		<md-content class="md-padding" style="background-color: transparent !important; height: 600px">
+			<md-card ng-repeat="task in tasks._embedded['ora:task']">
+				<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
+				<md-card-content>
+					<div class="md-headline">{{ task.subject }}</div>
+					<div class="md-accent md-subheader" style="display: inline-block; margin-right: 0">{{ task.stream.subject }}</div>
+					<div class="md-subheader" style="display: inline-block">- Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
+					<ul class="members">
+						<li data-ng-repeat="member in task.members">
+							<img ng-src="{{ member.picture }}" width="32" height="32" alt="{{ member.firstname }} {{ member.lastname}}" title="{{ member.firstname }} {{ member.lastname}}">
+							<md-icon md-font-icon="star" class="md-accent material-icons" ng-if="isOwner(member)">&#xE838;</md-icon>
+						</li>
+					</ul>
+					<div ng-switch="task.estimation">
+						<span ng-switch-when="null">Estimation in progress{{ countEstimators(task) }}</span>
+						<span ng-switch-when="-1">Estimation skipped{{ countEstimators(task) }}</span>
+						<span ng-switch-default>{{ task.estimation }} Credits{{ countEstimators(task) }}</span>
+					</div>
+				</md-card-content>
+				<md-divider></md-divider>
+				<div layout="row">
+					<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ statusLabel(task.status) }}</div>
+					<div class="md-actions" layout="row">
+						<md-button aria-label="Join the task" ng-if="isAllowed.joinTask(task)" ng-click="joinTask(task)">Join</md-button>
+						<md-button aria-label="Complete the task" ng-if="isAllowed.completeTask(task)" ng-click="completeTask(task)">Mark as Completed</md-button>
+						<md-menu md-position-mode="target-right target" style="padding: 0">
+							<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="ctrl.openMoreMenu($mdOpenMenu, $event)">
+								<md-icon md-menu-origin md-font-icon="menu" class="material-icons">&#xE5D4;</md-icon>
+							</md-button>
+							<md-menu-content width="4">
+								<md-menu-item ng-if="isAllowed.editTask(task)">
+									<md-button ng-click="ctrl.editTask($event, task)">
+										<md-icon md-font-icon="menu" class="material-icons" md-menu-align-target>&#xE150;</md-icon>
+										Edit Task
+									</md-button>
+								</md-menu-item>
+								<md-menu-item ng-if="isAllowed.deleteTask(task)">
+									<md-button ng-click="ctrl.deleteTask(task)">
+										<md-icon md-font-icon="menu" class="material-icons">&#xE872;</md-icon>
+										Delete Task
+									</md-button>
+								</md-menu-item>
+								<md-menu-item ng-if="isAllowed.unjoinTask(task)">
+									<md-button ng-click="ctrl.unjoinTask(task)">
+										<md-icon md-font-icon="menu" class="material-icons">&#xE3CB;</md-icon>
+										Unjoin
+									</md-button>
+								</md-menu-item>
+								<md-menu-item ng-if="isAllowed.reExecuteTask(task)">
+									<md-button ng-click="ctrl.executeTask(task)">
+										<md-icon md-font-icon="menu" class="material-icons">&#xE3CB;</md-icon>
+										Revert to Ongoing
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</div>
+				</div>
+			</md-card>
+		</md-content>
+	</md-tab>
+	<md-tab label="Credits"></md-tab>
+	<md-tab label="Decisions"></md-tab>
+	<md-tab label="People"></md-tab>
+</md-tabs>
 <!--
-<div class="container" id="content">
-	<div class="page-header">
-		<h1>Items
-            <button type="button" class="btn btn-default pull-right" ng-click="openNewTask()" aria-label="New Task"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-        </h1>
-	</div>
-	<div class="alert" role="alert" data-ng-show="alertMsg" data-ng-bind="alertMsg"></div>
-	<ul style="list-style: none; padding: 0; margin: 0">
-		<li class="panel panel-default" ng-repeat="task in tasks._embedded['ora:task']">
+	<div class="alert" role="alert" data-ng-show="alertMsg" data-ng-bind="alertMsg"></div> // Toast
+
+
 			<div class="panel-heading">
 				<div class="btn-group pull-right context-menu" dropdown is-open="status.isopen">
 					<button class="btn btn-default dropdown-toggle" type="button" dropdown-toggle ng-disabled="disabled">
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
-						<li role="presentation"><a role="menuitem" tabindex="-1" ng-if="isAllowed.deleteTask(task)" ng-click="deleteTask(task)">Delete</a></li>
-						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="deleteTask(task)">Delete</a></li>
 					</ul>
 				</div>
 				<h3 class="panel-title"><a ng-click="openTaskDetail(task)">{{task.subject}}</a></h3>
@@ -72,7 +137,4 @@
 					</ul>
 				</div>
 			</div>
-		</li>
-	</ul>
-</div>
 -->

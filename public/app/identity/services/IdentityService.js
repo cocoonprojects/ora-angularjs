@@ -1,9 +1,10 @@
 angular.module('oraApp.identity')
 	.service('identity', ['$http', '$log',
 		function($http, $log) {
-			var token, firstname, lastname, email, avatar, memberships;
+			var token, id, firstname, lastname, email, avatar, memberships;
 
 			this.getToken        = function() { return token };
+			this.getId           = function() { return id };
 			this.getFirstname    = function() { return firstname };
 			this.getLastname     = function() { return lastname };
 			this.getEmail        = function() { return email };
@@ -41,6 +42,11 @@ angular.module('oraApp.identity')
 
 			this.updateMemberships = function(id_token) {
 				$http({method: 'GET', url: 'api/memberships', headers: {'GOOGLE-JWT': id_token}}).success(function(data) {
+					id        = data.id;
+					firstname = data.firstname;
+					lastname  = data.lastname;
+					email     = data.email;
+					avatar    = data.picture;
 					memberships = data._embedded['ora:organization-membership'];
 					$log.info('User ' + firstname + ' is member of ' + memberships.length + " organizations");
 				});

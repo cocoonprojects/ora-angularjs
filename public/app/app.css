@@ -1,0 +1,19 @@
+ul.members {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+}
+ul.members li {
+    display: inline-block;
+    margin-right: 0.5em;
+    position: relative;
+}
+ul.members img {
+    border-radius: 16px;
+}
+ul.members md-icon {
+    font-size: 16px;
+    position: absolute;
+    right: -4px;
+    bottom: -6px;
+}

@@ -12,6 +12,14 @@ app.config(['$routeProvider',
 			otherwise({
 				redirectTo: '/flow'
 			});
+	}])
+	.config(['$mdThemingProvider',
+	function($mdThemingProvider) {
+		$mdThemingProvider.theme('default')
+			.primaryPalette('pink')
+			.accentPalette('indigo');
+		$mdThemingProvider.theme('input', 'default')
+			.primaryPalette('grey');
 	}]);
 	//.config(['$mdIconProvider',
 	//	function($mdIconProvider) {

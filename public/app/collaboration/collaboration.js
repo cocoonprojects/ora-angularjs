@@ -4,7 +4,8 @@ angular.module('oraApp.collaboration', ['ngRoute'])
 			$routeProvider.
 				when('/:orgId/tasks', {
 					templateUrl: 'app/collaboration/partials/task-list.html',
-					controller: 'TaskListController'
+					controller: 'TaskListController',
+					controllerAs: 'ctrl'
 				}).
 				when('/:orgId/tasks/:taskId', {
 					templateUrl: 'app/collaboration/partials/task-detail.html',
