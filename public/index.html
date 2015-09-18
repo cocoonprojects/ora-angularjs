@@ -15,6 +15,7 @@
 	<script src="components/angular-resource/angular-resource.js"></script>
 	<script src="components/angular-aria/angular-aria.min.js"></script>
 	<script src="components/angular-animate/angular-animate.min.js"></script>
+	<script src="components/angular-messages/angular-messages.min.js"></script>
 	<script src="components/angular-material/angular-material.min.js"></script>
 	<script src="app/app.js"></script>
 	<script src="app/AppController.js"></script>
@@ -30,6 +31,8 @@
 	<script src="app/collaboration/controllers/TaskDetailController.js"></script>
 	<script src="app/collaboration/controllers/NewTaskController.js"></script>
 	<script src="app/people/people.js"></script>
+	<script src="app/people/services/MemberService.js"></script>
+	<script src="app/people/controllers/MemberListController.js"></script>
 	<script src="app/flow/flow.js"></script>
 	<script src="app/flow/controllers/FlowController.js"></script>
 
@@ -78,7 +81,7 @@
 				</md-menu>
 				-->
 		</md-sidenav>
-		<div layout="column" flex ng-view></div>
+		<div layout="column" flex ng-view style="position: relative"></div>
 	</section>
 </body>
 </html>

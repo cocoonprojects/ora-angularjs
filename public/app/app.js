@@ -1,5 +1,6 @@
 var app = angular.module('oraApp', [
 	'ngRoute',
+	'ngMessages',
 	'ngMaterial',
 	'oraApp.identity',
 	'oraApp.collaboration',

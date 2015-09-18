@@ -1,45 +1,65 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskListController', ['$scope', '$log', '$mdDialog', 'identity', 'taskService', 'TASK_STATUS',
-		function ($scope, $log, $mdDialog, identity, taskService, TASK_STATUS) {
-			$scope.tasks = taskService.updateTasks($scope.currOrg);
-			$scope.$watch(taskService.getTasks(), function(newVal, oldVal) {
-				if(newVal) {
-					$scope.tasks = taskService.getTasks();
-				}
-			});
-			$scope.statusLabel = taskService.statusLabel;
-			$scope.isAllowed   = taskService.isAllowed;
-			$scope.isOwner     = taskService.isOwner;
+	.controller('TaskListController', ['$scope', '$log', '$mdDialog', 'streamService', 'taskService', 'TASK_STATUS', 'TASK_STATUS_LABEL', 'TASK_ROLES',
+		function ($scope, $log, $mdDialog, streamService, taskService, TASK_STATUS, TASK_STATUS_LABEL, TASK_ROLES) {
+			var that = this;
+			$scope.streams = streamService.query({ orgId: $scope.currOrg.id });
+			$scope.stream = function(task) {
+				return $scope.streams['_embedded']['ora:stream'][task.stream.id];
+			};
+			$scope.tasks = taskService.query({ orgId: $scope.currOrg.id });
+
+			$scope.statusLabel = function(status) {
+				return TASK_STATUS_LABEL.hasOwnProperty(status) ? TASK_STATUS_LABEL[status] : status;
+			};
+			$scope.isAllowed   = {
+				//	'createTask': function(stream) { return $scope.isAuthenticated() }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
+				'editTask': function(task) { return $scope.identity.isAuthenticated() && $scope.isOwner(task, $scope.identity.getId()) },
+				'deleteTask': function(task) { return $scope.identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && $scope.isOwner(task, $scope.identity.getId()) },
+				'joinTask': function(task) { return $scope.identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && task.members[$scope.identity.getId()] === undefined },
+				'unjoinTask': function(task) { return $scope.identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && task.members[$scope.identity.getId()] !== undefined },
+				'reExecuteTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && $scope.isOwner(task, $scope.identity.getId()) },
+				'completeTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && $scope.isOwner(task, $scope.identity.getId()) },
+				//	'acceptTask': function(task) { return $scope.isAuthenticated() && task.status < 40 && task.status > 20 && task.members[$scope.identity.id] !== undefined && task.members[$scope.identity.id].role == 'owner' },
+				'estimateTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, $scope.identity.getId()) },
+				'assignShares': function(task) { return $scope.identity.isAuthenticated() }
+			};
+			$scope.isOwner     = function(task, userId) {
+				return task.members[userId] && task.members[userId].role == TASK_ROLES.ROLE_OWNER;
+			};
+			this.isMember = function(task, userId) {
+				return task.members[userId] && task.members[userId].role == TASK_ROLES.ROLE_MEMBER;
+			};
+			this.hasJoined = function(task, userId) {
+				return task.members[userId];
+			};
+
+			$scope.alertMsg = null;
+			$scope.count = function($map) {
+				return Object.keys($map).length;
+			};
 			$scope.countEstimators = function(task) {
 				if(task.status != TASK_STATUS.ONGOING){
 					return '';
 				}
-				var n = taskService.countEstimators(task);
-				var tot = Object.keys(task.members).length;
+				var n = 0;
+				for(id in task.members) {
+					if(task.members[id].estimation != null) n++;
+				};
+				var tot = $scope.count(task.members);
 				switch (n) {
 					case tot:
-						return " (All members have estimated)"
+						return " (All members have estimated)";
 					case 0:
 						return " (None has estimated yet)";
 					default:
 						return " (" + n + " of " + tot + " members have estimated)";
 				}
-			}
-
-			$scope.alertMsg = null;
-			$scope.count = function($map) {
-				return Object.keys($map).length;
 			};
 
 			var originatorEv;
 			this.openMoreMenu = function($mdOpenMenu, ev) {
 				originatorEv = ev;
 				$mdOpenMenu(ev);
-			}
-			this.deleteTask = function(task) {
-				if(confirm("Deleting this item will remove all its informations. This operation cannot be undone. Do you want to proceed?")) {
-					taskService.deleteTask(task, $scope.identity);
-				}
 			};
 			this.openNewTask = function() {
 				$modal.open({
@@ -67,7 +87,165 @@ angular.module('oraApp.collaboration')
 					}
 				});
 			};
+			this.deleteTask = function(task) {
+				var confirm = $mdDialog.confirm()
+					.content("Deleting this item will remove all its informations\nand cannot be undone. Do you want to proceed?")
+					.ok("Yes")
+					.cancel("No");
+				$mdDialog.show(confirm).then(function() {
+					$scope.tasks.delete(
+						{ orgId: $scope.currOrg.id, taskId: task.id },
+						null,
+						function(value) {
+							for(var i = 0; i < $scope.tasks.length; i++) {
+								if($scope.tasks[i].id == task.id) {
+									$scope.tasks.splice(i, 1);
+									break;
+								}
+							}
+						},
+						function(httpResponse) {
+							$log.warn(httpResponse);
+						});
+				});
+			};
 			this.joinTask = function(task) {
-				taskService.joinTask($scope.currOrg, task, identity);
-			}
+				$scope.tasks.joinTask(
+					{ orgId: $scope.currOrg.id, taskId: task.id },
+					{ },
+					function(task) {
+						that.updateTasks(task);
+					},
+					function(httpResponse) {
+						$log.warn(httpResponse);
+					});
+			};
+			this.unjoinTask = function(task) {
+				$scope.tasks.unjoinTask(
+					{ orgId: $scope.currOrg.id, taskId: task.id },
+					{ },
+					function(task) {
+						that.updateTasks(task);
+					},
+					function(httpResponse) {
+						$log.warn(httpResponse);
+					});
+			};
+			this.openEstimateTask = function(ev, task) {
+				$mdDialog.show({
+					controller: EstimateTaskController,
+					templateUrl: 'app/collaboration/partials/estimate-task.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					locals: {
+						taskService: taskService,
+						identity: $scope.identity,
+						organization: $scope.currOrg,
+						task: task
+					}
+				}).then(function(task) {
+					that.updateTasks(task);
+				});
+			};
+			$scope.hasMore = function(task) {
+				return $scope.isAllowed.editTask(task)
+					|| $scope.isAllowed.deleteTask(task)
+					|| $scope.isAllowed.unjoinTask(task)
+					|| $scope.isAllowed.reExecuteTask(task)
+					;
+			};
+			this.updateTasks = function(task) {
+				var tasks = $scope.tasks._embedded['ora:task'];
+				for(var i = 0; i < tasks.length; i++) {
+					if(tasks[i].id == task.id) {
+						tasks[i] = task;
+						break;
+					}
+				}
+			};
 		}]);
+function EstimateTaskController($scope, $mdDialog, taskService, identity, organization, task) {
+	var that = this;
+	var e = task.members[identity.getId()].estimation.value;
+	$scope.value = e > 0 || e === 0 ? e : undefined;
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+	$scope.skip = function() {
+		taskService.estimateTask(
+			{ orgId: organization.id, taskId: task.id },
+			{ value: -1 },
+			function(value) {
+				$mdDialog.hide(value);
+			},
+			function(httpResponse) {
+				if(httpResponse.status == 400) {
+					that.showErrors(httpResponse.data.errors);
+				} else {
+					$log.warn(httpResponse);
+				}
+			});
+	};
+	$scope.submit = function() {
+		taskService.estimateTask(
+			{ orgId: organization.id, taskId: task.id },
+			{ value: $scope.value },
+			function(value) {
+				$mdDialog.hide(value);
+			},
+			function(httpResponse) {
+				if(httpResponse.status == 400) {
+					that.showErrors(httpResponse.data.errors);
+				} else {
+					$log.warn(httpResponse);
+				}
+			});
+	};
+	this.showErrors = function(errors) {
+		for(var i = 0; i < errors.length; i++) {
+			var error = errors[i];
+			$scope.form[error.field].$error.remote = error.message;
+		}
+	};
+}
+//this.createTask = function(organization, task) {
+//	backend.save({ orgId: organization.id }, { subject: task.subject, streamID: task['ora:stream'].id },
+//		function(value, responseHeaders) {
+//			$log.debug(value);
+//		},
+//		function(httpResponse) {
+//			$log.debug('error');
+//		});
+//};
+//
+//this.editTask = function(organization, task) {
+//	backend.edit({ orgId: organization.id, taskId: task.id }, { subject: task.subject },
+//		function(value, responseHeaders) {
+//			$log.debug(value);
+//		},
+//		function(httpResponse) {
+//			$log.debug('error');
+//		});
+//};
+//
+//this.completeTask = function(organization, task) {
+//	backend.completeTask({ orgId: organization.id, taskId: task.id }, null,
+//		function(value, responseHeaders) {
+//			$log.debug(value);
+//		},
+//		function(httpResponse) {
+//			$log.debug('error');
+//		});
+//};
+//
+//this.acceptTask = function(organization, task) {
+//	backend.acceptTask({ orgId: organization.id, taskId: task.id }, null,
+//		function(value, responseHeaders) {
+//			$log.debug(value);
+//		},
+//		function(httpResponse) {
+//			$log.debug('error');
+//		});
+//};
+//

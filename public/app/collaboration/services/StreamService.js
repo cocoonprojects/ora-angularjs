@@ -1,23 +1,9 @@
 angular.module('oraApp.collaboration')
-	.service('streamService', ['$resource', '$log',
-		function($resource, $log) {
-			var backend = $resource('data/task-management/streams/:streamId/:controller.json', { }, {
-				query:  { method: 'GET', isArray: false },
+	.factory('streamService', ['$resource', 'identity',
+		function($resource, identity) {
+			return $resource('api/:orgId/task-management/streams/:streamId/:controller', { orgId: '@orgId' }, {
+				query:  { method: 'GET', isArray: false, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				save:   { method: 'POST' },
 				delete: { method: 'DELETE' }
 			});
-			this.updateStreams = function() {
-				this.streams = backend.query({},
-					function() {
-						$log.debug('success');
-					},
-					function() {
-						$log.debug('error');
-					});
-				return this.streams;
-			};
-			this.getStreams = function() {
-				return this.streams;
-			}
-			this.streams = this.updateStreams();
 		}]);
