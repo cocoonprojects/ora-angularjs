@@ -87,6 +87,23 @@ angular.module('oraApp.collaboration')
 					}
 				});
 			};
+			this.openEditTask = function(ev, task) {
+				$mdDialog.show({
+					controller: EditTaskController,
+					templateUrl: 'app/collaboration/partials/edit-task.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					locals: {
+						taskService: taskService,
+						identity: $scope.identity,
+						organization: $scope.currOrg,
+						task: task
+					}
+				}).then(function(task) {
+					that.updateTasks(task);
+				});
+			};
 			this.deleteTask = function(task) {
 				var confirm = $mdDialog.confirm()
 					.content("Deleting this item will remove all its informations\nand cannot be undone. Do you want to proceed?")
@@ -165,62 +182,8 @@ angular.module('oraApp.collaboration')
 				}
 			};
 		}]);
-function EstimateTaskController($scope, $mdDialog, taskService, identity, organization, task) {
-	var that = this;
-	var e = task.members[identity.getId()].estimation.value;
-	$scope.value = e > 0 || e === 0 ? e : undefined;
-	$scope.cancel = function() {
-		$mdDialog.cancel();
-	};
-	$scope.skip = function() {
-		taskService.estimateTask(
-			{ orgId: organization.id, taskId: task.id },
-			{ value: -1 },
-			function(value) {
-				$mdDialog.hide(value);
-			},
-			function(httpResponse) {
-				if(httpResponse.status == 400) {
-					that.showErrors(httpResponse.data.errors);
-				} else {
-					$log.warn(httpResponse);
-				}
-			});
-	};
-	$scope.submit = function() {
-		taskService.estimateTask(
-			{ orgId: organization.id, taskId: task.id },
-			{ value: $scope.value },
-			function(value) {
-				$mdDialog.hide(value);
-			},
-			function(httpResponse) {
-				if(httpResponse.status == 400) {
-					that.showErrors(httpResponse.data.errors);
-				} else {
-					$log.warn(httpResponse);
-				}
-			});
-	};
-	this.showErrors = function(errors) {
-		for(var i = 0; i < errors.length; i++) {
-			var error = errors[i];
-			$scope.form[error.field].$error.remote = error.message;
-		}
-	};
-}
 //this.createTask = function(organization, task) {
 //	backend.save({ orgId: organization.id }, { subject: task.subject, streamID: task['ora:stream'].id },
-//		function(value, responseHeaders) {
-//			$log.debug(value);
-//		},
-//		function(httpResponse) {
-//			$log.debug('error');
-//		});
-//};
-//
-//this.editTask = function(organization, task) {
-//	backend.edit({ orgId: organization.id, taskId: task.id }, { subject: task.subject },
 //		function(value, responseHeaders) {
 //			$log.debug(value);
 //		},
