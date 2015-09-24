@@ -42,7 +42,7 @@ angular.module('oraApp.collaboration')
 					return '';
 				}
 				var n = 0;
-				for(id in task.members) {
+				for(var id in task.members) {
 					if(task.members[id].estimation != null) n++;
 				};
 				var tot = $scope.count(task.members);
@@ -110,13 +110,14 @@ angular.module('oraApp.collaboration')
 					.ok("Yes")
 					.cancel("No");
 				$mdDialog.show(confirm).then(function() {
-					$scope.tasks.delete(
+					taskService.delete(
 						{ orgId: $scope.currOrg.id, taskId: task.id },
-						null,
+						{ },
 						function(value) {
-							for(var i = 0; i < $scope.tasks.length; i++) {
-								if($scope.tasks[i].id == task.id) {
-									$scope.tasks.splice(i, 1);
+							var tasks = $scope.tasks._embedded['ora:task'];
+							for(var i = 0; i < tasks.length; i++) {
+								if(tasks[i].id == task.id) {
+									tasks.splice(i, 1);
 									break;
 								}
 							}

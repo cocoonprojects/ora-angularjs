@@ -1,5 +1,5 @@
 angular.module('oraApp.identity')
-	.controller('SignInController', ['$scope', '$log', '$location', 'identity',
+	.controller('SignInController', ['$scope', '$log', '$location',
 		function($scope, $log, $location) {
 
 			$scope.onSuccess = function(googleUser) {

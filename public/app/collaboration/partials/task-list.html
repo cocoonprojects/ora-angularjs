@@ -44,7 +44,7 @@
 					<div class="md-subheader" style="display: inline-block">- Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
 					<ul class="members">
 						<li data-ng-repeat="member in task.members" ng-init="m = user(member)">
-							<img ng-src="{{ m.picture }}" width="32" height="32" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+							<img ng-src="{{ m.picture }}" class="avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
 							<md-icon md-font-icon="star" class="md-accent material-icons" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
 						</li>
 					</ul>
@@ -103,9 +103,22 @@
 			</md-card>
 		</md-content>
 	</md-tab>
-	<md-tab label="Credits"></md-tab>
-	<md-tab label="Decisions"></md-tab>
-	<md-tab label="People"></md-tab>
+	<md-tab label="Credits">
+		<md-content class="md-padding">Crediti</md-content>
+	</md-tab>
+	<md-tab label="Decisions">
+		<md-content class="md-padding">Decisioni</md-content>
+	</md-tab>
+	<md-tab label="People">
+		<md-content class="md-padding">
+			<md-list ng-cloak>
+				<md-list-item ng-repeat="person in members['_embedded']['ora:organization-member']">
+					<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture }}" class="md-avatar" />
+					<p>{{ person.firstname }} {{ person.lastname }}</p>
+				</md-list-item>
+			</md-list>
+		</md-content>
+	</md-tab>
 </md-tabs>
 <!--
 	<div class="alert" role="alert" data-ng-show="alertMsg" data-ng-bind="alertMsg"></div> // Toast
