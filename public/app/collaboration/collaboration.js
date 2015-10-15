@@ -20,6 +20,7 @@ angular.module('oraApp.collaboration', [
 		}
 	])
 	.constant('TASK_STATUS', {
+		'IDEA'     : 0,
 		'OPEN'     : 10,
 		'ONGOING'  : 20,
 		'COMPLETED': 30,
@@ -31,6 +32,7 @@ angular.module('oraApp.collaboration', [
 		'ROLE_OWNER' : 'owner'
 	})
 	.constant('TASK_STATUS_LABEL', {
+		0:  'Work Item Idea',
 		10: 'Open Work Item',
 		20: 'Ongoing',
 		30: 'Completed',

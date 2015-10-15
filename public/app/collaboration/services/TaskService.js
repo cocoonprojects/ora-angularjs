@@ -8,7 +8,7 @@ angular.module('oraApp.collaboration')
 				joinTask: { method: 'POST', params: { controller: 'members' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				unjoinTask: { method: 'DELETE', params: { controller: 'members' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				estimateTask: { method: 'POST', params: { controller: 'estimations' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
-				completeTask: { method: 'POST', params: { controller: 'transitions', action: 'complete' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				completeTask: { method: 'POST', params: { controller: 'transitions' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				acceptTask: { method: 'POST', params: { controller: 'transitions', action: 'accept' }, headers: { 'GOOGLE-JWT': identity.getToken() } }
 			});
 		}]);
