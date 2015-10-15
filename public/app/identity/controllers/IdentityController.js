@@ -1,12 +1,12 @@
 angular.module('oraApp.identity')
-	.controller('IdentityController', ['$scope', '$log', '$location', '$routeParams', 'identity',
-		function($scope, $log, $location, $routeParams, identity) {
+	.controller('IdentityController', ['$scope', '$log', '$state', '$stateParams', 'identity',
+		function($scope, $log, $state, $stateParams, identity) {
 			$scope.identity = identity;
 			$scope.currOrg;
 
-			$scope.$on('$routeChangeSuccess', function(event, next, current) {
-				if($routeParams.orgId) {
-					$scope.currOrg = identity.getMembership($routeParams.orgId);
+			$scope.$on('$stateChangeSuccess', function(event, next, current) {
+				if($stateParams.orgId) {
+					$scope.currOrg = identity.getMembership($stateParams.orgId);
 					$log.debug('Organization changed: ' + $scope.currOrg.id);
 				} else {
 					$scope.currOrg = null;
@@ -19,7 +19,7 @@ angular.module('oraApp.identity')
 					$scope.$apply(function() {
 						identity.reset();
 						$log.info('User signed out.');
-						$location.path('/');
+						$state.go('sign-in');
 					});
 				});
 			}

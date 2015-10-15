@@ -1,25 +1,30 @@
-angular.module('oraApp.identity', ['ngRoute'])
-	.config(['$routeProvider',
-		function($routeProvider) {
-			$routeProvider.
-				when('/sign-in', {
+angular.module('oraApp.identity', [
+	'ui.router'
+	])
+	.config(['$stateProvider', '$urlRouterProvider',
+		function($stateProvider) {
+			$stateProvider.
+				state('sign-in', {
+					url: '/sign-in',
 					templateUrl: 'app/identity/partials/sign-in.html',
 					controller: 'SignInController'
 				});
 		}
 	])
-	.run(['$rootScope', '$location', '$log', 'identity',
-	function($rootScope, $location, $log, identity) {
-		$rootScope.$on("$routeChangeStart", function(event, next, current) {
-			if(identity.isAuthenticated()) {
-				$log.debug('Access to ' + next.templateUrl + ' granted: user authenticated');
-			} else {
-				// no logged user, we should be going to #sign-in
-				if(next.templateUrl != 'app/identity/partials/sign-in.html') {
-					$log.debug('Access to ' + next.templateUrl + ' denied: user not authenticated');
-					// redirect needed only if not already going to #sign-in
-					$location.path( "/sign-in" );
-				}
-			}
-		})
-	}]);
+	.run(['$rootScope', '$state', '$log', 'identity',
+		function($rootScope, $state, $log, identity) {
+			$rootScope.$on("$stateChangeStart",
+				function(event, toState) {
+					if(toState.name === "sign-in") {
+						return;
+					}
+					if(identity.isAuthenticated()) {
+						$log.debug('Access to ' + toState.name + ' state granted: user authenticated');
+						return;
+					}
+					event.preventDefault();
+					$log.debug("Access to '" + toState.name + "' state denied: user not authenticated");
+					$state.go("sign-in");
+				});
+		}
+	]);

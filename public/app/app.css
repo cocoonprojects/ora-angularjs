@@ -20,3 +20,6 @@ ul.members img.avatar {
     border-radius: 50%;
     box-sizing: content-box;
 }
+md-sidenav .md-button {
+    text-align: left;
+}

@@ -1,5 +1,5 @@
 var app = angular.module('oraApp', [
-	'ngRoute',
+	'ui.router',
 	'ngMessages',
 	'ngMaterial',
 	'oraApp.identity',
@@ -7,11 +7,24 @@ var app = angular.module('oraApp', [
 	'oraApp.people',
 	'oraApp.flow'
 ]);
-app.config(['$routeProvider',
-	function($routeProvider) {
-		$routeProvider.
-			otherwise({
-				redirectTo: '/flow'
+app.config(['$stateProvider', '$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider) {
+		$urlRouterProvider.otherwise(function($injector, $location) {
+			var $state = $injector.get("$state");
+			$state.go("flow");
+		});
+
+		$stateProvider
+			.state('org', {
+				abstract: true,
+				url: '/:orgId',
+				templateUrl: 'app/global/partials/pillars.html',
+				controller: function($scope) {
+					$scope.$on('$stateChangeSuccess',
+						function(event, toState, toParams, fromState, fromParams) {
+							$scope.currentTab = toState.data.selectedTab;
+						});
+				}
 			});
 	}])
 	.config(['$mdThemingProvider',

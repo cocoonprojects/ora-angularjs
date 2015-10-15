@@ -9,7 +9,8 @@
     "angular-route": null,
     "angular-resource": null,
     "angular-messages": null,
-    "angular-material": "0.*"
+    "angular-material": "0.*",
+    "angular-ui-router": null
   },
   "devDependencies": {
     "angular-mocks": null

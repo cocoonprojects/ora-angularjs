@@ -1,0 +1,8 @@
+<md-content class="md-padding">
+	<md-list ng-cloak>
+		<md-list-item ng-repeat="person in members['_embedded']['ora:organization-member']">
+			<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture }}" class="md-avatar" />
+			<p>{{ person.firstname }} {{ person.lastname }}</p>
+		</md-list-item>
+	</md-list>
+</md-content>

@@ -11,8 +11,8 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="app/app.css" type="text/css">
 	<script src="components/angular/angular.min.js"></script>
-	<script src="components/angular-route/angular-route.js"></script>
-	<script src="components/angular-resource/angular-resource.js"></script>
+	<script src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="components/angular-resource/angular-resource.min.js"></script>
 	<script src="components/angular-aria/angular-aria.min.js"></script>
 	<script src="components/angular-animate/angular-animate.min.js"></script>
 	<script src="components/angular-messages/angular-messages.min.js"></script>
@@ -38,7 +38,6 @@
 	<script src="app/flow/flow.js"></script>
 	<script src="app/flow/controllers/FlowController.js"></script>
 
-
 	<meta name="google-signin-client_id" content="539661597463-g8vv08j3f667ka6l8gpm0pn34kcmrvhk.apps.googleusercontent.com">
 	<script src="https://apis.google.com/js/client:plusone.js" async defer></script>
 </head>
@@ -51,13 +50,12 @@
 					<div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div>
 				</div>
 			</md-toolbar>
-			<md-list layout-padding layout="column" ng-model="currOrg" ng-controller="LeftController">
+			<md-list layout-padding layout="column" ng-controller="LeftController">
+				<md-item>
+					<md-button flex ui-sref="flow" ui-sref-active="md-primary">Flow</md-button>
+				</md-item>
 				<md-item ng-repeat="membership in identity.getMemberships()">
-					<a href="#/{{membership.organization.id}}/tasks">
-						<md-item-content md-ink-ripple layout="row" layout-align="start center">
-							<div class="inset">{{membership.organization.name}}</div>
-						</md-item-content>
-					</a>
+					<md-button ui-sref="org.tasks({ orgId: membership.organization.id })" ui-sref-active="md-primary">{{membership.organization.name}}</md-button>
 				</md-item>
 				<md-item ng-if="identity.isAuthenticated()">
 					<md-button ng-click="signOut()">Logout</md-button>
@@ -83,7 +81,7 @@
 				</md-menu>
 				-->
 		</md-sidenav>
-		<div layout="column" flex ng-view style="position: relative"></div>
+		<div layout="column" flex ui-view style="position: relative"></div>
 	</section>
 </body>
 </html>
