@@ -21,6 +21,7 @@
 		<div layout="row">
 			<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ statusLabel(task.status) }}</div>
 			<div class="md-actions" layout="row">
+				<md-button aria-label="Start task" ng-if="isAllowed.executeTask(task)" ng-click="ctrl.executeTask(task)">Start</md-button>
 				<md-button aria-label="Join the task" ng-if="isAllowed.joinTask(task)" ng-click="ctrl.joinTask(task)">Join</md-button>
 				<md-button aria-label="Estimate the task" ng-if="isAllowed.estimateTask(task)" ng-click="ctrl.openEstimateTask($event, task)">Estimate</md-button>
 				<md-button aria-label="Complete the task" ng-if="isAllowed.completeTask(task)" ng-click="ctrl.completeTask(task)">Mark as Completed</md-button>
