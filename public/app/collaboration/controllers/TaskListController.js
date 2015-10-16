@@ -16,11 +16,11 @@ angular.module('oraApp.collaboration')
 				'editTask': function(task) { return $scope.identity.isAuthenticated() && $scope.isOwner(task, $scope.identity.getId()) },
 				'deleteTask': function(task) { return $scope.identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && $scope.isOwner(task, $scope.identity.getId()) },
 				'joinTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && task.members[$scope.identity.getId()] === undefined },
-				'unjoinTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, $scope.identity.getId()) && !$scope.isOwner(task, $scope.identity.getId()) },
+				'unjoinTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isMember(task, $scope.identity.getId()) },
 				'executeTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.IDEA && $scope.isOwner(task, $scope.identity.getId()) },
 				'reExecuteTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && $scope.isOwner(task, $scope.identity.getId()) },
 				'completeTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && $scope.isOwner(task, $scope.identity.getId()) && task.estimation },
-				//	'acceptTask': function(task) { return $scope.isAuthenticated() && task.status < 40 && task.status > 20 && task.members[$scope.identity.id] !== undefined && task.members[$scope.identity.id].role == 'owner' },
+				'acceptTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && $scope.isOwner(task, $scope.identity.getId()) },
 				'estimateTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, $scope.identity.getId()) },
 				'assignShares': function(task) { return $scope.identity.isAuthenticated() }
 			};
@@ -218,6 +218,22 @@ angular.module('oraApp.collaboration')
 							$log.warn(httpResponse);
 						});
 				});
+			};
+			this.acceptTask = function(task) {
+				taskService.acceptTask(
+					{
+						orgId: $scope.currOrg.id,
+						taskId: task.id
+					},
+					{
+						action: 'accept'
+					},
+					function(task) {
+						that.updateTasks(task);
+					},
+					function(httpResponse) {
+						$log.warn(httpResponse);
+					});
 			};
 			$scope.hasMore = function(task) {
 				return $scope.isAllowed.editTask(task)
