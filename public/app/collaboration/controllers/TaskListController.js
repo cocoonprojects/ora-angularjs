@@ -171,6 +171,31 @@ angular.module('oraApp.collaboration')
 					that.updateTasks(task);
 				});
 			};
+			this.executeTask = function(task) {
+				taskService.executeTask(
+					{
+						orgId: $scope.currOrg.id,
+						taskId: task.id
+					},
+					{
+						action: 'execute'
+					},
+					function(task) {
+						that.updateTasks(task);
+					},
+					function(httpResponse) {
+						$log.warn(httpResponse);
+					});
+			};
+			this.reExecuteTask = function(task) {
+				var confirm = $mdDialog.confirm()
+					.content("Reverting this item to ongoing allows users to join, members to unjoin and change their estimation. Do you want to proceed?")
+					.ok("Yes")
+					.cancel("No");
+				$mdDialog.show(confirm).then(function() {
+					that.executeTask(task);
+				});
+			};
 			this.completeTask = function(task) {
 				var confirm = $mdDialog.confirm()
 					.content("Completing this item freezes task members and their estimation. Do you want to proceed?")
