@@ -18,24 +18,4 @@ angular.module('oraApp.collaboration', [
 					controller: 'TaskDetailController'
 				});
 		}
-	])
-	.constant('TASK_STATUS', {
-		'IDEA'     : 0,
-		'OPEN'     : 10,
-		'ONGOING'  : 20,
-		'COMPLETED': 30,
-		'ACCEPTED' : 40,
-		'CLOSED'   : 50
-	})
-	.constant('TASK_ROLES', {
-		'ROLE_MEMBER': 'member',
-		'ROLE_OWNER' : 'owner'
-	})
-	.constant('TASK_STATUS_LABEL', {
-		0:  'Work Item Idea',
-		10: 'Open Work Item',
-		20: 'Ongoing',
-		30: 'Completed',
-		40: 'Accepted',
-		50: 'Closed'
-	});
+	]);
