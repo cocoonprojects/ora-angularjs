@@ -22,7 +22,8 @@ angular.module('oraApp.collaboration')
 				'completeTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && $scope.isOwner(task, $scope.identity.getId()) && task.estimation },
 				'acceptTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && $scope.isOwner(task, $scope.identity.getId()) },
 				'estimateTask': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, $scope.identity.getId()) },
-				'assignShares': function(task) { return $scope.identity.isAuthenticated() }
+				'remindTaskEstimate': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && $scope.isOwner(task, $scope.identity.getId()) && !that.isEstimationCompleted(task)},
+				'assignShares': function(task) { return $scope.identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.hasJoined(task, $scope.identity.getId()) && task.members[$scope.identity.getId()].shares == undefined }
 			};
 			$scope.isOwner     = function(task, userId) {
 				return task.members[userId] && task.members[userId].role == TASK_ROLES.ROLE_OWNER;
@@ -33,6 +34,15 @@ angular.module('oraApp.collaboration')
 			this.hasJoined = function(task, userId) {
 				return task.members[userId];
 			};
+			this.isEstimationCompleted = function(task) {
+				var keys = Object.keys(task.members);
+				for(var i = 0; i < keys.length; i++) {
+					if(!task.members[keys[i]].estimation === undefined) {
+						return false;
+					}
+				}
+				return true;
+			}
 
 			$scope.alertMsg = null;
 			$scope.count = function($map) {
@@ -234,6 +244,25 @@ angular.module('oraApp.collaboration')
 					function(httpResponse) {
 						$log.warn(httpResponse);
 					});
+			};
+			this.openAssignShares = function(ev, task) {
+				$mdDialog.show({
+					controller: AssignSharesController,
+					templateUrl: 'app/collaboration/partials/assign-shares.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					scope: $scope.$new(),
+					locals: {
+						taskService: taskService,
+						task: task
+					}
+				}).then(function(task) {
+					that.updateTasks(task);
+				});
+			};
+			this.remindTaskEstimate = function(task) {
+
 			};
 			$scope.hasMore = function(task) {
 				return $scope.isAllowed.editTask(task)
