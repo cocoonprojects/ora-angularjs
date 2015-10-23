@@ -1,16 +1,16 @@
-<md-content class="md-padding" style="background-color: transparent !important; height: 600px" ng-controller="TaskListController as ctrl">
+<md-content class="md-padding" style="background-color: transparent !important; height: 600px">
 	<md-card ng-repeat="task in tasks._embedded['ora:task']">
 		<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
 		<md-card-content>
-			<div class="md-headline">{{ task.subject }}</div>
-			<div class="md-accent md-subheader" style="display: inline-block; margin-right: 0">{{ stream(task).subject }}</div>
-			<div class="md-subheader" style="display: inline-block">- Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
-			<ul class="members">
-				<li data-ng-repeat="member in task.members" ng-init="m = user(member)">
-					<img ng-src="{{ m.picture }}" class="avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
-					<md-icon md-font-icon="star" class="md-accent material-icons" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
-				</li>
-			</ul>
+			<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
+			<div class="md-headline"><a ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">{{ task.subject }}</a></div>
+			<div class="md-subheader" style="display: inline-block">Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
+			<md-list class="members">
+				<md-list-item data-ng-repeat="member in task.members" ng-init="m = user(member)" style="display: inline-block">
+					<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+					<md-icon md-font-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
+				</md-list-item>
+			</md-list>
 			<div ng-switch="task.estimation">
 				<span ng-switch-when="null">Estimation in progress{{ countEstimators(task) }}</span>
 				<span ng-switch-when="-1">Estimation skipped{{ countEstimators(task) }}</span>

@@ -1,17 +1,13 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskListController', ['$scope', '$log', '$mdDialog', 'streamService', 'taskService', 'TASK_STATUS',
-		function ($scope, $log, $mdDialog, streamService, taskService, TASK_STATUS) {
+	.controller('TaskListController', ['$scope', '$log', '$mdDialog', '$stateParams', 'streamService', 'taskService', 'TASK_STATUS',
+		function ($scope, $log, $mdDialog, $stateParams, streamService, taskService, TASK_STATUS) {
 			var that = this;
-			$scope.streams = streamService.query({ orgId: $scope.currOrg.id });
-			$scope.tasks = taskService.query({ orgId: $scope.currOrg.id });
+			$scope.tasks = taskService.query({ orgId: $stateParams.orgId });
 
 			$scope.statusLabel = taskService.statusLabel;
 			$scope.isAllowed = taskService.isAllowed;
 			$scope.isOwner   = taskService.isOwner;
 
-			$scope.stream = function(task) {
-				return $scope.streams['_embedded']['ora:stream'][task.stream.id];
-			};
 			$scope.count = function($map) {
 				return Object.keys($map).length;
 			};
@@ -71,8 +67,6 @@ angular.module('oraApp.collaboration')
 					clickOutsideToClose: true,
 					locals: {
 						taskService: taskService,
-						identity: $scope.identity,
-						organization: $scope.currOrg,
 						task: task
 					}
 				}).then(function(task) {
@@ -86,7 +80,9 @@ angular.module('oraApp.collaboration')
 					.cancel("No");
 				$mdDialog.show(confirm).then(function() {
 					taskService.delete(
-						{ orgId: $scope.currOrg.id, taskId: task.id },
+						{
+							orgId: task.organization.id,
+							taskId: task.id },
 						{ },
 						function(value) {
 							var tasks = $scope.tasks._embedded['ora:task'];
@@ -105,7 +101,7 @@ angular.module('oraApp.collaboration')
 			this.joinTask = function(task) {
 				taskService.joinTask(
 					{
-						orgId: $scope.currOrg.id,
+						orgId: task.organization.id,
 						taskId: task.id
 					},
 					{ },
@@ -119,7 +115,7 @@ angular.module('oraApp.collaboration')
 			this.unjoinTask = function(task) {
 				taskService.unjoinTask(
 					{
-						orgId: $scope.currOrg.id,
+						orgId: task.organization.id,
 						taskId: task.id },
 					{ },
 					function(task) {
@@ -136,10 +132,9 @@ angular.module('oraApp.collaboration')
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					scope: $scope.$new(),
 					locals: {
 						taskService: taskService,
-						identity: $scope.identity,
-						organization: $scope.currOrg,
 						task: task
 					}
 				}).then(function(task) {
@@ -149,7 +144,7 @@ angular.module('oraApp.collaboration')
 			this.executeTask = function(task) {
 				taskService.executeTask(
 					{
-						orgId: $scope.currOrg.id,
+						orgId: task.organization.id,
 						taskId: task.id
 					},
 					{
@@ -179,7 +174,7 @@ angular.module('oraApp.collaboration')
 				$mdDialog.show(confirm).then(function() {
 					taskService.completeTask(
 						{
-							orgId: $scope.currOrg.id,
+							orgId: task.organization.id,
 							taskId: task.id
 						},
 						{
@@ -196,7 +191,7 @@ angular.module('oraApp.collaboration')
 			this.acceptTask = function(task) {
 				taskService.acceptTask(
 					{
-						orgId: $scope.currOrg.id,
+						orgId: task.organization.id,
 						taskId: task.id
 					},
 					{
@@ -228,7 +223,7 @@ angular.module('oraApp.collaboration')
 			this.remindTaskEstimate = function(task) {
 				taskService.remindTaskEstimate(
 					{
-						orgId: $scope.currOrg.id,
+						orgId: task.organization.id,
 						taskId: task.id
 					},
 					{

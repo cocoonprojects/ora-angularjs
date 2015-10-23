@@ -1,25 +1,18 @@
-ul.members {
-    margin-left: 0;
-    padding-left: 0;
-    list-style: none;
+md-list.members md-list-item {
+    padding: 0;
 }
-ul.members li {
-    display: inline-block;
-    margin-right: 0.5em;
-    position: relative;
-}
-ul.members md-icon {
+md-icon.owner {
     font-size: 16px;
-    position: absolute;
-    right: -4px;
-    bottom: -6px;
-}
-ul.members img.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    box-sizing: content-box;
+    margin-left: -32px;
+    margin-bottom: 8px;
 }
 md-sidenav .md-button {
     text-align: left;
+}
+td img.md-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 8px 16px 8px 0;
+    box-sizing: content-box;
 }

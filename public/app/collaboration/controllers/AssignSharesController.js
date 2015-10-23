@@ -22,7 +22,7 @@ function AssignSharesController($scope, $mdDialog, $log, taskService, task) {
 	};
 	$scope.submit = function() {
 		taskService.assignShares(
-			{ orgId: $scope.currOrg.id, taskId: task.id },
+			{ orgId: task.organization.id, taskId: task.id },
 			$scope.shares,
 			function(value) {
 				$mdDialog.hide(value);

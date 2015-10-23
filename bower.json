@@ -6,11 +6,11 @@
   "private": true,
   "dependencies": {
     "angular": null,
-    "angular-route": null,
     "angular-resource": null,
     "angular-messages": null,
     "angular-material": "0.*",
-    "angular-ui-router": null
+    "angular-ui-router": null,
+    "angular-moment": "0.10.*"
   },
   "devDependencies": {
     "angular-mocks": null

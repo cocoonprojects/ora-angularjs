@@ -1,4 +1,4 @@
-function EditTaskController($scope, $mdDialog, taskService, organization, task) {
+function EditTaskController($scope, $mdDialog, taskService, task) {
 	var that = this;
 	$scope.subject = task.subject;
 	$scope.cancel = function() {
@@ -6,8 +6,12 @@ function EditTaskController($scope, $mdDialog, taskService, organization, task) 
 	};
 	$scope.submit = function() {
 		taskService.edit(
-			{ orgId: organization.id, taskId: task.id },
-			{ subject: $scope.subject },
+			{
+				orgId: task.organization.id,
+				taskId: task.id },
+			{
+				subject: $scope.subject
+			},
 			function(value) {
 				$mdDialog.hide(value);
 			},
