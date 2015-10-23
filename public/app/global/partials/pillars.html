@@ -1,0 +1,42 @@
+<!--<md-fab-speed-dial md-direction="up">-->
+<!--<md-fab-trigger>-->
+<!--<md-button aria-label="taskMenu" class="md-fab md-fab-bottom-right md-warn">-->
+<!--<md-icon md-font-icon="menu" class="material-icons">&#xE145;</md-icon>-->
+<!--</md-button>-->
+<!--</md-fab-trigger>-->
+<!--<md-fab-actions>-->
+<!--<md-button aria-label="twitter" class="md-fab md-raised md-mini">-->
+<!--<md-icon md-svg-src="img/icons/twitter.svg"></md-icon>-->
+<!--</md-button>-->
+<!--<md-button aria-label="facebook" class="md-fab md-raised md-mini">-->
+<!--<md-icon md-svg-src="img/icons/facebook.svg"></md-icon>-->
+<!--</md-button>-->
+<!--<md-button aria-label="Google Hangout" class="md-fab md-raised md-mini">-->
+<!--<md-icon md-svg-src="img/icons/hangout.svg"></md-icon>-->
+<!--</md-button>-->
+<!--</md-fab-actions>-->
+<!--</md-fab-speed-dial>-->
+<md-toolbar>
+	<div class="md-toolbar-tools">
+		<md-button class="md-icon-button" aria-label="Side Nav" ng-click="toggleLeft()" hide-gt-md>
+			<md-icon md-font-icon="menu" alt="menu" class="material-icons">&#xE5D2;</md-icon>
+		</md-button>
+		<h2>
+			<span>{{ currOrg.name }}</span>
+		</h2>
+		<span flex></span>
+		<md-button class="md-icon-button" aria-label="Search">
+			<md-icon md-font-icon="search" class="material-icons">&#xE8B6;</md-icon>
+		</md-button>
+		<md-button class="md-icon-button" aria-label="More">
+			<md-icon md-font-icon="more_vert" class="material-icons">&#xE5D4;</md-icon>
+		</md-button>
+	</div>
+</md-toolbar>
+<md-tabs class="md-primary" md-selected="currentTab" md-stretch-tabs="always">
+	<md-tab label="Tasks" ui-sref="org.pillars.collaboration.tasks"></md-tab>
+	<md-tab label="Credits" ui-sref="org.credits"></md-tab>
+	<md-tab label="Decisions" ui-sref="org.decisions"></md-tab>
+	<md-tab label="People" ui-sref="org.pillars.people"></md-tab>
+</md-tabs>
+<div id="tab-content" ui-view flex></div>

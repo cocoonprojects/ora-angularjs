@@ -1,88 +1,48 @@
-<div class="modal-header">
-	<button type="button" class="close" aria-label="Close"><span aria-hidden="true" ng-click="$dismiss()">&times;</span></button>
-	<h4 class="modal-title" ng-hide="subjectEditing" ng-click="enableSubjectEditing(task)">{{task.subject}} <span class="stream">in stream <strong>{{ task.stream.subject }}</strong></span></h4>
-	<form class="form-inline" ng-show="subjectEditing" ng-submit="editSubject(mySubject)" ng-if="isAllowed.editTask(task)">
-		<div class="form-group">
-			<input type="text" ng-model="mySubject">
-		</div>
-		<button type="submit">Save</button>
-	</form>
-</div>
-<div class="modal-body">
-	<div class="row">
-		<div class="col-md-9">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th style="text-align: left">Members</th>
-						<th style="text-align: right">Estimate</th>
-						<th style="text-align: center" ng-if="task.status == 50">Avg</th>
-						<th style="text-align: center" ng-if="task.status == 50">&Delta;</th>
-						<th style="width: 1px"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="member in task.members">
-						<th>
-							<img ng-src="{{ member.picture }}" style="max-width: 30px; max-height: 30px;" class="img-circle">
-							<span class="firstname">{{ member.firstname }}</span>
-							<span class="lastname">{{ member.lastname }}</span>
-							<span ng-if="member.role == 'owner'">(o)</span>
-						</th>
-						<td style="text-align: right; vertical-align: middle" ng-switch="member.estimation.value">
-							<span ng-switch-when="-2" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-							<span ng-switch-when="-1" ng-hide="estimationEditing" ng-click="enableEstimationEditing(task, member)">Skipped</span>
-							<span ng-switch-default ng-hide="estimationEditing" ng-click="enableEstimationEditing(task, member)">
-								{{ member.estimation.value | number : 0 }}
-							</span>
-							<form class="form-inline" ng-show="estimationEditing" ng-submit="editEstimation(myEstimation)" ng-if="isAllowed.estimateTask(task, member)">
-								<div class="form-group">
-									<input type="number" ng-model="myEstimation" step="0.01">
-								</div>
-								<button type="submit">Save</button>
-								<button type="button" ng-click="skipEstimation()">Skip</button>
-							</form>
-						</td>
-						<td style="text-align: center; vertical-align: middle" ng-if="member.share">{{ member.share * 100 | number : 2 }}</td>
-						<td style="text-align: center; vertical-align: middle" ng-if="member.delta">{{ member.delta * 100 | number : 2 }}</td>
-						<td style="vertical-align: middle">
-							<button title="Unjoin Item" class="btn btn-default" ng-if="member.id == currUser.id && isAllowed.unjoinTask(task)" ng-click="unjoinTask(task)" style="padding: 0; background: transparent; border: 0 none">
-								<span class="glyphicon glyphicon-minus-sign" style="color: red"></span>
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<ul class="activity-list">
-				<li><strong>{{ task.createdBy }}</strong> created this item {{ daysAgo(task.createdAt) }} days ago. <span class="timestamp">{{ task.createdAt | date : 'short' }}</span></li>
-			</ul>
-		</div>
-		<div class="col-md-3">
-			<div class="status">
-				<span ng-class="statusClass()">{{ statusLabel[task.status] }}</span>
-			</div>
-			<div class="estimation">
-				<span class="estimation-header">Estimation</span>
-				<span class="estimation-value" ng-switch="task.estimation">
-					<span ng-switch-when="null">In progress</span>
-					<span ng-switch-when="-1">Skipped</span>
-					<span ng-switch-default>{{ task.estimation | number : 0 }} Credits</span>
-				</span>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal-footer">
-	<div class="btn-group" dropdown is-open="status.isopen">
-		<button class="btn btn-default dropdown-toggle" dropdown-toggle ng-disabled="disabled" aria-expanded="false">
-			Others
-			<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu dropdown-menu-right" role="menu">
-			<li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="deleteTask(task.id)">Delete</a></li>
-		</ul>
-	</div>
-	<button class="btn btn-default" ng-if="isAllowed.acceptTask(task)" ng-click="acceptTask(task)">Accept</button>
-	<button class="btn btn-default" ng-if="isAllowed.completeTask(task)" ng-click="completeTask(task)">Complete</button>
-	<button class="btn btn-primary" ng-if="isAllowed.joinTask(task)" ng-click="joinTask(task)">Join</button>
-</div>
+<md-card>
+	<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">
+	<md-card-content>
+		<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
+		<h2 class="md-title">{{ task.subject }}</h2>
+		<div class="md-subheader">{{ statusLabel(task.status) }}</div>
+		<table style="width: 100%">
+			<thead>
+				<tr>
+					<th colspan="2" style="text-align: left">Members</th>
+					<th style="width: 5em; text-align: right">Estimate</th>
+					<th style="width: 5em; text-align: right" ng-if="isAllowed.showShares(task)">Avg</th>
+					<th style="width: 5em; text-align: right" ng-if="isAllowed.showShares(task)">Dev</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="member in task.members" ng-init="m = user(member)">
+					<td style="width: 65px">
+						<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+						<md-icon md-font-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
+					</td>
+					<td>{{ member.firstname }} {{ member.lastname }}</td>
+					<td ng-switch="member.estimation" style="text-align: right">
+						<md-icon ng-switch-when="-2" md-font-icon="check" class="material-icons" style="color: Green">&#xE5CA;</md-icon>
+						<span ng-switch-when="-1">Skipped</span>
+						<span ng-switch-default>{{ member.estimation | number : 0 }}</span>
+					</td>
+					<td style="text-align: right" ng-if="isAllowed.showShares(task)">{{ member.share * 100 | number : 2 }}</td>
+					<td style="text-align: right" ng-if="isAllowed.showShares(task)">{{ member.delta * 100 | number : 2 }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-card-content>
+	<md-list>
+		<md-list-item>
+			<p class="md-list-item-text">
+				<span class="timestamp">{{ task.createdAt | date : 'short' }}</span>
+				<strong>{{ task.createdBy }}</strong> created this item <span am-time-ago="parseDate(task.createdAt)"></span>
+			</p>
+		</md-list-item>
+		<md-list-item ng-if="task.acceptedAt">
+			<p class="md-list-item-text">
+				<span class="timestamp">{{ task.acceptedAt | date : 'short' }}</span>
+				<strong>{{}}</strong> accepted this item <span am-time-ago="parseDate(task.acceptedAt)"></span>
+			</p>
+		</md-list-item>
+	</md-list>
+</md-card>

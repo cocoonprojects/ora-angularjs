@@ -1,122 +1,98 @@
 angular.module('oraApp.collaboration')
 	.constant('TASK_STATUS', {
-		'ONGOING': 10,
-		'COMPLETED': 20
+		'IDEA'     : 0,
+		'OPEN'     : 10,
+		'ONGOING'  : 20,
+		'COMPLETED': 30,
+		'ACCEPTED' : 40,
+		'CLOSED'   : 50
 	})
-	.service('taskService', ['$resource', '$log', 'TASK_STATUS',
-		function($resource, $log, TASK_STATUS) {
-			var ROLE_MEMBER = 'member';
-			var ROLE_OWNER  = 'owner';
-
-			var backend = $resource('data/task-management/tasks/:taskId/:controller.json', { }, {
-				query:  { method: 'GET', isArray: false },
-				edit: { method: 'UPDATE' },
-				joinTask: { method: 'POST', params: { controller: 'members' } },
-				unjoinTask: { method: 'DELETE', params: { controller: 'members' } },
-				completeTask: { method: 'POST', params: { controller: 'transitions', action: 'complete' } },
-				acceptTask: { method: 'POST', params: { controller: 'transitions', action: 'accept' } }
+	.constant('TASK_ROLES', {
+		'ROLE_MEMBER': 'member',
+		'ROLE_OWNER' : 'owner'
+	})
+	.constant('TASK_STATUS_LABEL', {
+		0:  'Work Item Idea',
+		10: 'Open Work Item',
+		20: 'Ongoing',
+		30: 'Completed',
+		40: 'Accepted',
+		50: 'Closed'
+	})
+	.service('taskService', ['$resource', 'identity', 'TASK_STATUS', 'TASK_STATUS_LABEL', 'TASK_ROLES',
+		function($resource, identity, TASK_STATUS, TASK_STATUS_LABEL, TASK_ROLES) {
+			var that = this;
+			var resource = $resource('api/:orgId/task-management/tasks/:taskId/:controller/:type', { orgId: '@orgId' }, {
+				get: { method: 'GET', headers: { 'GOOGLE-JWT': identity.getToken() } },
+				query:  { method: 'GET', isArray: false, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				delete:  { method: 'DELETE', headers: { 'GOOGLE-JWT': identity.getToken() } },
+				edit: { method: 'PUT', headers: { 'GOOGLE-JWT': identity.getToken() } },
+				joinTask: { method: 'POST', params: { controller: 'members' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				unjoinTask: { method: 'DELETE', params: { controller: 'members' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				estimateTask: { method: 'POST', params: { controller: 'estimations' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				remindTaskEstimate: { method: 'POST', params: { controller: 'reminders', type: 'add-estimation' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				executeTask: { method: 'POST', params: { controller: 'transitions' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				completeTask: { method: 'POST', params: { controller: 'transitions' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				acceptTask: { method: 'POST', params: { controller: 'transitions' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				assignShares: { method: 'POST', params: { controller: 'shares' }, headers: { 'GOOGLE-JWT': identity.getToken() } }
 			});
 
-			this.getTasks = function() {
-				return this.tasks;
+			this.isOwner = function(task, userId) {
+				return task.members[userId] && task.members[userId].role == TASK_ROLES.ROLE_OWNER;
 			};
-
-			this.updateTasks = function() {
-				this.tasks = backend.query({},
-					function(value, responseHeaders) {
-						$log.debug('success');
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
-				return this.tasks;
+			this.isMember = function(task, userId) {
+				return task.members[userId] && task.members[userId].role == TASK_ROLES.ROLE_MEMBER;
 			};
-
-			this.joinTask = function(task, user) {
-				if(task.members === undefined) {
-					task.members = {};
+			this.hasJoined = function(task, userId) {
+				return task.members[userId];
+			};
+			this.isEstimationCompleted = function(task) {
+				var keys = Object.keys(task.members);
+				for(var i = 0; i < keys.length; i++) {
+					if(task.members[keys[i]].estimation !== undefined) {
+						return false;
+					}
 				}
-				task.members[user.id] = {
-					id: user.id,
-					firstname: user.firstname,
-					lastname: user.lastname,
-					role: ROLE_MEMBER,
-					picture: user.picture
-				}
-				backend.joinTask({ taskId: task.id }, { },
-					function(value, responseHeaders) {
-						$log.debug('success');
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
+				return true;
+			};
+			this.countEstimators = function(task) {
+				var n = 0;
+				for(var id in task.members) {
+					if(task.members[id].estimation !== undefined) n++;
+				};
+				return n;
 			};
 
-			this.unjoinTask = function(task, user) {
-				delete task.members[user.id];
-				backend.unjoinTask({ taskId: task.id }, { },
-					function(value, responseHeaders) {
-						$log.debug('success');
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
+			this.isAllowed   = {
+				//	'createTask': function(stream) { return .isAuthenticated() }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
+				editTask: function(task) { return identity.isAuthenticated() && that.isOwner(task, identity.getId()) },
+				deleteTask: function(task) { return identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
+				joinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && task.members[identity.getId()] === undefined },
+				unjoinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isMember(task, identity.getId()) },
+				executeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.IDEA && that.isOwner(task, identity.getId()) },
+				reExecuteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
+				completeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && task.estimation },
+				acceptTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
+				estimateTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, identity.getId()) },
+				remindTaskEstimate: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && !that.isEstimationCompleted(task)},
+				assignShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.hasJoined(task, identity.getId()) && task.members[identity.getId()].shares == undefined },
+				showShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.CLOSED }
 			};
 
-			this.createTask = function(task, user) {
-				backend.save({ }, { subject: task.subject, streamID: task['ora:stream'].id },
-					function(value, responseHeaders) {
-						$log.debug(value);
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
+			this.get = resource.get;
+			this.query = resource.query;
+			this.delete = resource.delete;
+			this.edit = resource.edit;
+			this.joinTask = resource.joinTask;
+			this.unjoinTask = resource.unjoinTask;
+			this.estimateTask = resource.estimateTask;
+			this.remindTaskEstimate = resource.remindTaskEstimate;
+			this.executeTask = resource.executeTask;
+			this.completeTask = resource.completeTask;
+			this.acceptTask = resource.acceptTask;
+			this.assignShares = resource.assignShares;
+
+			this.statusLabel = function(status) {
+				return TASK_STATUS_LABEL.hasOwnProperty(status) ? TASK_STATUS_LABEL[status] : status;
 			};
-
-			this.editTask = function(task, user) {
-				backend.edit({ taskId: task.id }, { subject: task.subject },
-					function(value, responseHeaders) {
-						$log.debug(value);
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
-			};
-
-			this.deleteTask = function(task, user) {
-				backend.delete({ taskId: task.id }, null,
-					function(value, responseHeaders) {
-						$log.debug(value);
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
-			};
-
-			this.completeTask = function(task, user) {
-				backend.completeTask({ taskId: task.id }, null,
-					function(value, responseHeaders) {
-						$log.debug(value);
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
-			};
-
-			this.acceptTask = function(task, user) {
-				backend.completeTask({ taskId: task.id }, null,
-					function(value, responseHeaders) {
-						$log.debug(value);
-					},
-					function(httpResponse) {
-						$log.debug('error');
-					});
-			};
-
-			this.statusLabel = {
-				10: 'Ongoing',
-				20: 'Completed'
-			}
-
-			this.tasks = this.updateTasks();
 		}]);

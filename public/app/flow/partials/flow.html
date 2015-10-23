@@ -1,0 +1,29 @@
+<md-toolbar>
+	<div class="md-toolbar-tools">
+		<md-button class="md-icon-button" aria-label="Side Nav" ng-click="toggleLeft()" hide-gt-md>
+			<md-icon md-font-icon="menu" alt="menu" class="material-icons">&#xE5D2;</md-icon>
+		</md-button>
+		<h2>
+			<span>Flow</span>
+		</h2>
+		<span flex></span>
+		<md-button class="md-icon-button" aria-label="Search">
+			<md-icon md-font-icon="search" class="material-icons">&#xE8B6;</md-icon>
+		</md-button>
+		<md-button class="md-icon-button" aria-label="More">
+			<md-icon md-font-icon="more_vert" class="material-icons">&#xE5D4;</md-icon>
+		</md-button>
+	</div>
+</md-toolbar>
+<div layout="column" layout-padding layout-fill layout-align="top center" ng-controller="FlowController">
+	<md-card data-ng-repeat="item in items">
+		<md-card-content>
+			<h2 class="md-title">Titolo</h2>
+			<p>{{ item }}</p>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="end center">
+			<md-button>Action 1</md-button>
+			<md-button>Action 2</md-button>
+		</div>
+	</md-card>
+</div>
