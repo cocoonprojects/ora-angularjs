@@ -39,7 +39,10 @@ angular.module('oraApp.collaboration')
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					scope: $scope.$new()
+					scope: $scope.$new(),
+					locals: {
+						taskService: taskService
+					}
 				}).then(function(task) {
 					that.addTask(task);
 				});
@@ -173,6 +176,22 @@ angular.module('oraApp.collaboration')
 							$log.warn(httpResponse);
 						});
 				});
+			};
+			this.reCompleteTask = function(task) {
+				taskService.completeTask(
+					{
+						orgId: task.organization.id,
+						taskId: task.id
+					},
+					{
+						action: 'complete'
+					},
+					function(task) {
+						that.updateTasks(task);
+					},
+					function(httpResponse) {
+						$log.warn(httpResponse);
+					});
 			};
 			this.acceptTask = function(task) {
 				taskService.acceptTask(

@@ -73,6 +73,7 @@ angular.module('oraApp.collaboration')
 				executeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.IDEA && that.isOwner(task, identity.getId()) },
 				reExecuteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
 				completeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && task.estimation },
+				reCompleteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.isOwner(task, identity.getId()) },
 				acceptTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
 				estimateTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, identity.getId()) },
 				remindTaskEstimate: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && !that.isEstimationCompleted(task)},

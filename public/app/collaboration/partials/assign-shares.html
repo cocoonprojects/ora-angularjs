@@ -1,4 +1,4 @@
-<md-dialog aria-label="Assign Shares">
+<md-dialog aria-label="Assign Shares" class="dialog">
 	<form name="form" ng-submit="submit()" novalidate>
 		<md-toolbar>
 			<div class="md-toolbar-tools">
@@ -9,7 +9,7 @@
 				</md-button>
 			</div>
 		</md-toolbar>
-		<md-dialog-content class="dialog">
+		<md-dialog-content>
 			<div class="md-dialog-content">
 				<p>Assign a contribution percentage to each member. You have to distribute {{ available }} remaining points</p>
 				<div ng-messages="form.$error" role="alert" style="font-size: 12px; color: Red">
