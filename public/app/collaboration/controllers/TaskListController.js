@@ -1,8 +1,11 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskListController', ['$scope', '$log', '$mdDialog', '$stateParams', 'streamService', 'taskService', 'TASK_STATUS',
-		function ($scope, $log, $mdDialog, $stateParams, streamService, taskService, TASK_STATUS) {
+	.controller('TaskListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'taskService', 'TASK_STATUS',
+		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, taskService, TASK_STATUS) {
 			var that = this;
 			$scope.tasks = taskService.query({ orgId: $stateParams.orgId });
+			$interval(function() {
+				taskService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value});
+				}, 10000);
 
 			$scope.statusLabel = taskService.statusLabel;
 			$scope.isAllowed = taskService.isAllowed;
