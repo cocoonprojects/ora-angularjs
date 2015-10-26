@@ -60,25 +60,25 @@ angular.module('oraApp.collaboration')
 				var n = 0;
 				for(var id in task.members) {
 					if(task.members[id].estimation !== undefined) n++;
-				};
+				}
 				return n;
 			};
 
 			this.isAllowed   = {
-				createTask: function(organization) { return identity.isAuthenticated() }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
-				editTask: function(task) { return identity.isAuthenticated() && that.isOwner(task, identity.getId()) },
-				deleteTask: function(task) { return identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
-				joinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && task.members[identity.getId()] === undefined },
-				unjoinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isMember(task, identity.getId()) },
-				executeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.IDEA && that.isOwner(task, identity.getId()) },
-				reExecuteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
-				completeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && task.estimation },
-				reCompleteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.isOwner(task, identity.getId()) },
-				acceptTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
-				estimateTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, identity.getId()) },
-				remindTaskEstimate: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && !that.isEstimationCompleted(task)},
-				assignShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.hasJoined(task, identity.getId()) && task.members[identity.getId()].shares == undefined },
-				showShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.CLOSED }
+				createTask: function(organization) { return identity.isAuthenticated(); }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
+				editTask: function(task) { return identity.isAuthenticated() && that.isOwner(task, identity.getId()); },
+				deleteTask: function(task) { return identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()); },
+				joinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && task.members[identity.getId()] === undefined; },
+				unjoinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isMember(task, identity.getId()); },
+				executeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.IDEA && that.isOwner(task, identity.getId()); },
+				reExecuteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()); },
+				completeTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && task.estimation; },
+				reCompleteTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.isOwner(task, identity.getId()); },
+				acceptTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()); },
+				estimateTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.hasJoined(task, identity.getId()); },
+				remindTaskEstimate: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && that.isOwner(task, identity.getId()) && !that.isEstimationCompleted(task); },
+				assignShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ACCEPTED && that.hasJoined(task, identity.getId()) && task.members[identity.getId()].shares === undefined; },
+				showShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.CLOSED; }
 			};
 
 			this.save = resource.save;

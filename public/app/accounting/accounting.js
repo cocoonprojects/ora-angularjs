@@ -9,5 +9,5 @@ angular.module('oraApp.accounting', ['ui.router', 'ngResource'])
 						selectedTab: 1
 					},
 					controller: 'MemberListController'
-				})
+				});
 		}]);

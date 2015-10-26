@@ -30,4 +30,4 @@ function NewTaskController($scope, $log, $stateParams, $mdDialog, taskService) {
 			$scope.form[error.field].$error.remote = error.message;
 		}
 	};
-};
+}

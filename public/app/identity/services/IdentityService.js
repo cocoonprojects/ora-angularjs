@@ -3,14 +3,14 @@ angular.module('oraApp.identity')
 		function($http, $log) {
 			var token, id, firstname, lastname, email, avatar, memberships;
 
-			this.getToken        = function() { return token };
-			this.getId           = function() { return id };
-			this.getFirstname    = function() { return firstname };
-			this.getLastname     = function() { return lastname };
-			this.getEmail        = function() { return email };
-			this.getAvatar       = function() { return avatar };
-			this.isAuthenticated = function() { return token ? true : false };
-			this.getMemberships  = function() { return memberships };
+			this.getToken        = function() { return token; };
+			this.getId           = function() { return id; };
+			this.getFirstname    = function() { return firstname; };
+			this.getLastname     = function() { return lastname; };
+			this.getEmail        = function() { return email; };
+			this.getAvatar       = function() { return avatar; };
+			this.isAuthenticated = function() { return token ? true : false; };
+			this.getMemberships  = function() { return memberships; };
 
 			this.getMembership = function(orgId) {
 				var org = null;
@@ -20,7 +20,7 @@ angular.module('oraApp.identity')
 					}
 				});
 				return org;
-			}
+			};
 
 			this.reset = function() {
 				token = firstname = lastname = email = avatar = '';
@@ -37,7 +37,7 @@ angular.module('oraApp.identity')
 				avatar = profile.getImageUrl();
 				email = profile.getEmail();
 
-				this.updateMemberships(token)
+				this.updateMemberships(token);
 			};
 
 			this.updateMemberships = function(id_token) {
@@ -50,5 +50,5 @@ angular.module('oraApp.identity')
 					memberships = data._embedded['ora:organization-membership'];
 					$log.info('User ' + firstname + ' is member of ' + memberships.length + " organizations");
 				});
-			}
+			};
 		}]);

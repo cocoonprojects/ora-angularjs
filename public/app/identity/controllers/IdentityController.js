@@ -2,7 +2,7 @@ angular.module('oraApp.identity')
 	.controller('IdentityController', ['$scope', '$log', '$state', '$stateParams', 'identity',
 		function($scope, $log, $state, $stateParams, identity) {
 			$scope.identity = identity;
-			$scope.currOrg;
+			$scope.currOrg = null;
 
 			$scope.$on('$stateChangeSuccess', function(event, next, current) {
 				if($stateParams.orgId) {
@@ -22,5 +22,5 @@ angular.module('oraApp.identity')
 						$state.go('sign-in');
 					});
 				});
-			}
+			};
 		}]);

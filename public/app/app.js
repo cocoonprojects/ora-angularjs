@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
 				controller: function($scope, members) {
 					$scope.members = members;
 					$scope.user = function(member) {
-						return $scope.members['_embedded']['ora:organization-member'][member.id];
+						return $scope.members._embedded['ora:organization-member'][member.id];
 					};
 				}
 			})
@@ -52,7 +52,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
 	}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');
-	});;
+	});
 	//.config(['$mdIconProvider',
 	//	function($mdIconProvider) {
 	//		$mdIconProvider

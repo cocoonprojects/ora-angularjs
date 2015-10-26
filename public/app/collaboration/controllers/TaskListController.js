@@ -4,7 +4,7 @@ angular.module('oraApp.collaboration')
 			var that = this;
 			$scope.tasks = taskService.query({ orgId: $stateParams.orgId });
 			$interval(function() {
-				taskService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value});
+				taskService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value; });
 				}, 10000);
 
 			$scope.statusLabel = taskService.statusLabel;
@@ -245,11 +245,10 @@ angular.module('oraApp.collaboration')
 					});
 			};
 			$scope.hasMore = function(task) {
-				return $scope.isAllowed.editTask(task)
-					|| $scope.isAllowed.deleteTask(task)
-					|| $scope.isAllowed.unjoinTask(task)
-					|| $scope.isAllowed.reExecuteTask(task)
-					;
+				return $scope.isAllowed.editTask(task) ||
+					$scope.isAllowed.deleteTask(task) ||
+					$scope.isAllowed.unjoinTask(task) ||
+					$scope.isAllowed.reExecuteTask(task);
 			};
 			this.addTask = function(task) {
 				$scope.tasks._embedded['ora:task'].unshift(task);

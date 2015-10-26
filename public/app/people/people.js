@@ -9,5 +9,5 @@ angular.module('oraApp.people', ['ui.router', 'ngResource'])
 						selectedTab: 3
 					},
 					controller: 'MemberListController'
-				})
+				});
 		}]);

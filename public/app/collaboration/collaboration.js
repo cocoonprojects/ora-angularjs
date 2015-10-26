@@ -15,7 +15,7 @@ angular.module('oraApp.collaboration', [
 					controller: function($scope, streams) {
 						$scope.streams = streams;
 						$scope.stream = function(task) {
-							return $scope.streams['_embedded']['ora:stream'][task.stream.id];
+							return $scope.streams._embedded['ora:stream'][task.stream.id];
 						};
 					}
 				})

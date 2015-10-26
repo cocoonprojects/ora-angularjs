@@ -15,7 +15,7 @@ function AssignSharesController($scope, $mdDialog, $log, taskService, task) {
 		//if($scope.available !== 0) {
 		//	$scope.form.
 		//}
-	}
+	};
 	$scope.shares = {};
 	$scope.cancel = function() {
 		$mdDialog.cancel();

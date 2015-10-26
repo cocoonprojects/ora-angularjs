@@ -4,13 +4,13 @@ angular.module('oraApp.identity')
 
 			$scope.onSuccess = function(googleUser) {
 				$scope.$apply(function() {
-					$scope.identity.signInFromGoogle(googleUser)
+					$scope.identity.signInFromGoogle(googleUser);
 					$log.info('User signed in');
 					var s = 'flow'; // TODO: bring back to requested route
 					$state.go(s);
 					$log.debug("Redirecting to '" + s + "' state");
 				});
-			}
+			};
 
 			$scope.renderSignInButton = function() {
 				gapi.signin2.render('googleSignIn', {

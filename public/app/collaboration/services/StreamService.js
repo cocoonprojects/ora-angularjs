@@ -11,6 +11,6 @@ angular.module('oraApp.collaboration')
 			this.save  = resource.save;
 			this.delete = resource.delete;
 			this.stream = function(task) {
-				return $scope.streams['_embedded']['ora:stream'][task.stream.id];
+				return $scope.streams._embedded['ora:stream'][task.stream.id];
 			};
 		}]);
