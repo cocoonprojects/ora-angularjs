@@ -1,25 +1,38 @@
-<form name="form" ng-submit="submit()" novalidate>
-	<div class="modal-header">
-		<button type="button" class="close" ng-click="$dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">New Item</h4>
-	</div>
-	<div class="modal-body">
-		<div class="alert" role="alert" data-ng-show="messages" data-ng-bind="messages"></div>
-		<div class="form-group" ng-class="error('subject')">
-			<label for="task.subject">Subject</label>
-			<input type="text" id="task.subject" name="subject" class="form-control" required="required" data-ng-model="task.subject">
-			<span class="help-block" data-ng-show="form.subject.$error.required">Value is required</span>
+<md-dialog aria-label="New Item">
+	<form name="form" ng-submit="submit()" novalidate>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>New Item</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="cancel()">
+					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content class="dialog">
+			<div class="md-dialog-content">
+				<md-input-container>
+					<label>Subject</label>
+					<input data-ng-model="task.subject" name="subject" type="text" required>
+					<div ng-messages="form.subject.$error" role="alert">
+						<div ng-message="required">Subject is required</div>
+						<div ng-message="remote">{{ form.subject.$error.remote }}</div>
+					</div>
+				</md-input-container>
+				<md-input-container>
+					<label>Stream</label>
+					<md-select data-ng-model="task.stream" name="stream" required>
+						<md-option ng-repeat="stream in streams['_embedded']['ora:stream']" value="{{ stream.id }}">{{ stream.subject }}</md-option>
+					</md-select>
+					<div ng-messages="form.stream.$error" role="alert">
+						<div ng-message="required">Stream is required</div>
+					</div>
+				</md-input-container>
+			</div>
+		</md-dialog-content>
+		<div class="md-actions" layout="row" layout-align="end center">
+			<md-button type="button" ng-click="cancel()">Cancel</md-button>
+			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
 		</div>
-		<div class="form-group" ng-class="error('stream')">
-			<label for="task.stream">Stream</label>
-			<select id="task.stream" name="stream" class="form-control" required="required" data-ng-options="stream.subject for stream in streams._embedded['ora:stream']" data-ng-model="task['ora:stream']">
-				<option></option>
-			</select>
-			<span class="help-block" data-ng-show="form.stream.$error.required">Value is required</span>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-default" ng-click="$dismiss()">Close</button>
-		<button type="submit" class="btn btn-primary" ng-disabled="form.$invalid">Create</button>
-	</div>
-</form>
+	</form>
+</md-dialog>

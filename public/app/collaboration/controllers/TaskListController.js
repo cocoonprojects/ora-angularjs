@@ -32,30 +32,16 @@ angular.module('oraApp.collaboration')
 				originatorEv = ev;
 				$mdOpenMenu(ev);
 			};
-			this.openNewTask = function() {
-				$modal.open({
-					animation: true,
+			this.openNewTask = function(ev) {
+				$mdDialog.show({
+					controller: NewTaskController,
 					templateUrl: "app/collaboration/partials/new-task.html",
-					controller: 'NewTaskController'
-				});
-			};
-			this.openTaskDetail = function(task) {
-				$modal.open({
-					animation: true,
-					templateUrl: "app/collaboration/partials/task-detail.html",
-					controller: 'TaskDetailController',
-					size: 'lg',
-					resolve: {
-						task: function() {
-							return task;
-						},
-						isAllowed: function() {
-							return $scope.isAllowed;
-						},
-						identity: function() {
-							return $scope.identity;
-						}
-					}
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					scope: $scope.$new()
+				}).then(function(task) {
+					that.addTask(task);
 				});
 			};
 			this.openEditTask = function(ev, task) {
@@ -242,6 +228,9 @@ angular.module('oraApp.collaboration')
 					|| $scope.isAllowed.unjoinTask(task)
 					|| $scope.isAllowed.reExecuteTask(task)
 					;
+			};
+			this.addTask = function(task) {
+				$scope.tasks._embedded['ora:task'].unshift(task);
 			};
 			this.updateTasks = function(task) {
 				var tasks = $scope.tasks._embedded['ora:task'];

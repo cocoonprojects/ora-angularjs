@@ -19,10 +19,11 @@ angular.module('oraApp.collaboration')
 		40: 'Accepted',
 		50: 'Closed'
 	})
-	.service('taskService', ['$resource', 'identity', 'TASK_STATUS', 'TASK_STATUS_LABEL', 'TASK_ROLES',
-		function($resource, identity, TASK_STATUS, TASK_STATUS_LABEL, TASK_ROLES) {
+	.service('taskService', ['$resource', '$log', 'identity', 'TASK_STATUS', 'TASK_STATUS_LABEL', 'TASK_ROLES',
+		function($resource, $log, identity, TASK_STATUS, TASK_STATUS_LABEL, TASK_ROLES) {
 			var that = this;
 			var resource = $resource('api/:orgId/task-management/tasks/:taskId/:controller/:type', { orgId: '@orgId' }, {
+				save: { method: 'POST', headers: { 'GOOGLE-JWT': identity.getToken() }},
 				get: { method: 'GET', headers: { 'GOOGLE-JWT': identity.getToken() } },
 				query:  { method: 'GET', isArray: false, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				delete:  { method: 'DELETE', headers: { 'GOOGLE-JWT': identity.getToken() } },
@@ -49,7 +50,7 @@ angular.module('oraApp.collaboration')
 			this.isEstimationCompleted = function(task) {
 				var keys = Object.keys(task.members);
 				for(var i = 0; i < keys.length; i++) {
-					if(task.members[keys[i]].estimation !== undefined) {
+					if(task.members[keys[i]].estimation === undefined) {
 						return false;
 					}
 				}
@@ -64,7 +65,7 @@ angular.module('oraApp.collaboration')
 			};
 
 			this.isAllowed   = {
-				//	'createTask': function(stream) { return .isAuthenticated() }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
+				createTask: function(organization) { return identity.isAuthenticated() }, // TODO: Manca il controllo sull'appartenenza all'organizzazione dello stream
 				editTask: function(task) { return identity.isAuthenticated() && that.isOwner(task, identity.getId()) },
 				deleteTask: function(task) { return identity.isAuthenticated() && task.status < TASK_STATUS.COMPLETED && that.isOwner(task, identity.getId()) },
 				joinTask: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.ONGOING && task.members[identity.getId()] === undefined },
@@ -79,6 +80,7 @@ angular.module('oraApp.collaboration')
 				showShares: function(task) { return identity.isAuthenticated() && task.status == TASK_STATUS.CLOSED }
 			};
 
+			this.save = resource.save;
 			this.get = resource.get;
 			this.query = resource.query;
 			this.delete = resource.delete;

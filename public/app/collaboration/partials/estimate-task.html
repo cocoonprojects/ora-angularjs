@@ -9,17 +9,19 @@
 			</md-button>
 		</div>
 	</md-toolbar>
-	<md-dialog-content>
-		<md-input-container>
-			<label>Estimated Credits</label>
-			<input data-ng-model="value" name="value" type="number" min="0" step="1" required>
-			<div ng-messages="form.value.$error" role="alert">
-				<div ng-message="required">Value is required</div>
-				<div ng-message="min">Value must be positive or zero</div>
-				<div ng-message="number">Value must be an integer greater or equal to zero</div>
-				<div ng-message="remote">{{ form.value.$error.remote }}</div>
-			</div>
-		</md-input-container>
+	<md-dialog-content class="dialog">
+		<div class="md-dialog-content">
+			<md-input-container>
+				<label>Estimated Credits</label>
+				<input data-ng-model="value" name="value" type="number" min="0" step="1" required>
+				<div ng-messages="form.value.$error" role="alert">
+					<div ng-message="required">Value is required</div>
+					<div ng-message="min">Value must be positive or zero</div>
+					<div ng-message="number">Value must be an integer greater or equal to zero</div>
+					<div ng-message="remote">{{ form.value.$error.remote }}</div>
+				</div>
+			</md-input-container>
+		</div>
 	</md-dialog-content>
 	<div class="md-actions" layout="row" layout-align="end center">
 		<md-button type="button" ng-click="cancel()">Cancel</md-button>

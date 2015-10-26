@@ -1,10 +1,12 @@
-function EditTaskController($scope, $mdDialog, taskService, task) {
+function EditTaskController($scope, $mdDialog, $log, taskService, task) {
 	var that = this;
 	$scope.subject = task.subject;
 	$scope.cancel = function() {
+		$log.debug('Passa giusto');
 		$mdDialog.cancel();
 	};
 	$scope.submit = function() {
+		$log.debug('passa da submit');
 		taskService.edit(
 			{
 				orgId: task.organization.id,

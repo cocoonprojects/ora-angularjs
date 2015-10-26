@@ -1,3 +1,14 @@
+<md-fab-speed-dial md-direction="up" ng-class="md-scale" style="position: fixed; bottom: 16px; right: 16px; z-index: 30" ng-if="isAllowed.createTask(currOrg)">
+	<md-fab-trigger>
+		<md-button aria-label="taskMenu" class="md-fab md-warn">
+			<md-icon md-font-icon="menu" class="material-icons">&#xE145;</md-icon>
+		</md-button>
+	</md-fab-trigger>
+	<md-fab-actions>
+		<md-button aria-label="New task" class="md-fab md-raised md-mini" ng-click="ctrl.openNewTask($event)">New Item</md-button>
+		<md-button aria-label="New stream" class="md-fab md-raised md-mini">New Stream</md-button>
+	</md-fab-actions>
+</md-fab-speed-dial>
 <md-content class="md-padding" style="background-color: transparent !important; height: 600px">
 	<md-card ng-repeat="task in tasks._embedded['ora:task']">
 		<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
