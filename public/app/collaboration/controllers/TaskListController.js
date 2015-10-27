@@ -3,10 +3,19 @@ angular.module('oraApp.collaboration')
 		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, taskService, TASK_STATUS) {
 			var that = this;
 			$scope.tasks = taskService.query({ orgId: $stateParams.orgId });
-			$interval(function() {
-				taskService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value; });
-				}, 10000);
 
+			var isRefreshing = false;
+			this.refreshTasks = function() {
+				if(isRefreshing) return;
+				isRefreshing = true;
+				taskService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value; isRefreshing = false;});
+			};
+
+			var tasksAutoUpdate = $interval(this.refreshTasks, 10000);
+			$scope.$on('$destroy', function() {
+				if(tasksAutoUpdate)
+					$interval.cancel(tasksAutoUpdate);
+			});
 			$scope.statusLabel = taskService.statusLabel;
 			$scope.isAllowed = taskService.isAllowed;
 			$scope.isOwner   = taskService.isOwner;
