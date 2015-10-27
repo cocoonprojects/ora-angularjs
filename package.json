@@ -23,7 +23,7 @@
     "tmp": "0.0.23"
   },
   "scripts": {
-    "postinstall": "bower install",
+    "postinstall": "if [ -d \"$OPENSHIFT_REPO_DIR\" ]; then (export HOME=\"$OPENSHIFT_REPO_DIR\"/..; bower install --config.interactive=false && grunt build) else (bower install) fi",
     "prestart": "npm install",
     "start": "node index.js",
     "pretest": "npm install",
