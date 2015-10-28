@@ -1,7 +1,7 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskDetailController', ['$scope', '$log', 'task', 'taskService',
-		function ($scope, $log, task, taskService) {
-			$scope.task = task;
+	.controller('TaskDetailController', ['$scope', '$stateParams', '$log', 'taskService',
+		function ($scope, $stateParams, $log, taskService) {
+			$scope.task = taskService.get({ orgId: $stateParams.orgId, taskId: $stateParams.taskId });
 			$scope.isOwner = taskService.isOwner;
 			$scope.isAllowed = taskService.isAllowed;
 			$scope.statusLabel = taskService.statusLabel;
