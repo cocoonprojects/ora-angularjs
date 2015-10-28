@@ -1,13 +1,15 @@
 angular.module('oraApp.identity')
-	.controller('IdentityController', ['$scope', '$log', '$state', '$stateParams', 'identity',
-		function($scope, $log, $state, $stateParams, identity) {
+	.controller('IdentityController', ['$scope', '$log', '$state', 'identity',
+		function($scope, $log, $state, identity) {
 			$scope.identity = identity;
 			$scope.currOrg = null;
 
-			$scope.$on('$stateChangeSuccess', function(event, next, current) {
-				if($stateParams.orgId) {
-					$scope.currOrg = identity.getMembership($stateParams.orgId);
-					$log.debug('Organization changed: ' + $scope.currOrg.id);
+			$scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+				if(toParams.orgId) {
+					if(toParams.orgId != fromParams.orgId) {
+						$scope.currOrg = identity.getMembership(toParams.orgId);
+						$log.debug('Organization changed: ' + $scope.currOrg.id);
+					}
 				} else {
 					$scope.currOrg = null;
 				}
