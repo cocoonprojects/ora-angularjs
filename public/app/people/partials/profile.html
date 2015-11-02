@@ -1,11 +1,20 @@
-<md-content layout-padding style="padding: 24px">
-	<div class="md-title">{{ profile.firstname }} {{ profile.lastname }}</div>
+<md-card>
+	<md-card-content>
+	<div layout="row">
 	<img alt="{{ profile.firstname }} {{ profile.lastname }}" ng-src="{{ profile.picture }}" style="border-radius: 50%" />
-	<p>
-		{{ profile._embedded['ora:organization-membership'].role }} since {{ profile._embedded['ora:organization-membership'].createdAt | date : 'longDate' }}
-	</p>
+		<div layout="column" layout-padding>
+			<div class="md-title">{{ profile.firstname }} {{ profile.lastname }}</div>
+			<p>
+				{{ profile._embedded['ora:organization-membership'].role }} since {{ profile._embedded['ora:organization-membership'].createdAt | date : 'longDate' }}
+			</p>
+		</div>
+	</div>
+	</md-card-content>
+</md-card>
+<md-card>
+	<md-card-content>
 	<h3>Credits</h3>
-	<table>
+	<table class="stats" flex-sm>
 		<tbody>
 			<tr>
 				<th>Generated Credits</th>
@@ -29,45 +38,47 @@
 			</tr>
 		</tbody>
 	</table>
-	<h3>Task contribution</h3>
-	<form novalidate ng-submit="initTasks()">
-		<div layout layout-sm="column">
-			<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
-			<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
-			<md-button type="submit">Search</md-button>
-		</div>
-	</form>
-	<table>
-		<tbody>
-		<tr>
-			<th>Task Memberships</th>
-			<td>{{ stats.membershipsCount | number : 0 }}</td>
-		</tr>
-		<tr>
-			<th>Owned Tasks</th>
-			<td>{{ stats.ownershipsCount | number : 0 }}</td>
-		</tr>
-		<tr>
-			<th>Earned Credits</th>
-			<td>{{ stats.creditsCount | number : 2 }}</td>
-		</tr>
-		<tr>
-			<th>Auto-assessment gap</th>
-			<td>{{ stats.averageDelta | number }}</td>
-		</tr>
-		<tr>
-			<th>Last year</th>
-			<td>{{ profile._embedded.credits.lastY | number }}</td>
-		</tr>
-		</tbody>
-	</table>
-	<div style="text-align: right">{{ tasks.count }} of {{ tasks.total }}</div>
+	</md-card-content>
+</md-card>
+<md-card>
+	<md-card-content>
+		<h3>Task contribution</h3>
+		<form novalidate ng-submit="initTasks()">
+			<div layout layout-sm="column">
+				<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
+				<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
+				<md-button type="submit">Search</md-button>
+			</div>
+		</form>
+		<md-divider></md-divider>
+		<table class="stats" flex-sm>
+			<tbody>
+			<tr>
+				<th>Task Memberships</th>
+				<td>{{ stats.membershipsCount | number : 0 }}</td>
+			</tr>
+			<tr>
+				<th>Owned Tasks</th>
+				<td>{{ stats.ownershipsCount | number:0 }}</td>
+			</tr>
+			<tr>
+				<th>Earned Credits</th>
+				<td>{{ stats.creditsCount | number:2 }}</td>
+			</tr>
+			<tr>
+				<th>Auto-assessment gap</th>
+				<td>{{ stats.averageDelta | percentage:2:true }}</td>
+			</tr>
+			</tbody>
+		</table>
+		<div style="text-align: right">{{ tasks.count }} of {{ tasks.total }}</div>
+	</md-card-content>
 	<md-list>
 		<md-list-item data-ng-repeat="task in tasks._embedded['ora:task']" ng-init="show = isAllowed.showShares(task)" ng-class="{'md-3-line': show, 'md-2-line': !show}">
 			<div class="md-list-item-text" ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">
 				<h3>
-					<md-icon md-font-icon="star" class="material-icons" ng-if="isOwner(task)" title="owner" style="font-size: 16px">&#xE838;</md-icon>
 					{{ task.subject }}
+					<md-icon md-font-icon="star" class="material-icons" ng-if="isOwner(task)" title="owner" style="font-size: 16px">&#xE838;</md-icon>
 				</h3>
 				<h4 ng-if="show">Earned Credits: {{ getCredits(task) | number }}<span ng-if="getShare(task)">, Team evaluated contribution: {{ getShare(task) | percentage:2 }}</span><span ng-if="getDelta(task)"> (Auto-assessment: {{ getDelta(task) | percentage:2:true }})</span></h4>
 				<p>{{ task.status | taskStatusLabel }}</p>
@@ -75,4 +86,4 @@
 		</md-list-item>
 	</md-list>
 	<md-button ng-if="tasks.count < tasks.total" ng-click="loadMore()">More</md-button>
-</md-content>
+</md-card>

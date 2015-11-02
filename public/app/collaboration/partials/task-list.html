@@ -9,79 +9,77 @@
 		<md-button aria-label="New stream" class="md-fab md-raised md-mini">New Stream</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
-<md-content class="md-padding" style="background-color: transparent !important; height: 600px">
-	<md-card ng-repeat="task in tasks._embedded['ora:task']">
-		<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
-		<md-card-content>
-			<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
-			<div class="md-headline" ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">{{ task.subject }}</div>
-			<div class="md-subheader" style="display: inline-block">Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
-			<md-list class="members">
-				<md-list-item data-ng-repeat="member in task.members" ng-init="m = user(member)" style="display: inline-block">
-					<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
-					<md-icon md-font-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
-				</md-list-item>
-			</md-list>
-			<div ng-switch="task.estimation">
-				<span ng-switch-when="null">Estimation in progress{{ countEstimators(task) }}</span>
-				<span ng-switch-when="-1">Estimation skipped{{ countEstimators(task) }}</span>
-				<span ng-switch-default>{{ task.estimation }} Credits{{ countEstimators(task) }}</span>
-			</div>
-		</md-card-content>
-		<md-divider></md-divider>
-		<div layout="row">
-			<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ task.status | taskStatusLabel }}</div>
-			<div class="md-actions" layout="row">
-				<md-button aria-label="Start task" ng-if="isAllowed.executeTask(task)" ng-click="ctrl.executeTask(task)">Start</md-button>
-				<md-button aria-label="Join task" ng-if="isAllowed.joinTask(task)" ng-click="ctrl.joinTask(task)">Join</md-button>
-				<md-button aria-label="Estimate task" ng-if="isAllowed.estimateTask(task)" ng-click="ctrl.openEstimateTask($event, task)">Estimate</md-button>
-				<md-button aria-label="Complete task" ng-if="isAllowed.completeTask(task)" ng-click="ctrl.completeTask(task)">Mark as Completed</md-button>
-				<md-button aria-label="Accept task" ng-if="isAllowed.acceptTask(task)" ng-click="ctrl.acceptTask(task)">Mark as Accepted</md-button>
-				<md-button aria-label="Assign shares" ng-if="isAllowed.assignShares(task)" ng-click="ctrl.openAssignShares($event, task)">Assign Shares</md-button>
-				<md-menu md-position-mode="target-right target" style="padding: 0" ng-if="hasMore(task)">
-					<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="ctrl.openMoreMenu($mdOpenMenu, $event)">
-						<md-icon md-menu-origin class="material-icons">&#xE5D4;</md-icon>
-					</md-button>
-					<md-menu-content width="4">
-						<md-menu-item ng-if="isAllowed.editTask(task)">
-							<md-button ng-click="ctrl.openEditTask($event, task)">
-								<md-icon class="material-icons" md-menu-align-target>&#xE150;</md-icon>
-								Edit Task
-							</md-button>
-						</md-menu-item>
-						<md-menu-item ng-if="isAllowed.deleteTask(task)">
-							<md-button ng-click="ctrl.deleteTask(task)">
-								<md-icon class="material-icons">&#xE872;</md-icon>
-								Delete Task
-							</md-button>
-						</md-menu-item>
-						<md-menu-item ng-if="isAllowed.unjoinTask(task)">
-							<md-button ng-click="ctrl.unjoinTask(task)">
-								<md-icon class="material-icons">&#xE3CB;</md-icon>
-								Unjoin
-							</md-button>
-						</md-menu-item>
-						<md-menu-item ng-if="isAllowed.reExecuteTask(task)">
-							<md-button ng-click="ctrl.reExecuteTask(task)">
-								<md-icon class="material-icons">&#xE8B3;</md-icon>
-								Revert to Ongoing
-							</md-button>
-						</md-menu-item>
-						<md-menu-item ng-if="isAllowed.remindTaskEstimate(task)">
-							<md-button ng-click="ctrl.remindTaskEstimate(task)">
-								<md-icon class="material-icons">&#xE0BE;</md-icon>
-								Remind Members to Estimate
-							</md-button>
-						</md-menu-item>
-						<md-menu-item ng-if="isAllowed.reCompleteTask(task)">
-							<md-button ng-click="ctrl.reCompleteTask(task)">
-								<md-icon class="material-icons">&#xE8B3;</md-icon>
-								Revert to Completed
-							</md-button>
-						</md-menu-item>
-					</md-menu-content>
-				</md-menu>
-			</div>
+<md-card ng-repeat="task in tasks._embedded['ora:task']">
+	<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
+	<md-card-content>
+		<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
+		<div class="md-headline" ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">{{ task.subject }}</div>
+		<div class="md-subheader" style="display: inline-block">Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
+		<md-list class="members">
+			<md-list-item data-ng-repeat="member in task.members" ng-init="m = user(member)" style="display: inline-block" ui-sref="org.pillars.people.profile({ memberId: member.id })">
+				<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+				<md-icon md-font-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
+			</md-list-item>
+		</md-list>
+		<div ng-switch="task.estimation">
+			<span ng-switch-when="null">Estimation in progress{{ countEstimators(task) }}</span>
+			<span ng-switch-when="-1">Estimation skipped{{ countEstimators(task) }}</span>
+			<span ng-switch-default>{{ task.estimation }} Credits{{ countEstimators(task) }}</span>
 		</div>
-	</md-card>
-</md-content>
+	</md-card-content>
+	<md-divider></md-divider>
+	<div layout="row">
+		<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ task.status | taskStatusLabel }}</div>
+		<div class="md-actions" layout="row">
+			<md-button aria-label="Start task" ng-if="isAllowed.executeTask(task)" ng-click="ctrl.executeTask(task)">Start</md-button>
+			<md-button aria-label="Join task" ng-if="isAllowed.joinTask(task)" ng-click="ctrl.joinTask(task)">Join</md-button>
+			<md-button aria-label="Estimate task" ng-if="isAllowed.estimateTask(task)" ng-click="ctrl.openEstimateTask($event, task)">Estimate</md-button>
+			<md-button aria-label="Complete task" ng-if="isAllowed.completeTask(task)" ng-click="ctrl.completeTask(task)">Mark as Completed</md-button>
+			<md-button aria-label="Accept task" ng-if="isAllowed.acceptTask(task)" ng-click="ctrl.acceptTask(task)">Mark as Accepted</md-button>
+			<md-button aria-label="Assign shares" ng-if="isAllowed.assignShares(task)" ng-click="ctrl.openAssignShares($event, task)">Assign Shares</md-button>
+			<md-menu md-position-mode="target-right target" style="padding: 0" ng-if="hasMore(task)">
+				<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="ctrl.openMoreMenu($mdOpenMenu, $event)">
+					<md-icon md-menu-origin class="material-icons">&#xE5D4;</md-icon>
+				</md-button>
+				<md-menu-content width="4">
+					<md-menu-item ng-if="isAllowed.editTask(task)">
+						<md-button ng-click="ctrl.openEditTask($event, task)">
+							<md-icon class="material-icons" md-menu-align-target>&#xE150;</md-icon>
+							Edit Task
+						</md-button>
+					</md-menu-item>
+					<md-menu-item ng-if="isAllowed.deleteTask(task)">
+						<md-button ng-click="ctrl.deleteTask(task)">
+							<md-icon class="material-icons">&#xE872;</md-icon>
+							Delete Task
+						</md-button>
+					</md-menu-item>
+					<md-menu-item ng-if="isAllowed.unjoinTask(task)">
+						<md-button ng-click="ctrl.unjoinTask(task)">
+							<md-icon class="material-icons">&#xE3CB;</md-icon>
+							Unjoin
+						</md-button>
+					</md-menu-item>
+					<md-menu-item ng-if="isAllowed.reExecuteTask(task)">
+						<md-button ng-click="ctrl.reExecuteTask(task)">
+							<md-icon class="material-icons">&#xE8B3;</md-icon>
+							Revert to Ongoing
+						</md-button>
+					</md-menu-item>
+					<md-menu-item ng-if="isAllowed.remindTaskEstimate(task)">
+						<md-button ng-click="ctrl.remindTaskEstimate(task)">
+							<md-icon class="material-icons">&#xE0BE;</md-icon>
+							Remind Members to Estimate
+						</md-button>
+					</md-menu-item>
+					<md-menu-item ng-if="isAllowed.reCompleteTask(task)">
+						<md-button ng-click="ctrl.reCompleteTask(task)">
+							<md-icon class="material-icons">&#xE8B3;</md-icon>
+							Revert to Completed
+						</md-button>
+					</md-menu-item>
+				</md-menu-content>
+			</md-menu>
+		</div>
+	</div>
+</md-card>

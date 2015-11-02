@@ -1,6 +1,11 @@
 md-list.members md-list-item {
     padding: 0;
 }
+md-list.members .md-button {
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+}
 md-icon.owner {
     font-size: 16px;
     margin-left: -32px;
@@ -21,6 +26,12 @@ td img.md-avatar {
     max-width: 600px;
     min-width: 300px
 }
-tbody th {
+.stats tbody th {
     text-align: left;
+}
+.stats tbody td {
+    text-align: right;
+}
+md-content {
+    background-color: transparent;
 }
