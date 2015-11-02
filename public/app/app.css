@@ -21,3 +21,6 @@ td img.md-avatar {
     max-width: 600px;
     min-width: 300px
 }
+tbody th {
+    text-align: left;
+}

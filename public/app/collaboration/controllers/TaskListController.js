@@ -16,7 +16,6 @@ angular.module('oraApp.collaboration')
 				if(tasksAutoUpdate)
 					$interval.cancel(tasksAutoUpdate);
 			});
-			$scope.statusLabel = taskService.statusLabel;
 			$scope.isAllowed = taskService.isAllowed;
 			$scope.isOwner   = taskService.isOwner;
 

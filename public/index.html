@@ -21,6 +21,7 @@
 	<script src="components/angular-moment/angular-moment.min.js"></script>
 	<!-- build:js build/js/app.min.js -->
 	<script src="app/app.js"></script>
+	<script src="app/global/filters/PercentageFilter.js"></script>
 	<script src="app/AppController.js"></script>
 	<script src="app/LeftController.js"></script>
 	<script src="app/identity/identity.js"></script>
@@ -30,6 +31,7 @@
 	<script src="app/collaboration/collaboration.js"></script>
 	<script src="app/collaboration/services/TaskService.js"></script>
 	<script src="app/collaboration/services/StreamService.js"></script>
+	<script src="app/collaboration/filters/TaskStatusLabelFilter.js"></script>
 	<script src="app/collaboration/controllers/NewTaskController.js"></script>
 	<script src="app/collaboration/controllers/EditTaskController.js"></script>
 	<script src="app/collaboration/controllers/EstimateTaskController.js"></script>
@@ -40,6 +42,7 @@
 	<script src="app/people/people.js"></script>
 	<script src="app/people/services/MemberService.js"></script>
 	<script src="app/people/controllers/MemberListController.js"></script>
+	<script src="app/people/controllers/ProfileController.js"></script>
 	<script src="app/flow/flow.js"></script>
 	<script src="app/flow/controllers/FlowController.js"></script>
 	<!-- /build -->
@@ -86,7 +89,7 @@
 				</md-menu>
 				-->
 		</md-sidenav>
-		<div layout="column" flex ui-view style="position: relative"></div>
+		<div layout="column" flex ui-view style="position: relative" ng-cloak></div>
 	</section>
 </body>
 </html>

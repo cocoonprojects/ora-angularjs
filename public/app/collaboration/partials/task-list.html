@@ -14,7 +14,7 @@
 		<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
 		<md-card-content>
 			<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
-			<div class="md-headline"><a ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">{{ task.subject }}</a></div>
+			<div class="md-headline" ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">{{ task.subject }}</div>
 			<div class="md-subheader" style="display: inline-block">Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
 			<md-list class="members">
 				<md-list-item data-ng-repeat="member in task.members" ng-init="m = user(member)" style="display: inline-block">
@@ -30,7 +30,7 @@
 		</md-card-content>
 		<md-divider></md-divider>
 		<div layout="row">
-			<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ statusLabel(task.status) }}</div>
+			<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ task.status | taskStatusLabel }}</div>
 			<div class="md-actions" layout="row">
 				<md-button aria-label="Start task" ng-if="isAllowed.executeTask(task)" ng-click="ctrl.executeTask(task)">Start</md-button>
 				<md-button aria-label="Join task" ng-if="isAllowed.joinTask(task)" ng-click="ctrl.joinTask(task)">Join</md-button>

@@ -11,16 +11,8 @@ angular.module('oraApp.collaboration')
 		'ROLE_MEMBER': 'member',
 		'ROLE_OWNER' : 'owner'
 	})
-	.constant('TASK_STATUS_LABEL', {
-		0:  'Work Item Idea',
-		10: 'Open Work Item',
-		20: 'Ongoing',
-		30: 'Completed',
-		40: 'Accepted',
-		50: 'Closed'
-	})
-	.service('taskService', ['$resource', '$log', 'identity', 'TASK_STATUS', 'TASK_STATUS_LABEL', 'TASK_ROLES',
-		function($resource, $log, identity, TASK_STATUS, TASK_STATUS_LABEL, TASK_ROLES) {
+	.service('taskService', ['$resource', '$log', 'identity', 'TASK_STATUS', 'TASK_ROLES',
+		function($resource, $log, identity, TASK_STATUS, TASK_ROLES) {
 			var that = this;
 			var resource = $resource('api/:orgId/task-management/tasks/:taskId/:controller/:type', { orgId: '@orgId' }, {
 				save: { method: 'POST', headers: { 'GOOGLE-JWT': identity.getToken() }},
@@ -36,6 +28,10 @@ angular.module('oraApp.collaboration')
 				completeTask: { method: 'POST', params: { controller: 'transitions' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				acceptTask: { method: 'POST', params: { controller: 'transitions' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
 				assignShares: { method: 'POST', params: { controller: 'shares' }, headers: { 'GOOGLE-JWT': identity.getToken() } }
+			});
+
+			var r2 = $resource('api/:orgId/users/:memberId/task-stats', { }, {
+				get: { method: 'GET', headers: { 'GOOGLE-JWT': identity.getToken() } }
 			});
 
 			this.isOwner = function(task, userId) {
@@ -94,8 +90,5 @@ angular.module('oraApp.collaboration')
 			this.completeTask = resource.completeTask;
 			this.acceptTask = resource.acceptTask;
 			this.assignShares = resource.assignShares;
-
-			this.statusLabel = function(status) {
-				return TASK_STATUS_LABEL.hasOwnProperty(status) ? TASK_STATUS_LABEL[status] : status;
-			};
+			this.userStats = r2.get;
 		}]);

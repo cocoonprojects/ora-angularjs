@@ -3,11 +3,19 @@ angular.module('oraApp.people', ['ui.router', 'ngResource'])
 		function($stateProvider) {
 			$stateProvider
 				.state('org.pillars.people', {
-					url: '/people',
-					templateUrl: 'app/people/partials/people.html',
+					abstract: true,
+					template: '<ui-view/>',
 					data: {
 						selectedTab: 3
-					},
-					controller: 'MemberListController'
+					}
+				})
+				.state('org.pillars.people.list', {
+					url: '/people',
+					templateUrl: 'app/people/partials/people.html'
+				})
+				.state('org.pillars.people.profile', {
+					url: '/people/:memberId',
+					templateUrl: 'app/people/partials/profile.html',
+					controller: 'ProfileController'
 				});
 		}]);

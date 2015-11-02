@@ -4,7 +4,6 @@ angular.module('oraApp.collaboration')
 			$scope.task = taskService.get({ orgId: $stateParams.orgId, taskId: $stateParams.taskId });
 			$scope.isOwner = taskService.isOwner;
 			$scope.isAllowed = taskService.isAllowed;
-			$scope.statusLabel = taskService.statusLabel;
 			$scope.parseDate = function(when) {
 				return Date.parse(when);
 			};

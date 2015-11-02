@@ -1,7 +1,12 @@
 angular.module('oraApp.people')
-	.factory('memberService', ['$resource', 'identity',
+	.service('memberService', ['$resource', 'identity',
 		function($resource, identity) {
-			return $resource('api/:orgId/people/members/:taskId/:controller', { orgId: '@orgId' }, {
-				query:  { method: 'GET', isArray: false, headers: { 'GOOGLE-JWT': identity.getToken() } }
+			var that = this;
+			var resource = $resource('api/:orgId/:module/:foo/:memberId/:controller', { orgId: '@orgId' }, {
+				get: { method: 'GET', params: { foo: 'user-profiles' }, headers: { 'GOOGLE-JWT': identity.getToken() } },
+				query:  { method: 'GET', params: { module: 'people', foo: 'members' }, isArray: false, headers: { 'GOOGLE-JWT': identity.getToken() } },
 			});
+
+			this.query = resource.query;
+			this.get   = resource.get;
 		}]);
