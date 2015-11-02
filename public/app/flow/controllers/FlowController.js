@@ -2,7 +2,7 @@ angular.module('oraApp.flow')
 	.controller('FlowController', ['$scope', '$log',
 		function ($scope, $log) {
 			$scope.items = [
-				'Ragazza stufa scappa di casa, i genitori hanno freddo',
-				'Se hai un maglione di lana che non scalda per niente, probabilmente anche la pecora è morta di freddo'
+				{title: 'Welcome to O.R.A.', message: 'Here you will find suggentions on how to contribute to an organization activity and notifications about most relevant events'},
+				{title: 'Select your organization', message: 'Select an organization from the side bar and start contributing!'}
 			];
 		}]);

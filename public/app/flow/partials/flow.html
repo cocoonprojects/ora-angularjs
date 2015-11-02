@@ -15,15 +15,17 @@
 		</md-button>
 	</div>
 </md-toolbar>
-<div layout="column" layout-padding layout-fill layout-align="top center" ng-controller="FlowController">
-	<md-card data-ng-repeat="item in items">
-		<md-card-content>
-			<h2 class="md-title">Titolo</h2>
-			<p>{{ item }}</p>
-		</md-card-content>
-		<div class="md-actions" layout="row" layout-align="end center">
-			<md-button>Action 1</md-button>
-			<md-button>Action 2</md-button>
-		</div>
-	</md-card>
+<div ng-controller="FlowController">
+	<md-content class="md-padding" class="md-padding">
+		<md-card data-ng-repeat="item in items">
+			<md-card-content>
+				<h2 class="md-title">{{ item.title }}</h2>
+				<p>{{ item.message }}</p>
+			</md-card-content>
+			<div class="md-actions" layout="row" layout-align="end center">
+				<md-button>Action 1</md-button>
+				<md-button>Action 2</md-button>
+			</div>
+		</md-card>
+	</md-content>
 </div>
