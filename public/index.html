@@ -60,10 +60,10 @@
 			</md-toolbar>
 			<md-list layout-padding layout="column" ng-controller="LeftController">
 				<md-item>
-					<md-button flex ui-sref="flow" ui-sref-active="md-primary">Flow</md-button>
+					<md-button flex ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
 				</md-item>
 				<md-item ng-repeat="membership in identity.getMemberships()">
-					<md-button ui-sref="org.pillars.collaboration.tasks({ orgId: membership.organization.id })" ui-sref-active="md-primary">{{membership.organization.name}}</md-button>
+					<md-button ui-sref="org.pillars.collaboration.tasks({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
 				</md-item>
 				<md-item ng-if="identity.isAuthenticated()">
 					<md-button ng-click="signOut()">Logout</md-button>
