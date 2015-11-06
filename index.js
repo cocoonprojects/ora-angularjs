@@ -13,12 +13,12 @@ var apiProxy = httpProxy.createProxyServer();
 
 server.all("/api/*", function(req, res) {
 	req.url = req.url.substring(4);
-    apiProxy.web(req, res, { target: backend_url }, function(e) {
+	apiProxy.web(req, res, { target: backend_url }, function(e) {
 		console.log(e);
 	});
-    console.log("Request made to " + req.url);
+	console.log("Request made to " + req.url);
 });
 
 server.listen(server.get('port'), server_ip_address, function() {
-    console.log('Express server listening on ' + server_ip_address + ', port ' + server.get('port'));
+	console.log('Express server listening on ' + server_ip_address + ', port ' + server.get('port'));
 });
