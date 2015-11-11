@@ -1,15 +1,15 @@
-function EstimateTaskController($scope, $mdDialog, taskService, task) {
+function EstimateItemController($scope, $mdDialog, itemService, item) {
 	var that = this;
-	var e = task.members[$scope.identity.getId()].estimation;
+	var e = item.members[$scope.identity.getId()].estimation;
 	$scope.value = e > 0 || e === 0 ? e : undefined;
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
 	$scope.skip = function() {
-		taskService.estimateTask(
+		itemService.estimateItem(
 			{
-				orgId: task.organization.id,
-				taskId: task.id
+				orgId: item.organization.id,
+				taskId: item.id
 			},
 			{ value: -1 },
 			function(value) {
@@ -24,10 +24,10 @@ function EstimateTaskController($scope, $mdDialog, taskService, task) {
 			});
 	};
 	$scope.submit = function() {
-		taskService.estimateTask(
+		itemService.estimateItem(
 			{
-				orgId: task.organization.id,
-				taskId: task.id
+				orgId: item.organization.id,
+				taskId: item.id
 			},
 			{ value: $scope.value },
 			function(value) {

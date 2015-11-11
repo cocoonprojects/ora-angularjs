@@ -1,4 +1,4 @@
-function AssignSharesController($scope, $mdDialog, $log, taskService, task) {
+function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
 	var that = this;
 	$scope.task = task;
 	$scope.available = 100;
@@ -20,8 +20,23 @@ function AssignSharesController($scope, $mdDialog, $log, taskService, task) {
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
+	$scope.skip = function() {
+		itemService.skipShares(
+			{ orgId: task.organization.id, taskId: task.id },
+			{},
+			function(value) {
+				$mdDialog.hide(value);
+			},
+			function(httpResponse) {
+				if(httpResponse.status == 422) {
+					that.showErrors(httpResponse.data);
+				} else {
+					$log.warn(httpResponse);
+				}
+			});
+	};
 	$scope.submit = function() {
-		taskService.assignShares(
+		itemService.assignShares(
 			{ orgId: task.organization.id, taskId: task.id },
 			$scope.shares,
 			function(value) {
@@ -43,4 +58,4 @@ function AssignSharesController($scope, $mdDialog, $log, taskService, task) {
 			$scope.form[error.field].$error.remote = error.message;
 		}
 	};
-}
+};

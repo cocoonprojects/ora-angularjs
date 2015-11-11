@@ -1,6 +1,6 @@
 angular.module('oraApp.people')
-	.controller('ProfileController', ['$scope', '$log', '$stateParams', 'memberService', 'taskService', 'accountService',
-		function($scope, $log, $stateParams, memberService, taskService, accountService) {
+	.controller('ProfileController', ['$scope', '$log', '$stateParams', 'memberService', 'itemService', 'accountService',
+		function($scope, $log, $stateParams, memberService, itemService, accountService) {
 			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
 			$scope.credits = accountService.userStats({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
 			$scope.tasks   = null;
@@ -11,16 +11,15 @@ angular.module('oraApp.people')
 				limit: 10
 			};
 			$scope.initTasks = function() {
-				$log.debug(taskService);
-				$scope.tasks   = taskService.query($scope.filters);
-				$scope.stats   = taskService.userStats($scope.filters);
+				$scope.tasks   = itemService.query($scope.filters);
+				$scope.stats   = itemService.userStats($scope.filters);
 			};
 			$scope.loadMore = function() {
 				$scope.filters.limit += 10;
 				$scope.initTasks();
 			};
 			$scope.isOwner = function(task) {
-				return taskService.isOwner(task, $stateParams.memberId);
+				return itemService.isOwner(task, $stateParams.memberId);
 			};
 			$scope.getCredits  = function(task) {
 				return task.members[$stateParams.memberId].credits;
@@ -31,7 +30,7 @@ angular.module('oraApp.people')
 			$scope.getDelta = function(task) {
 				return task.members[$stateParams.memberId].delta;
 			};
-			$scope.isAllowed = taskService.isAllowed.bind(taskService);
+			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 
 			$scope.initTasks();
 		}]);

@@ -4,13 +4,13 @@
 			<div class="md-toolbar-tools">
 				<h2>Assign Shares</h2>
 				<span flex></span>
-				<md-button class="md-icon-button" ng-click="cancel()">
+				<md-button type="button" class="md-icon-button" ng-click="cancel()">
 					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
 				</md-button>
 			</div>
 		</md-toolbar>
 		<md-dialog-content>
-			<div class="md-dialog-content">
+			<div class="md-dialog-content" layout="column">
 				<p>Assign a contribution percentage to each member. You have to distribute {{ available }} remaining points</p>
 				<div ng-messages="form.$error" role="alert" style="font-size: 12px; color: Red">
 					<div ng-message="remote">{{ form.$error.remote }}</div>
@@ -34,6 +34,7 @@
 		</md-dialog-content>
 		<div class="md-actions" layout="row" layout-align="end center">
 			<md-button type="button" ng-click="cancel()">Cancel</md-button>
+			<md-button type="submit" class="md-accent">Skip</md-button>
 			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid || available !== 0">Submit</md-button>
 		</div>
 	</form>

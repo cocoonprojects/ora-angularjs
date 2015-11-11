@@ -28,7 +28,7 @@ angular.module('oraApp', [
 					controller: function($scope, members) {
 						$scope.members = members;
 						$scope.user = function(member) {
-							if($scope.members) {
+							if($scope.members && member) {
 								return $scope.members._embedded['ora:member'][member.id];
 							}
 							return null;

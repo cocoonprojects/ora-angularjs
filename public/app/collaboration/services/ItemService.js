@@ -1,4 +1,4 @@
-var TaskService = function($resource, identity) {
+var ItemService = function($resource, identity) {
 	var resource = $resource('api/:orgId/task-management/tasks/:taskId/:controller/:type', { orgId: '@orgId' }, {
 		save: {
 			method: 'POST',
@@ -21,42 +21,47 @@ var TaskService = function($resource, identity) {
 			method: 'PUT',
 			headers: { 'GOOGLE-JWT': identity.getToken() }
 		},
-		joinTask: {
+		joinItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'members' }
 		},
-		unjoinTask: {
+		unjoinItem: {
 			method: 'DELETE',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'members' }
 		},
-		estimateTask: {
+		estimateItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'estimations' }
 		},
-		remindTaskEstimate: {
+		remindItemEstimate: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'reminders', type: 'add-estimation' }
 		},
-		executeTask: {
+		executeItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'transitions' }
 		},
-		completeTask: {
+		completeItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'transitions' }
 		},
-		acceptTask: {
+		acceptItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'transitions' }
 		},
 		assignShares: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'shares' }
+		},
+		skipShares: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'shares' }
@@ -74,25 +79,26 @@ var TaskService = function($resource, identity) {
 		return identity;
 	};
 
-	this.save = resource.save;
-	this.get = resource.get;
-	this.query = resource.query;
-	this.delete = resource.delete;
-	this.edit = resource.edit;
-	this.joinTask = resource.joinTask;
-	this.unjoinTask = resource.unjoinTask;
-	this.estimateTask = resource.estimateTask;
-	this.remindTaskEstimate = resource.remindTaskEstimate;
-	this.executeTask = resource.executeTask;
-	this.completeTask = resource.completeTask;
-	this.acceptTask = resource.acceptTask;
-	this.assignShares = resource.assignShares;
+	this.save = resource.save.bind(resource);
+	this.get = resource.get.bind(resource);
+	this.query = resource.query.bind(resource);
+	this.delete = resource.delete.bind(resource);
+	this.edit = resource.edit.bind(resource);
+	this.joinItem = resource.joinItem.bind(resource);
+	this.unjoinItem = resource.unjoinItem.bind(resource);
+	this.estimateItem = resource.estimateItem.bind(resource);
+	this.remindItemEstimate = resource.remindItemEstimate.bind(resource);
+	this.executeItem = resource.executeItem.bind(resource);
+	this.completeItem = resource.completeItem.bind(resource);
+	this.acceptItem = resource.acceptItem.bind(resource);
+	this.assignShares = resource.assignShares.bind(resource);
+	this.skipShares = resource.skipShares.bind(resource);
 	this.userStats = r2.get;
 };
 
-TaskService.prototype = {
-	constructor: TaskService,
-	TASK_STATUS: {
+ItemService.prototype = {
+	constructor: ItemService,
+	ITEM_STATUS: {
 		'IDEA'     : 0,
 		'OPEN'     : 10,
 		'ONGOING'  : 20,
@@ -100,17 +106,17 @@ TaskService.prototype = {
 		'ACCEPTED' : 40,
 		'CLOSED'   : 50
 	},
-	TASK_ROLES: {
+	ITEM_ROLES: {
 		'ROLE_MEMBER': 'member',
 		'ROLE_OWNER' : 'owner'
 	},
 	isOwner: function(task, userId) {
 		return task.members[userId] !== undefined &&
-			task.members[userId].role == this.TASK_ROLES.ROLE_OWNER;
+			task.members[userId].role == this.ITEM_ROLES.ROLE_OWNER;
 	},
 	isMember: function(task, userId) {
 		return task.members[userId] !== undefined &&
-			task.members[userId].role == this.TASK_ROLES.ROLE_MEMBER;
+			task.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
 	},
 	hasJoined: function(task, userId) {
 		return task.members[userId] !== undefined;
@@ -133,75 +139,76 @@ TaskService.prototype = {
 		return n;
 	},
 	visibilityCriteria: {
-		createTask: function() {
+		createItem: function() {
 			// TODO: Add a check about the membership of the user to the organization
 			return this.getIdentity().isAuthenticated();
 		},
-		editTask: function(resource) {
+		editItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
 				this.isOwner(resource, this.getIdentity().getId());
 		},
-		deleteTask: function(resource) {
+		deleteItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status < this.TASK_STATUS.COMPLETED &&
+				resource.status < this.ITEM_STATUS.COMPLETED &&
 				this.isOwner(resource, this.getIdentity().getId());
 		},
-		joinTask: function(resource) {
+		joinItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ONGOING &&
+				resource.status == this.ITEM_STATUS.ONGOING &&
 				resource.members[this.getIdentity().getId()] === undefined;
 		},
-		unjoinTask: function(resource) {
+		unjoinItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ONGOING &&
+				resource.status == this.ITEM_STATUS.ONGOING &&
 				this.isMember(resource, this.getIdentity().getId());
 		},
-		executeTask: function(resource) {
+		executeItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.IDEA &&
+				resource.status == this.ITEM_STATUS.IDEA &&
 				this.isOwner(resource, this.getIdentity().getId());
 		},
-		reExecuteTask: function(resource) {
+		reExecuteItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.COMPLETED &&
+				resource.status == this.ITEM_STATUS.COMPLETED &&
 				this.isOwner(resource, this.getIdentity().getId());
 		},
-		completeTask: function(resource) {
+		completeItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ONGOING &&
+				resource.status == this.ITEM_STATUS.ONGOING &&
 				this.isOwner(resource, this.getIdentity().getId()) &&
-				resource.estimation !== undefined;
+				this.isEstimationCompleted(resource);
 		},
-		reCompleteTask: function(resource) {
+		reCompleteItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ACCEPTED &&
+				resource.status == this.ITEM_STATUS.ACCEPTED &&
 				this.isOwner(resource, this.getIdentity().getId());
 		},
-		acceptTask: function(resource) {
+		acceptItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.COMPLETED &&
+				resource.status == this.ITEM_STATUS.COMPLETED &&
 				this.isOwner(resource, this.getIdentity().getId());
 		},
-		estimateTask: function(resource) {
+		estimateItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ONGOING &&
+				resource.status == this.ITEM_STATUS.ONGOING &&
 				this.hasJoined(resource, this.getIdentity().getId());
 		},
-		remindTaskEstimate: function(resource) {
+		remindItemEstimate: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ONGOING &&
+				resource.status == this.ITEM_STATUS.ONGOING &&
 				this.isOwner(resource, this.getIdentity().getId()) &&
 				!this.isEstimationCompleted(resource);
 		},
 		assignShares: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.ACCEPTED &&
+				resource.status == this.ITEM_STATUS.ACCEPTED &&
 				this.hasJoined(resource, this.getIdentity().getId()) &&
 				resource.members[this.getIdentity().getId()].shares === undefined;
 		},
+		skipShares: this.assignShares,
 		showShares: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.TASK_STATUS.CLOSED;
+				resource.status == this.ITEM_STATUS.CLOSED;
 		}
 	},
 	isAllowed: function(command, resource) {
@@ -214,6 +221,5 @@ TaskService.prototype = {
 	}
 };
 angular.module('oraApp.collaboration')
-	.constant('TASK_STATUS', TaskService.prototype.TASK_STATUS)
-	.constant('TASK_ROLES', TaskService.prototype.TASK_ROLES)
-	.service('taskService', ['$resource', 'identity', TaskService]);
+	.constant('ITEM_STATUS', ItemService.prototype.ITEM_STATUS)
+	.service('itemService', ['$resource', 'identity', ItemService]);

@@ -1,11 +1,11 @@
-function NewTaskController($scope, $log, $stateParams, $mdDialog, taskService) {
+function NewItemController($scope, $log, $stateParams, $mdDialog, itemService) {
 	var that = this;
 	$scope.task = {};
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
 	$scope.submit = function() {
-		taskService.save(
+		itemService.save(
 			{
 				orgId: $stateParams.orgId
 			},

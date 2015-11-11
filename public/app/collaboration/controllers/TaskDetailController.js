@@ -1,9 +1,9 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskDetailController', ['$scope', '$stateParams', '$log', 'taskService',
-		function ($scope, $stateParams, $log, taskService) {
-			$scope.task = taskService.get({ orgId: $stateParams.orgId, taskId: $stateParams.taskId });
-			$scope.isOwner = taskService.isOwner;
-			$scope.isAllowed = taskService.isAllowed;
+	.controller('TaskDetailController', ['$scope', '$stateParams', 'itemService',
+		function ($scope, $stateParams, itemService) {
+			$scope.task = itemService.get({ orgId: $stateParams.orgId, taskId: $stateParams.taskId });
+			$scope.isOwner = itemService.isOwner.bind(itemService);
+			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 			$scope.parseDate = function(when) {
 				return Date.parse(when);
 			};
@@ -22,14 +22,14 @@ angular.module('oraApp.collaboration')
 			//			return 'text-muted';
 			//	}
 			//};
-			//$scope.joinTask = function(task) {
-			//	taskService.joinTask(task, $scope.identity);
+			//$scope.joinItem = function(task) {
+			//	itemService.joinItem(task, $scope.identity);
 			//};
-			//$scope.unjoinTask = function() {
+			//$scope.unjoinItem = function() {
 			//	if(task.members[$scope.identity.id].estimation != null && !confirm("Unjoining this item will remove your estimation. Do you want to proceed?")) {
 			//		return;
 			//	}
-			//	taskService.unjoinTask(task, $scope.identity);
+			//	itemService.unjoinItem(task, $scope.identity);
 			//};
 			//$scope.editEstimation = function (estimation) {
 			//	$log.debug(estimation);
@@ -51,12 +51,12 @@ angular.module('oraApp.collaboration')
 			//	$log.debug($scope.myEstimation);
 			//};
 			//$scope.enableEstimationEditing = function (task, member) {
-			//	if($scope.isAllowed.estimateTask(task, member)) {
+			//	if($scope.isAllowed.estimateItem(task, member)) {
 			//		$scope.estimationEditing = true;
 			//	}
 			//};
 			//$scope.enableSubjectEditing = function(task) {
-			//	if(isAllowed.editTask(task)) {
+			//	if(isAllowed.editItem(task)) {
 			//		$log.debug('Enable subject editing');
 			//		$scope.subjectEditing = true;
 			//	}
@@ -65,10 +65,10 @@ angular.module('oraApp.collaboration')
 			//	$scope.subjectEditing = false;
 			//	$scope.task.subject = subject;
 			//};
-			//$scope.completeTask = function(task) {
-			//	taskService.completeTask(task, identity);
+			//$scope.completeItem = function(task) {
+			//	itemService.completeItem(task, identity);
 			//};
-			//$scope.acceptTask = function(task) {
-			//	taskService.acceptTask(task, identity);
+			//$scope.acceptItem = function(task) {
+			//	itemService.acceptItem(task, identity);
 			//}
 		}]);

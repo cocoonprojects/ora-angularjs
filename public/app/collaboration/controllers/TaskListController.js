@@ -1,14 +1,14 @@
 angular.module('oraApp.collaboration')
-	.controller('TaskListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'taskService', 'TASK_STATUS',
-		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, taskService, TASK_STATUS) {
-			var that = this;
-			$scope.tasks = taskService.query({ orgId: $stateParams.orgId });
+	.controller('TaskListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'itemService',
+		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, itemService) {
+			$scope.isOpen = false;
+			$scope.tasks = itemService.query({ orgId: $stateParams.orgId });
 
 			var isRefreshing = false;
 			this.refreshTasks = function() {
 				if(isRefreshing) return;
 				isRefreshing = true;
-				taskService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value; isRefreshing = false;});
+				itemService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value; isRefreshing = false;});
 			};
 
 			var tasksAutoUpdate = $interval(this.refreshTasks, 10000);
@@ -16,18 +16,15 @@ angular.module('oraApp.collaboration')
 				if(tasksAutoUpdate)
 					$interval.cancel(tasksAutoUpdate);
 			});
-			$scope.isAllowed = taskService.isAllowed.bind(taskService);
-			$scope.isOwner   = taskService.isOwner.bind(taskService);
+			$scope.isAllowed = itemService.isAllowed.bind(itemService);
+			$scope.isOwner   = itemService.isOwner.bind(itemService);
 
-			$scope.count = function($map) {
-				return Object.keys($map).length;
-			};
-			$scope.countEstimators = function(task) {
-				if(task.status != TASK_STATUS.ONGOING){
+			this.countEstimators = function(task) {
+				if(task.status != itemService.ITEM_STATUS.ONGOING){
 					return '';
 				}
-				var n = taskService.countEstimators(task);
-				var tot = $scope.count(task.members);
+				var n = itemService.countEstimators(task);
+				var tot = Object.keys(task.members).length;
 				switch (n) {
 					case tot:
 						return " (All members have estimated)";
@@ -38,48 +35,42 @@ angular.module('oraApp.collaboration')
 				}
 			};
 
-			var originatorEv;
 			this.openMoreMenu = function($mdOpenMenu, ev) {
-				originatorEv = ev;
 				$mdOpenMenu(ev);
 			};
 			this.openNewTask = function(ev) {
 				$mdDialog.show({
-					controller: NewTaskController,
-					templateUrl: "app/collaboration/partials/new-task.html",
+					controller: NewItemController,
+					templateUrl: "app/collaboration/partials/new-item.html",
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					scope: $scope.$new(),
 					locals: {
-						taskService: taskService
+						itemService: itemService
 					}
-				}).then(function(task) {
-					that.addTask(task);
-				});
+				}).then(this.addTask);
 			};
 			this.openEditTask = function(ev, task) {
 				$mdDialog.show({
-					controller: EditTaskController,
-					templateUrl: 'app/collaboration/partials/edit-task.html',
+					controller: EditItemController,
+					templateUrl: 'app/collaboration/partials/edit-item.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					locals: {
-						taskService: taskService,
+						itemService: itemService,
 						task: task
 					}
-				}).then(function(task) {
-					that.updateTasks(task);
-				});
+				}).then(this.updateTasks);
 			};
-			this.deleteTask = function(task) {
+			this.deleteItem = function(task) {
 				var confirm = $mdDialog.confirm()
 					.content("Deleting this item removes all its informations\nand cannot be undone. Do you want to proceed?")
 					.ok("Yes")
 					.cancel("No");
 				$mdDialog.show(confirm).then(function() {
-					taskService.delete(
+					itemService.delete(
 						{
 							orgId: task.organization.id,
 							taskId: task.id },
@@ -93,56 +84,47 @@ angular.module('oraApp.collaboration')
 								}
 							}
 						},
-						function(httpResponse) {
-							$log.warn(httpResponse);
-						});
+						$log.warn
+					);
 				});
 			};
-			this.joinTask = function(task) {
-				taskService.joinTask(
+			this.joinItem = function(task) {
+				itemService.joinItem(
 					{
 						orgId: task.organization.id,
 						taskId: task.id
 					},
 					{ },
-					function(task) {
-						that.updateTasks(task);
-					},
-					function(httpResponse) {
-						$log.warn(httpResponse);
-					});
+					this.updateTasks,
+					$log.warn
+				);
 			};
-			this.unjoinTask = function(task) {
-				taskService.unjoinTask(
+			this.unjoinItem = function(task) {
+				itemService.unjoinItem(
 					{
 						orgId: task.organization.id,
 						taskId: task.id },
 					{ },
-					function(task) {
-						that.updateTasks(task);
-					},
-					function(httpResponse) {
-						$log.warn(httpResponse);
-					});
+					this.updateTasks,
+					$log.warn
+				);
 			};
-			this.openEstimateTask = function(ev, task) {
+			this.openEstimateTask = function(ev, item) {
 				$mdDialog.show({
-					controller: EstimateTaskController,
-					templateUrl: 'app/collaboration/partials/estimate-task.html',
+					controller: EstimateItemController,
+					templateUrl: 'app/collaboration/partials/estimate-item.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					scope: $scope.$new(),
 					locals: {
-						taskService: taskService,
-						task: task
+						itemService: itemService,
+						item: item
 					}
-				}).then(function(task) {
-					that.updateTasks(task);
-				});
+				}).then(this.updateTasks);
 			};
-			this.executeTask = function(task) {
-				taskService.executeTask(
+			this.executeItem = function(task) {
+				itemService.executeItem(
 					{
 						orgId: task.organization.id,
 						taskId: task.id
@@ -150,46 +132,34 @@ angular.module('oraApp.collaboration')
 					{
 						action: 'execute'
 					},
-					function(task) {
-						that.updateTasks(task);
-					},
-					function(httpResponse) {
-						$log.warn(httpResponse);
-					});
+					this.updateTasks,
+					$log.warn
+				);
 			};
-			this.reExecuteTask = function(task) {
+			this.reExecuteItem = function(task) {
+				var that = this;
 				var confirm = $mdDialog.confirm()
 					.content("Reverting this item to ongoing allows users to join, members to unjoin and change their estimation. Do you want to proceed?")
 					.ok("Yes")
 					.cancel("No");
-				$mdDialog.show(confirm).then(function() {
-					that.executeTask(task);
-				});
+				$mdDialog.show(confirm)
+					.then(function() {
+						that.executeItem(task);
+					});
 			};
-			this.completeTask = function(task) {
+			this.completeItem = function(task) {
+				var that = this;
 				var confirm = $mdDialog.confirm()
 					.content("Completing this item freezes task members and their estimation. Do you want to proceed?")
 					.ok("Yes")
 					.cancel("No");
-				$mdDialog.show(confirm).then(function() {
-					taskService.completeTask(
-						{
-							orgId: task.organization.id,
-							taskId: task.id
-						},
-						{
-							action: 'complete'
-						},
-						function(task) {
-							that.updateTasks(task);
-						},
-						function(httpResponse) {
-							$log.warn(httpResponse);
-						});
-				});
+				$mdDialog.show(confirm)
+					.then(function() {
+						that.reCompleteItem(task);
+					});
 			};
-			this.reCompleteTask = function(task) {
-				taskService.completeTask(
+			this.reCompleteItem = function(task) {
+				itemService.completeItem(
 					{
 						orgId: task.organization.id,
 						taskId: task.id
@@ -197,15 +167,12 @@ angular.module('oraApp.collaboration')
 					{
 						action: 'complete'
 					},
-					function(task) {
-						that.updateTasks(task);
-					},
-					function(httpResponse) {
-						$log.warn(httpResponse);
-					});
+					this.updateTasks,
+					$log.warn
+				);
 			};
-			this.acceptTask = function(task) {
-				taskService.acceptTask(
+			this.acceptItem = function(task) {
+				itemService.acceptItem(
 					{
 						orgId: task.organization.id,
 						taskId: task.id
@@ -213,12 +180,9 @@ angular.module('oraApp.collaboration')
 					{
 						action: 'accept'
 					},
-					function(task) {
-						that.updateTasks(task);
-					},
-					function(httpResponse) {
-						$log.warn(httpResponse);
-					});
+					this.updateTasks,
+					$log.warn
+				);
 			};
 			this.openAssignShares = function(ev, task) {
 				$mdDialog.show({
@@ -229,15 +193,13 @@ angular.module('oraApp.collaboration')
 					clickOutsideToClose: true,
 					scope: $scope.$new(),
 					locals: {
-						taskService: taskService,
+						itemService: itemService,
 						task: task
 					}
-				}).then(function(task) {
-					that.updateTasks(task);
-				});
+				}).then(this.updateTasks);
 			};
-			this.remindTaskEstimate = function(task) {
-				taskService.remindTaskEstimate(
+			this.remindItemEstimate = function(task) {
+				itemService.remindItemEstimate(
 					{
 						orgId: task.organization.id,
 						taskId: task.id
@@ -245,18 +207,9 @@ angular.module('oraApp.collaboration')
 					{
 						action: 'accept'
 					},
-					function(receivers) {
-						$log.info(receivers);
-					},
-					function(httpResponse) {
-						$log.warn(httpResponse);
-					});
-			};
-			$scope.hasMore = function(task) {
-				return $scope.isAllowed('editTask', task) ||
-					$scope.isAllowed('deleteTask', task) ||
-					$scope.isAllowed('unjoinTask', task) ||
-					$scope.isAllowed('reExecuteTask', task);
+					$log.info,
+					$log.warn
+				);
 			};
 			this.addTask = function(task) {
 				$scope.tasks._embedded['ora:task'].unshift(task);
@@ -269,5 +222,11 @@ angular.module('oraApp.collaboration')
 						break;
 					}
 				}
+			};
+			this.hasMore = function(task) {
+				return $scope.isAllowed('editItem', task) ||
+					$scope.isAllowed('deleteItem', task) ||
+					$scope.isAllowed('unjoinItem', task) ||
+					$scope.isAllowed('reExecuteItem', task);
 			};
 		}]);

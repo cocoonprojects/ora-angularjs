@@ -1,18 +1,18 @@
-<md-dialog aria-label="Estimate Task" class="dialog">
+<md-dialog aria-label="Estimate Item" class="dialog">
 	<form name="form" ng-submit="submit()" novalidate>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
-			<h2>Estimate Task</h2>
+			<h2>Estimate Item</h2>
 			<span flex></span>
-			<md-button class="md-icon-button" ng-click="cancel()">
+			<md-button type="button" class="md-icon-button" ng-click="cancel()">
 				<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
 			</md-button>
 		</div>
 	</md-toolbar>
 	<md-dialog-content>
-		<div class="md-dialog-content">
+		<div class="md-dialog-content" layout="column">
 			<md-input-container>
-				<label>Estimated Credits</label>
+				<label>Credits</label>
 				<input data-ng-model="value" name="value" type="number" min="0" step="1" required>
 				<div ng-messages="form.value.$error" role="alert">
 					<div ng-message="required">Value is required</div>
@@ -25,7 +25,7 @@
 	</md-dialog-content>
 	<div class="md-actions" layout="row" layout-align="end center">
 		<md-button type="button" ng-click="cancel()">Cancel</md-button>
-		<md-button type="button" ng-click="skip()" style="margin-right:20px;" class="md-accent">Skip</md-button>
+		<md-button type="button" ng-click="skip()" class="md-accent">Skip</md-button>
 		<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
 	</div>
 	</form>
