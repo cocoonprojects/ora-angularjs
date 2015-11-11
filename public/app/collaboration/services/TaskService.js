@@ -105,11 +105,11 @@ TaskService.prototype = {
 		'ROLE_OWNER' : 'owner'
 	},
 	isOwner: function(task, userId) {
-		return task.members[userId] &&
+		return task.members[userId] !== undefined &&
 			task.members[userId].role == this.TASK_ROLES.ROLE_OWNER;
 	},
 	isMember: function(task, userId) {
-		return task.members[userId] &&
+		return task.members[userId] !== undefined &&
 			task.members[userId].role == this.TASK_ROLES.ROLE_MEMBER;
 	},
 	hasJoined: function(task, userId) {
