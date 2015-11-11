@@ -1,9 +1,8 @@
 <md-card>
 	<md-list ng-cloak>
-		<md-list-item ng-repeat="person in members['_embedded']['ora:organization-member']" ui-sref="org.pillars.people.profile({ memberId: person.id })">
+		<md-list-item ng-repeat="person in members['_embedded']['ora:member']" ui-sref="org.pillars.people.profile({ memberId: person.id })">
 			<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture }}" class="md-avatar" />
 			<p>{{ person.firstname }} {{ person.lastname }}</p>
-			<md-divider ng-if="!$last"></md-divider>
 		</md-list-item>
 	</md-list>
 </md-card>

@@ -16,8 +16,8 @@ angular.module('oraApp.collaboration')
 				if(tasksAutoUpdate)
 					$interval.cancel(tasksAutoUpdate);
 			});
-			$scope.isAllowed = taskService.isAllowed;
-			$scope.isOwner   = taskService.isOwner;
+			$scope.isAllowed = taskService.isAllowed.bind(taskService);
+			$scope.isOwner   = taskService.isOwner.bind(taskService);
 
 			$scope.count = function($map) {
 				return Object.keys($map).length;
@@ -253,10 +253,10 @@ angular.module('oraApp.collaboration')
 					});
 			};
 			$scope.hasMore = function(task) {
-				return $scope.isAllowed.editTask(task) ||
-					$scope.isAllowed.deleteTask(task) ||
-					$scope.isAllowed.unjoinTask(task) ||
-					$scope.isAllowed.reExecuteTask(task);
+				return $scope.isAllowed('editTask', task) ||
+					$scope.isAllowed('deleteTask', task) ||
+					$scope.isAllowed('unjoinTask', task) ||
+					$scope.isAllowed('reExecuteTask', task);
 			};
 			this.addTask = function(task) {
 				$scope.tasks._embedded['ora:task'].unshift(task);

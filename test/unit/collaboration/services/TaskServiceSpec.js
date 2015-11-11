@@ -11,8 +11,14 @@ describe('taskService', function() {
 		picture: "http://lorempixel.com/337/337/people"
 	};
 
-	beforeEach(inject(function($injector) {
-		service = $injector.get('taskService');
+	beforeEach(inject(function($resource) {
+		var identity = {
+			getToken: function() {
+				return null;
+			}
+		};
+
+		service = new TaskService($resource, identity);
 	}));
 
 	it('should return true for the task owner', function() {

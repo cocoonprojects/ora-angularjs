@@ -1,11 +1,13 @@
 <md-card>
 	<md-card-content>
 	<div layout="row">
-	<img alt="{{ profile.firstname }} {{ profile.lastname }}" ng-src="{{ profile.picture }}" style="border-radius: 50%" />
+		<div>
+			<img alt="{{ profile.firstname }} {{ profile.lastname }}" ng-src="{{ profile.picture }}" style="border-radius: 50%" />
+		</div>
 		<div layout="column" layout-padding>
 			<div class="md-title">{{ profile.firstname }} {{ profile.lastname }}</div>
 			<p>
-				{{ profile._embedded['ora:organization-membership'].role }} since {{ profile._embedded['ora:organization-membership'].createdAt | date : 'longDate' }}
+				{{ profile.role }} since {{ profile.createdAt | date : 'longDate' }}
 			</p>
 		</div>
 	</div>
@@ -18,23 +20,23 @@
 		<tbody>
 			<tr>
 				<th>Generated Credits</th>
-				<td>{{ profile._embedded.credits.total | number }}</td>
+				<td>{{ credits.total | number }}</td>
 			</tr>
 			<tr>
 				<th>Available Credits</th>
-				<td>{{ profile._embedded.credits.balance | number }}</td>
+				<td>{{ credits.balance | number }}</td>
 			</tr>
 			<tr>
 				<th>Last 3 months</th>
-				<td>{{ profile._embedded.credits.last3M | number }}</td>
+				<td>{{ credits.last3M | number }}</td>
 			</tr>
 			<tr>
 				<th>Last 6 months</th>
-				<td>{{ profile._embedded.credits.last6M | number }}</td>
+				<td>{{ credits.last6M | number }}</td>
 			</tr>
 			<tr>
 				<th>Last year</th>
-				<td>{{ profile._embedded.credits.lastY | number }}</td>
+				<td>{{ credits.last1Y | number }}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -51,7 +53,7 @@
 			</div>
 		</form>
 		<md-divider></md-divider>
-		<table class="stats" flex-sm>
+		<table class="stats" flex-sm style="margin-top: 24px">
 			<tbody>
 			<tr>
 				<th>Task Memberships</th>
@@ -74,7 +76,7 @@
 		<div style="text-align: right">{{ tasks.count }} of {{ tasks.total }}</div>
 	</md-card-content>
 	<md-list>
-		<md-list-item data-ng-repeat="task in tasks._embedded['ora:task']" ng-init="show = isAllowed.showShares(task)" ng-class="{'md-3-line': show, 'md-2-line': !show}">
+		<md-list-item data-ng-repeat="task in tasks._embedded['ora:task']" ng-init="show = isAllowed('showShares', task)" ng-class="{'md-3-line': show, 'md-2-line': !show}">
 			<div class="md-list-item-text" ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })">
 				<h3>
 					{{ task.subject }}

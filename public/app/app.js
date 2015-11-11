@@ -6,7 +6,8 @@ angular.module('oraApp', [
 	'oraApp.identity',
 	'oraApp.collaboration',
 	'oraApp.people',
-	'oraApp.flow'
+	'oraApp.flow',
+	'oraApp.accounting'
 ])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -27,7 +28,10 @@ angular.module('oraApp', [
 					controller: function($scope, members) {
 						$scope.members = members;
 						$scope.user = function(member) {
-							return $scope.members._embedded['ora:organization-member'][member.id];
+							if($scope.members) {
+								return $scope.members._embedded['ora:member'][member.id];
+							}
+							return null;
 						};
 					}
 				})
@@ -36,7 +40,7 @@ angular.module('oraApp', [
 					templateUrl: 'app/global/partials/pillars.html',
 					controller: function($scope) {
 						$scope.$on('$stateChangeSuccess',
-							function(event, toState, toParams, fromState, fromParams) {
+							function(event, toState) {
 								$scope.currentTab = toState.data.selectedTab;
 							});
 					}
@@ -49,13 +53,13 @@ angular.module('oraApp', [
 				.accentPalette('indigo');
 			$mdThemingProvider.theme('input', 'default')
 				.primaryPalette('grey');
-	}])
+		}])
+	.config(['$mdIconProvider',
+		function($mdIconProvider) {
+			$mdIconProvider
+				.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24)
+				.icon('star', 'components/material-design-icons/toggle/svg/production/ic_star_24px.svg');
+		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');
 	});
-	//.config(['$mdIconProvider',
-	//	function($mdIconProvider) {
-	//		$mdIconProvider
-	//			.iconSet('social', 'components/angular-material/demos/icon/demoSvgIconSets/social-icons.svg', 24)
-	//			.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24);
-	//	}]);

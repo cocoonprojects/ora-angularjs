@@ -10,6 +10,11 @@ server.set('port', server_port);
 server.use(express.static(__dirname + '/public'));
 
 var apiProxy = httpProxy.createProxyServer();
+apiProxy.on('proxyRes', function(proxyRes, req, res) {
+	if(proxyRes.headers.location) {
+		proxyRes.headers.location = '/api' + proxyRes.headers.location;
+	}
+});
 
 server.all("/api/*", function(req, res) {
 	req.url = req.url.substring(4);

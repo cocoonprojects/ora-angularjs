@@ -8,8 +8,8 @@
 				<tr>
 					<th colspan="2" style="text-align: left">Members</th>
 					<th style="width: 5em; text-align: right">Estimate</th>
-					<th style="width: 5em; text-align: right" ng-if="isAllowed.showShares(task)">Avg</th>
-					<th style="width: 5em; text-align: right" ng-if="isAllowed.showShares(task)">Dev</th>
+					<th style="width: 5em; text-align: right" ng-if="isAllowed('showShares', task)">Avg</th>
+					<th style="width: 5em; text-align: right" ng-if="isAllowed('showShares', task)">Dev</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -24,8 +24,8 @@
 						<span ng-switch-when="-1">Skipped</span>
 						<span ng-switch-default>{{ member.estimation | number : 0 }}</span>
 					</td>
-					<td style="text-align: right" ng-if="isAllowed.showShares(task)">{{ member.share * 100 | number : 2 }}</td>
-					<td style="text-align: right" ng-if="isAllowed.showShares(task)">{{ member.delta * 100 | number : 2 }}</td>
+					<td style="text-align: right" ng-if="isAllowed('showShares', task)">{{ member.share * 100 | number : 2 }}</td>
+					<td style="text-align: right" ng-if="isAllowed('showShares', task)">{{ member.delta * 100 | number : 2 }}</td>
 				</tr>
 			</tbody>
 		</table>
