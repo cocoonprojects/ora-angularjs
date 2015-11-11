@@ -58,7 +58,7 @@ angular.module('oraApp', [
 		function($mdIconProvider) {
 			$mdIconProvider
 				.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24)
-				.icon('star', 'components/material-design-icons/toggle/svg/production/ic_star_24px.svg');
+				.icon('star', 'svg/ic_star_24px.svg');
 		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');

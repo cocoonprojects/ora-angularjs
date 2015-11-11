@@ -5,15 +5,14 @@
   "homepage": "https://github.com/cocoonprojects/ora-angularjs",
   "private": true,
   "dependencies": {
-    "angular": null,
-    "angular-resource": null,
-    "angular-messages": null,
+    "angular": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "angular-messages": "~1.4.0",
     "angular-material": "1.*",
-    "angular-ui-router": null,
-    "angular-moment": "0.10.*",
-    "material-design-icons": "~2.0.0"
+    "angular-ui-router": "*",
+    "angular-moment": "0.10.*"
   },
   "devDependencies": {
-    "angular-mocks": null
+    "angular-mocks": "~1.4.0"
   }
 }
