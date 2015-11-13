@@ -17,8 +17,6 @@
     "karma": "^0.12.16",
     "karma-chrome-launcher": "^0.2.1",
     "karma-jasmine": "^0.1.5",
-    "karma-phantomjs2-launcher": "^0.3.2",
-    "phantomjs2": "^2.0.0",
     "protractor": "~1.0.0",
     "shelljs": "^0.2.6",
     "tmp": "0.0.23"

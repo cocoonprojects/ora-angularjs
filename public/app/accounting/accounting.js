@@ -2,12 +2,17 @@ angular.module('oraApp.accounting', ['ui.router', 'ngResource'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider) {
 			$stateProvider
-				.state('org.credits', {
-					url: '/credits',
-					templateUrl: 'app/accounting/partials/credits.html',
+				.state('org.pillars.accounting', {
+					abstract: true,
+					template: '<ui-view/>',
+					url: '/accounting',
 					data: {
 						selectedTab: 1
 					},
-					controller: 'MemberListController'
+				})
+				.state('org.pillars.accounting.personalStatement', {
+					url: '/personal-statement',
+					templateUrl: 'app/accounting/partials/personal-statement.html',
+					controller: 'PersonalStatementController as ctrl'
 				});
 		}]);

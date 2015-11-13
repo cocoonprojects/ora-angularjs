@@ -34,3 +34,10 @@ td img.md-avatar {
 md-content {
     background-color: transparent;
 }
+.transactions th, .transactions td {
+    font-size: 12px;
+    padding: 4px;
+}
+table {
+    margin-top: 24px;
+}
