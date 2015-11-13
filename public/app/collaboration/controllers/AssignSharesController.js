@@ -58,4 +58,4 @@ function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
 			$scope.form[error.field].$error.remote = error.message;
 		}
 	};
-};
+}

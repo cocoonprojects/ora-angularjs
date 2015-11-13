@@ -20,23 +20,25 @@
 	<md-card-content>
 		<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
 		<div class="md-headline" ui-sref="org.pillars.collaboration.task({ orgId: currOrg.id, taskId: task.id })" aria-label="Detail">{{ task.subject }}</div>
-		<div class="md-subheader" style="display: inline-block">Created at {{ task.createdAt | date : 'short' }}<span ng-if="task.acceptedAt">, Accepted at {{ task.acceptedAt | date : 'short'}}</span></div>
+		<div class="md-subheader">Created at {{ task.createdAt | date : 'short' }}</div>
+		<div class="md-subheader" ng-if="task.acceptedAt">Accepted at {{ task.acceptedAt | date : 'short'}}</div>
+		<div class="md-subheader">Status: {{ task.status | taskStatusLabel }}</div>
+		<div class="md-subheader" ng-switch="task.estimation">
+			<span ng-switch-when="null">Estimation in progress{{ ctrl.countEstimators(task) }}</span>
+			<span ng-switch-when="-1">Estimation skipped{{ ctrl.countEstimators(task) }}</span>
+			<span ng-switch-when="undefined"></span>
+			<span ng-switch-default>{{ task.estimation }} Credits{{ ctrl.countEstimators(task) }}</span>
+		</div>
 		<md-list class="members">
 			<md-list-item data-ng-repeat="member in task.members" ng-init="m = user(member)" style="display: inline-block" ui-sref="org.pillars.people.profile({ memberId: member.id })" aria-label="Member profile">
 				<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
 				<md-icon md-svg-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
 			</md-list-item>
 		</md-list>
-		<div ng-switch="task.estimation">
-			<span ng-switch-when="null">Estimation in progress{{ ctrl.countEstimators(task) }}</span>
-			<span ng-switch-when="-1">Estimation skipped{{ ctrl.countEstimators(task) }}</span>
-			<span ng-switch-when="undefined"></span>
-			<span ng-switch-default>{{ task.estimation }} Credits{{ ctrl.countEstimators(task) }}</span>
-		</div>
 	</md-card-content>
 	<md-divider></md-divider>
 	<div layout="row">
-		<div flex class="md-padding" style="font-size: 14px; line-height: 30px">Status: {{ task.status | taskStatusLabel }}</div>
+		<div flex></div>
 		<div class="md-actions" layout="row">
 			<md-button aria-label="Start task" ng-if="isAllowed('executeItem', task)" ng-click="ctrl.executeItem(task)">Start</md-button>
 			<md-button aria-label="Join task" ng-if="isAllowed('joinItem', task)" ng-click="ctrl.joinItem(task)">Join</md-button>
