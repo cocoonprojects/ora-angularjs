@@ -58,7 +58,10 @@ angular.module('oraApp', [
 		function($mdIconProvider) {
 			$mdIconProvider
 				.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24)
-				.icon('star', 'svg/ic_star_24px.svg');
+				.icon('star', 'svg/ic_star_24px.svg')
+				.icon('transfer', 'svg/direction21.svg')
+				.icon('withdrawal', 'svg/up21.svg')
+				.icon('deposit', 'svg/down13.svg');
 		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');

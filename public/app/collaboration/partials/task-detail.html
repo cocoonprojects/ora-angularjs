@@ -16,7 +16,7 @@
 				<tr data-ng-repeat="member in task.members" ng-init="m = user(member)">
 					<td style="width: 65px">
 						<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
-						<md-icon md-font-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
+						<md-icon md-svg-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)"></md-icon>
 					</td>
 					<td>{{ member.firstname }} {{ member.lastname }}</td>
 					<td ng-switch="member.estimation" style="text-align: right">

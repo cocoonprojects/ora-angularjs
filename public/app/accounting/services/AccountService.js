@@ -30,6 +30,14 @@ var AccountService = function($resource, identity) {
 	this.personalStatement = resource.personalStatement.bind(resource);
 	this.organizationStatement = resource.organizationStatement.bind(resource);
 	this.userStats = resource.userStats.bind(resource);
+
+	this.getInitialBalance = function(transactions) {
+		if(transactions && transactions.length > 0) {
+			var last = transactions.slice(-1);
+			return parseFloat(last[0].balance) - parseFloat(last[0].amount);
+		}
+		return 0;
+	};
 };
 angular.module('oraApp.accounting')
 	.service('accountService', ['$resource', 'identity', AccountService]);

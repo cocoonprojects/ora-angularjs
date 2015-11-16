@@ -4,7 +4,7 @@ angular.module('oraApp.people', ['ui.router', 'ngResource'])
 			$stateProvider
 				.state('org.pillars.people', {
 					abstract: true,
-					template: '<ui-view/>',
+					template: '<ui-view ng-cloak/>',
 					data: {
 						selectedTab: 3
 					}

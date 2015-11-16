@@ -32,7 +32,7 @@
 		<md-list class="members">
 			<md-list-item data-ng-repeat="member in task.members" ng-init="m = user(member)" style="display: inline-block" ui-sref="org.pillars.people.profile({ memberId: member.id })" aria-label="Member profile">
 				<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
-				<md-icon md-svg-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)">&#xE838;</md-icon>
+				<md-icon md-svg-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)"></md-icon>
 			</md-list-item>
 		</md-list>
 	</md-card-content>

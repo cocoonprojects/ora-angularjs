@@ -10,9 +10,14 @@ angular.module('oraApp.accounting', ['ui.router', 'ngResource'])
 						selectedTab: 1
 					},
 				})
+				.state('org.pillars.accounting.organizationStatement', {
+					url: '/organization-statement',
+					templateUrl: 'app/accounting/partials/statement.html',
+					controller: 'OrganizationStatementController as ctrl'
+				})
 				.state('org.pillars.accounting.personalStatement', {
 					url: '/personal-statement',
-					templateUrl: 'app/accounting/partials/personal-statement.html',
+					templateUrl: 'app/accounting/partials/statement.html',
 					controller: 'PersonalStatementController as ctrl'
 				});
 		}]);

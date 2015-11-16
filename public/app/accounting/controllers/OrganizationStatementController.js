@@ -1,5 +1,5 @@
 angular.module('oraApp.accounting')
-	.controller('PersonalStatementController', ['$scope', '$stateParams', 'accountService',
+	.controller('OrganizationStatementController', ['$scope', '$stateParams', 'accountService',
 		function ($scope, $stateParams, accountService) {
 			var limit = 0;
 			$scope.statement = null;
@@ -7,7 +7,7 @@ angular.module('oraApp.accounting')
 			this.loadMore = function() {
 				limit += 10;
 				accountService
-					.personalStatement({ orgId: $stateParams.orgId, limit: limit })
+					.organizationStatement({ orgId: $stateParams.orgId, limit: limit })
 					.$promise.then(function(result) {
 						$scope.statement = result;
 					});
