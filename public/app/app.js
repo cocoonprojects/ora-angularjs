@@ -19,7 +19,7 @@ angular.module('oraApp', [
 				.state('org', {
 					abstract: true,
 					url: '/:orgId',
-					template: '<ui-view/>',
+					templateUrl: 'app/global/partials/pillars.html',
 					resolve: {
 						members: function($stateParams, memberService) {
 							return memberService.query({ orgId: $stateParams.orgId });
@@ -33,12 +33,6 @@ angular.module('oraApp', [
 							}
 							return null;
 						};
-					}
-				})
-				.state('org.pillars', {
-					abstract: true,
-					templateUrl: 'app/global/partials/pillars.html',
-					controller: function($scope) {
 						$scope.$on('$stateChangeSuccess',
 							function(event, toState) {
 								$scope.currentTab = toState.data.selectedTab;
@@ -57,11 +51,17 @@ angular.module('oraApp', [
 	.config(['$mdIconProvider',
 		function($mdIconProvider) {
 			$mdIconProvider
-				.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24)
-				.icon('star', 'svg/ic_star_24px.svg')
-				.icon('transfer', 'svg/direction21.svg')
-				.icon('withdrawal', 'svg/up21.svg')
-				.icon('deposit', 'svg/down13.svg');
+					.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24)
+					.icon('star', 'svg/ic_star_24px.svg')
+					.icon('transfer', 'svg/ic_swap_horiz_24px.svg')
+					.icon('withdrawal', 'svg/ic_call_made_24px.svg')
+					.icon('deposit', 'svg/ic_call_received_24px.svg')
+					.icon('menu', 'svg/ic_menu_24px.svg')
+					.icon('check', 'svg/ic_check_24px.svg')
+					.icon('credits', 'svg/ic_attach_money_24px.svg')
+					.icon('add', 'svg/ic_add_24px.svg')
+					.icon('log', 'svg/ic_today_24px.svg')
+					.icon('add-task', 'svg/ic_note_add_black_24px.svg');
 		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');

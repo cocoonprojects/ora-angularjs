@@ -24,6 +24,13 @@ describe('itemService', function() {
 		service = new ItemService($resource, identity);
 	}));
 
+	it('should return false when the task has undefined members', function() {
+		var task = {
+		};
+
+		expect(service.isOwner(task, identity.id)).toBeFalsy();
+	});
+
 	it('should return true for the task owner', function() {
 		var task = {
 			members: {
@@ -54,6 +61,13 @@ describe('itemService', function() {
 		};
 
 		expect(service.isOwner(task, identity.id)).toBeFalsy();
+	});
+
+	it('should return false when the task has undefined members', function() {
+		var task = {
+		};
+
+		expect(service.isMember(task, identity.id)).toBeFalsy();
 	});
 
 	it('should return true for a task member, not owner', function() {
@@ -87,6 +101,13 @@ describe('itemService', function() {
 		};
 
 		expect(service.isMember(task, identity.id)).toBeFalsy();
+	});
+
+	it('should return false when the task has undefined members', function() {
+		var task = {
+		};
+
+		expect(service.hasJoined(task, identity.id)).toBeFalsy();
 	});
 
 	it('should return true for a task owner', function() {

@@ -1,14 +1,34 @@
 angular.module('oraApp.collaboration')
 	.controller('TaskListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'itemService',
 		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, itemService) {
-			$scope.isOpen = false;
+			$scope.streams = null;
+			$scope.stream = function() { return null; };
+			streamService.query({ orgId: $stateParams.orgId }, function(data) {
+				$scope.streams = data;
+				$scope.stream = function(task) {
+					if(task.stream) {
+						return data._embedded['ora:stream'][task.stream.id];
+					}
+					return null;
+				};
+			});
+
 			$scope.tasks = itemService.query({ orgId: $stateParams.orgId });
 
 			var isRefreshing = false;
 			this.refreshTasks = function() {
 				if(isRefreshing) return;
 				isRefreshing = true;
-				itemService.query({ orgId: $stateParams.orgId }, function(value) { $scope.tasks = value; isRefreshing = false;});
+				itemService.query(
+						{ orgId: $stateParams.orgId },
+						function(value) {
+							$scope.tasks = value;
+							isRefreshing = false;
+						},
+						function() {
+							isRefreshing = false;
+						}
+				);
 			};
 
 			var tasksAutoUpdate = $interval(this.refreshTasks, 10000);
@@ -27,11 +47,11 @@ angular.module('oraApp.collaboration')
 				var tot = Object.keys(task.members).length;
 				switch (n) {
 					case tot:
-						return " (All members have estimated)";
+						return "(All members have estimated)";
 					case 0:
-						return " (None has estimated yet)";
+						return "(None has estimated yet)";
 					default:
-						return " (" + n + " of " + tot + " members have estimated)";
+						return "(" + n + " of " + tot + " members have estimated)";
 				}
 			};
 

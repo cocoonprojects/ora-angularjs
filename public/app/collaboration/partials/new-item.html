@@ -21,7 +21,7 @@
 				</md-input-container>
 				<md-input-container>
 					<label>Stream</label>
-					<md-select data-ng-model="task.stream" name="stream" required>
+					<md-select data-ng-model="task.streamID" name="stream" required>
 						<md-option ng-repeat="stream in streams['_embedded']['ora:stream']" value="{{ stream.id }}">{{ stream.subject }}</md-option>
 					</md-select>
 					<div ng-messages="form.stream.$error" role="alert">

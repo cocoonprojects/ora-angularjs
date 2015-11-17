@@ -1,18 +1,18 @@
 <md-toolbar>
 	<div class="md-toolbar-tools">
 		<md-button class="md-icon-button" aria-label="Side Nav" ng-click="toggleLeft()" hide-gt-md>
-			<md-icon md-font-icon="menu" alt="menu" class="material-icons">&#xE5D2;</md-icon>
+			<md-icon md-svg-icon="menu" alt="menu"></md-icon>
 		</md-button>
 		<h2>
 			<span>{{ currOrg.name }}</span>
 		</h2>
 	</div>
-	<md-tabs class="md-primary" md-selected="currentTab" md-stretch-tabs="never">
-		<md-tab label="Items" ui-sref="org.pillars.collaboration.tasks"></md-tab>
-		<md-tab label="Credits" ui-sref="org.pillars.accounting.organizationStatement"></md-tab>
-		<md-tab label="Decisions" ui-sref="org.decisions"></md-tab>
-		<md-tab label="People" ui-sref="org.pillars.people.list"></md-tab>
-		<md-tab label="My Wallet" ui-sref="org.pillars.accounting.personalStatement"></md-tab>
-	</md-tabs>
 </md-toolbar>
-<md-content layout-padding flex ui-view style="height: 600px;"></md-content>
+<md-tabs class="md-primary" md-selected="currentTab" md-stretch-tabs="never">
+	<md-tab label="Items" ui-sref="org.collaboration"></md-tab>
+	<md-tab label="Credits" ui-sref="org.organizationStatement"></md-tab>
+	<md-tab label="Decisions" ui-sref="org.decisions"></md-tab>
+	<md-tab label="People" ui-sref="org.people"></md-tab>
+	<md-tab label="My Wallet" ui-sref="org.personalStatement"></md-tab>
+</md-tabs>
+<md-content ui-view></md-content>

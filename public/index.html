@@ -52,7 +52,7 @@
 	<meta name="google-signin-client_id" content="539661597463-g8vv08j3f667ka6l8gpm0pn34kcmrvhk.apps.googleusercontent.com">
 	<script src="https://apis.google.com/js/client:plusone.js" async defer></script>
 </head>
-<body layout="column" ng-controller="AppController" style="background-color: #ececec">
+<body layout="column" ng-controller="AppController">
 	<section layout="row" flex ng-controller="IdentityController">
 		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
 			<md-toolbar id="identityBox" class="md-tall md-hue-2">
@@ -61,38 +61,15 @@
 					<div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div>
 				</div>
 			</md-toolbar>
-			<md-list layout-padding layout="column" ng-controller="LeftController">
-				<md-item>
-					<md-button flex ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
-				</md-item>
-				<md-item ng-repeat="membership in identity.getMemberships()">
-					<md-button ui-sref="org.pillars.collaboration.tasks({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
-				</md-item>
-				<md-item ng-if="identity.isAuthenticated()">
-					<md-button ng-click="signOut()">Logout</md-button>
-				</md-item>
-			</md-list>
-				<!--
-				<md-menu>
-					<md-menu-content>
-						<md-menu-item ng-repeat="membership in identity.getMemberships()._embedded['ora:organization-membership']">
-							<md-button>
-								{{ membership.organization.name }}
-							</md-button>
-						</md-menu-item>
-						<md-menu-item>
-							<md-button>
-								<md-icon class="material-icons">&#xE8F9;</md-icon>All organizations
-							</md-button>
-						</md-menu-item>
-						<md-menu-item>
-							<md-button>Logout</md-button>
-						</md-menu-item>
-					</md-menu-content>
-				</md-menu>
-				-->
+			<md-content flex layout-padding>
+				<section layout="column" layout-fill ng-controller="LeftController">
+					<md-button ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
+					<md-button ng-repeat="membership in identity.getMemberships()" ui-sref="org.collaboration({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
+					<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
+				</section>
+			</md-content>
 		</md-sidenav>
-		<div layout="column" flex ui-view></div>
+		<md-content layout="column" flex ui-view></md-content>
 	</section>
 </body>
 </html>

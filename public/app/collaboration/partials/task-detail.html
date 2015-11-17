@@ -1,47 +1,45 @@
-<md-card>
-	<md-card-content>
-		<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
-		<h2 class="md-title">{{ task.subject }}</h2>
-		<div class="md-subheader">{{ task.status | taskStatusLabel }}</div>
-		<table style="width: 100%">
-			<thead>
-				<tr>
-					<th colspan="2" style="text-align: left">Members</th>
-					<th style="width: 5em; text-align: right">Estimate</th>
-					<th style="width: 5em; text-align: right" ng-if="isAllowed('showShares', task)">Avg</th>
-					<th style="width: 5em; text-align: right" ng-if="isAllowed('showShares', task)">Dev</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr data-ng-repeat="member in task.members" ng-init="m = user(member)">
-					<td style="width: 65px">
-						<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
-						<md-icon md-svg-icon="star" class="md-accent material-icons owner" ng-if="isOwner(task, member.id)"></md-icon>
-					</td>
-					<td>{{ member.firstname }} {{ member.lastname }}</td>
-					<td ng-switch="member.estimation" style="text-align: right">
-						<md-icon ng-switch-when="-2" md-font-icon="check" class="material-icons" style="color: Green">&#xE5CA;</md-icon>
-						<span ng-switch-when="-1">Skipped</span>
-						<span ng-switch-default>{{ member.estimation | number : 0 }}</span>
-					</td>
-					<td style="text-align: right" ng-if="isAllowed('showShares', task)">{{ member.share * 100 | number : 2 }}</td>
-					<td style="text-align: right" ng-if="isAllowed('showShares', task)">{{ member.delta * 100 | number : 2 }}</td>
-				</tr>
-			</tbody>
-		</table>
-	</md-card-content>
-	<md-list>
-		<md-list-item>
-			<p class="md-list-item-text">
-				<span class="timestamp">{{ task.createdAt | date : 'short' }}</span>
-				<strong>{{ task.createdBy }}</strong> created this item <span am-time-ago="parseDate(task.createdAt)"></span>
+<section class="md-padding">
+	<div class="md-accent md-subheader">{{ stream(task).subject }}</div>
+	<h1>{{ task.subject }}</h1>
+	<div class="md-subheader">{{ task.status | taskStatusLabel }}</div>
+	<p ng-switch="task.estimation">
+		<span ng-switch-when="null">Estimation in progress{{ ctrl.countEstimators(task) }}</span>
+		<span ng-switch-when="-1">Estimation skipped{{ ctrl.countEstimators(task) }}</span>
+		<span ng-switch-when="undefined"></span>
+		<span ng-switch-default>{{ task.estimation }} Credits</span>
+	</p>
+</section>
+<md-list>
+	<md-list-item ng-class="isAllowed('showShares', task) ? 'md-3-line' : 'md-2-line'" data-ng-repeat="member in task.members" ng-init="m = user(member)">
+		<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+		<div class="md-list-item-text" ui-sref="org.profile({ memberId: member.id })" md-ink-ripple>
+			<h3>{{ member.firstname }} {{ member.lastname }} ({{ member.role }})
+			</h3>
+			<h4 ng-if="isAllowed('showShares', task)">
+				{{ member.share | percentage:2 }} of shares ({{ member.delta | percentage:2:true }} respect of auto-assessment)
+			</h4>
+			<p ng-switch="member.estimation">
+				<span ng-switch-when="undefined">Has not estimated</span>
+				<span ng-switch-when="-2">Estimated</span>
+				<span ng-switch-when="-1">Skipped estimation</span>
+				<span ng-switch-default>Estimated {{ member.estimation | number:0 }} credits</span>
 			</p>
-		</md-list-item>
-		<md-list-item ng-if="task.acceptedAt">
-			<p class="md-list-item-text">
-				<span class="timestamp">{{ task.acceptedAt | date : 'short' }}</span>
-				<strong>{{}}</strong> accepted this item <span am-time-ago="parseDate(task.acceptedAt)"></span>
-			</p>
-		</md-list-item>
-	</md-list>
-</md-card>
+		</div>
+	</md-list-item>
+</md-list>
+<md-list>
+	<md-list-item ng-if="task.acceptedAt" class="md-2-line">
+		<md-icon md-svg-icon="log" class="md-avatar-icon"></md-icon>
+		<div class="md-list-item-text">
+			<h3>{{ task.createdBy }} accepted this item <span am-time-ago="parseDate(task.acceptedAt)"></span></h3>
+			<p>{{ task.acceptedAt | date : 'short' }}</p>
+		</div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<md-icon md-svg-icon="log" class="md-avatar-icon"></md-icon>
+		<div class="md-list-item-text">
+			<h3>{{ task.createdBy }} created this item <span am-time-ago="parseDate(task.createdAt)"></span></h3>
+			<p>{{ task.createdAt | date : 'short' }}</p>
+		</div>
+	</md-list-item>
+</md-list>

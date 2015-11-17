@@ -1,29 +1,43 @@
-<div class="md-title">Actual Balance: {{ statement.transactions[0].balance || 0 | number:2 }}</div>
+<md-fab-speed-dial md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed" ng-if="isAllowed('deposit', statement)">
+	<md-fab-trigger>
+		<md-button aria-label="Account Menu" class="md-fab md-warn">
+			<md-icon md-svg-icon="add"></md-icon>
+		</md-button>
+	</md-fab-trigger>
+	<md-fab-actions>
+		<md-button aria-label="Deposit" class="md-fab md-raised md-mini" ng-click="ctrl.openDeposit($event)">
+			<md-icon md-svg-icon="deposit" style="fill: Black" title="New Deposit"></md-icon>
+		</md-button>
+		<md-button aria-label="Withdrawal" class="md-fab md-raised md-mini" ng-click="ctrl.openWithdrawal($event)">
+			<md-icon md-svg-icon="withdrawal" style="fill: Black" title="New Withdrawal"></md-icon>
+		</md-button>
+		<md-button aria-label="Incoming Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openIncomingTransfer($event)">
+			<md-icon md-svg-icon="transfer" style="fill: Black" title="New Incoming Transfer"></md-icon>
+		</md-button>
+		<md-button aria-label="Outgoing Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openOutgoingTransfer($event)">
+			<md-icon md-svg-icon="transfer" style="fill: Black" title="New Outgoing Transfer"></md-icon>
+		</md-button>
+	</md-fab-actions>
+</md-fab-speed-dial>
+<h1 class="md-padding">Actual Balance: <span ng-style="statement.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement.transactions[0].balance || 0 | number:2 }}</span></h1>
 <md-list>
-	<md-list-item class="md-2-line" data-ng-repeat="transaction in statement.transactions">
-		<div ng-switch="transaction.type" style="margin: auto; margin-right: 16px">
-			<md-icon class="md-accent" ng-switch-when="IncomingTransfer" md-svg-icon="transfer" class="material-icons"></md-icon>
-			<md-icon class="md-accent" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer" class="material-icons"></md-icon>
-			<md-icon class="md-accent" ng-switch-when="Withdrawal" md-svg-icon="withdrawal" class="material-icons"></md-icon>
-			<md-icon class="md-accent" ng-switch-when="Deposit" md-svg-icon="deposit" class="material-icons"></md-icon>
-		</div>
+	<md-list-item class="md-3-line" data-ng-repeat="transaction in statement.transactions" ng-switch="transaction.type">
+		<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
+		<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
+		<md-icon class="md-avatar-icon" ng-switch-when="Withdrawal" md-svg-icon="withdrawal"></md-icon>
+		<md-icon class="md-avatar-icon" ng-switch-when="Deposit" md-svg-icon="deposit"></md-icon>
 		<div class="md-list-item-text">
-			<div layout="row">
-				<h3>{{ transaction.description }}</h3>
-				<span flex></span>
-				<div ng-style="transaction.amount < 0 ? { color : 'Red' } : {}">{{ transaction.amount | number:2 }}</div>
-			</div>
-			<p ng-switch="transaction.type" layout="row">
+			<h3>{{ transaction.description }}</h3>
+			<h4 ng-switch="transaction.type">
+				<span ng-style="transaction.amount < 0 ? { color : 'Red' } : {}">{{ transaction.amount | number:2 }}</span>
 				<span ng-switch-when="IncomingTransfer">from {{ transaction.payer }}</span>
 				<span ng-switch-when="OutgoingTransfer">to {{ transaction.payee }}</span>
-				<span ng-switch-default>by {{ transaction.payer }} {{ transaction.payee }}</span>
-				<span flex></span>
-				<span>{{ transaction.date | date:short }}</span>
-			</p>
+				<span ng-switch-when="Deposit">by {{ transaction.payer }}</span>
+				<span ng-switch-when="Withdrawal">by {{ transaction.payee }}</span>
+			</h4>
+			<p>{{ transaction.date | date:short }}</p>
 		</div>
 	</md-list-item>
 </md-list>
-<div ng-if="statement.total > statement.count"><md-button ng-click="ctrl.loadMore()">More</md-button></div>
-<div class="md-title">
-	Initial Balance: {{ ctrl.getInitialBalance() | number:2 }}
-</div>
+<div class="md-padding" style="font-size: 120%"><span style="font-weight: bold">Initial Balance:</span> <span ng-style="initialBalance < 0 ? { color : 'Red' } : {}">{{ initialBalance | number:2 }}</span></div>
+<div class="md-padding" style="padding-bottom: 0; padding-top: 0">{{ statement.count }} transactions shown of {{ statement.total}} overall <md-button ng-if="statement.total > statement.count" ng-click="ctrl.loadMore()">Load more</md-button></div>

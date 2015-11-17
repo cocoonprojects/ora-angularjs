@@ -2,35 +2,20 @@ angular.module('oraApp.collaboration', ['ui.router'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider) {
 			$stateProvider
-				.state('org.pillars.collaboration', {
-					abstract: true,
-					template: '<ui-view/>',
+				.state('org.collaboration', {
+					url: '/tasks',
+					templateUrl: 'app/collaboration/partials/task-list.html',
 					data: {
 						selectedTab: 0
 					},
-					resolve: {
-						streams: function($stateParams, streamService) {
-							return streamService.query({ orgId: $stateParams.orgId });
-						}
-					},
-					controller: function($scope, streams) {
-						$scope.streams = streams;
-						$scope.stream = function(task) {
-							if($scope.streams && task.stream) {
-								return $scope.streams._embedded['ora:stream'][task.stream.id];
-							}
-							return null;
-						};
-					}
-				})
-				.state('org.pillars.collaboration.tasks', {
-					url: '/tasks',
-					templateUrl: 'app/collaboration/partials/task-list.html',
 					controller: 'TaskListController as ctrl'
 				})
-				.state('org.pillars.collaboration.task', {
+				.state('org.item', {
 					url: '/tasks/:taskId',
 					templateUrl: 'app/collaboration/partials/task-detail.html',
+					data: {
+						selectedTab: 0
+					},
 					controller: 'TaskDetailController'
 				});
 		}

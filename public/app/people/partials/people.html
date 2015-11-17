@@ -1,7 +1,7 @@
 <md-list>
-	<md-list-item class="md-2-line" ng-repeat="person in members['_embedded']['ora:member']" ui-sref="org.pillars.people.profile({ memberId: person.id })">
+	<md-list-item class="md-2-line" ng-repeat="person in members['_embedded']['ora:member']">
 		<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture }}" class="md-avatar" />
-		<div class="md-list-item-text">
+		<div class="md-list-item-text" ui-sref="org.profile({ memberId: person.id })" md-ink-ripple>
 			<h3>{{ person.firstname }} {{ person.lastname }}</h3>
 			<p>{{ person.role }}</p>
 		</div>

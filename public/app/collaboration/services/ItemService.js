@@ -111,15 +111,18 @@ ItemService.prototype = {
 		'ROLE_OWNER' : 'owner'
 	},
 	isOwner: function(task, userId) {
-		return task.members[userId] !== undefined &&
-			task.members[userId].role == this.ITEM_ROLES.ROLE_OWNER;
+		return task.members &&
+				task.members.hasOwnProperty(userId) &&
+				task.members[userId].role == this.ITEM_ROLES.ROLE_OWNER;
 	},
 	isMember: function(task, userId) {
-		return task.members[userId] !== undefined &&
-			task.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
+		return task.members &&
+				task.members.hasOwnProperty(userId) &&
+				task.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
 	},
 	hasJoined: function(task, userId) {
-		return task.members[userId] !== undefined;
+		return task.members &&
+				task.members.hasOwnProperty(userId);
 	},
 	isEstimationCompleted: function(task) {
 		for(var id in task.members) {

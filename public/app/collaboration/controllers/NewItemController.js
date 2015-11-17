@@ -6,23 +6,18 @@ function NewItemController($scope, $log, $stateParams, $mdDialog, itemService) {
 	};
 	$scope.submit = function() {
 		itemService.save(
-			{
-				orgId: $stateParams.orgId
-			},
-			{
-				subject: $scope.task.subject,
-				streamID: $scope.task.stream
-			},
-			function(value) {
-				$mdDialog.hide(value);
-			},
-			function(httpResponse) {
-				if(httpResponse.status == 400) {
-					that.showErrors(httpResponse.data.errors);
-				} else {
-					$log.warn(httpResponse);
-				}
-			});
+				{ orgId: $stateParams.orgId },
+				$scope.task,
+				function(value) {
+					$mdDialog.hide(value);
+				},
+				function(httpResponse) {
+					if(httpResponse.status == 400) {
+						that.showErrors(httpResponse.data.errors);
+					} else {
+						$log.warn(httpResponse);
+					}
+				});
 	};
 	this.showErrors = function(errors) {
 		for(var i = 0; i < errors.length; i++) {

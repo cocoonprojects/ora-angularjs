@@ -75,4 +75,129 @@ describe('accountService', function() {
 		];
 		expect(service.getInitialBalance(transactions)).toBe(-30);
 	});
+
+	it('should return true if the statement contains organization reference', function() {
+		var statement = {
+			organization: {
+				id: '123',
+				name: 'Lorem Ipsum'
+			}
+		};
+		expect(service.isOrganizationAccount(statement)).toBeTruthy();
+	});
+
+	it('should return false if the statement does not contains organization reference', function() {
+		var statement = {
+			organization: null
+		};
+		expect(service.isOrganizationAccount(statement)).toBeFalsy();
+	});
+
+	it('should return false if the statement does not contain user as holder', function() {
+		var statement = {
+			holders: {
+				'00000000-0000-0000-0000-000000000001': {
+					id: '00000000-0000-0000-0000-000000000001',
+					firstname: 'Jane',
+					lastname: 'Doe'
+				}
+			}
+		};
+		expect(service.isHolder(statement, identity.id)).toBe(false);
+	});
+
+	it('should return false if the statement does not contain user as holder', function() {
+		var statement = {
+			holders: {}
+		};
+		expect(service.isHolder(statement, identity.id)).toBe(false);
+	});
+
+	it('should return false if the statement does not contain user as holder', function() {
+		var statement = {
+		};
+		expect(service.isHolder(statement, identity.id)).toBeFalsy();
+	});
+
+	it('should return true if the statement contains user as holder', function() {
+		var statement = {
+			holders: {
+				'00000000-0000-0000-0000-000000000000': null
+			}
+		};
+		expect(service.isHolder(statement, identity.id)).toBe(true);
+	});
+
+	it('should return true if the statement contains user as holder', function() {
+		var statement = {
+			holders: {
+				'00000000-0000-0000-0000-000000000000': {
+					id: '00000000-0000-0000-0000-000000000000',
+					firstname: 'John',
+					lastname: 'Doe'
+				}
+			}
+		};
+		expect(service.isHolder(statement, identity.id)).toBe(true);
+	});
+
+	it('should return what the user can do on an organization account', function() {
+		var statement = {
+			organization: {
+				id: '123',
+				name: 'Lorem Ipsum'
+			},
+			holders: {
+				'00000000-0000-0000-0000-000000000001': {
+					id: '00000000-0000-0000-0000-000000000001',
+					firstname: 'Jane',
+					lastname: 'Doe'
+				}
+			}
+		};
+		expect(service.isAllowed('deposit', statement)).toBe(false);
+	});
+
+	it('should return what the user can do on an organization account as holder', function() {
+		var statement = {
+			organization: {
+				id: '123',
+				name: 'Lorem Ipsum'
+			},
+			holders: {
+				'00000000-0000-0000-0000-000000000000': {
+					id: '00000000-0000-0000-0000-000000000000',
+					firstname: 'John',
+					lastname: 'Doe'
+				}
+			}
+		};
+		expect(service.isAllowed('deposit', statement)).toBe(true);
+	});
+
+	it('should return what the user can do on an personal account', function() {
+		var statement = {
+			holders: {
+				'00000000-0000-0000-0000-000000000001': {
+					id: '00000000-0000-0000-0000-000000000001',
+					firstname: 'Jane',
+					lastname: 'Doe'
+				}
+			}
+		};
+		expect(service.isAllowed('deposit', statement)).toBeFalsy();
+	});
+
+	it('should return what the user can do on an personal account as holder', function() {
+		var statement = {
+			holders: {
+				'00000000-0000-0000-0000-000000000000': {
+					id: '00000000-0000-0000-0000-000000000000',
+					firstname: 'John',
+					lastname: 'Doe'
+				}
+			}
+		};
+		expect(service.isAllowed('deposit', statement)).toBeFalsy();
+	});
 });

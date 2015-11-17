@@ -16,11 +16,8 @@ md-sidenav .md-button {
 .dialog {
     width: 50%;
     max-width: 600px;
-    min-width: 300px
+    min-width: 300px;
 }
-.stats tbody th {
-    text-align: left;
-}
-.stats tbody td {
-    text-align: right;
+h1.md-padding {
+    margin: 0;
 }
