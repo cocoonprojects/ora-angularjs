@@ -1,6 +1,7 @@
 angular.module('oraApp.accounting')
 	.controller('OrganizationStatementController', ['$scope', '$stateParams', '$mdDialog', 'accountService',
 		function ($scope, $stateParams, $mdDialog, accountService) {
+			var that = this;
 			var limit = 0;
 			$scope.statement = null;
 			$scope.initialBalance = 0;
@@ -42,5 +43,24 @@ angular.module('oraApp.accounting')
 						account: $scope.statement
 					}
 				}).then(this.addTransaction);
+			};
+			this.openNewIncomingTransfer = function(ev) {
+				$mdDialog.show({
+					controller: NewIncomingTransferController,
+					templateUrl: "app/accounting/partials/new-incoming-transfer.html",
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					locals: {
+						account: $scope.statement
+					}
+				}).then(function(data) {
+					for(var i = 0; i < data._embedded['ora:transaction'].length; i++) {
+						var transaction = data._embedded['ora:transaction'][i];
+						if(transaction.account.id == $scope.statement.id) {
+							that.addTransaction(transaction);
+							return;
+						}
+					}
+				});
 			};
 		}]);
