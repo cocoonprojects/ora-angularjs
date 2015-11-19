@@ -12,7 +12,7 @@ angular.module('oraApp.accounting')
 					.personalStatement({ orgId: $stateParams.orgId, limit: limit })
 					.$promise.then(function(result) {
 						$scope.statement = result;
-						$scope.initialBalance = accountService.getInitialBalance(result.transactions);
+						$scope.initialBalance = accountService.getInitialBalance(result._embedded.transactions);
 					});
 			};
 			this.loadMore();
