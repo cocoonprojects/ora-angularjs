@@ -28,6 +28,11 @@ var AccountService = function($resource, identity) {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'accounts', memberId: 'deposits' }
+		},
+		withdraw: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'accounts', memberId: 'withdrawals' }
 		}
 	});
 	this.get = resource.get.bind(resource);
@@ -36,6 +41,7 @@ var AccountService = function($resource, identity) {
 	this.organizationStatement = resource.organizationStatement.bind(resource);
 	this.userStats = resource.userStats.bind(resource);
 	this.deposit = resource.deposit.bind(resource);
+	this.withdraw = resource.withdraw.bind(resource);
 
 	this.getIdentity = function() {
 		return identity;

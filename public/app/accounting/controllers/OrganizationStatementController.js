@@ -32,4 +32,15 @@ angular.module('oraApp.accounting')
 					}
 				}).then(this.addTransaction);
 			};
+			this.openNewWithdrawal = function(ev) {
+				$mdDialog.show({
+					controller: NewWithdrawalController,
+					templateUrl: "app/accounting/partials/new-withdrawal.html",
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					locals: {
+						account: $scope.statement
+					}
+				}).then(this.addTransaction);
+			};
 		}]);
