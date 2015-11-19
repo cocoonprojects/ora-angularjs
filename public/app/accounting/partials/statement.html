@@ -14,6 +14,9 @@
 		<md-button aria-label="Incoming Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openNewIncomingTransfer($event)">
 			<md-icon md-svg-icon="transfer" style="fill: Black" title="New Incoming Transfer"></md-icon>
 		</md-button>
+		<md-button aria-label="Outgoing Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openNewOutgoingTransfer($event)">
+			<md-icon md-svg-icon="transfer" style="fill: Black" title="New Outgoing Transfer"></md-icon>
+		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
 <h1 class="md-padding">Actual Balance: <span ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }}</span></h1>

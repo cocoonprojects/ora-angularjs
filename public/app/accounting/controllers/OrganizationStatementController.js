@@ -63,4 +63,23 @@ angular.module('oraApp.accounting')
 					}
 				});
 			};
+			this.openNewOutgoingTransfer = function(ev) {
+				$mdDialog.show({
+					controller: NewOutgoingTransferController,
+					templateUrl: "app/accounting/partials/new-outgoing-transfer.html",
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					locals: {
+						account: $scope.statement
+					}
+				}).then(function(data) {
+					for(var i = 0; i < data._embedded['ora:transaction'].length; i++) {
+						var transaction = data._embedded['ora:transaction'][i];
+						if(transaction.account.id == $scope.statement.id) {
+							that.addTransaction(transaction);
+							return;
+						}
+					}
+				});
+			};
 		}]);

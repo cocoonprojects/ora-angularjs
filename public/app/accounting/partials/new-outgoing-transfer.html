@@ -1,0 +1,45 @@
+<md-dialog aria-label="New Outgoing Transfer" class="dialog">
+	<form name="form" ng-submit="submit()" novalidate>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>New Outgoing Transfer</h2>
+				<span flex></span>
+				<md-button type="button" class="md-icon-button" ng-click="cancel()">
+					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div class="md-dialog-content" layout="column">
+				<md-input-container>
+					<label>Payer e-mail</label>
+					<input name="payee" type="email" required data-ng-model="transfer.payee"/>
+					<div ng-messages="form.payee.$error" role="alert">
+						<div ng-message="required">Payer e-mail is required</div>
+						<div ng-message="remote">{{ form.payee.$error.remote }}</div>
+					</div>
+				</md-input-container>
+				<md-input-container>
+					<label>Credits</label>
+					<input name="amount" type="number" min="0" required data-ng-model="transfer.amount">
+					<div ng-messages="form.amount.$error" role="alert">
+						<div ng-message="required">Credits is required</div>
+						<div ng-message="min">Credits must be greater than 0</div>
+						<div ng-message="remote">{{ form.amount.$error.remote }}</div>
+					</div>
+				</md-input-container>
+				<md-input-container>
+					<label>Description</label>
+					<input name="description" type="text" maxlength="256" data-ng-model="transfer.description">
+					<div ng-messages="form.stream.$error" role="alert">
+						<div ng-message="maxlength">Description can be 256 characters long at most</div>
+					</div>
+				</md-input-container>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions layout="row" layout-align="end center">
+			<md-button type="button" ng-click="cancel()">Cancel</md-button>
+			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>
