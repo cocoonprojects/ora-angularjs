@@ -1,5 +1,4 @@
 function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
-	var that = this;
 	$scope.task = task;
 	$scope.available = 100;
 	$scope.updatePercentage = function() {
@@ -12,9 +11,6 @@ function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
 			}
 		}
 		$scope.available = tot;
-		//if($scope.available !== 0) {
-		//	$scope.form.
-		//}
 	};
 	$scope.shares = {};
 	$scope.cancel = function() {
@@ -24,38 +20,27 @@ function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
 		itemService.skipShares(
 			{ orgId: task.organization.id, taskId: task.id },
 			{},
-			function(value) {
-				$mdDialog.hide(value);
-			},
-			function(httpResponse) {
-				if(httpResponse.status == 422) {
-					that.showErrors(httpResponse.data);
-				} else {
-					$log.warn(httpResponse);
-				}
-			});
+			$mdDialog.hide(value),
+			this.onError
+		);
 	};
 	$scope.submit = function() {
 		itemService.assignShares(
 			{ orgId: task.organization.id, taskId: task.id },
 			$scope.shares,
-			function(value) {
-				$mdDialog.hide(value);
-			},
-			function(httpResponse) {
-				if(httpResponse.status == 422) {
-					that.showErrors(httpResponse.data);
-				} else {
-					$log.warn(httpResponse);
-				}
-			});
+			$mdDialog.hide(value),
+			this.onError
+		);
 	};
-	this.showErrors = function(data) {
-		$scope.form.$error.remote = data.description;
-		var errors = data.errors;
-		for(var i = 0; errors && i < errors.length; i++) {
-			var error = errors[i];
-			$scope.form[error.field].$error.remote = error.message;
+	this.onError = function(httpResponse) {
+		if(httpResponse.status == 400) {
+			var errors = httpResponse.data.errors;
+			for(var i = 0; i < errors.length; i++) {
+				var error = errors[i];
+				$scope.form[error.field].$error.remote = error.message;
+			}
+		} else {
+			$log.warn(httpResponse);
 		}
 	};
 }

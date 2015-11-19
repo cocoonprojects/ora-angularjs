@@ -5,7 +5,7 @@
 		</md-button>
 	</md-fab-trigger>
 	<md-fab-actions>
-		<md-button aria-label="New item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewTask($event)">
+		<md-button aria-label="New item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event)">
 			<md-icon md-svg-icon="add-task" title="New Task"></md-icon>
 		</md-button>
 		<md-button aria-label="New stream" class="md-fab md-raised md-mini">
@@ -38,7 +38,7 @@
 	<md-card-actions layout="row" layout-align="end center">
 		<md-button aria-label="Start task" ng-if="isAllowed('executeItem', task)" ng-click="ctrl.executeItem(task)">Start</md-button>
 		<md-button aria-label="Join task" ng-if="isAllowed('joinItem', task)" ng-click="ctrl.joinItem(task)">Join</md-button>
-		<md-button aria-label="Estimate task" ng-if="isAllowed('estimateItem', task)" ng-click="ctrl.openEstimateTask($event, task)">Estimate</md-button>
+		<md-button aria-label="Estimate task" ng-if="isAllowed('estimateItem', task)" ng-click="ctrl.openEstimateItem($event, task)">Estimate</md-button>
 		<md-button aria-label="Complete task" ng-if="isAllowed('completeItem', task)" ng-click="ctrl.completeItem(task)">Mark as Completed</md-button>
 		<md-button aria-label="Accept task" ng-if="isAllowed('acceptItem', task)" ng-click="ctrl.acceptItem(task)">Mark as Accepted</md-button>
 		<md-button aria-label="Assign shares" ng-if="isAllowed('assignShares', task)" ng-click="ctrl.openAssignShares($event, task)">Assign Shares</md-button>
@@ -48,7 +48,7 @@
 			</md-button>
 			<md-menu-content width="4">
 				<md-menu-item ng-if="isAllowed('editItem', task)">
-					<md-button ng-click="ctrl.openEditTask($event, task)">
+					<md-button ng-click="ctrl.openEditItem($event, task)">
 						<md-icon class="material-icons" md-menu-align-target>&#xE150;</md-icon>
 						Edit Task
 					</md-button>

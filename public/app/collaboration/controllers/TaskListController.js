@@ -30,12 +30,12 @@ angular.module('oraApp.collaboration')
 						}
 				);
 			};
-
 			var tasksAutoUpdate = $interval(this.refreshTasks, 10000);
 			$scope.$on('$destroy', function() {
 				if(tasksAutoUpdate)
 					$interval.cancel(tasksAutoUpdate);
 			});
+
 			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 			$scope.isOwner   = itemService.isOwner.bind(itemService);
 
@@ -58,20 +58,18 @@ angular.module('oraApp.collaboration')
 			this.openMoreMenu = function($mdOpenMenu, ev) {
 				$mdOpenMenu(ev);
 			};
-			this.openNewTask = function(ev) {
+			this.openNewItem = function(ev) {
 				$mdDialog.show({
 					controller: NewItemController,
 					templateUrl: "app/collaboration/partials/new-item.html",
-					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					scope: $scope.$new(),
 					locals: {
-						itemService: itemService
+						streams: $scope.streams
 					}
 				}).then(this.addTask);
 			};
-			this.openEditTask = function(ev, task) {
+			this.openEditItem = function(ev, task) {
 				$mdDialog.show({
 					controller: EditItemController,
 					templateUrl: 'app/collaboration/partials/edit-item.html',
@@ -79,7 +77,6 @@ angular.module('oraApp.collaboration')
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					locals: {
-						itemService: itemService,
 						task: task
 					}
 				}).then(this.updateTasks);
@@ -95,7 +92,7 @@ angular.module('oraApp.collaboration')
 							orgId: task.organization.id,
 							taskId: task.id },
 						{ },
-						function(value) {
+						function() {
 							var tasks = $scope.tasks._embedded['ora:task'];
 							for(var i = 0; i < tasks.length; i++) {
 								if(tasks[i].id == task.id) {
@@ -129,7 +126,7 @@ angular.module('oraApp.collaboration')
 					$log.warn
 				);
 			};
-			this.openEstimateTask = function(ev, item) {
+			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
 					controller: EstimateItemController,
 					templateUrl: 'app/collaboration/partials/estimate-item.html',
@@ -138,8 +135,8 @@ angular.module('oraApp.collaboration')
 					clickOutsideToClose: true,
 					scope: $scope.$new(),
 					locals: {
-						itemService: itemService,
-						item: item
+						item: item,
+						prevEstimation: item.members[$scope.identity.getId()].estimation
 					}
 				}).then(this.updateTasks);
 			};
