@@ -13,29 +13,49 @@ angular.module('oraApp.collaboration')
 				};
 			});
 
-			$scope.tasks = itemService.query({ orgId: $stateParams.orgId });
-
+			/*
+			 task autoupdate
+			  */
+			$scope.filters = {
+				orgId: $stateParams.orgId,
+				limit: 10,
+				offset: 0
+			};
+			$scope.tasks = [];
 			var isRefreshing = false;
+			var that = this;
 			this.refreshTasks = function() {
 				if(isRefreshing) return;
 				isRefreshing = true;
 				itemService.query(
-						{ orgId: $stateParams.orgId },
+						$scope.filters,
 						function(value) {
 							$scope.tasks = value;
 							isRefreshing = false;
 						},
-						function() {
+						function(error) {
+							$log.debug(error);
+							switch (error.status) {
+								case 401:
+									that.cancelTasksAutoUpdate();
+									break;
+							}
 							isRefreshing = false;
 						}
 				);
 			};
+			this.refreshTasks();
 			var tasksAutoUpdate = $interval(this.refreshTasks, 10000);
-			$scope.$on('$destroy', function() {
-				if(tasksAutoUpdate)
+			this.cancelTasksAutoUpdate = function() {
+				if(tasksAutoUpdate) {
 					$interval.cancel(tasksAutoUpdate);
-			});
+					tasksAutoUpdate = null;
+				}
+			};
+			$scope.$on('$destroy', this.cancelTasksAutoUpdate);
+			//
 
+			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
 			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 			$scope.isOwner   = itemService.isOwner.bind(itemService);
 
@@ -73,7 +93,6 @@ angular.module('oraApp.collaboration')
 				$mdDialog.show({
 					controller: EditItemController,
 					templateUrl: 'app/collaboration/partials/edit-item.html',
-					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					locals: {
@@ -81,22 +100,20 @@ angular.module('oraApp.collaboration')
 					}
 				}).then(this.updateTasks);
 			};
-			this.deleteItem = function(task) {
+			this.deleteItem = function(ev, item) {
 				var confirm = $mdDialog.confirm()
-					.content("Deleting this item removes all its informations\nand cannot be undone. Do you want to proceed?")
-					.ok("Yes")
-					.cancel("No");
+						.title("Would you delete this item?")
+						.textContent("It removes all its informations and cannot be undone.")
+						.targetEvent(ev)
+						.ok("Yes")
+						.cancel("No");
 				$mdDialog.show(confirm).then(function() {
-					itemService.delete(
-						{
-							orgId: task.organization.id,
-							taskId: task.id },
-						{ },
+					itemService.delete(item,
 						function() {
-							var tasks = $scope.tasks._embedded['ora:task'];
-							for(var i = 0; i < tasks.length; i++) {
-								if(tasks[i].id == task.id) {
-									tasks.splice(i, 1);
+							var items = $scope.tasks._embedded['ora:task'];
+							for(var i = 0; i < items.length; i++) {
+								if(items[i].id == item.id) {
+									items.splice(i, 1);
 									break;
 								}
 							}
@@ -105,32 +122,16 @@ angular.module('oraApp.collaboration')
 					);
 				});
 			};
-			this.joinItem = function(task) {
-				itemService.joinItem(
-					{
-						orgId: task.organization.id,
-						taskId: task.id
-					},
-					{ },
-					this.updateTasks,
-					$log.warn
-				);
+			this.joinItem = function(item) {
+				itemService.joinItem(item, this.updateTasks, $log.warn);
 			};
-			this.unjoinItem = function(task) {
-				itemService.unjoinItem(
-					{
-						orgId: task.organization.id,
-						taskId: task.id },
-					{ },
-					this.updateTasks,
-					$log.warn
-				);
+			this.unjoinItem = function(item) {
+				itemService.unjoinItem(item, this.updateTasks, $log.warn);
 			};
 			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
 					controller: EstimateItemController,
 					templateUrl: 'app/collaboration/partials/estimate-item.html',
-					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					scope: $scope.$new(),
@@ -140,110 +141,74 @@ angular.module('oraApp.collaboration')
 					}
 				}).then(this.updateTasks);
 			};
-			this.executeItem = function(task) {
-				itemService.executeItem(
-					{
-						orgId: task.organization.id,
-						taskId: task.id
-					},
-					{
-						action: 'execute'
-					},
-					this.updateTasks,
-					$log.warn
-				);
+			this.executeItem = function(item) {
+				itemService.executeItem(item, this.updateTasks, $log.warn);
 			};
-			this.reExecuteItem = function(task) {
+			this.reExecuteItem = function(ev, item) {
 				var that = this;
 				var confirm = $mdDialog.confirm()
-					.content("Reverting this item to ongoing allows users to join, members to unjoin and change their estimation. Do you want to proceed?")
-					.ok("Yes")
-					.cancel("No");
+						.title("Would you revert this item to ongoing?")
+						.textContent("Organization members can join, item members can unjoin or change their estimates.")
+						.targetEvent(ev)
+						.ok("Yes")
+						.cancel("No");
+
 				$mdDialog.show(confirm)
 					.then(function() {
-						that.executeItem(task);
+						that.executeItem(item);
 					});
 			};
-			this.completeItem = function(task) {
+			this.completeItem = function(ev, item) {
 				var that = this;
 				var confirm = $mdDialog.confirm()
-					.content("Completing this item freezes task members and their estimation. Do you want to proceed?")
-					.ok("Yes")
-					.cancel("No");
+						.title("Would you mark this item as completed?")
+						.textContent("It freezes item members and their estimation.")
+						.targetEvent(ev)
+						.ok("Yes")
+						.cancel("No");
+
 				$mdDialog.show(confirm)
 					.then(function() {
-						that.reCompleteItem(task);
+						that.reCompleteItem(item);
 					});
 			};
-			this.reCompleteItem = function(task) {
-				itemService.completeItem(
-					{
-						orgId: task.organization.id,
-						taskId: task.id
-					},
-					{
-						action: 'complete'
-					},
-					this.updateTasks,
-					$log.warn
-				);
+			this.reCompleteItem = function(item) {
+				itemService.completeItem(item, this.updateTasks, $log.warn);
 			};
-			this.acceptItem = function(task) {
-				itemService.acceptItem(
-					{
-						orgId: task.organization.id,
-						taskId: task.id
-					},
-					{
-						action: 'accept'
-					},
-					this.updateTasks,
-					$log.warn
-				);
+			this.acceptItem = function(item) {
+				itemService.acceptItem(item, this.updateTasks, $log.warn);
 			};
-			this.openAssignShares = function(ev, task) {
+			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
 					controller: AssignSharesController,
 					templateUrl: 'app/collaboration/partials/assign-shares.html',
-					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose: true,
 					scope: $scope.$new(),
 					locals: {
-						itemService: itemService,
-						task: task
+						task: item
 					}
 				}).then(this.updateTasks);
 			};
-			this.remindItemEstimate = function(task) {
-				itemService.remindItemEstimate(
-					{
-						orgId: task.organization.id,
-						taskId: task.id
-					},
-					{
-						action: 'accept'
-					},
-					$log.info,
-					$log.warn
-				);
+			this.remindItemEstimate = function(item) {
+				itemService.remindItemEstimate(item, $log.info, $log.warn);
 			};
-			this.addTask = function(task) {
-				$scope.tasks._embedded['ora:task'].unshift(task);
+			this.addTask = function(item) {
+				$scope.tasks._embedded['ora:task'].unshift(item);
 			};
-			this.updateTasks = function(task) {
-				var tasks = $scope.tasks._embedded['ora:task'];
-				for(var i = 0; i < tasks.length; i++) {
-					if(tasks[i].id == task.id) {
-						tasks[i] = task;
+			this.updateTasks = function(item) {
+				var items = $scope.tasks._embedded['ora:task'];
+				for(var i = 0; i < items.length; i++) {
+					if(items[i].id == item.id) {
+						items[i] = item;
 						break;
 					}
 				}
 			};
-			this.hasMore = function(task) {
-				return $scope.isAllowed('editItem', task) ||
-					$scope.isAllowed('deleteItem', task) ||
-					$scope.isAllowed('unjoinItem', task) ||
-					$scope.isAllowed('reExecuteItem', task);
+			this.hasMore = function(item) {
+				return $scope.isAllowed('editItem', item) ||
+					$scope.isAllowed('deleteItem', item) ||
+					$scope.isAllowed('unjoinItem', item) ||
+					$scope.isAllowed('reExecuteItem', item);
 			};
 		}]);

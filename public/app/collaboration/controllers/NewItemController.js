@@ -1,16 +1,13 @@
 function NewItemController($scope, $log, $stateParams, $mdDialog, itemService, streams) {
 	$scope.streams = streams;
-	$scope.task = {};
+	$scope.task = {
+		organization: { id: $stateParams.orgId }
+	};
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
 	$scope.submit = function() {
-		itemService.save(
-			{ orgId: $stateParams.orgId },
-			$scope.task,
-			$mdDialog.hide(value),
-			this.onError
-		);
+		itemService.save($scope.task, $mdDialog.hide, this.onError);
 	};
 	this.onError = function(httpResponse) {
 		if(httpResponse.status == 400) {

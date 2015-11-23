@@ -1,5 +1,5 @@
 var ItemService = function($resource, identity) {
-	var resource = $resource('api/:orgId/task-management/tasks/:taskId/:controller/:type', { orgId: '@orgId' }, {
+	var resource = $resource('api/:orgId/task-management/tasks/:itemId/:controller/:type', { orgId: '@orgId' }, {
 		save: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() }
@@ -79,21 +79,54 @@ var ItemService = function($resource, identity) {
 		return identity;
 	};
 
-	this.save = resource.save.bind(resource);
-	this.get = resource.get.bind(resource);
-	this.query = resource.query.bind(resource);
-	this.delete = resource.delete.bind(resource);
-	this.edit = resource.edit.bind(resource);
-	this.joinItem = resource.joinItem.bind(resource);
-	this.unjoinItem = resource.unjoinItem.bind(resource);
-	this.estimateItem = resource.estimateItem.bind(resource);
-	this.remindItemEstimate = resource.remindItemEstimate.bind(resource);
-	this.executeItem = resource.executeItem.bind(resource);
-	this.completeItem = resource.completeItem.bind(resource);
-	this.acceptItem = resource.acceptItem.bind(resource);
-	this.assignShares = resource.assignShares.bind(resource);
-	this.skipShares = resource.skipShares.bind(resource);
-	this.userStats = r2.get;
+	this.save = function(item, success, error) {
+		return resource.save({ orgId: item.organization.id }, item, success, error);
+	};
+	this.get = function(orgId, itemId) {
+		return resource.get({ orgId: orgId, itemId: itemId });
+	};
+	this.query = function(filters, success, error) {
+		return resource.query(filters, success, error);
+	};
+	this.delete = function(item, success, error) {
+		return resource.delete({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
+	};
+	this.edit = function(item, subject, success, error) {
+		return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: subject }, success, error);
+	};
+	this.joinItem = function(item, success, error) {
+		return resource.joinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
+	};
+	this.unjoinItem = function(item, success, error) {
+		return resource.unjoinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
+	};
+	this.estimateItem = function(item, value, success, error) {
+		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
+	};
+	this.skipItemEstimation = function(item, success, error) {
+		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
+	};
+	this.remindItemEstimate = function(item, success, error) {
+		return resource.remindItemEstimate({ orgId: item.organization.id, itemId: item.id }, { action: 'accept' }, success, error);
+	};
+	this.executeItem = function(item, success, error) {
+		return resource.executeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'execute' }, success, error);
+	};
+	this.completeItem = function(item, success, error) {
+		return resource.completeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'complete' }, success, error);
+	};
+	this.acceptItem = function(item, success, error) {
+		return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+	};
+	this.assignShares = function(item, shares, success, error) {
+		return resource.assignShares({ orgId: item.organization.id, itemId: item.id }, shares, success, error);
+	};
+	this.skipShares = function(item, success, error) {
+		return resource.skipShares({ orgId: item.organization.id, itemId: item.id }, {}, success, error);
+	};
+	this.userStats = function(filters) {
+		return r2.get(filters);
+	};
 };
 
 ItemService.prototype = {
@@ -110,33 +143,33 @@ ItemService.prototype = {
 		'ROLE_MEMBER': 'member',
 		'ROLE_OWNER' : 'owner'
 	},
-	isOwner: function(task, userId) {
-		return task.members &&
-				task.members.hasOwnProperty(userId) &&
-				task.members[userId].role == this.ITEM_ROLES.ROLE_OWNER;
+	isOwner: function(item, userId) {
+		return item.members &&
+				item.members.hasOwnProperty(userId) &&
+				item.members[userId].role == this.ITEM_ROLES.ROLE_OWNER;
 	},
-	isMember: function(task, userId) {
-		return task.members &&
-				task.members.hasOwnProperty(userId) &&
-				task.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
+	isMember: function(item, userId) {
+		return item.members &&
+				item.members.hasOwnProperty(userId) &&
+				item.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
 	},
-	hasJoined: function(task, userId) {
-		return task.members &&
-				task.members.hasOwnProperty(userId);
+	hasJoined: function(item, userId) {
+		return item.members &&
+				item.members.hasOwnProperty(userId);
 	},
-	isEstimationCompleted: function(task) {
-		for(var id in task.members) {
-			if(task.members.hasOwnProperty(id) &&
-				task.members[id].estimation === undefined)
+	isEstimationCompleted: function(item) {
+		for(var id in item.members) {
+			if(item.members.hasOwnProperty(id) &&
+				item.members[id].estimation === undefined)
 				return false;
 		}
 		return true;
 	},
-	countEstimators: function(task) {
+	countEstimators: function(item) {
 		var n = 0;
-		for(var id in task.members) {
-			if(task.members.hasOwnProperty(id) &&
-				task.members[id].estimation !== undefined)
+		for(var id in item.members) {
+			if(item.members.hasOwnProperty(id) &&
+				item.members[id].estimation !== undefined)
 				n++;
 		}
 		return n;

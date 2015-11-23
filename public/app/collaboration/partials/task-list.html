@@ -13,6 +13,28 @@
 		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
+<md-card>
+	<md-card-content>
+		<form name="form" ng-submit="ctrl.refreshTasks()" novalidate class="md-inline-form">
+			<div layout layout-sm="column">
+				<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
+				<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
+				<md-input-container flex>
+					<label>Member</label>
+					<input type="email" ng-model="filters.memberEmail">
+				</md-input-container>
+				<md-input-container>
+					<label>Status</label>
+					<md-select ng-model="filters.status">
+						<md-option value=""></md-option>
+						<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">{{ status | taskStatusLabel }}</md-option>
+					</md-select>
+				</md-input-container>
+				<md-button type="submit" class="md-raised">Search</md-button>
+			</div>
+		</form>
+	</md-card-content>
+</md-card>
 <md-card ng-repeat="task in tasks._embedded['ora:task']">
 	<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
 	<md-card-content>
@@ -39,7 +61,7 @@
 		<md-button aria-label="Start task" ng-if="isAllowed('executeItem', task)" ng-click="ctrl.executeItem(task)">Start</md-button>
 		<md-button aria-label="Join task" ng-if="isAllowed('joinItem', task)" ng-click="ctrl.joinItem(task)">Join</md-button>
 		<md-button aria-label="Estimate task" ng-if="isAllowed('estimateItem', task)" ng-click="ctrl.openEstimateItem($event, task)">Estimate</md-button>
-		<md-button aria-label="Complete task" ng-if="isAllowed('completeItem', task)" ng-click="ctrl.completeItem(task)">Mark as Completed</md-button>
+		<md-button aria-label="Complete task" ng-if="isAllowed('completeItem', task)" ng-click="ctrl.completeItem($event, task)">Mark as Completed</md-button>
 		<md-button aria-label="Accept task" ng-if="isAllowed('acceptItem', task)" ng-click="ctrl.acceptItem(task)">Mark as Accepted</md-button>
 		<md-button aria-label="Assign shares" ng-if="isAllowed('assignShares', task)" ng-click="ctrl.openAssignShares($event, task)">Assign Shares</md-button>
 		<md-menu md-position-mode="target-right target" style="padding: 0" ng-if="ctrl.hasMore(task)">
@@ -54,7 +76,7 @@
 					</md-button>
 				</md-menu-item>
 				<md-menu-item ng-if="isAllowed('deleteItem', task)">
-					<md-button ng-click="ctrl.deleteItem(task)">
+					<md-button ng-click="ctrl.deleteItem($event, task)">
 						<md-icon class="material-icons">&#xE872;</md-icon>
 						Delete Task
 					</md-button>
@@ -66,7 +88,7 @@
 					</md-button>
 				</md-menu-item>
 				<md-menu-item ng-if="isAllowed('reExecuteItem', task)">
-					<md-button ng-click="ctrl.reExecuteItem(task)">
+					<md-button ng-click="ctrl.reExecuteItem($event, task)">
 						<md-icon class="material-icons">&#xE8B3;</md-icon>
 						Revert to Ongoing
 					</md-button>

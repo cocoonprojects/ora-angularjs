@@ -4,16 +4,7 @@ function EditItemController($scope, $mdDialog, $log, itemService, task) {
 		$mdDialog.cancel();
 	};
 	$scope.submit = function() {
-		itemService.edit(
-			{
-				orgId: task.organization.id,
-				taskId: task.id
-			},
-			{
-				subject: $scope.subject
-			},
-			$mdDialog.hide(value),
-			this.onError);
+		itemService.edit(task, $scope.subject, $mdDialog.hide, this.onError);
 	};
 	this.onError = function(httpResponse) {
 		if(httpResponse.status == 400) {

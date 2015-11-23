@@ -17,20 +17,10 @@ function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
 		$mdDialog.cancel();
 	};
 	$scope.skip = function() {
-		itemService.skipShares(
-			{ orgId: task.organization.id, taskId: task.id },
-			{},
-			$mdDialog.hide(value),
-			this.onError
-		);
+		itemService.skipShares(task, $mdDialog.hide, this.onError);
 	};
 	$scope.submit = function() {
-		itemService.assignShares(
-			{ orgId: task.organization.id, taskId: task.id },
-			$scope.shares,
-			$mdDialog.hide(value),
-			this.onError
-		);
+		itemService.assignShares(task, $scope.shares, $mdDialog.hide, this.onError);
 	};
 	this.onError = function(httpResponse) {
 		if(httpResponse.status == 400) {

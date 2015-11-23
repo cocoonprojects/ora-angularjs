@@ -10,12 +10,12 @@
 	</p>
 </section>
 <md-list>
-	<md-list-item ng-class="isAllowed('showShares', task) ? 'md-3-line' : 'md-2-line'" data-ng-repeat="member in task.members" ng-init="m = user(member)">
+	<md-list-item ng-class="isAllowed('showShares', task) && member.share ? 'md-3-line' : 'md-2-line'" data-ng-repeat="member in task.members" ng-init="m = user(member)">
 		<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
 		<div class="md-list-item-text" ui-sref="org.profile({ memberId: member.id })" md-ink-ripple>
 			<h3>{{ member.firstname }} {{ member.lastname }} ({{ member.role }})
 			</h3>
-			<h4 ng-if="isAllowed('showShares', task)">
+			<h4 ng-if="isAllowed('showShares', task) && member.share">
 				{{ member.share | percentage:2 }} of shares ({{ member.delta | percentage:2:true }} respect of auto-assessment)
 			</h4>
 			<p ng-switch="member.estimation">
