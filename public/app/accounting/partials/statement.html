@@ -1,20 +1,20 @@
-<md-fab-speed-dial md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed" ng-if="isAllowed('deposit', statement)">
+<md-fab-speed-dial md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed" ng-if="ctrl.isNewTransactionsAllowed(statement)">
 	<md-fab-trigger>
 		<md-button aria-label="Account Menu" class="md-fab md-warn">
 			<md-icon md-svg-icon="add"></md-icon>
 		</md-button>
 	</md-fab-trigger>
 	<md-fab-actions>
-		<md-button aria-label="Deposit" class="md-fab md-raised md-mini" ng-click="ctrl.openNewDeposit($event)">
+		<md-button aria-label="Deposit" class="md-fab md-raised md-mini" ng-click="ctrl.openNewDeposit($event)" ng-if="ctrl.isAllowed('deposit', statement)">
 			<md-icon md-svg-icon="deposit" style="fill: Black" title="New Deposit"></md-icon>
 		</md-button>
-		<md-button aria-label="Withdrawal" class="md-fab md-raised md-mini" ng-click="ctrl.openNewWithdrawal($event)">
+		<md-button aria-label="Withdrawal" class="md-fab md-raised md-mini" ng-click="ctrl.openNewWithdrawal($event)" ng-if="ctrl.isAllowed('withdrawal', statement)">
 			<md-icon md-svg-icon="withdrawal" style="fill: Black" title="New Withdrawal"></md-icon>
 		</md-button>
-		<md-button aria-label="Incoming Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openNewIncomingTransfer($event)">
+		<md-button aria-label="Incoming Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openNewIncomingTransfer($event)" ng-if="ctrl.isAllowed('incomingTransfer', statement)">
 			<md-icon md-svg-icon="transfer" style="fill: Black" title="New Incoming Transfer"></md-icon>
 		</md-button>
-		<md-button aria-label="Outgoing Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openNewOutgoingTransfer($event)">
+		<md-button aria-label="Outgoing Transfer" class="md-fab md-raised md-mini" ng-click="ctrl.openNewOutgoingTransfer($event)" ng-if="ctrl.isAllowed('outgoingTransfer', statement)">
 			<md-icon md-svg-icon="transfer" style="fill: Black" title="New Outgoing Transfer"></md-icon>
 		</md-button>
 	</md-fab-actions>

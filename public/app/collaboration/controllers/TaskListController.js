@@ -1,11 +1,12 @@
 angular.module('oraApp.collaboration')
 	.controller('TaskListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'itemService',
 		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, itemService) {
+			var that = this;
 			$scope.streams = null;
-			$scope.stream = function() { return null; };
+			this.stream = function() { return null; };
 			streamService.query({ orgId: $stateParams.orgId }, function(data) {
 				$scope.streams = data;
-				$scope.stream = function(task) {
+				that.stream = function(task) {
 					if(task.stream) {
 						return data._embedded['ora:stream'][task.stream.id];
 					}
@@ -56,8 +57,8 @@ angular.module('oraApp.collaboration')
 			//
 
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
-			$scope.isAllowed = itemService.isAllowed.bind(itemService);
-			$scope.isOwner   = itemService.isOwner.bind(itemService);
+			this.isAllowed = itemService.isAllowed.bind(itemService);
+			this.isOwner   = itemService.isOwner.bind(itemService);
 
 			this.countEstimators = function(task) {
 				if(task.status != itemService.ITEM_STATUS.ONGOING){
@@ -206,9 +207,9 @@ angular.module('oraApp.collaboration')
 				}
 			};
 			this.hasMore = function(item) {
-				return $scope.isAllowed('editItem', item) ||
-					$scope.isAllowed('deleteItem', item) ||
-					$scope.isAllowed('unjoinItem', item) ||
-					$scope.isAllowed('reExecuteItem', item);
+				return this.isAllowed('editItem', item) ||
+					this.isAllowed('deleteItem', item) ||
+					this.isAllowed('unjoinItem', item) ||
+					this.isAllowed('reExecuteItem', item);
 			};
 		}]);

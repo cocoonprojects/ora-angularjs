@@ -4,16 +4,19 @@ angular.module('oraApp.accounting')
 			var limit = 0;
 			$scope.statement = null;
 			$scope.initialBalance = 0;
-			$scope.isAllowed = accountService.isAllowed.bind(accountService);
+			this.isAllowed = accountService.isAllowed.bind(accountService);
 
-			this.loadMore = function() {
+			this.loadMore = function () {
 				limit += 10;
 				accountService
-					.personalStatement({ orgId: $stateParams.orgId, limit: limit })
-					.$promise.then(function(result) {
-						$scope.statement = result;
-						$scope.initialBalance = accountService.getInitialBalance(result._embedded.transactions);
-					});
+						.personalStatement({orgId: $stateParams.orgId, limit: limit})
+						.$promise.then(function (result) {
+					$scope.statement = result;
+					$scope.initialBalance = accountService.getInitialBalance(result._embedded.transactions);
+				});
 			};
 			this.loadMore();
+			this.isNewTransactionsAllowed = function () {
+				return false;
+			}
 		}]);

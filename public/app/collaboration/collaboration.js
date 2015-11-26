@@ -16,7 +16,7 @@ angular.module('oraApp.collaboration', ['ui.router'])
 					data: {
 						selectedTab: 0
 					},
-					controller: 'TaskDetailController'
+					controller: 'TaskDetailController as ctrl'
 				});
 		}
 	]);

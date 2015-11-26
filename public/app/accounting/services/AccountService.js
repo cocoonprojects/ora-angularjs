@@ -71,20 +71,35 @@ AccountService.prototype = {
 		return 0;
 	},
 
-	isOrganizationAccount: function(statement) {
-		return statement && statement.organization;
+	isOrganizationAccount: function(account) {
+		return account && account.type == 'shared';
 	},
 
-	isHolder: function(statement, userId) {
-		return statement.holders &&
-				statement.holders.hasOwnProperty(userId);
+	isHolder: function(account, userId) {
+		return account.holders &&
+				account.holders.hasOwnProperty(userId);
 	},
 
 	visibilityCriteria: {
-		'deposit': function(statement) {
+		'deposit': function(account) {
 			return this.getIdentity().isAuthenticated() &&
-				this.isOrganizationAccount(statement) &&
-					this.isHolder(statement, this.getIdentity().getId());
+				this.isOrganizationAccount(account) &&
+					this.isHolder(account, this.getIdentity().getId());
+		},
+		'withdrawal': function(account) {
+			return this.getIdentity().isAuthenticated() &&
+					this.isOrganizationAccount(account) &&
+					this.isHolder(account, this.getIdentity().getId());
+		},
+		'incomingTransfer': function(account) {
+			return this.getIdentity().isAuthenticated() &&
+					this.isOrganizationAccount(account) &&
+					this.isHolder(account, this.getIdentity().getId());
+		},
+		'outgoingTransfer': function(account) {
+			return this.getIdentity().isAuthenticated() &&
+					this.isOrganizationAccount(account) &&
+					this.isHolder(account, this.getIdentity().getId());
 		}
 	},
 

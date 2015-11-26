@@ -5,7 +5,7 @@ angular.module('oraApp.accounting')
 			var limit = 0;
 			$scope.statement = null;
 			$scope.initialBalance = 0;
-			$scope.isAllowed = accountService.isAllowed.bind(accountService);
+			this.isAllowed = accountService.isAllowed.bind(accountService);
 
 			this.loadMore = function() {
 				limit += 10;
@@ -81,5 +81,11 @@ angular.module('oraApp.accounting')
 						}
 					}
 				});
+			};
+			this.isNewTransactionsAllowed = function(account) {
+				return accountService.isAllowed('deposit', $scope.statement) ||
+								accountService.isAllowed('withdrawal', $scope.statement) ||
+								accountService.isAllowed('incomingTransfer', $scope.statement) ||
+								accountService.isAllowed('outgoingTransfer', $scope.statement)
 			};
 		}]);
