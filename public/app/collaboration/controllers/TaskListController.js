@@ -1,64 +1,42 @@
 angular.module('oraApp.collaboration')
 	.controller('TaskListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'itemService',
 		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, itemService) {
-			var that = this;
-			$scope.streams = null;
-			this.stream = function() { return null; };
-			streamService.query({ orgId: $stateParams.orgId }, function(data) {
-				$scope.streams = data;
-				that.stream = function(task) {
-					if(task.stream) {
-						return data._embedded['ora:stream'][task.stream.id];
-					}
-					return null;
-				};
-			});
-
-			/*
-			 task autoupdate
-			  */
+			this.onLoadingError = function(error) {
+				$log.debug(error);
+				switch (error.status) {
+					case 401:
+						this.cancelAutoUpdate();
+						break;
+				}
+			};
+			$scope.streams = {};
 			$scope.filters = {
 				orgId: $stateParams.orgId,
 				limit: 10,
 				offset: 0
 			};
 			$scope.tasks = [];
-			var isRefreshing = false;
-			var that = this;
-			this.refreshTasks = function() {
-				if(isRefreshing) return;
-				isRefreshing = true;
-				itemService.query(
-						$scope.filters,
-						function(value) {
-							$scope.tasks = value;
-							isRefreshing = false;
-						},
-						function(error) {
-							$log.debug(error);
-							switch (error.status) {
-								case 401:
-									that.cancelTasksAutoUpdate();
-									break;
-							}
-							isRefreshing = false;
-						}
-				);
+			streamService.startQueryPolling($scope.organization, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
+			itemService.startQueryPolling($scope.filters, function(data) { $scope.tasks = data; }, this.onLoadingError, 10000);
+			this.cancelAutoUpdate = function() {
+				streamService.stopQueryPolling();
+				itemService.stopQueryPolling();
 			};
-			this.refreshTasks();
-			var tasksAutoUpdate = $interval(this.refreshTasks, 10000);
-			this.cancelTasksAutoUpdate = function() {
-				if(tasksAutoUpdate) {
-					$interval.cancel(tasksAutoUpdate);
-					tasksAutoUpdate = null;
-				}
-			};
-			$scope.$on('$destroy', this.cancelTasksAutoUpdate);
-			//
+			$scope.$on('$destroy', this.cancelAutoUpdate);
 
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
 			this.isAllowed = itemService.isAllowed.bind(itemService);
 			this.isOwner   = itemService.isOwner.bind(itemService);
+
+			this.filterTasks = function() {
+				itemService.query($scope.filters, function(data) { $scope.tasks = data; }, this.onLoadingError);
+			};
+			this.stream = function(task) {
+				if($scope.streams && task.stream) {
+					return $scope.streams._embedded['ora:stream'][task.stream.id];
+				}
+				return null;
+			};
 
 			this.countEstimators = function(task) {
 				if(task.status != itemService.ITEM_STATUS.ONGOING){
@@ -78,6 +56,14 @@ angular.module('oraApp.collaboration')
 
 			this.openMoreMenu = function($mdOpenMenu, ev) {
 				$mdOpenMenu(ev);
+			};
+			this.openNewStream = function(ev) {
+				$mdDialog.show({
+					controller: NewStreamController,
+					templateUrl: "app/collaboration/partials/new-stream.html",
+					targetEvent: ev,
+					clickOutsideToClose: true
+				}).then(this.addStream);
 			};
 			this.openNewItem = function(ev) {
 				$mdDialog.show({
@@ -194,6 +180,9 @@ angular.module('oraApp.collaboration')
 			this.remindItemEstimate = function(item) {
 				itemService.remindItemEstimate(item, $log.info, $log.warn);
 			};
+			this.addStream = function(stream) {
+				$scope.streams._embedded['ora:stream'][stream.id] = stream;
+			};
 			this.addTask = function(item) {
 				$scope.tasks._embedded['ora:task'].unshift(item);
 			};
@@ -211,5 +200,9 @@ angular.module('oraApp.collaboration')
 					this.isAllowed('deleteItem', item) ||
 					this.isAllowed('unjoinItem', item) ||
 					this.isAllowed('reExecuteItem', item);
+			};
+			this.isNewEntitiesAllowed = function(organization) {
+				return itemService.isAllowed('createItem', organization) ||
+								streamService.isAllowed('createStream', organization);
 			};
 		}]);

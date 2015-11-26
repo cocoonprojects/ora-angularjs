@@ -25,7 +25,8 @@ angular.module('oraApp', [
 							return memberService.query({ orgId: $stateParams.orgId });
 						}
 					},
-					controller: function($scope, members) {
+					controller: function($scope, $log, $stateParams, members) {
+						$scope.organization = $scope.identity.getMembership($stateParams.orgId);
 						$scope.members = members;
 						$scope.user = function(member) {
 							if($scope.members && member) {
@@ -61,7 +62,8 @@ angular.module('oraApp', [
 					.icon('credits', 'svg/ic_attach_money_24px.svg')
 					.icon('add', 'svg/ic_add_24px.svg')
 					.icon('log', 'svg/ic_today_24px.svg')
-					.icon('add-task', 'svg/ic_note_add_black_24px.svg');
+					.icon('add-task', 'svg/ic_note_add_black_24px.svg')
+					.icon('add-stream', 'svg/ic_view_stream_black_24px.svg');
 		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');

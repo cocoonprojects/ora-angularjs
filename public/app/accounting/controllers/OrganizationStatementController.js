@@ -86,6 +86,6 @@ angular.module('oraApp.accounting')
 				return accountService.isAllowed('deposit', $scope.statement) ||
 								accountService.isAllowed('withdrawal', $scope.statement) ||
 								accountService.isAllowed('incomingTransfer', $scope.statement) ||
-								accountService.isAllowed('outgoingTransfer', $scope.statement)
+								accountService.isAllowed('outgoingTransfer', $scope.statement);
 			};
 		}]);

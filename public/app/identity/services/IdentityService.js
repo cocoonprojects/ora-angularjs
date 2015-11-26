@@ -11,13 +11,13 @@ var Identity = function($http, $log) {
 	this.getMemberships  = function() { return memberships; };
 
 	this.getMembership = function(orgId) {
-		var org = null;
-		angular.forEach(memberships, function(value, key) {
+		var rv = null;
+		angular.forEach(memberships, function(value) {
 			if(value.organization.id === orgId) {
-				org = value.organization;
+				rv = value.organization;
 			}
 		});
-		return org;
+		return rv;
 	};
 
 	this.reset = function() {

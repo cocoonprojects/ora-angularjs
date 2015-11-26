@@ -1,4 +1,4 @@
-var ItemService = function($resource, identity) {
+var ItemService = function($resource, $interval, identity) {
 	var resource = $resource('api/:orgId/task-management/tasks/:itemId/:controller/:type', { orgId: '@orgId' }, {
 		save: {
 			method: 'POST',
@@ -85,8 +85,19 @@ var ItemService = function($resource, identity) {
 	this.get = function(orgId, itemId) {
 		return resource.get({ orgId: orgId, itemId: itemId });
 	};
+	var isQueryPolling = false;
 	this.query = function(filters, success, error) {
-		return resource.query(filters, success, error);
+		isQueryPolling = true;
+		return resource.query(
+				filters,
+				function (data) {
+					isQueryPolling = false;
+					success(data);
+				},
+				function (response) {
+					isQueryPolling = false;
+					error(response);
+				});
 	};
 	this.delete = function(item, success, error) {
 		return resource.delete({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
@@ -126,6 +137,22 @@ var ItemService = function($resource, identity) {
 	};
 	this.userStats = function(filters) {
 		return r2.get(filters);
+	};
+
+	var queryPolling = null;
+	this.startQueryPolling = function(filters, success, error, millis) {
+		this.query(filters, success, error);
+		var that = this;
+		queryPolling = $interval(function() {
+			if (isQueryPolling) return;
+			that.query(filters, success, error);
+		}, millis);
+	};
+	this.stopQueryPolling = function() {
+		if(queryPolling) {
+			$interval.cancel(queryPolling);
+			queryPolling = null;
+		}
 	};
 };
 
@@ -175,9 +202,9 @@ ItemService.prototype = {
 		return n;
 	},
 	visibilityCriteria: {
-		createItem: function() {
-			// TODO: Add a check about the membership of the user to the organization
-			return this.getIdentity().isAuthenticated();
+		createItem: function(organization) {
+			return this.getIdentity().isAuthenticated() &&
+					this.getIdentity().getMembership(organization.id);
 		},
 		editItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
@@ -258,4 +285,4 @@ ItemService.prototype = {
 };
 angular.module('oraApp.collaboration')
 	.constant('ITEM_STATUS', ItemService.prototype.ITEM_STATUS)
-	.service('itemService', ['$resource', 'identity', ItemService]);
+	.service('itemService', ['$resource', '$interval', 'identity', ItemService]);

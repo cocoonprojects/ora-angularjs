@@ -76,19 +76,16 @@ describe('accountService', function() {
 		expect(service.getInitialBalance(transactions)).toBe(-30);
 	});
 
-	it('should return true if the statement contains organization reference', function() {
+	it('should return true if the statement is of shared type', function() {
 		var statement = {
-			organization: {
-				id: '123',
-				name: 'Lorem Ipsum'
-			}
+			type: 'shared'
 		};
 		expect(service.isOrganizationAccount(statement)).toBeTruthy();
 	});
 
-	it('should return false if the statement does not contains organization reference', function() {
+	it('should return false if the statement is of personal type', function() {
 		var statement = {
-			organization: null
+			type: 'personal'
 		};
 		expect(service.isOrganizationAccount(statement)).toBeFalsy();
 	});
@@ -143,10 +140,7 @@ describe('accountService', function() {
 
 	it('should return what the user can do on an organization account', function() {
 		var statement = {
-			organization: {
-				id: '123',
-				name: 'Lorem Ipsum'
-			},
+			type: 'shared',
 			holders: {
 				'00000000-0000-0000-0000-000000000001': {
 					id: '00000000-0000-0000-0000-000000000001',
@@ -160,10 +154,7 @@ describe('accountService', function() {
 
 	it('should return what the user can do on an organization account as holder', function() {
 		var statement = {
-			organization: {
-				id: '123',
-				name: 'Lorem Ipsum'
-			},
+			type: 'shared',
 			holders: {
 				'00000000-0000-0000-0000-000000000000': {
 					id: '00000000-0000-0000-0000-000000000000',
@@ -177,6 +168,7 @@ describe('accountService', function() {
 
 	it('should return what the user can do on an personal account', function() {
 		var statement = {
+			type: 'personal',
 			holders: {
 				'00000000-0000-0000-0000-000000000001': {
 					id: '00000000-0000-0000-0000-000000000001',
@@ -190,6 +182,7 @@ describe('accountService', function() {
 
 	it('should return what the user can do on an personal account as holder', function() {
 		var statement = {
+			type: 'personal',
 			holders: {
 				'00000000-0000-0000-0000-000000000000': {
 					id: '00000000-0000-0000-0000-000000000000',

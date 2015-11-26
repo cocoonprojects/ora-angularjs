@@ -18,5 +18,5 @@ angular.module('oraApp.accounting')
 			this.loadMore();
 			this.isNewTransactionsAllowed = function () {
 				return false;
-			}
+			};
 		}]);

@@ -87,7 +87,7 @@
 </md-list>
 <md-list>
 	<md-list-item data-ng-repeat="task in tasks._embedded['ora:task']" ng-init="show = isAllowed('showShares', task)" ng-class="{'md-3-line': show, 'md-2-line': !show}">
-		<div class="md-list-item-text" ui-sref="org.item({ orgId: currOrg.id, taskId: task.id })">
+		<div class="md-list-item-text" ui-sref="org.item({ orgId: task.organization.id, taskId: task.id })">
 			<h3>
 				{{ task.subject }}
 				<md-icon md-font-icon="star" class="material-icons" ng-if="isOwner(task)" title="owner" style="font-size: 16px">&#xE838;</md-icon>

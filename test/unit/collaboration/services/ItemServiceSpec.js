@@ -17,11 +17,18 @@ describe('itemService', function() {
 		},
 		isAuthenticated: function() {
 			return true;
+		},
+		getMembership: function(id) {
+			if(id == '00000000-0000-0000-0000-000000000001')
+				return {
+					id: '00000000-0000-0000-0000-000000000001'
+				};
+			return null;
 		}
 	};
 
-	beforeEach(inject(function($resource) {
-		service = new ItemService($resource, identity);
+	beforeEach(inject(function($resource, $interval) {
+		service = new ItemService($resource, $interval, identity);
 	}));
 
 	it('should return false when the task has undefined members', function() {
@@ -690,6 +697,11 @@ describe('itemService', function() {
 		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(true);
+	});
+
+	it('should return what a user can do on an organization', function() {
+		expect(service.isAllowed('createItem', { id: '00000000-0000-0000-0000-000000000001' })).toBeTruthy();
+		expect(service.isAllowed('createItem', { id: '00000000-0000-0000-0000-000000000002' })).toBeFalsy();
 	});
 
 	//it('should return an empty task collection', function() {

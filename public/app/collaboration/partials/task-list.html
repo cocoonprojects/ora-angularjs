@@ -1,21 +1,21 @@
-<md-fab-speed-dial md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed" ng-if="ctrl.isAllowed('createItem', currOrg)">
+<md-fab-speed-dial md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed" ng-if="ctrl.isNewEntitiesAllowed(organization)">
 	<md-fab-trigger>
 		<md-button aria-label="Item Menu" class="md-fab md-warn">
 			<md-icon md-svg-icon="add"></md-icon>
 		</md-button>
 	</md-fab-trigger>
 	<md-fab-actions>
-		<md-button aria-label="New item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event)">
+		<md-button aria-label="New item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event)" ng-if="ctrl.isAllowed('createItem', organization)">
 			<md-icon md-svg-icon="add-task" title="New Task"></md-icon>
 		</md-button>
-		<md-button aria-label="New stream" class="md-fab md-raised md-mini">
-			<md-icon md-svg-icon="check"></md-icon>
+		<md-button aria-label="New stream" class="md-fab md-raised md-mini" ng-click="ctrl.openNewStream($event)" ng-if="ctrl.isAllowed('createStream', organization)">
+			<md-icon md-svg-icon="add-stream" title="New Stream"></md-icon>
 		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
 <md-card>
 	<md-card-content>
-		<form name="form" ng-submit="ctrl.refreshTasks()" novalidate class="md-inline-form">
+		<form name="form" ng-submit="ctrl.filterTasks()" novalidate class="md-inline-form">
 			<div layout layout-sm="column">
 				<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
 				<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
@@ -39,7 +39,7 @@
 	<!--<img ng-src="http://lorempixel.com/400/100/nature" class="md-card-image">-->
 	<md-card-content>
 		<div class="md-accent md-subheader">{{ ctrl.stream(task).subject }}</div>
-		<div class="md-headline" ui-sref="org.item({ orgId: currOrg.id, taskId: task.id })" aria-label="Detail">{{ task.subject }}</div>
+		<div class="md-headline" ui-sref="org.item({ orgId: task.organization.id, taskId: task.id })" aria-label="Detail">{{ task.subject }}</div>
 		<div class="md-subheader">Created at {{ task.createdAt | date : 'short' }}</div>
 		<div class="md-subheader" ng-if="task.acceptedAt">Accepted at {{ task.acceptedAt | date : 'short'}}</div>
 		<div class="md-subheader">Status: {{ task.status | taskStatusLabel }}</div>
