@@ -35,11 +35,11 @@ var Identity = function($http, $log) {
 		avatar = profile.getImageUrl();
 		email = profile.getEmail();
 
-		this.updateMemberships(token);
+		this.updateMemberships();
 	};
 
-	this.updateMemberships = function(id_token) {
-		$http({method: 'GET', url: 'api/memberships', headers: {'GOOGLE-JWT': id_token}}).success(function(data) {
+	this.updateMemberships = function() {
+		$http({method: 'GET', url: 'api/memberships', headers: {'GOOGLE-JWT': token}}).success(function(data) {
 			id        = data.id;
 			firstname = data.firstname;
 			lastname  = data.lastname;

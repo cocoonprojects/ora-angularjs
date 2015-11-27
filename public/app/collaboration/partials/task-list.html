@@ -38,13 +38,14 @@
 <md-list>
 	<md-list-item ng-repeat="item in tasks._embedded['ora:task']" class="md-3-line secondary-button-padding" ng-init="owner = ctrl.getOwner(item)">
 		<img ng-src="{{ owner.picture }}" class="md-avatar" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}">
-		<div class="md-list-item-text">
-			<h3 ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })" aria-label="Detail">{{ item.subject }}</h3>
+		<div class="md-list-item-text" ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
+			<h3 aria-label="Detail">{{ item.subject }}</h3>
 			<h4 class="md-accent">{{ ctrl.stream(item).subject }}</h4>
 			<p>{{ item | itemStatusResume }}</p>
 		</div>
 		<md-button class="md-secondary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
 		<md-button class="md-secondary" aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
 		<md-button class="md-secondary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
+		<md-divider ng-if="!$last"></md-divider>
 	</md-list-item>
 </md-list>

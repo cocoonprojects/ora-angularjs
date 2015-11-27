@@ -4,6 +4,7 @@ angular.module('oraApp', [
 	'ngMaterial',
 	'angularMoment',
 	'oraApp.identity',
+	'oraApp.organizations',
 	'oraApp.collaboration',
 	'oraApp.people',
 	'oraApp.flow',

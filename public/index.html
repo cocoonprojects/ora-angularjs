@@ -28,6 +28,9 @@
 	<script src="app/identity/services/IdentityService.js"></script>
 	<script src="app/identity/controllers/IdentityController.js"></script>
 	<script src="app/identity/controllers/SignInController.js"></script>
+	<script src="app/organizations/organizations.js"></script>
+	<script src="app/organizations/services/OrganizationService.js"></script>
+	<script src="app/organizations/controllers/OrganizationListController.js"></script>
 	<script src="app/collaboration/collaboration.js"></script>
 	<script src="app/collaboration/services/ItemService.js"></script>
 	<script src="app/collaboration/services/StreamService.js"></script>
@@ -71,6 +74,8 @@
 				<section layout="column" layout-fill ng-controller="LeftController">
 					<md-button ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
 					<md-button ng-repeat="membership in identity.getMemberships()" ui-sref="org.collaboration({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
+					<md-divider></md-divider>
+					<md-button ui-sref="organizations" ui-sref-active="md-primary" ng-click="toggleLeft()">Join an Organization</md-button>
 					<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
 				</section>
 			</md-content>
