@@ -1,5 +1,6 @@
-function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
-	$scope.task = task;
+function AssignSharesController($scope, $mdDialog, $log, itemService, item) {
+	$scope.item = item;
+	$scope.shares = {};
 	$scope.available = 100;
 	$scope.updatePercentage = function() {
 		var keys = Object.keys($scope.shares);
@@ -12,15 +13,14 @@ function AssignSharesController($scope, $mdDialog, $log, itemService, task) {
 		}
 		$scope.available = tot;
 	};
-	$scope.shares = {};
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
 	$scope.skip = function() {
-		itemService.skipShares(task, $mdDialog.hide, this.onError);
+		itemService.skipShares(item, $mdDialog.hide, this.onError);
 	};
 	$scope.submit = function() {
-		itemService.assignShares(task, $scope.shares, $mdDialog.hide, this.onError);
+		itemService.assignShares(item, $scope.shares, $mdDialog.hide, this.onError);
 	};
 	this.onError = function(httpResponse) {
 		if(httpResponse.status == 400) {

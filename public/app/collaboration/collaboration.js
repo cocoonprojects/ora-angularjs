@@ -3,20 +3,20 @@ angular.module('oraApp.collaboration', ['ui.router'])
 		function($stateProvider) {
 			$stateProvider
 				.state('org.collaboration', {
-					url: '/tasks',
+					url: '/items',
 					templateUrl: 'app/collaboration/partials/task-list.html',
 					data: {
 						selectedTab: 0
 					},
-					controller: 'TaskListController as ctrl'
+					controller: 'ItemListController as ctrl'
 				})
 				.state('org.item', {
-					url: '/tasks/:taskId',
+					url: '/items/:itemId',
 					templateUrl: 'app/collaboration/partials/task-detail.html',
 					data: {
 						selectedTab: 0
 					},
-					controller: 'TaskDetailController as ctrl'
+					controller: 'ItemDetailController as ctrl'
 				});
 		}
 	]);

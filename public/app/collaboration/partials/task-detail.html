@@ -1,45 +1,94 @@
-<section class="md-padding">
-	<div class="md-accent md-subheader">{{ ctrl.stream(task).subject }}</div>
-	<h1>{{ task.subject }}</h1>
-	<div class="md-subheader">{{ task.status | taskStatusLabel }}</div>
-	<p ng-switch="task.estimation">
-		<span ng-switch-when="null">Estimation in progress{{ ctrl.countEstimators(task) }}</span>
-		<span ng-switch-when="-1">Estimation skipped{{ ctrl.countEstimators(task) }}</span>
-		<span ng-switch-when="undefined"></span>
-		<span ng-switch-default>{{ task.estimation }} Credits</span>
-	</p>
-</section>
-<md-list>
-	<md-list-item ng-class="ctrl.isAllowed('showShares', task) && member.share ? 'md-3-line' : 'md-2-line'" data-ng-repeat="member in task.members" ng-init="m = user(member)">
-		<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
-		<div class="md-list-item-text" ui-sref="org.profile({ memberId: member.id })" md-ink-ripple>
-			<h3>{{ member.firstname }} {{ member.lastname }} ({{ member.role }})
-			</h3>
-			<h4 ng-if="ctrl.isAllowed('showShares', task) && member.share">
-				{{ member.share | percentage:2 }} of shares ({{ member.delta | percentage:2:true }} respect of auto-assessment)
-			</h4>
-			<p ng-switch="member.estimation">
-				<span ng-switch-when="undefined">Has not estimated</span>
-				<span ng-switch-when="-2">Estimated</span>
-				<span ng-switch-when="-1">Skipped estimation</span>
-				<span ng-switch-default>Estimated {{ member.estimation | number:0 }} credits</span>
-			</p>
-		</div>
-	</md-list-item>
-</md-list>
-<md-list>
-	<md-list-item ng-if="task.acceptedAt" class="md-2-line">
-		<md-icon md-svg-icon="log" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ task.createdBy }} accepted this item <span am-time-ago="ctrl.parseDate(task.acceptedAt)"></span></h3>
-			<p>{{ task.acceptedAt | date : 'short' }}</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="log" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ task.createdBy }} created this item <span am-time-ago="ctrl.parseDate(task.createdAt)"></span></h3>
-			<p>{{ task.createdAt | date : 'short' }}</p>
-		</div>
-	</md-list-item>
-</md-list>
+<md-card>
+	<md-card-title>
+		<md-card-title-text>
+			<span>{{ ctrl.stream(item).subject }}</span>
+			<span class="md-headline">{{ item.subject }}</span>
+			<span class="md-subhead">{{ item | itemStatusResume }}</span>
+		</md-card-title-text>
+	</md-card-title>
+	<md-list>
+		<md-list-item ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'" data-ng-repeat="member in item.members" ng-init="m = user(member)">
+			<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+			<div class="md-list-item-text" ui-sref="org.profile({ memberId: member.id })" md-ink-ripple>
+				<h3>{{ member.firstname }} {{ member.lastname }} ({{ member.role }})
+				</h3>
+				<h4 ng-if="ctrl.isAllowed('showShares', item) && member.share">
+					{{ member.share | percentage:2 }} of shares ({{ member.delta | percentage:2:true }} respect of auto-assessment)
+				</h4>
+				<p ng-switch="member.estimation">
+					<span ng-switch-when="undefined">Has not estimated</span>
+					<span ng-switch-when="-2">Estimated</span>
+					<span ng-switch-when="-1">Skipped estimation</span>
+					<span ng-switch-default>Estimated {{ member.estimation | number:0 }} credits</span>
+				</p>
+			</div>
+		</md-list-item>
+	</md-list>
+	<md-list>
+		<md-list-item ng-if="item.acceptedAt" class="md-2-line">
+			<md-icon md-svg-icon="log" class="md-avatar-icon"></md-icon>
+			<div class="md-list-item-text">
+				<h3>{{ item.createdBy }} accepted this item <span am-time-ago="ctrl.parseDate(item.acceptedAt)"></span></h3>
+				<p>{{ item.acceptedAt | date : 'short' }}</p>
+			</div>
+		</md-list-item>
+		<md-list-item class="md-2-line">
+			<md-icon md-svg-icon="log" class="md-avatar-icon"></md-icon>
+			<div class="md-list-item-text">
+				<h3>{{ item.createdBy }} created this item <span am-time-ago="ctrl.parseDate(item.createdAt)"></span></h3>
+				<p>{{ item.createdAt | date : 'short' }}</p>
+			</div>
+		</md-list-item>
+	</md-list>
+	<md-card-actions layout="row" layout-align="end center">
+		<md-button aria-label="Start item" ng-if="ctrl.isAllowed('executeItem', item)" ng-click="ctrl.executeItem(item)">Start</md-button>
+		<md-button aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
+		<md-button aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
+		<md-button aria-label="Complete item" ng-if="ctrl.isAllowed('completeItem', item)" ng-click="ctrl.completeItem($event, item)">Mark as Completed</md-button>
+		<md-button aria-label="Accept item" ng-if="ctrl.isAllowed('acceptItem', item)" ng-click="ctrl.acceptItem(item)">Mark as Accepted</md-button>
+		<md-button aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
+		<md-menu md-position-mode="target-right target" style="padding: 0" ng-if="ctrl.hasMore(item)">
+			<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="ctrl.openMoreMenu($mdOpenMenu, $event)">
+				<md-icon md-menu-origin class="material-icons">&#xE5D4;</md-icon>
+			</md-button>
+			<md-menu-content width="4">
+				<md-menu-item ng-if="ctrl.isAllowed('editItem', item)">
+					<md-button ng-click="ctrl.openEditItem($event, item)">
+						<md-icon class="material-icons" md-menu-align-target>&#xE150;</md-icon>
+						Edit Task
+					</md-button>
+				</md-menu-item>
+				<md-menu-item ng-if="ctrl.isAllowed('deleteItem', item)">
+					<md-button ng-click="ctrl.deleteItem($event, item)">
+						<md-icon class="material-icons">&#xE872;</md-icon>
+						Delete Task
+					</md-button>
+				</md-menu-item>
+				<md-menu-item ng-if="ctrl.isAllowed('unjoinItem', item)">
+					<md-button ng-click="ctrl.unjoinItem(item)">
+						<md-icon class="material-icons">&#xE3CB;</md-icon>
+						Unjoin
+					</md-button>
+				</md-menu-item>
+				<md-menu-item ng-if="ctrl.isAllowed('reExecuteItem', item)">
+					<md-button ng-click="ctrl.reExecuteItem($event, item)">
+						<md-icon class="material-icons">&#xE8B3;</md-icon>
+						Revert to Ongoing
+					</md-button>
+				</md-menu-item>
+				<md-menu-item ng-if="ctrl.isAllowed('remindItemEstimate', item)">
+					<md-button ng-click="ctrl.remindItemEstimate(item)">
+						<md-icon class="material-icons">&#xE0BE;</md-icon>
+						Remind Members to Estimate
+					</md-button>
+				</md-menu-item>
+				<md-menu-item ng-if="ctrl.isAllowed('reCompleteItem', item)">
+					<md-button ng-click="ctrl.reCompleteItem(item)">
+						<md-icon class="material-icons">&#xE8B3;</md-icon>
+						Revert to Completed
+					</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+	</md-card-actions>
+</md-card>

@@ -82,8 +82,20 @@ var ItemService = function($resource, $interval, identity) {
 	this.save = function(item, success, error) {
 		return resource.save({ orgId: item.organization.id }, item, success, error);
 	};
-	this.get = function(orgId, itemId) {
-		return resource.get({ orgId: orgId, itemId: itemId });
+	var isGetPolling = false;
+	this.get = function(organization, itemId, success, error) {
+		isGetPolling = true;
+		return resource.get(
+				{ orgId: organization.id, itemId: itemId },
+				function(data) {
+					isGetPolling = false;
+					success(data);
+				},
+				function(response) {
+					isGetPolling = false;
+					error(response);
+				}
+		);
 	};
 	var isQueryPolling = false;
 	this.query = function(filters, success, error) {
@@ -154,6 +166,21 @@ var ItemService = function($resource, $interval, identity) {
 			queryPolling = null;
 		}
 	};
+	var getPolling = null;
+	this.startGetPolling = function(organization, itemId, success, error, millis) {
+		this.get(organization, itemId, success, error);
+		var that = this;
+		getPolling = $interval(function() {
+			if(isGetPolling) return;
+			that.get(organization, itemId, success, error);
+		}, millis);
+	};
+	this.stopGetPolling = function() {
+		if(getPolling) {
+			$interval.cancel(getPolling);
+			getPolling = null;
+		}
+	};
 };
 
 ItemService.prototype = {
@@ -170,108 +197,138 @@ ItemService.prototype = {
 		'ROLE_MEMBER': 'member',
 		'ROLE_OWNER' : 'owner'
 	},
+	getOwner: function(item) {
+		if(item) {
+			for(var id in item.members) {
+				if(item.members.hasOwnProperty(id) &&
+						item.members[id].role === this.ITEM_ROLES.ROLE_OWNER)
+					return item.members[id];
+			}
+		}
+		return null;
+	},
 	isOwner: function(item, userId) {
-		return item.members &&
+		return item &&
+				item.members &&
 				item.members.hasOwnProperty(userId) &&
 				item.members[userId].role == this.ITEM_ROLES.ROLE_OWNER;
 	},
 	isMember: function(item, userId) {
-		return item.members &&
+		return item &&
+				item.members &&
 				item.members.hasOwnProperty(userId) &&
 				item.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
 	},
 	hasJoined: function(item, userId) {
-		return item.members &&
+		return item &&
+				item.members &&
 				item.members.hasOwnProperty(userId);
 	},
 	isEstimationCompleted: function(item) {
-		for(var id in item.members) {
-			if(item.members.hasOwnProperty(id) &&
-				item.members[id].estimation === undefined)
-				return false;
+		if(item) {
+			for(var id in item.members) {
+				if(item.members.hasOwnProperty(id) &&
+						item.members[id].estimation === undefined)
+					return false;
+			}
 		}
 		return true;
 	},
 	countEstimators: function(item) {
 		var n = 0;
-		for(var id in item.members) {
-			if(item.members.hasOwnProperty(id) &&
-				item.members[id].estimation !== undefined)
-				n++;
+		if(item) {
+			for(var id in item.members) {
+				if(item.members.hasOwnProperty(id) &&
+						item.members[id].estimation !== undefined)
+					n++;
+			}
 		}
 		return n;
 	},
 	visibilityCriteria: {
 		createItem: function(organization) {
-			return this.getIdentity().isAuthenticated() &&
+			return organization &&
+					this.getIdentity().isAuthenticated() &&
 					this.getIdentity().getMembership(organization.id);
 		},
 		editItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-				this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		deleteItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status < this.ITEM_STATUS.COMPLETED &&
-				this.isOwner(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status < this.ITEM_STATUS.COMPLETED &&
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		joinItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ONGOING &&
-				resource.members[this.getIdentity().getId()] === undefined;
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ONGOING &&
+					resource.members[this.getIdentity().getId()] === undefined;
 		},
 		unjoinItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ONGOING &&
-				this.isMember(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ONGOING &&
+					this.isMember(resource, this.getIdentity().getId());
 		},
 		executeItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.IDEA &&
-				this.isOwner(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.IDEA &&
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		reExecuteItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.COMPLETED &&
-				this.isOwner(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.COMPLETED &&
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		completeItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ONGOING &&
-				this.isOwner(resource, this.getIdentity().getId()) &&
-				this.isEstimationCompleted(resource);
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ONGOING &&
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					this.isEstimationCompleted(resource);
 		},
 		reCompleteItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ACCEPTED &&
-				this.isOwner(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ACCEPTED &&
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		acceptItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.COMPLETED &&
-				this.isOwner(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.COMPLETED &&
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		estimateItem: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ONGOING &&
-				this.hasJoined(resource, this.getIdentity().getId());
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ONGOING &&
+					this.hasJoined(resource, this.getIdentity().getId());
 		},
 		remindItemEstimate: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ONGOING &&
-				this.isOwner(resource, this.getIdentity().getId()) &&
-				!this.isEstimationCompleted(resource);
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ONGOING &&
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					!this.isEstimationCompleted(resource);
 		},
 		assignShares: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.ACCEPTED &&
-				this.hasJoined(resource, this.getIdentity().getId()) &&
-				resource.members[this.getIdentity().getId()].shares === undefined;
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.ACCEPTED &&
+					this.hasJoined(resource, this.getIdentity().getId()) &&
+					resource.members[this.getIdentity().getId()].shares === undefined;
 		},
 		skipShares: this.assignShares,
 		showShares: function(resource) {
-			return this.getIdentity().isAuthenticated() &&
-				resource.status == this.ITEM_STATUS.CLOSED;
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.CLOSED;
 		}
 	},
 	isAllowed: function(command, resource) {

@@ -7,7 +7,7 @@ angular.module('oraApp.collaboration')
 		40: 'Shares assignment in progress',
 		50: 'Closed'
 	})
-	.filter('taskStatusLabel', ['TASK_STATUS_LABEL', function(TASK_STATUS_LABEL) {
+	.filter('itemStatusLabel', ['TASK_STATUS_LABEL', function(TASK_STATUS_LABEL) {
 		return function(status) {
 			return TASK_STATUS_LABEL.hasOwnProperty(status) ? TASK_STATUS_LABEL[status] : status;
 		};

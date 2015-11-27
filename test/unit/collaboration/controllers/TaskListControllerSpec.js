@@ -1,4 +1,4 @@
-describe('TaskListController', function() {
+describe('ItemListController', function() {
 	
 	beforeEach(module('oraApp'));
 	
