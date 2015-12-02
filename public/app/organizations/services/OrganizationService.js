@@ -8,11 +8,16 @@ var OrganizationService = function($resource, identity) {
 			method: 'GET',
 			isArray: false,
 			headers: { 'GOOGLE-JWT': identity.getToken() }
+		},
+		save: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() }
 		}
 	});
 
-	this.query = resource.query;
-	this.get   = resource.get;
+	this.query = resource.query.bind(resource);
+	this.get   = resource.get.bind(resource);
+	this.save  = resource.save.bind(resource);
 
 	this.getIdentity = function() {
 		return identity;

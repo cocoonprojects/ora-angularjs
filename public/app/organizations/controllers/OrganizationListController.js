@@ -1,6 +1,6 @@
 angular.module('oraApp')
-	.controller('OrganizationListController', ['$scope', 'organizationService', 'memberService',
-		function ($scope, organizationService, memberService) {
+	.controller('OrganizationListController', ['$scope', '$mdDialog', 'organizationService', 'memberService',
+		function ($scope, $mdDialog, organizationService, memberService) {
 			$scope.organizations = organizationService.query();
 			this.isAllowed = memberService.isAllowed.bind(memberService);
 			this.joinOrganization = function(organization) {
@@ -8,5 +8,17 @@ angular.module('oraApp')
 			};
 			this.unjoinOrganization = function(organization) {
 				memberService.unjoinOrganization(organization, $scope.identity.updateMemberships);
+			};
+			this.openNewOrganization = function(ev) {
+				$mdDialog.show({
+					controller: NewOrganizationController,
+					templateUrl: "app/organizations/partials/new-organization.html",
+					targetEvent: ev,
+					clickOutsideToClose: true
+				}).then(this.addOrganization);
+			};
+			this.addOrganization = function(organization) {
+				$scope.organizations._embedded['ora:organization'].unshift(organization);
+				$scope.identity.updateMemberships();
 			};
 		}]);

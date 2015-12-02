@@ -14,14 +14,23 @@
 	</div>
 </md-toolbar>
 <md-content class="md-padding">
-	<md-card data-ng-repeat="item in items">
+	<md-card>
 		<md-card-content>
-			<h2 class="md-title">{{ item.title }}</h2>
-			<p>{{ item.message }}</p>
+			<h2 class="md-title">Welcome to O.R.A.</h2>
+			<p>Your flow is where you will find notifications about most relevant events in your organizations, suggestions on how to contribute to activities and much more. Check it out frequently!</p>
 		</md-card-content>
 		<div class="md-actions" layout="row" layout-align="end center">
-			<md-button>Action 1</md-button>
+			<md-button>Dismiss</md-button>
 			<md-button>Action 2</md-button>
+		</div>
+	</md-card>
+	<md-card>
+		<md-card-content>
+			<h2 class="md-title">Select your organization</h2>
+			<p>Select an organization from the side bar and start contributing! Or, if you are not yet member of any organization, join one the available organizations</p>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="end center">
+			<md-button ui-sref="organizations">Join</md-button>
 		</div>
 	</md-card>
 </md-content>
