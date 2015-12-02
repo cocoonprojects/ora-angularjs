@@ -79,14 +79,14 @@ var ItemService = function($resource, $interval, identity) {
 		return identity;
 	};
 
-	this.save = function(item, success, error) {
-		return resource.save({ orgId: item.organization.id }, item, success, error);
+	this.save = function(organizationId, item, success, error) {
+		return resource.save({ orgId: organizationId }, item, success, error);
 	};
 	var isGetPolling = false;
-	this.get = function(organization, itemId, success, error) {
+	this.get = function(organizationId, itemId, success, error) {
 		isGetPolling = true;
 		return resource.get(
-				{ orgId: organization.id, itemId: itemId },
+				{ orgId: organizationId, itemId: itemId },
 				function(data) {
 					isGetPolling = false;
 					success(data);
@@ -98,10 +98,10 @@ var ItemService = function($resource, $interval, identity) {
 		);
 	};
 	var isQueryPolling = false;
-	this.query = function(filters, success, error) {
+	this.query = function(organizationId, filters, success, error) {
 		isQueryPolling = true;
 		return resource.query(
-				filters,
+				angular.extend({ orgId: organizationId }, filters),
 				function (data) {
 					isQueryPolling = false;
 					success(data);
@@ -147,17 +147,17 @@ var ItemService = function($resource, $interval, identity) {
 	this.skipShares = function(item, success, error) {
 		return resource.skipShares({ orgId: item.organization.id, itemId: item.id }, {}, success, error);
 	};
-	this.userStats = function(filters) {
-		return r2.get(filters);
+	this.userStats = function(organizationId, filters) {
+		return r2.get(angular.extend({ orgId: organizationId }, filters));
 	};
 
 	var queryPolling = null;
-	this.startQueryPolling = function(filters, success, error, millis) {
-		this.query(filters, success, error);
+	this.startQueryPolling = function(organizationId, filters, success, error, millis) {
+		this.query(organizationId, filters, success, error);
 		var that = this;
 		queryPolling = $interval(function() {
 			if (isQueryPolling) return;
-			that.query(filters, success, error);
+			that.query(organizationId, filters, success, error);
 		}, millis);
 	};
 	this.stopQueryPolling = function() {
@@ -167,12 +167,12 @@ var ItemService = function($resource, $interval, identity) {
 		}
 	};
 	var getPolling = null;
-	this.startGetPolling = function(organization, itemId, success, error, millis) {
-		this.get(organization, itemId, success, error);
+	this.startGetPolling = function(organizationId, itemId, success, error, millis) {
+		this.get(organizationId, itemId, success, error);
 		var that = this;
 		getPolling = $interval(function() {
 			if(isGetPolling) return;
-			that.get(organization, itemId, success, error);
+			that.get(organizationId, itemId, success, error);
 		}, millis);
 	};
 	this.stopGetPolling = function() {

@@ -20,10 +20,10 @@ var StreamService = function($resource, $interval, identity) {
 	};
 
 	var isQueryPolling = false;
-	this.query = function(organization, success, error) {
+	this.query = function(organizationId, success, error) {
 		isQueryPolling = true;
 		resource.query(
-				{ orgId: organization.id },
+				{ orgId: organizationId },
 				function(data) {
 					isQueryPolling = false;
 					success(data);
@@ -33,18 +33,18 @@ var StreamService = function($resource, $interval, identity) {
 					error(response);
 				});
 	};
-	this.save  = function(stream, success, error) {
-		return resource.save({ orgId: stream.organization.id }, stream, success, error);
+	this.save  = function(organizationId, stream, success, error) {
+		return resource.save({ orgId: organizationId }, stream, success, error);
 	};
 	this.delete = resource.delete;
 
 	var queryPolling = null;
-	this.startQueryPolling = function(organization, success, error, millis) {
-		this.query(organization, success, error);
+	this.startQueryPolling = function(organizationId, success, error, millis) {
+		this.query(organizationId, success, error);
 		var that = this;
 		queryPolling = $interval(function() {
 			if(isQueryPolling) return;
-			that.query(organization, success, error);
+			that.query(organizationId, success, error);
 		}, millis);
 	};
 	this.stopQueryPolling = function() {

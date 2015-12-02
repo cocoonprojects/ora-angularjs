@@ -1,12 +1,10 @@
 function NewStreamController($scope, $log, $stateParams, $mdDialog, streamService) {
-	$scope.stream = {
-		organization: { id: $stateParams.orgId }
-	};
+	$scope.stream = {};
 	$scope.cancel = function() {
 		$mdDialog.cancel();
 	};
 	$scope.submit = function() {
-		streamService.save($scope.stream, $mdDialog.hide, this.onError);
+		streamService.save($stateParams.orgId, $scope.stream, $mdDialog.hide, this.onError);
 	};
 	this.onError = function(httpResponse) {
 		if(httpResponse.status == 400) {

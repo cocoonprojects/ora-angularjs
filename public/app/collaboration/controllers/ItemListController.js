@@ -1,6 +1,6 @@
 angular.module('oraApp.collaboration')
-	.controller('ItemListController', ['$scope', '$log', '$interval','$mdDialog', '$stateParams', 'streamService', 'itemService',
-		function ($scope, $log, $interval, $mdDialog, $stateParams, streamService, itemService) {
+	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams','$mdDialog','$mdToast', 'streamService', 'itemService',
+		function ($scope, $log, $interval, $stateParams, $mdDialog, $mdToast, streamService, itemService) {
 			this.onLoadingError = function(error) {
 				$log.debug(error);
 				switch (error.status) {
@@ -11,13 +11,12 @@ angular.module('oraApp.collaboration')
 			};
 			$scope.streams = null;
 			$scope.filters = {
-				orgId: $stateParams.orgId,
 				limit: 10,
 				offset: 0
 			};
 			$scope.tasks = [];
-			streamService.startQueryPolling($scope.organization, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-			itemService.startQueryPolling($scope.filters, function(data) { $scope.tasks = data; }, this.onLoadingError, 10000);
+			streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
+			itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.tasks = data; }, this.onLoadingError, 10000);
 			this.cancelAutoUpdate = function() {
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
@@ -97,6 +96,12 @@ angular.module('oraApp.collaboration')
 			};
 			this.addStream = function(stream) {
 				$scope.streams._embedded['ora:stream'][stream.id] = stream;
+				$mdToast.show(
+						$mdToast.simple()
+								.textContent('New stream "' + stream.subject + '" added')
+								.position('bottom left')
+								.hideDelay(3000)
+				);
 			};
 			this.addTask = function(item) {
 				$scope.tasks._embedded['ora:task'].unshift(item);

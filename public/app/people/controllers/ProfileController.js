@@ -6,13 +6,12 @@ angular.module('oraApp.people')
 			$scope.tasks   = null;
 			$scope.stats   = null;
 			$scope.filters = {
-				orgId: $stateParams.orgId,
 				memberId: $stateParams.memberId,
 				limit: 10
 			};
 			$scope.initTasks = function() {
-				$scope.tasks   = itemService.query($scope.filters);
-				$scope.stats   = itemService.userStats($scope.filters);
+				$scope.tasks   = itemService.query($stateParams.orgId, $scope.filters);
+				$scope.stats   = itemService.userStats($stateParams.orgId, $scope.filters);
 			};
 			$scope.loadMore = function() {
 				$scope.filters.limit += 10;

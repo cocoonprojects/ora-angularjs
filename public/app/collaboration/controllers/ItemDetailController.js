@@ -2,7 +2,7 @@ angular.module('oraApp.collaboration')
 	.controller('ItemDetailController', ['$scope', '$state', '$stateParams', '$mdDialog', '$log', 'streamService', 'itemService',
 		function ($scope, $state, $stateParams, $mdDialog, $log, streamService, itemService) {
 			$scope.streams = null;
-			streamService.query($scope.organization, function(data) { $scope.streams = data; });
+			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
 			this.onLoadingError = function(error) {
 				$log.debug(error);
 				switch (error.status) {
@@ -12,7 +12,7 @@ angular.module('oraApp.collaboration')
 				}
 			};
 			$scope.item = null;
-			itemService.startGetPolling($scope.organization, $stateParams.itemId, function(data) { $scope.item = data; }, this.onLoadingError);
+			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, function(data) { $scope.item = data; }, this.onLoadingError);
 			$scope.$on('$destroy', itemService.stopGetPolling);
 			this.stream = function(item) {
 				if($scope.streams && item && item.stream) {
@@ -54,7 +54,7 @@ angular.module('oraApp.collaboration')
 				$mdDialog.show(confirm).then(function() {
 					itemService.delete(item,
 							function() {
-								$state.go('org.collaboration', { orgId: $scope.organization.id });
+								$state.go('org.collaboration', { orgId: $stateParams.orgId });
 							},
 							$log.warn
 					);
