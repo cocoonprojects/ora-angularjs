@@ -2,7 +2,6 @@ angular.module('oraApp.collaboration')
 	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams','$mdDialog','$mdToast', 'streamService', 'itemService',
 		function ($scope, $log, $interval, $stateParams, $mdDialog, $mdToast, streamService, itemService) {
 			this.onLoadingError = function(error) {
-				$log.debug(error);
 				switch (error.status) {
 					case 401:
 						this.cancelAutoUpdate();
@@ -14,9 +13,9 @@ angular.module('oraApp.collaboration')
 				limit: 10,
 				offset: 0
 			};
-			$scope.tasks = [];
+			$scope.items = [];
 			streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-			itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.tasks = data; }, this.onLoadingError, 10000);
+			itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
 			this.cancelAutoUpdate = function() {
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
@@ -35,9 +34,27 @@ angular.module('oraApp.collaboration')
 				return $scope.user(member);
 			};
 
-			this.filterTasks = function() {
-				itemService.query($scope.filters, function(data) { $scope.tasks = data; }, this.onLoadingError);
+			this.loadItems = function() {
+				$scope.filters.limit = 10;
+				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
 			};
+
+			$scope.isLoadingMore = false;
+			this.loadMore = function() {
+				$scope.isLoadingMore = true;
+				$scope.filters.limit = $scope.items.count + 10;
+				var that = this;
+				itemService.query($stateParams.orgId, $scope.filters,
+						function(data) {
+							$scope.isLoadingMore = false;
+							$scope.items = data;
+						},
+						function(response) {
+							$scope.isLoadingMore = false;
+							that.onLoadingError(response);
+				});
+			};
+
 			this.stream = function(task) {
 				if($scope.streams && task.stream) {
 					return $scope.streams._embedded['ora:stream'][task.stream.id];
@@ -104,10 +121,10 @@ angular.module('oraApp.collaboration')
 				);
 			};
 			this.addTask = function(item) {
-				$scope.tasks._embedded['ora:task'].unshift(item);
+				$scope.items._embedded['ora:task'].unshift(item);
 			};
 			this.updateItem = function(item) {
-				var items = $scope.tasks._embedded['ora:task'];
+				var items = $scope.items._embedded['ora:task'];
 				for(var i = 0; i < items.length; i++) {
 					if(items[i].id == item.id) {
 						items[i] = item;

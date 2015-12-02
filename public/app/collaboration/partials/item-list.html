@@ -15,8 +15,8 @@
 </md-fab-speed-dial>
 <md-card>
 	<md-card-content>
-		<form name="form" ng-submit="ctrl.filterTasks()" novalidate class="md-inline-form">
-			<div layout layout-sm="column">
+		<form name="form" ng-submit="ctrl.loadItems()" novalidate>
+			<div layout="row" layout-sm="column">
 				<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
 				<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
 				<md-input-container flex>
@@ -35,8 +35,8 @@
 		</form>
 	</md-card-content>
 </md-card>
-<md-list>
-	<md-list-item ng-repeat="item in tasks._embedded['ora:task']" class="md-3-line secondary-button-padding" ng-init="owner = ctrl.getOwner(item)">
+<md-list infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="items.total == items.count || isLoadingMore" infinite-scroll-immediate-check="false">
+	<md-list-item ng-repeat="item in items._embedded['ora:task']" class="md-3-line secondary-button-padding" ng-init="owner = ctrl.getOwner(item)">
 		<img ng-src="{{ owner.picture }}" class="md-avatar" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}">
 		<div class="md-list-item-text" ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
 			<h3 aria-label="Detail">{{ item.subject }}</h3>

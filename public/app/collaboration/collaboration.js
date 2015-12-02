@@ -4,7 +4,7 @@ angular.module('oraApp.collaboration', ['ui.router'])
 			$stateProvider
 				.state('org.collaboration', {
 					url: '/items',
-					templateUrl: 'app/collaboration/partials/task-list.html',
+					templateUrl: 'app/collaboration/partials/item-list.html',
 					data: {
 						selectedTab: 0
 					},
@@ -12,7 +12,7 @@ angular.module('oraApp.collaboration', ['ui.router'])
 				})
 				.state('org.item', {
 					url: '/items/:itemId',
-					templateUrl: 'app/collaboration/partials/task-detail.html',
+					templateUrl: 'app/collaboration/partials/item-detail.html',
 					data: {
 						selectedTab: 0
 					},

@@ -3,6 +3,7 @@ angular.module('oraApp', [
 	'ngMessages',
 	'ngMaterial',
 	'angularMoment',
+	'infinite-scroll',
 	'oraApp.identity',
 	'oraApp.organizations',
 	'oraApp.collaboration',

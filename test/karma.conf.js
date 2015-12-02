@@ -5,6 +5,8 @@ module.exports = function (config) {
 
 		files: [
 			'public/components/angular/angular.js',
+			'public/components/jquery/dist/jquery.js',
+			'public/components/ngInfiniteScroll/build/ng-infinite-scroll.js',
 			'public/components/angular-resource/angular-resource.js',
 			'public/components/angular-animate/angular-animate.js',
 			'public/components/angular-mocks/angular-mocks.js',
