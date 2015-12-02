@@ -2,21 +2,40 @@ angular.module('oraApp.accounting')
 	.controller('OrganizationStatementController', ['$scope', '$stateParams', '$mdDialog', 'accountService',
 		function ($scope, $stateParams, $mdDialog, accountService) {
 			var that = this;
-			var limit = 0;
-			$scope.statement = null;
-			$scope.initialBalance = 0;
 			this.isAllowed = accountService.isAllowed.bind(accountService);
 
-			this.loadMore = function() {
-				limit += 10;
-				accountService
-					.organizationStatement({ orgId: $stateParams.orgId, limit: limit })
-					.$promise.then(function(result) {
-						$scope.statement = result;
-						$scope.initialBalance = accountService.getInitialBalance(result._embedded.transactions);
-					});
+			this.onLoadingError = function(error) {
+				switch (error.status) {
+					case 401:
+						this.cancelAutoUpdate();
+						break;
+				}
 			};
-			this.loadMore();
+			$scope.filters = {
+				limit: 10
+			};
+			$scope.statement = null;
+			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) { $scope.statement = data; }, this.onLoadingError, 10000);
+			this.cancelAutoUpdate = function() {
+				accountService.stopOrganizationPolling();
+			};
+			$scope.$on('$destroy', this.cancelAutoUpdate);
+
+			$scope.isLoadingMore = false;
+			this.loadMore = function() {
+				$scope.isLoadingMore = true;
+				$scope.filters.limit = $scope.statement.count + 10;
+				var that = this;
+				accountService.organizationStatement($stateParams.orgId, $scope.filters,
+						function(data) {
+							$scope.isLoadingMore = false;
+							$scope.statement = data;
+						},
+						function(response) {
+							$scope.isLoadingMore = false;
+							that.onLoadingError(response);
+						});
+			};
 
 			this.addTransaction = function(transaction) {
 				$scope.statement._embedded.transactions.unshift(transaction);

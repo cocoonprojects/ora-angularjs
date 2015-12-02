@@ -20,8 +20,8 @@ describe('accountService', function() {
 		}
 	};
 
-	beforeEach(inject(function($resource) {
-		service = new AccountService($resource, identity);
+	beforeEach(inject(function($resource, $interval) {
+		service = new AccountService($resource, $interval, identity);
 	}));
 
 	it('should return 0 for an undefined transaction list', function() {

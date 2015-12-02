@@ -20,7 +20,7 @@
 	</md-fab-actions>
 </md-fab-speed-dial>
 <h1 class="md-padding">Actual Balance: <span ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }}</span></h1>
-<md-list>
+<md-list infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="statement.total == statement.count || isLoadingMore" infinite-scroll-immediate-check="false">
 	<md-list-item class="md-3-line" data-ng-repeat="transaction in statement._embedded.transactions" ng-switch="transaction.type">
 		<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
 		<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
@@ -39,5 +39,3 @@
 		</div>
 	</md-list-item>
 </md-list>
-<div class="md-padding" style="font-size: 120%"><span style="font-weight: bold">Initial Balance:</span> <span ng-style="initialBalance < 0 ? { color : 'Red' } : {}">{{ initialBalance | number:2 }}</span></div>
-<div class="md-padding" style="padding-bottom: 0; padding-top: 0">{{ statement.count }} transactions shown of {{ statement.total}} overall <md-button ng-if="statement.total > statement.count" ng-click="ctrl.loadMore()">Load more</md-button></div>

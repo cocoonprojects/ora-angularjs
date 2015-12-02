@@ -1,4 +1,4 @@
-var AccountService = function($resource, identity) {
+var AccountService = function($resource, $interval, identity) {
 	var resource = $resource('api/:orgId/accounting/:controller/:accountId/:memberId', { controller: 'accounts' }, {
 		get: {
 			method: 'GET',
@@ -48,14 +48,71 @@ var AccountService = function($resource, identity) {
 
 	this.get = resource.get.bind(resource);
 	this.query = resource.query.bind(resource);
-	this.personalStatement = resource.personalStatement.bind(resource);
-	this.organizationStatement = resource.organizationStatement.bind(resource);
+	var isPersonalPolling = false;
+	this.personalStatement = function(organizationId, filters, success, error) {
+		isPersonalPolling = true;
+		resource.personalStatement(
+				angular.extend({ orgId: organizationId }, filters),
+				function (data) {
+					isPersonalPolling = false;
+					success(data);
+				},
+				function (response) {
+					isPersonalPolling = false;
+					error(response);
+				});
+	};
+	var isOrganizationPolling = false;
+	this.organizationStatement = function(organizationId, filters, success, error) {
+		isOrganizationPolling = true;
+		resource.organizationStatement(
+				angular.extend({ orgId: organizationId }, filters),
+				function (data) {
+					isOrganizationPolling = false;
+					success(data);
+				},
+				function (response) {
+					isOrganizationPolling = false;
+					error(response);
+				});
+	};
 	this.userStats = resource.userStats.bind(resource);
 	this.deposit = resource.deposit.bind(resource);
 	this.withdraw = resource.withdraw.bind(resource);
 	this.transferIn = resource.transferIn.bind(resource);
 	this.transferOut = resource.transferOut.bind(resource);
 
+	var personalPolling = null;
+	this.startPersonalPolling = function(organizationId, filters, success, error, millis) {
+		this.personalStatement(organizationId, filters, success, error);
+		var that = this;
+		personalPolling = $interval(function() {
+			if (isPersonalPolling) return;
+			that.personalStatement(organizationId, filters, success, error);
+		}, millis);
+	};
+	this.stopPersonalPolling = function() {
+		if(personalPolling) {
+			$interval.cancel(personalPolling);
+			personalPolling = null;
+		}
+	};
+
+	var organizationPolling = null;
+	this.startOrganizationPolling = function(organizationId, filters, success, error, millis) {
+		this.organizationStatement(organizationId, filters, success, error);
+		var that = this;
+		organizationPolling = $interval(function() {
+			if (isOrganizationPolling) return;
+			that.organizationStatement(organizationId, filters, success, error);
+		}, millis);
+	};
+	this.stopOrganizationPolling = function() {
+		if(organizationPolling) {
+			$interval.cancel(organizationPolling);
+			organizationPolling = null;
+		}
+	};
 	this.getIdentity = function() {
 		return identity;
 	};
@@ -113,4 +170,4 @@ AccountService.prototype = {
 	}
 };
 angular.module('oraApp.accounting')
-	.service('accountService', ['$resource', 'identity', AccountService]);
+	.service('accountService', ['$resource', '$interval', 'identity', AccountService]);
