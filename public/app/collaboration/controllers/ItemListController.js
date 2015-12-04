@@ -136,4 +136,9 @@ angular.module('oraApp.collaboration')
 				return itemService.isAllowed('createItem', organization) ||
 								streamService.isAllowed('createStream', organization);
 			};
+			this.hasActions = function(item) {
+				return this.isAllowed('joinItem', item) ||
+						this.isAllowed('estimateItem', item) ||
+						this.isAllowed('assignShares', item);
+			};
 		}]);
