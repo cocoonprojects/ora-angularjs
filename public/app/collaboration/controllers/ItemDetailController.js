@@ -27,9 +27,6 @@ angular.module('oraApp.collaboration')
 						this.isAllowed('unjoinItem', item) ||
 						this.isAllowed('reExecuteItem', item);
 			};
-			this.openMoreMenu = function($mdOpenMenu, ev) {
-				$mdOpenMenu(ev);
-			};
 			this.parseDate = function(when) {
 				return Date.parse(when);
 			};

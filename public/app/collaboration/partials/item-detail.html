@@ -1,11 +1,13 @@
 <md-card>
 	<md-card-title>
 		<md-card-title-text>
-			<span>{{ ctrl.stream(item).subject }}</span>
 			<span class="md-headline">{{ item.subject }}</span>
-			<span class="md-subhead">{{ item | itemStatusResume }}</span>
+			<span class="md-subhead">{{ ctrl.stream(item).subject }}</span>
 		</md-card-title-text>
 	</md-card-title>
+	<md-card-content>
+		<p>{{ item | itemStatusResume }}</p>
+	</md-card-content>
 	<md-list>
 		<md-list-item ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'" data-ng-repeat="member in item.members" ng-init="m = user(member)">
 			<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
@@ -49,8 +51,8 @@
 		<md-button aria-label="Accept item" ng-if="ctrl.isAllowed('acceptItem', item)" ng-click="ctrl.acceptItem(item)">Mark as Accepted</md-button>
 		<md-button aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
 		<md-menu md-position-mode="target-right target" style="padding: 0" ng-if="ctrl.hasMore(item)">
-			<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="ctrl.openMoreMenu($mdOpenMenu, $event)">
-				<md-icon md-menu-origin class="material-icons">&#xE5D4;</md-icon>
+			<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+				<md-icon md-menu-origin md-svg-icon="more"></md-icon>
 			</md-button>
 			<md-menu-content width="4">
 				<md-menu-item ng-if="ctrl.isAllowed('editItem', item)">

@@ -65,7 +65,8 @@ angular.module('oraApp', [
 					.icon('add', 'svg/ic_add_24px.svg')
 					.icon('log', 'svg/ic_today_24px.svg')
 					.icon('add-task', 'svg/ic_note_add_black_24px.svg')
-					.icon('add-stream', 'svg/ic_view_stream_black_24px.svg');
+					.icon('add-stream', 'svg/ic_view_stream_black_24px.svg')
+					.icon('more', 'svg/ic_more_vert_24px.svg');
 		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');
