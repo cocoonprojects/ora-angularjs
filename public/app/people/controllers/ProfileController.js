@@ -10,7 +10,7 @@ angular.module('oraApp.people')
 				limit: 10
 			};
 			$scope.initTasks = function() {
-				$scope.tasks   = itemService.query($stateParams.orgId, $scope.filters);
+				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.tasks = data; }, function(response) { $log.warn(response); });
 				$scope.stats   = itemService.userStats($stateParams.orgId, $scope.filters);
 			};
 			$scope.loadMore = function() {

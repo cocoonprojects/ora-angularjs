@@ -12,7 +12,7 @@ angular.module('oraApp.collaboration')
 				}
 			};
 			$scope.item = null;
-			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, function(data) { $scope.item = data; }, this.onLoadingError);
+			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, function(data) { $scope.item = data; }, this.onLoadingError, 10000);
 			$scope.$on('$destroy', itemService.stopGetPolling);
 			this.stream = function(item) {
 				if($scope.streams && item && item.stream) {
