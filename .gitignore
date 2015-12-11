@@ -7,3 +7,5 @@ build
 
 # PhpStorm
 .idea/
+
+config.development.js
