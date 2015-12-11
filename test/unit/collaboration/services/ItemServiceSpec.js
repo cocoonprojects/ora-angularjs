@@ -500,7 +500,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'owner'
 				}
-			}
+			},
+			daysRemainingToAssignShares: 5
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -516,6 +517,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(true);
 		expect(service.isAllowed('showShares', task)).toBe(false);
+		expect(service.isAllowed('closeItem', task)).toBe(false);
 	});
 
 	it('should return what the owner can do on an accepted item when she has assigned shares', function() {
@@ -528,7 +530,8 @@ describe('itemService', function() {
 						'00000000-0000-0000-0000-000000000000': 1
 					}
 				}
-			}
+			},
+			daysRemainingToAssignShares: 5
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -544,6 +547,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
+		expect(service.isAllowed('closeItem', task)).toBe(true);
 	});
 
 	it('should return what a member can do on an accepted item when she has not yet assigned shares', function() {
@@ -553,7 +557,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'member'
 				}
-			}
+			},
+			daysRemainingToAssignShares: 5
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -569,6 +574,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(true);
 		expect(service.isAllowed('showShares', task)).toBe(false);
+		expect(service.isAllowed('closeItem', task)).toBe(false);
 	});
 
 	it('should return what a member can do on an accepted item when she has assigned shares', function() {
@@ -581,7 +587,8 @@ describe('itemService', function() {
 						'00000000-0000-0000-0000-000000000000': 1
 					}
 				}
-			}
+			},
+			daysRemainingToAssignShares: 5
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -597,6 +604,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
+		expect(service.isAllowed('closeItem', task)).toBe(false);
 	});
 
 	it('should return what a user can do on an accepted item', function() {
@@ -606,7 +614,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000001': {
 					role: 'member'
 				}
-			}
+			},
+			daysRemainingToAssignShares: 5
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -622,6 +631,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
+		expect(service.isAllowed('closeItem', task)).toBe(false);
 	});
 
 	it('should return what the owner can do on a closed item', function() {

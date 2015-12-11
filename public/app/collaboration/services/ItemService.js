@@ -65,6 +65,11 @@ var ItemService = function($resource, $interval, identity) {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'shares' }
+		},
+		closeItem: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'transitions' }
 		}
 	});
 
@@ -181,6 +186,9 @@ var ItemService = function($resource, $interval, identity) {
 			getPolling = null;
 		}
 	};
+	this.closeItem = function(item, success, error){
+		return resource.closeItem({ orgId: item.organization.id, itemId: item.id}, { action: 'close' }, success, error);
+	};
 };
 
 ItemService.prototype = {
@@ -244,6 +252,24 @@ ItemService.prototype = {
 			}
 		}
 		return n;
+	},
+	isShareAssignmentCompleted: function(item) {
+		if(item) {
+			for(var id in item.members) {
+				if(item.members.hasOwnProperty(id) &&
+						item.members[id].shares === undefined)
+					return false;
+			}
+		}
+		return true;
+	},
+	isShareAssignmentExpired: function(item) {
+		if(item) {
+			if(item.daysRemainingToAssignShares > 0){
+				return false;
+			}
+		}
+		return true;
 	},
 	visibilityCriteria: {
 		createItem: function(organization) {
@@ -322,13 +348,22 @@ ItemService.prototype = {
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
 					this.hasJoined(resource, this.getIdentity().getId()) &&
-					resource.members[this.getIdentity().getId()].shares === undefined;
+					resource.members[this.getIdentity().getId()].shares === undefined &&
+					!this.isShareAssignmentExpired(resource);
 		},
 		skipShares: this.assignShares,
 		showShares: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.CLOSED;
+		},
+		closeItem: function(resource) {
+			return resource &&
+				this.getIdentity().isAuthenticated() &&
+				resource.status == this.ITEM_STATUS.ACCEPTED &&
+				this.isOwner(resource, this.getIdentity().getId()) &&
+				(resource.daysRemainingToAssignShares <= 0 ||
+				this.isShareAssignmentCompleted(resource));
 		}
 	},
 	isAllowed: function(command, resource) {
