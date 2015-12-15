@@ -263,10 +263,10 @@ ItemService.prototype = {
 		}
 		return true;
 	},
-	isShareAssignmentExpired: function(item) {
+	isShareAssignmentExpired: function(item, ref) {
 		if(item) {
-			if(item.daysRemainingToAssignShares > 0){
-				return false;
+			if(item.sharesAssignmentExpiresAt){
+				return Date.parse(item.sharesAssignmentExpiresAt) < Date.parse(ref);
 			}
 		}
 		return true;
@@ -349,7 +349,7 @@ ItemService.prototype = {
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
 					this.hasJoined(resource, this.getIdentity().getId()) &&
 					resource.members[this.getIdentity().getId()].shares === undefined &&
-					!this.isShareAssignmentExpired(resource);
+					!this.isShareAssignmentExpired(resource, new Date());
 		},
 		skipShares: this.assignShares,
 		showShares: function(resource) {
@@ -362,8 +362,8 @@ ItemService.prototype = {
 				this.getIdentity().isAuthenticated() &&
 				resource.status == this.ITEM_STATUS.ACCEPTED &&
 				this.isOwner(resource, this.getIdentity().getId()) &&
-				(resource.daysRemainingToAssignShares <= 0 ||
-				this.isShareAssignmentCompleted(resource));
+				(this.isShareAssignmentExpired(resource, new Date()) ||
+					this.isShareAssignmentCompleted(resource));
 		}
 	},
 	isAllowed: function(command, resource) {

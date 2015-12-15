@@ -501,7 +501,7 @@ describe('itemService', function() {
 					role: 'owner'
 				}
 			},
-			daysRemainingToAssignShares: 5
+			sharesAssignmentExpiresAt: new Date()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -531,7 +531,7 @@ describe('itemService', function() {
 					}
 				}
 			},
-			daysRemainingToAssignShares: 5
+			sharesAssignmentExpiresAt: new Date()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -558,7 +558,7 @@ describe('itemService', function() {
 					role: 'member'
 				}
 			},
-			daysRemainingToAssignShares: 5
+			sharesAssignmentExpiresAt: new Date()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -588,7 +588,7 @@ describe('itemService', function() {
 					}
 				}
 			},
-			daysRemainingToAssignShares: 5
+			sharesAssignmentExpiresAt: new Date()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -615,7 +615,7 @@ describe('itemService', function() {
 					role: 'member'
 				}
 			},
-			daysRemainingToAssignShares: 5
+			sharesAssignmentExpiresAt: new Date()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
