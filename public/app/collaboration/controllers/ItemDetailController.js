@@ -130,4 +130,7 @@ angular.module('oraApp.collaboration')
 			this.updateItem = function(item) {
 				$scope.item = item;
 			};
+			this.closeItem = function(item) {
+				itemService.closeItem(item, this.updateItem, $log.warn);
+			};
 		}]);

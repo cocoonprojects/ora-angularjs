@@ -50,6 +50,7 @@
 		<md-button aria-label="Complete item" ng-if="ctrl.isAllowed('completeItem', item)" ng-click="ctrl.completeItem($event, item)">Mark as Completed</md-button>
 		<md-button aria-label="Accept item" ng-if="ctrl.isAllowed('acceptItem', item)" ng-click="ctrl.acceptItem(item)">Mark as Accepted</md-button>
 		<md-button aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
+		<md-button aria-label="Close item" ng-if="ctrl.isAllowed('closeItem', item)" ng-click="ctrl.closeItem(item)">Mark as Closed</md-button>
 		<md-menu md-position-mode="target-right target" style="padding: 0" ng-if="ctrl.hasMore(item)">
 			<md-button aria-label="Open more menu items" class="md-icon-button" ng-click="$mdOpenMenu($event)">
 				<md-icon md-menu-origin md-svg-icon="more"></md-icon>
