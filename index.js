@@ -10,8 +10,6 @@ var express = require('express');
 var httpProxy = require('http-proxy');
 var url = require('url');
 
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
-
 var server = express();
 server.set('port', config.serverPort);
 server.use(express.static(__dirname + '/public'));
@@ -33,5 +31,5 @@ server.all("/api/*", function(req, res) {
 });
 
 server.listen(server.get('port'), config.serverIpAddress, function() {
-	console.log('Express server listening on ' + server_ip_address + ', port ' + server.get('port'));
+	console.log('Express server listening on ' + config.serverIpAddress + ', port ' + server.get('port'));
 });
