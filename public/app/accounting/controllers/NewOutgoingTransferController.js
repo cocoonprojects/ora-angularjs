@@ -10,7 +10,7 @@ function NewOutgoingTransferController($scope, $log, $stateParams, $mdDialog, ac
 				accountId: account.id
 			},
 			$scope.transfer,
-			$mdDialog.hide(value),
+			$mdDialog.hide,
 			this.onError
 		);
 	};

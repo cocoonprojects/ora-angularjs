@@ -10,7 +10,7 @@ function NewWithdrawalController($scope, $log, $stateParams, $mdDialog, accountS
 				accountId: account.id
 			},
 			$scope.withdrawal,
-			$mdDialog.hide(value),
+			$mdDialog.hide,
 			this.onError
 		);
 	};
