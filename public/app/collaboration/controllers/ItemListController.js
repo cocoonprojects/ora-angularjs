@@ -1,5 +1,5 @@
 angular.module('oraApp.collaboration')
-	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams','$mdDialog','$mdToast', 'streamService', 'itemService',
+	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams', '$mdDialog', '$mdToast', 'streamService', 'itemService',
 		function ($scope, $log, $interval, $stateParams, $mdDialog, $mdToast, streamService, itemService) {
 			this.onLoadingError = function(error) {
 				switch (error.status) {
@@ -65,62 +65,68 @@ angular.module('oraApp.collaboration')
 			this.openNewStream = function(ev) {
 				$mdDialog.show({
 					controller: NewStreamController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/collaboration/partials/new-stream.html",
 					targetEvent: ev,
-					clickOutsideToClose: true
+					clickOutsideToClose: true,
+					fullscreen: true,
+					locals: {
+						orgId: $stateParams.orgId
+					}
 				}).then(this.addStream);
 			};
 			this.openNewItem = function(ev) {
 				$mdDialog.show({
 					controller: NewItemController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/collaboration/partials/new-item.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
+						orgId: $stateParams.orgId,
 						streams: $scope.streams
 					}
-				}).then(this.addTask);
-			};
-			this.joinItem = function(item) {
-				itemService.joinItem(item, this.updateItem, $log.warn);
-			};
-			this.unjoinItem = function(item) {
-				itemService.unjoinItem(item, this.updateItem, $log.warn);
+				}).then(this.addItem);
 			};
 			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
-						controller: EstimateItemController,
-						templateUrl: 'app/collaboration/partials/estimate-item.html',
-						targetEvent: ev,
-						clickOutsideToClose: true,
-						locals: {
-							item: item,
-							prevEstimation: item.members[$scope.identity.getId()].estimation
-						}
+					controller: EstimateItemController,
+					controllerAs: 'dialogCtrl',
+					templateUrl: 'app/collaboration/partials/estimate-item.html',
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					fullscreen: true,
+					locals: {
+						item: item,
+						prevEstimation: item.members[$scope.identity.getId()].estimation
+					}
 				}).then(this.updateItem);
 			};
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
-						controller: AssignSharesController,
-						templateUrl: 'app/collaboration/partials/assign-shares.html',
-						targetEvent: ev,
-						clickOutsideToClose: true,
-						scope: $scope.$new(),
-						locals: {
-							item: item
+					controller: AssignSharesController,
+					controllerAs: 'dialogCtrl',
+					templateUrl: 'app/collaboration/partials/assign-shares.html',
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					fullscreen: true,
+					scope: $scope.$new(),
+					locals: {
+						item: item
 					}
 				}).then(this.updateItem);
 			};
 			this.addStream = function(stream) {
 				$scope.streams._embedded['ora:stream'][stream.id] = stream;
 				$mdToast.show(
-						$mdToast.simple()
-								.textContent('New stream "' + stream.subject + '" added')
-								.position('bottom left')
-								.hideDelay(3000)
+					$mdToast.simple()
+						.textContent('New stream "' + stream.subject + '" added')
+						.position('bottom left')
+						.hideDelay(3000)
 				);
 			};
-			this.addTask = function(item) {
+			this.addItem = function(item) {
 				$scope.items._embedded['ora:task'].unshift(item);
 			};
 			this.updateItem = function(item) {
@@ -131,6 +137,12 @@ angular.module('oraApp.collaboration')
 						break;
 					}
 				}
+			};
+			this.joinItem = function(item) {
+				itemService.joinItem(item, this.updateItem, $log.warn);
+			};
+			this.unjoinItem = function(item) {
+				itemService.unjoinItem(item, this.updateItem, $log.warn);
 			};
 			this.isNewEntitiesAllowed = function(organization) {
 				return itemService.isAllowed('createItem', organization) ||

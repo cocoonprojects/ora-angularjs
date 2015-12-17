@@ -1,21 +1,20 @@
-function NewItemController($scope, $log, $stateParams, $mdDialog, itemService, streams) {
+function NewItemController($scope, $log, $mdDialog, itemService, orgId, streams) {
 	$scope.streams = streams;
 	$scope.task = {};
-	$scope.cancel = function() {
+	this.cancel = function() {
 		$mdDialog.cancel();
 	};
-	$scope.submit = function() {
-		itemService.save($stateParams.orgId, $scope.task, $mdDialog.hide, this.onError);
-	};
-	this.onError = function(httpResponse) {
-		if(httpResponse.status == 400) {
-			var errors = httpResponse.data.errors;
-			for(var i = 0; i < errors.length; i++) {
-				var error = errors[i];
-				$scope.form[error.field].$error.remote = error.message;
+	this.submit = function() {
+		itemService.save(orgId, $scope.task, $mdDialog.hide, function(httpResponse) {
+			switch(httpResponse.status) {
+				case 400:
+					httpResponse.data.errors.forEach(function(error) {
+						$scope.form[error.field].$error.remote = error.message;
+					});
+					break;
+				default:
+					$log.warn(httpResponse);
 			}
-		} else {
-			$log.warn(httpResponse);
-		}
+		});
 	};
 }

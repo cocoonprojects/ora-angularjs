@@ -1,23 +1,23 @@
 function EstimateItemController($scope, $mdDialog, $log, itemService, item, prevEstimation) {
 	$scope.value = prevEstimation > 0 || prevEstimation === 0 ? prevEstimation : undefined;
-	$scope.cancel = function() {
+	this.cancel = function() {
 		$mdDialog.cancel();
 	};
-	$scope.skip = function() {
+	this.skip = function() {
 		itemService.skipItemEstimation(item, $mdDialog.hide, this.onErrors);
 	};
-	$scope.submit = function() {
+	this.submit = function() {
 		itemService.estimateItem(item, $scope.value, $mdDialog.hide, this.onErrors);
 	};
 	this.onErrors = function(httpResponse) {
-		if(httpResponse.status == 400) {
-			var errors = httpResponse.data.errors;
-			for(var i = 0; i < errors.length; i++) {
-				var error = errors[i];
-				$scope.form[error.field].$error.remote = error.message;
-			}
-		} else {
-			$log.warn(httpResponse);
+		switch(httpResponse.status) {
+			case 400:
+				httpResponse.data.errors.forEach(function(error) {
+					$scope.form[error.field].$error.remote = error.message;
+				});
+				break;
+			default:
+				$log.warn(httpResponse);
 		}
 	};
 }

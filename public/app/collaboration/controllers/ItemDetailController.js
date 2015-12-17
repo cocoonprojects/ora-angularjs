@@ -33,9 +33,11 @@ angular.module('oraApp.collaboration')
 			this.openEditItem = function(ev, item) {
 				$mdDialog.show({
 					controller: EditItemController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: 'app/collaboration/partials/edit-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
 						task: item
 					}
@@ -48,12 +50,13 @@ angular.module('oraApp.collaboration')
 						.targetEvent(ev)
 						.ok("Yes")
 						.cancel("No");
+
 				$mdDialog.show(confirm).then(function() {
 					itemService.delete(item,
-							function() {
-								$state.go('org.collaboration', { orgId: $stateParams.orgId });
-							},
-							$log.warn
+						function() {
+							$state.go('org.collaboration', { orgId: item.organization.id });
+						},
+						$log.warn
 					);
 				});
 			};
@@ -66,9 +69,11 @@ angular.module('oraApp.collaboration')
 			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
 					controller: EstimateItemController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: 'app/collaboration/partials/estimate-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
 						item: item,
 						prevEstimation: item.members[$scope.identity.getId()].estimation
@@ -115,9 +120,11 @@ angular.module('oraApp.collaboration')
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
 					controller: AssignSharesController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: 'app/collaboration/partials/assign-shares.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					scope: $scope.$new(),
 					locals: {
 						item: item

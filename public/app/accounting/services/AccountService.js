@@ -80,7 +80,17 @@ var AccountService = function($resource, $interval, identity) {
 	this.deposit = resource.deposit.bind(resource);
 	this.withdraw = resource.withdraw.bind(resource);
 	this.transferIn = resource.transferIn.bind(resource);
-	this.transferOut = resource.transferOut.bind(resource);
+	this.transferOut = function(account, transfer, success, error) {
+		return resource.transferOut(
+				{
+					orgId: account.organization.id,
+					accountId: account.id
+				},
+				transfer,
+				success,
+				error
+		);
+	};
 
 	var personalPolling = null;
 	this.startPersonalPolling = function(organizationId, filters, success, error, millis) {

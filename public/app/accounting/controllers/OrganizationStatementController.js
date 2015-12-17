@@ -44,9 +44,11 @@ angular.module('oraApp.accounting')
 			this.openNewDeposit = function(ev) {
 				$mdDialog.show({
 					controller: NewDepositController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/accounting/partials/new-deposit.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
 						account: $scope.statement
 					}
@@ -55,9 +57,11 @@ angular.module('oraApp.accounting')
 			this.openNewWithdrawal = function(ev) {
 				$mdDialog.show({
 					controller: NewWithdrawalController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/accounting/partials/new-withdrawal.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
 						account: $scope.statement
 					}
@@ -66,9 +70,11 @@ angular.module('oraApp.accounting')
 			this.openNewIncomingTransfer = function(ev) {
 				$mdDialog.show({
 					controller: NewIncomingTransferController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/accounting/partials/new-incoming-transfer.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
 						account: $scope.statement
 					}
@@ -85,9 +91,11 @@ angular.module('oraApp.accounting')
 			this.openNewOutgoingTransfer = function(ev) {
 				$mdDialog.show({
 					controller: NewOutgoingTransferController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/accounting/partials/new-outgoing-transfer.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
+					fullscreen: true,
 					locals: {
 						account: $scope.statement
 					}

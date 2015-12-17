@@ -1,8 +1,8 @@
-function AssignSharesController($scope, $mdDialog, $log, itemService, item) {
+function AssignSharesController($scope, $log, $mdDialog, itemService, item) {
 	$scope.item = item;
 	$scope.shares = {};
 	$scope.available = 100;
-	$scope.updatePercentage = function() {
+	this.updatePercentage = function() {
 		var keys = Object.keys($scope.shares);
 		var tot = 100;
 		for(var i = 0; i < keys.length; i++) {
@@ -13,24 +13,40 @@ function AssignSharesController($scope, $mdDialog, $log, itemService, item) {
 		}
 		$scope.available = tot;
 	};
-	$scope.cancel = function() {
+	this.cancel = function() {
 		$mdDialog.cancel();
 	};
-	$scope.skip = function() {
-		itemService.skipShares(item, $mdDialog.hide, this.onError);
+	this.skip = function() {
+		// var confirm = $mdDialog.confirm()
+		// 		.title('You do not want to assign shares, do you?')
+		// 		.textContent("You cannot change this later. If nobody assigns shares, credits won't be distributed")
+		// 		.ok('Yes')
+		// 		.cancel('No');
+
+		// $mdDialog.show(confirm).then(function() {
+			itemService.skipShares(item, $mdDialog.hide, this.onError);
+		// }.bind(this));
 	};
-	$scope.submit = function() {
-		itemService.assignShares(item, $scope.shares, $mdDialog.hide, this.onError);
+	this.submit = function() {
+		// var confirm = $mdDialog.confirm()
+		// 		.title('Are you sure about your assignments?')
+		// 		.textContent("You cannot change this later.")
+		// 		.ok('Yes')
+		// 		.cancel('No');
+
+		// $mdDialog.show(confirm).then(function() {
+			itemService.assignShares(item, $scope.shares, $mdDialog.hide, this.onError);
+		// }.bind(this));
 	};
 	this.onError = function(httpResponse) {
-		if(httpResponse.status == 400) {
-			var errors = httpResponse.data.errors;
-			for(var i = 0; i < errors.length; i++) {
-				var error = errors[i];
-				$scope.form[error.field].$error.remote = error.message;
-			}
-		} else {
-			$log.warn(httpResponse);
+		switch(httpResponse.status) {
+			case 400:
+				httpResponse.data.errors.forEach(function(error) {
+					$scope.form[error.field].$error.remote = error.message;
+				});
+				break;
+			default:
+				$log.warn(httpResponse);
 		}
 	};
 }

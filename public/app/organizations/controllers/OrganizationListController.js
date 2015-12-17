@@ -12,9 +12,11 @@ angular.module('oraApp')
 			this.openNewOrganization = function(ev) {
 				$mdDialog.show({
 					controller: NewOrganizationController,
+					controllerAs: 'dialogCtrl',
 					templateUrl: "app/organizations/partials/new-organization.html",
 					targetEvent: ev,
-					clickOutsideToClose: true
+					clickOutsideToClose: true,
+					fullscreen: true
 				}).then(this.addOrganization);
 			};
 			this.addOrganization = function(organization) {

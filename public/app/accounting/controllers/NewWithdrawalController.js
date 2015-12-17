@@ -1,28 +1,20 @@
 function NewWithdrawalController($scope, $log, $stateParams, $mdDialog, accountService, account) {
 	$scope.withdrawal = {};
-	$scope.cancel = function() {
+	this.cancel = function() {
 		$mdDialog.cancel();
 	};
-	$scope.submit = function() {
+	this.submit = function() {
 		accountService.withdraw(
-			{
-				orgId: $stateParams.orgId,
-				accountId: account.id
-			},
-			$scope.withdrawal,
-			$mdDialog.hide,
-			this.onError
-		);
-	};
-	this.onError = function(httpResponse) {
-		if(httpResponse.status == 400) {
-			var errors = httpResponse.data.errors;
-			for(var i = 0; i < errors.length; i++) {
-				var error = errors[i];
-				$scope.form[error.field].$error.remote = error.message;
-			}
-		} else {
-			$log.warn(httpResponse);
-		}
+			{ orgId: $stateParams.orgId, accountId: account.id }, $scope.withdrawal, $mdDialog.hide, function(httpResponse) {
+				switch(httpResponse.status) {
+					case 400:
+						httpResponse.data.errors.forEach(function(error) {
+							$scope.form[error.field].$error.remote = error.message;
+						});
+						break;
+					default:
+						$log.warn(httpResponse);
+				}
+			});
 	};
 }
