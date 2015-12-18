@@ -15,19 +15,30 @@ angular.module('oraApp.collaboration')
 				default:
 					rv += ', ' + item.estimation + ' Credits';
 			}
-			if(item.status == itemService.ITEM_STATUS.ONGOING) {
-				var n = itemService.countEstimators(item);
-				var tot = Object.keys(item.members).length;
-				switch (n) {
-					case tot:
-						rv += " (All members have estimated)";
-						break;
-					case 0:
-						rv += " (None has estimated yet)";
-						break;
-					default:
-						rv += " (" + n + " of " + tot + " members have estimated)";
-				}
+			switch (item.status) {
+				case itemService.ITEM_STATUS.ONGOING:
+					var n = itemService.countEstimators(item);
+					var tot = Object.keys(item.members).length;
+					switch (n) {
+						case tot:
+							rv += " (All members have estimated)";
+							break;
+						case 0:
+							rv += " (None has estimated yet)";
+							break;
+						default:
+							rv += " (" + n + " of " + tot + " members have estimated)";
+					}
+					break;
+				case itemService.ITEM_STATUS.ACCEPTED:
+					if(itemService.isShareAssignmentCompleted(item) || itemService.isShareAssignmentExpired(item, new Date())){
+						rv += '. Shares assignment completed';
+					}else{
+						rv += '. Shares assignment in progress';
+					}
+					break;
+				default:
+					break;
 			}
 			return rv;
 		};
