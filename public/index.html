@@ -73,14 +73,24 @@
 					<div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div>
 				</div>
 			</md-toolbar>
-			<md-content flex layout-padding>
-				<section layout="column" layout-fill ng-controller="LeftController">
-					<md-button ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
-					<md-button ng-repeat="membership in identity.getMemberships()" ui-sref="org.collaboration({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
+			<md-content flex layout-padding layout-fill ng-controller="LeftController">
+				<md-list>
+					<md-list-item>
+						<md-button ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
+					</md-list-item>
 					<md-divider></md-divider>
-					<md-button ui-sref="organizations" ui-sref-active="md-primary" ng-click="toggleLeft()">Organizations</md-button>
-					<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
-				</section>
+	    			<md-subheader class="md-no-sticky">My Organizations</md-subheader>
+					<md-list-item ng-repeat="membership in identity.getMemberships()">
+						<md-button ui-sref="org.collaboration({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
+					</md-list-item>
+					<md-divider></md-divider>
+					<md-list-item>
+						<md-button ui-sref="organizations" ui-sref-active="md-primary" ng-click="toggleLeft()">Organizations</md-button>
+					</md-list-item>
+					<md-list-item>
+						<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
+					</md-list-item>
+				</md-list>
 			</md-content>
 		</md-sidenav>
 		<md-content layout="column" flex ui-view></md-content>
