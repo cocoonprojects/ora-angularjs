@@ -279,13 +279,15 @@ ItemService.prototype = {
 		},
 		editItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-					this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					resource.type == 'task';
 		},
 		deleteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status < this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					resource.type == 'task';
 		},
 		joinItem: function(resource) {
 			return resource &&
@@ -303,32 +305,37 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.IDEA &&
-					this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					resource.type == 'task';
 		},
 		reExecuteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					resource.type == 'task';
 		},
 		completeItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ONGOING &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
-					this.isEstimationCompleted(resource);
+					this.isEstimationCompleted(resource) &&
+					resource.type == 'task';
 		},
 		reCompleteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
-					this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					resource.type == 'task';
 		},
 		acceptItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId());
+					this.isOwner(resource, this.getIdentity().getId()) &&
+					resource.type == 'task';
 		},
 		estimateItem: function(resource) {
 			return resource &&
@@ -363,7 +370,8 @@ ItemService.prototype = {
 				resource.status == this.ITEM_STATUS.ACCEPTED &&
 				this.isOwner(resource, this.getIdentity().getId()) &&
 				(this.isShareAssignmentExpired(resource, new Date()) ||
-					this.isShareAssignmentCompleted(resource));
+					this.isShareAssignmentCompleted(resource)) &&
+				resource.type == 'task';
 		}
 	},
 	isAllowed: function(command, resource) {

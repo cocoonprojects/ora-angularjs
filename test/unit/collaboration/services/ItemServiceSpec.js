@@ -248,7 +248,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'owner'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -273,7 +274,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -298,7 +300,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'owner'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -325,6 +328,7 @@ describe('itemService', function() {
 					estimation: 1
 				}
 			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -349,7 +353,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -375,7 +380,8 @@ describe('itemService', function() {
 					role: 'member',
 					estimation: 1
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -400,7 +406,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000001': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -425,7 +432,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'owner'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -450,7 +458,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -475,7 +484,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000001': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -501,7 +511,8 @@ describe('itemService', function() {
 					role: 'owner'
 				}
 			},
-			sharesAssignmentExpiresAt: new Date()
+			sharesAssignmentExpiresAt: new Date(),
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -531,7 +542,8 @@ describe('itemService', function() {
 					}
 				}
 			},
-			sharesAssignmentExpiresAt: new Date()
+			sharesAssignmentExpiresAt: new Date(),
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -558,7 +570,8 @@ describe('itemService', function() {
 					role: 'member'
 				}
 			},
-			sharesAssignmentExpiresAt: new Date()
+			sharesAssignmentExpiresAt: new Date(),
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -588,7 +601,8 @@ describe('itemService', function() {
 					}
 				}
 			},
-			sharesAssignmentExpiresAt: new Date()
+			sharesAssignmentExpiresAt: new Date(),
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -615,7 +629,8 @@ describe('itemService', function() {
 					role: 'member'
 				}
 			},
-			sharesAssignmentExpiresAt: new Date()
+			sharesAssignmentExpiresAt: new Date(),
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -641,7 +656,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'owner'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -666,7 +682,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000000': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
@@ -691,7 +708,8 @@ describe('itemService', function() {
 				'00000000-0000-0000-0000-000000000001': {
 					role: 'member'
 				}
-			}
+			},
+			type: 'task'
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(false);
