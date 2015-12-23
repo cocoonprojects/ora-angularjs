@@ -78,7 +78,13 @@ module.exports = function(grunt) {
 					htmlmin:  { collapseWhitespace: true, collapseBooleanAttributes: true }
 				}
 			}
-		}
+		},
+		copy: {
+			main: {
+				src: 'public/icon-set.svg',
+				dest: 'build/icon-set.svg'
+			},
+		},
 	});
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -87,5 +93,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-angular-templates');
 	grunt.loadNpmTasks('grunt-processhtml');
-	grunt.registerTask('build', ['jshint', 'clean:build', 'ngtemplates', 'concat', 'uglify', 'cssmin', 'processhtml', 'clean:tmp']);
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.registerTask('build', ['jshint', 'clean:build', 'ngtemplates', 'concat', 'uglify', 'cssmin', 'processhtml', 'copy', 'clean:tmp']);
 };

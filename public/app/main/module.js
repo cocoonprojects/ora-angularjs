@@ -53,20 +53,7 @@ angular.module('app', [
 		}])
 	.config(['$mdIconProvider',
 		function($mdIconProvider) {
-			$mdIconProvider
-					.defaultIconSet('components/angular-material/demos/icon/demoSvgIconSets/core-icons.svg', 24)
-					.icon('star', 'svg/ic_star_24px.svg')
-					.icon('transfer', 'svg/ic_swap_horiz_24px.svg')
-					.icon('withdrawal', 'svg/ic_call_made_24px.svg')
-					.icon('deposit', 'svg/ic_call_received_24px.svg')
-					.icon('menu', 'svg/ic_menu_24px.svg')
-					.icon('check', 'svg/ic_check_24px.svg')
-					.icon('credits', 'svg/ic_attach_money_24px.svg')
-					.icon('add', 'svg/ic_add_24px.svg')
-					.icon('log', 'svg/ic_today_24px.svg')
-					.icon('add-task', 'svg/ic_note_add_black_24px.svg')
-					.icon('add-stream', 'svg/ic_view_stream_black_24px.svg')
-					.icon('more', 'svg/ic_more_vert_24px.svg');
+			$mdIconProvider.defaultIconSet('icon-set.svg', 24);
 		}])
 	.run(function(amMoment) {
 		amMoment.changeLocale('it');

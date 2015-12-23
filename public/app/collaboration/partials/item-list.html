@@ -6,10 +6,10 @@
 	</md-fab-trigger>
 	<md-fab-actions>
 		<md-button aria-label="New item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<md-icon md-svg-icon="add-task" title="New Task"></md-icon>
+			<md-icon md-svg-icon="addItem" title="New Task" style="color: black"></md-icon>
 		</md-button>
 		<md-button aria-label="New stream" class="md-fab md-raised md-mini" ng-click="ctrl.openNewStream($event)" ng-if="ctrl.isAllowed('createStream', organization)">
-			<md-icon md-svg-icon="add-stream" title="New Stream"></md-icon>
+			<md-icon md-svg-icon="addStream" title="New Stream" style="color: black"></md-icon>
 		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
