@@ -1,6 +1,4 @@
-angular.module('oraApp.flow', [
-	'ui.router'
-	])
+angular.module('app.flow', ['ui.router'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
 			$stateProvider.

@@ -1,4 +1,4 @@
-angular.module('oraApp.collaboration')
+angular.module('app.collaboration')
 	.filter('itemStatusResume', ['TASK_STATUS_LABEL', 'itemService', function(TASK_STATUS_LABEL, itemService) {
 		return function(item) {
 			if(!item) return null;

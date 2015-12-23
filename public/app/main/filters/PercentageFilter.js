@@ -1,4 +1,4 @@
-angular.module('oraApp')
+angular.module('app')
 	.filter('percentage', ['$filter', function ($filter) {
 		return function(input, decimals, sign) {
 			var rv = $filter('number')(input * 100, decimals) + '%';

@@ -1,4 +1,4 @@
-angular.module('oraApp')
+angular.module('app')
 	.controller('LeftController', function ($scope, $mdSidenav, $log) {
 		$scope.close = function () {
 			$mdSidenav('left').close()

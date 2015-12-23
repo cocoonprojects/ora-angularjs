@@ -1,4 +1,4 @@
-angular.module('oraApp.accounting', ['ui.router', 'ngResource'])
+angular.module('app.accounting', ['ui.router', 'ngResource'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider) {
 			$stateProvider

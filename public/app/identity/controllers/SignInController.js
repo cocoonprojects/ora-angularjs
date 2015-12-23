@@ -1,4 +1,4 @@
-angular.module('oraApp.identity')
+angular.module('app.identity')
 	.controller('SignInController', ['$scope', '$log', '$state',
 		function($scope, $log, $state) {
 

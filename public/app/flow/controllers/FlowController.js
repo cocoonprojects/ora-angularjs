@@ -1,4 +1,4 @@
-angular.module('oraApp.flow')
+angular.module('app.flow')
 	.controller('FlowController', ['$scope', '$log',
 		function ($scope, $log) {
 		}]);

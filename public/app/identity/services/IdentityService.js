@@ -50,5 +50,5 @@ var Identity = function($http, $log) {
 		});
 	};
 };
-angular.module('oraApp.identity')
+angular.module('app.identity')
 	.service('identity', ['$http', '$log', Identity]);

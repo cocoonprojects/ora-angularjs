@@ -1,4 +1,4 @@
-angular.module('oraApp.people', ['ui.router', 'ngResource'])
+angular.module('app.people', ['ui.router', 'ngResource'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider) {
 			$stateProvider

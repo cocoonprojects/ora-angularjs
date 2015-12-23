@@ -52,5 +52,5 @@ MemberService.prototype = {
 		return true;
 	}
 };
-angular.module('oraApp.people')
+angular.module('app.people')
 	.service('memberService', ['$resource', 'identity', MemberService]);

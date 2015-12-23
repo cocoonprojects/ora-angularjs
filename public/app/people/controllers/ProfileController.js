@@ -1,4 +1,4 @@
-angular.module('oraApp.people')
+angular.module('app.people')
 	.controller('ProfileController', ['$scope', '$log', '$stateParams', 'memberService', 'itemService', 'accountService',
 		function($scope, $log, $stateParams, memberService, itemService, accountService) {
 			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });

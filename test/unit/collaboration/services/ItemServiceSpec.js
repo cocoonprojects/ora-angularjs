@@ -1,7 +1,7 @@
 describe('itemService', function() {
 
 	// Initialization of the AngularJS application before each test case
-	beforeEach(module('oraApp'));
+	beforeEach(module('app'));
 
 	var service;
 	var identity = {

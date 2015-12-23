@@ -1,4 +1,4 @@
-angular.module('oraApp.collaboration')
+angular.module('app.collaboration')
 	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams', '$mdDialog', '$mdToast', 'streamService', 'itemService',
 		function ($scope, $log, $interval, $stateParams, $mdDialog, $mdToast, streamService, itemService) {
 			this.onLoadingError = function(error) {

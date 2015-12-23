@@ -179,5 +179,5 @@ AccountService.prototype = {
 		return true;
 	}
 };
-angular.module('oraApp.accounting')
+angular.module('app.accounting')
 	.service('accountService', ['$resource', '$interval', 'identity', AccountService]);

@@ -1,4 +1,4 @@
-angular.module('oraApp.organizations', [
+angular.module('app.organizations', [
 		'ui.router'
 	])
 	.config(['$stateProvider',

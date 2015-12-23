@@ -1,4 +1,4 @@
-angular.module('oraApp')
+angular.module('app')
 	.controller('AppController', ['$scope', '$timeout', '$mdSidenav', '$mdUtil', '$log',
 		function($scope, $timeout, $mdSidenav, $mdUtil, $log) {
 			$scope.toggleLeft = buildToggler('left');

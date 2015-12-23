@@ -1,4 +1,4 @@
-angular.module('oraApp.collaboration')
+angular.module('app.collaboration')
 	.controller('ItemDetailController', ['$scope', '$state', '$stateParams', '$mdDialog', '$log', 'streamService', 'itemService',
 		function ($scope, $state, $stateParams, $mdDialog, $log, streamService, itemService) {
 			$scope.streams = null;

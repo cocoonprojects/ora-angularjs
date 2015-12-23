@@ -1,6 +1,4 @@
-angular.module('oraApp.identity', [
-	'ui.router'
-	])
+angular.module('app.identity', ['ui.router'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider) {
 			$stateProvider.

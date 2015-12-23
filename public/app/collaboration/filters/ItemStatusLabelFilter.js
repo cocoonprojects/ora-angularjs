@@ -1,4 +1,4 @@
-angular.module('oraApp.collaboration')
+angular.module('app.collaboration')
 	.constant('TASK_STATUS_LABEL', {
 		0:  'Work Item Idea',
 		10: 'Open Work Item',

@@ -71,5 +71,5 @@ StreamService.prototype = {
 		return true;
 	}
 };
-angular.module('oraApp.collaboration')
+angular.module('app.collaboration')
 	.service('streamService', ['$resource', '$interval', 'identity', StreamService]);

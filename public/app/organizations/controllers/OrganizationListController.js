@@ -1,4 +1,4 @@
-angular.module('oraApp')
+angular.module('app')
 	.controller('OrganizationListController', ['$scope', '$mdDialog', 'organizationService', 'memberService',
 		function ($scope, $mdDialog, organizationService, memberService) {
 			$scope.organizations = organizationService.query();

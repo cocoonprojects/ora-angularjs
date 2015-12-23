@@ -1,4 +1,4 @@
-angular.module('oraApp.collaboration', ['ui.router'])
+angular.module('app.collaboration', ['ui.router'])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider) {
 			$stateProvider

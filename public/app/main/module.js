@@ -1,15 +1,15 @@
-angular.module('oraApp', [
+angular.module('app', [
 	'ui.router',
 	'ngMessages',
 	'ngMaterial',
 	'angularMoment',
 	'infinite-scroll',
-	'oraApp.identity',
-	'oraApp.organizations',
-	'oraApp.collaboration',
-	'oraApp.people',
-	'oraApp.flow',
-	'oraApp.accounting'
+	'app.identity',
+	'app.organizations',
+	'app.collaboration',
+	'app.people',
+	'app.flow',
+	'app.accounting'
 ])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -21,7 +21,7 @@ angular.module('oraApp', [
 				.state('org', {
 					abstract: true,
 					url: '/:orgId',
-					templateUrl: 'app/global/partials/pillars.html',
+					templateUrl: 'app/main/partials/pillars.html',
 					resolve: {
 						members: function($stateParams, memberService) {
 							return memberService.query({ orgId: $stateParams.orgId });

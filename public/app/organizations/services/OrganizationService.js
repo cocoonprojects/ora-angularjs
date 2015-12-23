@@ -37,5 +37,5 @@ OrganizationService.prototype = {
 		return true;
 	}
 };
-angular.module('oraApp.organizations')
+angular.module('app.organizations')
 	.service('organizationService', ['$resource', 'identity', OrganizationService]);

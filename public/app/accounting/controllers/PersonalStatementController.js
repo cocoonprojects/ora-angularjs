@@ -1,4 +1,4 @@
-angular.module('oraApp.accounting')
+angular.module('app.accounting')
 	.controller('PersonalStatementController', ['$scope', '$stateParams', 'accountService',
 		function ($scope, $stateParams, accountService) {
 			this.onLoadingError = function(error) {

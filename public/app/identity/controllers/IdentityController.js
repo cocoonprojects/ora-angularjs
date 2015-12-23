@@ -1,4 +1,4 @@
-angular.module('oraApp.identity')
+angular.module('app.identity')
 	.controller('IdentityController', ['$scope', '$log', '$state', 'identity',
 		function($scope, $log, $state, identity) {
 			$scope.identity = identity;

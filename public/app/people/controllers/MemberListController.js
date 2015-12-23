@@ -1,4 +1,4 @@
-angular.module('oraApp.people')
+angular.module('app.people')
 	.controller('MemberListController', ['$scope', '$log',
 		function ($scope, $log) {
 

@@ -383,6 +383,6 @@ ItemService.prototype = {
 		return true;
 	}
 };
-angular.module('oraApp.collaboration')
+angular.module('app.collaboration')
 	.constant('ITEM_STATUS', ItemService.prototype.ITEM_STATUS)
 	.service('itemService', ['$resource', '$interval', 'identity', ItemService]);

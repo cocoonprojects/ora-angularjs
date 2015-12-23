@@ -1,4 +1,4 @@
-angular.module('oraApp.accounting')
+angular.module('app.accounting')
 	.controller('OrganizationStatementController', ['$scope', '$stateParams', '$mdDialog', 'accountService',
 		function ($scope, $stateParams, $mdDialog, accountService) {
 			var that = this;
