@@ -1,0 +1,52 @@
+<md-card> 
+	<md-card-content>
+		<h1 flex>Kanbanize</h1>
+		<form name="form" ng-submit="ctrl.updateKanbanizeSettings()" novalidate>
+			<div layout="row">
+				<md-input-container> <label
+					class="md-container-ignore">Subdomain</label> 
+					<input type="text"
+						data-ng-model="settings.subdomain" 
+						name="subdomain" 
+						aria-label="Kanbanize Subdomain"
+						required>
+					<div ng-messages="form.subdomain.$error" role="alert">
+						<div ng-message="required">Subdomain is required</div>
+						<div ng-message="remote">{{ form.subdomain.$error.remote }}</div>
+					</div>
+				</md-input-container>
+				<md-input-container> <label
+					class="md-container-ignore">API Key</label> 
+					<input type="text"
+						data-ng-model="settings.apiKey" 
+						name="apiKey"
+						aria-label="Kanbanize API Key"
+						required>
+					<div ng-messages="form.apiKey.$error" role="alert">
+						<div ng-message="required">API Key is required</div>
+						<div ng-message="remote">{{ form.apiKey.$error.remote }}</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row" layout-align="end center">
+				<md-button
+					ng-if="ctrl.kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
+					type="submit" class="md-raised" aria-label="Save settings"
+					ng-disabled="form.$invalid">Save
+				</md-button>
+			</div>
+		</form>
+	</md-card-content>
+	<md-card-content>
+		<h3 class="md-title" ng-if="projects">Boards</h3>
+		<div ng-repeat="project in projects">
+			<md-list-item ng-repeat="board in project.boards"> 
+				<md-button
+					ng-click="ctrl.loadBoardSettings(organization.id, board.id, board.name, project.name, project.id)" 
+					ui-sref-active="md-primary">
+					{{project.name }} / {{ board.name }}
+				</md-button>
+			</md-list-item>
+		</div>
+	</md-card-content>
+</md-card>
