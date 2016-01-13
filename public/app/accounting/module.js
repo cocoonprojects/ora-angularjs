@@ -7,7 +7,8 @@ angular.module('app.accounting', ['ui.router', 'ngResource'])
 					templateUrl: 'app/accounting/partials/statement.html',
 					controller: 'OrganizationStatementController as ctrl',
 					data: {
-						selectedTab: 1
+						pillarName: 'CREDITS',
+						selectedTab: 0
 					}
 				})
 				.state('org.personalStatement', {
@@ -15,7 +16,7 @@ angular.module('app.accounting', ['ui.router', 'ngResource'])
 					templateUrl: 'app/accounting/partials/statement.html',
 					controller: 'PersonalStatementController as ctrl',
 					data: {
-						selectedTab: 4
+						selectedTab: 1
 					}
 				});
 		}]);

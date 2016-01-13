@@ -36,10 +36,15 @@ angular.module('app', [
 							}
 							return null;
 						};
+						$scope.pillar = {};
 						$scope.$on('$stateChangeSuccess',
 							function(event, toState) {
+								if(toState.data && toState.data.pillarName){
+									$scope.pillar.name = toState.data.pillarName;
+								}
 								$scope.currentTab = toState.data.selectedTab;
-							});
+							}
+						);
 					}
 				});
 	}])
