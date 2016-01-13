@@ -39,10 +39,4 @@ angular.module('app')
 					}
 				}
 			);
-			this.loadBoardSettings = function(organizationId, boardId, boardName, projectName, projectId){
-				kanbanizeService.setBoardName(boardName);
-				kanbanizeService.setProjectName(projectName);
-				kanbanizeService.setProjectId(projectId);
-				$state.go("org.kanbanizeBoard", {'orgId': organizationId, 'boardId': boardId});
-			};
 		}]);

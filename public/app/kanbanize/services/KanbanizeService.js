@@ -27,33 +27,16 @@ var KanbanizeService = function($resource, identity) {
 	});
 	this.updateSettings = function(organizationId, settings, success, error){
 		return resource.update({ orgId: organizationId}, settings, success, error);
-	},
+	};
 	this.getBoardDetails = function(organizationId, boardId, settings, success, error){
 		return resource.getBoardDetails({ orgId: organizationId, boardId: boardId}, settings, success, error);
-	},
+	};
 	this.saveBoardSettings = function(organizationId, boardId, settings, success, error){
 		return resource.saveBoardSettings({ orgId: organizationId, boardId: boardId}, settings, success, error);
-	},
+	};
 	this.query = function(organizationId, success, error){
 		return resource.query({ orgId: organizationId}, success, error);
-	}
-
-	var boardName = "", projectName = "", projectId = "";
-	this.setBoardName = function(name){
-		boardName = name;
-	},
-	this.setProjectName = function(name){
-		projectName = name;
-	},
-	this.getStreamName = function(){
-		return boardName+ '/' +projectName;
-	},
-	this.setProjectId = function(id){
-		projectId = id;
-	},
-	this.getProjectId = function(){
-		return projectId;
-	}
+	};
 };
 KanbanizeService.prototype = {
 	constructor: KanbanizeService,

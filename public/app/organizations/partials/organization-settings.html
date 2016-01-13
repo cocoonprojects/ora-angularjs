@@ -42,7 +42,11 @@
 		<div ng-repeat="project in projects">
 			<md-list-item ng-repeat="board in project.boards"> 
 				<md-button
-					ng-click="ctrl.loadBoardSettings(organization.id, board.id, board.name, project.name, project.id)" 
+					ui-sref="org.kanbanizeBoardSettings({
+						orgId: organization.id,
+						boardId: board.id,
+						projectId: project.id
+					})"
 					ui-sref-active="md-primary">
 					{{project.name }} / {{ board.name }}
 				</md-button>

@@ -16,11 +16,6 @@ angular.module('app.organizations', [
 					data: {
 						pillarName: 'SETTINGS'
 					}
-				})
-				.state('org.kanbanizeBoard', {
-					url: '/settings/kanbanizeBoard/:boardId',
-					templateUrl: 'app/organizations/partials/kanbanize-board-settings.html',
-					controller: 'OrganizationBoardsController as ctrl',
 				});
 		}
 	]);

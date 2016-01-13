@@ -9,7 +9,8 @@ angular.module('app', [
 	'app.collaboration',
 	'app.people',
 	'app.flow',
-	'app.accounting'
+	'app.accounting',
+	'app.kanbanize'
 ])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -42,7 +43,9 @@ angular.module('app', [
 								if(toState.data && toState.data.pillarName){
 									$scope.pillar.name = toState.data.pillarName;
 								}
-								$scope.currentTab = toState.data.selectedTab;
+								if(toState.data && toState.data.selectedTab){
+									$scope.currentTab = toState.data.selectedTab;	
+								}
 							}
 						);
 					}

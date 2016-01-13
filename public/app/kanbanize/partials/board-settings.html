@@ -1,11 +1,10 @@
 <md-card> <md-card-content>
 <h1 class="md-padding">Kanbanize Board {{boardId}} configuration</h1>
-
 <form name="form" ng-submit="ctrl.saveSettings()" novalidate>
-	<input type="hidden" data-ng-model="settings.projectId" name="projectId">
+	<input type="hidden" ng-model="boardSetting.projectId" name="projectId">
 	<div class="md-list-item-text" layout="row">
-		<md-input-container> <label
-			class="md-container-ignore">Stream name</label> 
+		<md-input-container> 
+			<label class="md-container-ignore">Stream name</label> 
 			<input type="text" name="streamName" ng-model="boardSetting.streamName" aria-label="Stream name" required>
 			<div ng-messages="form.streamName.$error" role="alert">
 				<div ng-message="required">Stream name is required</div>
@@ -13,11 +12,11 @@
 			</div>
 		 </md-input-container>
 	</div>
-	<md-list-item ng-repeat="(key, value) in mapping">
+	<md-list-item ng-repeat="(key, value) in boardSetting.mapping">
 		<div>
 			<md-input-container> 
 				<label class="md-container-ignore">{{key}}</label> 
-				<md-select ng-model="boardSetting[key]" aria-label="Column {{key}} mapping" name="{{key}}" required>
+				<md-select ng-model="boardSetting.mapping[key]" aria-label="Column {{key}} mapping" name="{{key}}" required>
 					<md-option value=""></md-option>
 					<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">
 						{{status | itemStatusLabel }}
@@ -29,7 +28,7 @@
 			</md-input-container>
 		</div>
 	</md-list-item>
-	<div ng-if="mapping" layout="row" layout-align="end center">
+	<div ng-if="boardSetting.mapping" layout="row" layout-align="end center">
 		<md-button type="submit" ng-disabled="form.$invalid" class="md-raised">Save</md-button>
 	</div>
 </form>

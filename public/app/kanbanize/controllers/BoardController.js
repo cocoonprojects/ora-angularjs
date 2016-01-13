@@ -1,25 +1,25 @@
 angular.module('app')
-	.controller('OrganizationBoardsController', ['$scope', '$log', '$stateParams', 'organizationService', 'kanbanizeService', 'itemService', '$mdToast',
-		function ($scope, $log, $stateParams, organizationService, kanbanizeService, itemService, $mdToast) {
+	.controller('BoardController', ['$scope', '$log', '$stateParams', 'kanbanizeService', 'itemService', '$mdToast', '$state',
+		function ($scope, $log, $stateParams, kanbanizeService, itemService, $mdToast, $state) {
 			$scope.boardSetting = {
-				"projectId" : kanbanizeService.getProjectId()
+				"projectId" : $stateParams.projectId
 			};
+			$scope.boardId = $stateParams.boardId;
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
 			kanbanizeService.getBoardDetails($stateParams.orgId, $stateParams.boardId, 
 				function(data) {
-					$scope.mapping = data.mapping;
-					$scope.boardId = $stateParams.boardId;
-					$scope.boardSetting.streamName = data.streamName || kanbanizeService.getStreamName();
-					angular.forEach(data.mapping, function(value, key) {
-						this[key] = value;
-					}, $scope.boardSetting);
+					angular.extend($scope.boardSetting, data);
 				},
 				function(httpResponse) {
 					switch(httpResponse.status) {
 						case 400:
-							httpResponse.data.errors.forEach(function(error) {
-								$scope.form[error.field].$error.remote = error.message;
-							});
+						case 502:
+							$mdToast.show(
+								$mdToast.simple()
+									.textContent(httpResponse.data.description)
+									.position('bottom left')
+									.hideDelay(6000)
+							);
 							break;
 						default:
 							$log.warn(httpResponse);
