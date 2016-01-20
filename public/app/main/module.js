@@ -9,7 +9,8 @@ angular.module('app', [
 	'app.collaboration',
 	'app.people',
 	'app.flow',
-	'app.accounting'
+	'app.accounting',
+	'app.kanbanize'
 ])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
@@ -36,10 +37,17 @@ angular.module('app', [
 							}
 							return null;
 						};
+						$scope.pillar = {};
 						$scope.$on('$stateChangeSuccess',
 							function(event, toState) {
-								$scope.currentTab = toState.data.selectedTab;
-							});
+								if(toState.data && toState.data.pillarName){
+									$scope.pillar.name = toState.data.pillarName;
+								}
+								if(toState.data && toState.data.selectedTab){
+									$scope.currentTab = toState.data.selectedTab;	
+								}
+							}
+						);
 					}
 				});
 	}])
