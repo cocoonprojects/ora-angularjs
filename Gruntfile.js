@@ -19,7 +19,9 @@ module.exports = function(grunt) {
 					'public/app/organizations/module.js',
 					'public/app/organizations/**/*.js',
 					'public/app/people/module.js',
-					'public/app/people/**/*.js'
+					'public/app/people/**/*.js',
+					'public/app/kanbanize/module.js',
+					'public/app/kanbanize/**/*.js'
 				],
 				dest: 'build/js/app.js'
 			},
