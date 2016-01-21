@@ -271,6 +271,17 @@ ItemService.prototype = {
 		}
 		return true;
 	},
+	isDeleteItemExpired: function(item, ref){
+		if(item){
+			if(item.createdAt){
+				var mCreatedAt = moment(new Date(item.createdAt));
+				var mRef = moment(ref);
+				mCreatedAt.add(24, 'hours');
+				return mCreatedAt.isBefore(mRef);
+			}
+		}
+		return true;
+	},
 	visibilityCriteria: {
 		createItem: function(organization) {
 			return organization &&
@@ -287,6 +298,7 @@ ItemService.prototype = {
 					this.getIdentity().isAuthenticated() &&
 					resource.status < this.ITEM_STATUS.COMPLETED &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
+					!this.isDeleteItemExpired(resource, new Date()) &&
 					resource.type == 'task';
 		},
 		joinItem: function(resource) {
