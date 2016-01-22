@@ -249,11 +249,41 @@ describe('itemService', function() {
 					role: 'owner'
 				}
 			},
-			type: 'task'
+			type: 'task',
+			createdAt: (new Date).toString()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
 		expect(service.isAllowed('deleteItem', task)).toBe(true);
+		expect(service.isAllowed('joinItem', task)).toBe(false);
+		expect(service.isAllowed('unjoinItem', task)).toBe(false);
+		expect(service.isAllowed('executeItem', task)).toBe(true);
+		expect(service.isAllowed('reExecuteItem', task)).toBe(false);
+		expect(service.isAllowed('completeItem', task)).toBe(false);
+		expect(service.isAllowed('reCompleteItem', task)).toBe(false);
+		expect(service.isAllowed('acceptItem', task)).toBe(false);
+		expect(service.isAllowed('estimateItem', task)).toBe(false);
+		expect(service.isAllowed('remindItemEstimate', task)).toBe(false);
+		expect(service.isAllowed('assignShares', task)).toBe(false);
+		expect(service.isAllowed('showShares', task)).toBe(false);
+	});
+	
+	it('should return what the owner can do on a work item idea created after 24 hours', function() {
+		var createdAt = new Date;
+		createdAt.setHours(createdAt.getHours() - 25);
+		var task = {
+			status: service.ITEM_STATUS.IDEA,
+			members: {
+				'00000000-0000-0000-0000-000000000000': {
+					role: 'owner'
+				}
+			},
+			type: 'task',
+			createdAt: createdAt.toString()
+		};
+
+		expect(service.isAllowed('editItem', task)).toBe(true);
+		expect(service.isAllowed('deleteItem', task)).toBe(false);
 		expect(service.isAllowed('joinItem', task)).toBe(false);
 		expect(service.isAllowed('unjoinItem', task)).toBe(false);
 		expect(service.isAllowed('executeItem', task)).toBe(true);
@@ -301,7 +331,8 @@ describe('itemService', function() {
 					role: 'owner'
 				}
 			},
-			type: 'task'
+			type: 'task',
+			createdAt: (new Date).toString()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
@@ -328,7 +359,8 @@ describe('itemService', function() {
 					estimation: 1
 				}
 			},
-			type: 'task'
+			type: 'task',
+			createdAt: (new Date).toString()
 		};
 
 		expect(service.isAllowed('editItem', task)).toBe(true);
