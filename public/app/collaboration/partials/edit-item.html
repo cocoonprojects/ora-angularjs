@@ -13,10 +13,18 @@
 			<div class="md-dialog-content" layout="column">
 				<md-input-container>
 					<label>Subject</label>
-					<input data-ng-model="subject" name="subject" type="text" required>
-					<div ng-messages="form.value.$error" role="alert">
+					<input data-ng-model="item.subject" name="subject" type="text" required>
+					<div ng-messages="form.subject.$error" role="alert">
 						<div ng-message="required">Subject is required</div>
-						<div ng-message="remote">{{ form.value.$error.remote }}</div>
+						<div ng-message="remote">{{ form.subject.$error.remote }}</div>
+					</div>
+				</md-input-container>
+				<md-input-container>
+					<label>Description</label>
+					<textarea data-ng-model="item.description" columns="1" md-maxlength="255" rows="3" name="description" required></textarea>
+					<div ng-messages="form.description.$error" role="alert">
+						<div ng-message="required">Description is required</div>
+						<div ng-message="remote">{{ form.description.$error.remote }}</div>
 					</div>
 				</md-input-container>
 			</div>

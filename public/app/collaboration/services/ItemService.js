@@ -119,8 +119,8 @@ var ItemService = function($resource, $interval, identity) {
 	this.delete = function(item, success, error) {
 		return resource.delete({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
-	this.edit = function(item, subject, success, error) {
-		return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: subject }, success, error);
+	this.edit = function(item, success, error) {
+		return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: item.subject, description: item.description }, success, error);
 	};
 	this.joinItem = function(item, success, error) {
 		return resource.joinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
