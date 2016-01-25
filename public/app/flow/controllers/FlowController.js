@@ -44,5 +44,5 @@ angular.module('app.flow')
 						}
 						break;
 				}
-			}
+			};
 		}]);

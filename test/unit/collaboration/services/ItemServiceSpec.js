@@ -257,7 +257,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('deleteItem', task)).toBe(true);
 		expect(service.isAllowed('joinItem', task)).toBe(false);
 		expect(service.isAllowed('unjoinItem', task)).toBe(false);
-		expect(service.isAllowed('executeItem', task)).toBe(true);
+		expect(service.isAllowed('executeItem', task)).toBe(false);
 		expect(service.isAllowed('reExecuteItem', task)).toBe(false);
 		expect(service.isAllowed('completeItem', task)).toBe(false);
 		expect(service.isAllowed('reCompleteItem', task)).toBe(false);
@@ -286,7 +286,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('deleteItem', task)).toBe(false);
 		expect(service.isAllowed('joinItem', task)).toBe(false);
 		expect(service.isAllowed('unjoinItem', task)).toBe(false);
-		expect(service.isAllowed('executeItem', task)).toBe(true);
+		expect(service.isAllowed('executeItem', task)).toBe(false);
 		expect(service.isAllowed('reExecuteItem', task)).toBe(false);
 		expect(service.isAllowed('completeItem', task)).toBe(false);
 		expect(service.isAllowed('reCompleteItem', task)).toBe(false);
