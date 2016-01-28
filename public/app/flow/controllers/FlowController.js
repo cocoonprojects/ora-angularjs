@@ -38,7 +38,7 @@ angular.module('app.flow')
 			};
 			this.route = function(card, hierarchy){
 				switch (card.type){
-					case "LazyMajorityVote":
+					case "VoteIdea":
 						if(hierarchy == 'primary'){
 							$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});	
 						}

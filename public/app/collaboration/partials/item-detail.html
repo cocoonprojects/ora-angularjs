@@ -20,7 +20,7 @@
 				<h4 ng-if="ctrl.isAllowed('showShares', item) && member.share">
 					{{ member.share | percentage:2 }} of shares ({{ member.delta | percentage:2:true }} respect of auto-assessment)
 				</h4>
-				<p ng-switch="member.estimation">
+				<p ng-if="item.status > ITEM_STATUS.OPEN" ng-switch="member.estimation">
 					<span ng-switch-when="undefined">Has not estimated</span>
 					<span ng-switch-when="-2">Estimated</span>
 					<span ng-switch-when="-1">Skipped estimation</span>
