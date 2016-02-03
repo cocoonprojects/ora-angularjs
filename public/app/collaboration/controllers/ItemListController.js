@@ -103,6 +103,7 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
+                        
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
 					controller: AssignSharesController,
@@ -151,6 +152,6 @@ angular.module('app.collaboration')
 			this.hasActions = function(item) {
 				return this.isAllowed('joinItem', item) ||
 						this.isAllowed('estimateItem', item) ||
-						this.isAllowed('assignShares', item);
+						this.isAllowed('assignShares', item)|| this.isAllowed('approveIdea', item);
 			};
 		}]);
