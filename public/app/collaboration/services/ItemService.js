@@ -36,6 +36,11 @@ var ItemService = function($resource, $interval, identity) {
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'estimations' }
 		},
+                approveItem: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'approval' }
+		},
 		remindItemEstimate: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
@@ -130,6 +135,9 @@ var ItemService = function($resource, $interval, identity) {
 	};
 	this.estimateItem = function(item, value, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
+	};
+        this.approveItem = function(item, value, success, error) {
+		return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
 	};
 	this.skipItemEstimation = function(item, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
@@ -354,6 +362,11 @@ ItemService.prototype = {
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ONGOING &&
 					this.hasJoined(resource, this.getIdentity().getId());
+		},
+                approveIdea: function(resource) {
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.IDEA;
 		},
 		remindItemEstimate: function(resource) {
 			return resource &&

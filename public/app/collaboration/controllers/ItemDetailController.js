@@ -132,6 +132,20 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
+                        this.openApproveIdea = function(ev, item) {
+				$mdDialog.show({
+					controller: ApproveIdeaController,
+					controllerAs: 'dialogCtrl',
+					templateUrl: 'app/collaboration/partials/approve-item.html',
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					fullscreen: true,
+					locals: {
+						item: item,
+						prevEstimation: item.members[$scope.identity.getId()].estimation
+					}
+				}).then(this.updateItem);
+			};
 			this.remindItemEstimate = function(item) {
 				itemService.remindItemEstimate(item, $log.info, $log.warn);
 			};

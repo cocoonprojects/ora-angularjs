@@ -45,6 +45,7 @@
 	</md-list>
 	<md-card-actions layout="row" layout-align="end center">
 		<md-button aria-label="Start item" ng-if="ctrl.isAllowed('executeItem', item)" ng-click="ctrl.executeItem(item)">Start</md-button>
+                 <md-button class="md-secondary" aria-label="Approve Idea"  ng-if="ctrl.isAllowed('approveIdea', item)" ng-click="ctrl.openApproveIdea($event, item)">Approve Idea</md-button>
 		<md-button aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
 		<md-button aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
 		<md-button aria-label="Complete item" ng-if="ctrl.isAllowed('completeItem', item)" ng-click="ctrl.completeItem($event, item)">Mark as Completed</md-button>

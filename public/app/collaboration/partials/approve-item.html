@@ -1,0 +1,32 @@
+<md-dialog aria-label="Approve Item">
+	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Approve Item</h2>
+			<span flex></span>
+			<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
+				<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content>
+		<div class="md-dialog-content" layout="column">
+			<md-input-container>
+				<label>Vote</label>
+				<input data-ng-model="value" name="value" type="number" min="0" step="1" required>
+				<div ng-messages="form.value.$error" role="alert">
+					<div ng-message="required">Value is required</div>
+					<div ng-message="min">Value must be positive or zero</div>
+					<div ng-message="number">Value must be an integer greater or equal to zero</div>
+					<div ng-message="remote">{{ form.value.$error.remote }}</div>
+				</div>
+			</md-input-container>
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions layout="row" layout-align="end center">
+		<md-button type="button" ng-click="dialogCtrl.cancel()">Cancel</md-button>
+		<md-button type="button" ng-click="dialogCtrl.skip()" class="md-accent">Skip</md-button>
+		<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
+	</md-dialog-actions>
+	</form>
+</md-dialog>
