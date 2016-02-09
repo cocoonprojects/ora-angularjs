@@ -331,7 +331,7 @@ ItemService.prototype = {
 		executeItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
-					resource.status == this.ITEM_STATUS.IDEA &&
+					resource.status == this.ITEM_STATUS.OPEN &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
 					resource.type == 'task';
 		},
