@@ -136,14 +136,14 @@ var ItemService = function($resource, $interval, identity) {
 	this.estimateItem = function(item, value, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
 	};
-        this.approveIdeaItem = function(item, success, error) {
-		return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 }, success, error);
+        this.approveIdeaItem = function(item,description, success, error) {
+		return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 ,description:description}, success, error);
 	};
-        this.abstainIdeaItem = function (item,success,error){
-            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2 }, success, error);
+        this.abstainIdeaItem = function (item,description,success,error){
+            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
         };
-         this.rejectIdeaItem = function (item,success,error){
-            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 }, success, error);
+         this.rejectIdeaItem = function (item,description,success,error){
+            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
         };
 	this.skipItemEstimation = function(item, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
