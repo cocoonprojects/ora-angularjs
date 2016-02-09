@@ -4,13 +4,13 @@ function ApproveIdeaController($scope, $mdDialog, $log, itemService, item) {
 		$mdDialog.cancel();
 	};
 	this.abstain = function() {
-		itemService.abstainIdeaItem(item, $mdDialog.hide, this.onErrors);
+		itemService.abstainIdeaItem(item,$scope.description, $mdDialog.hide, this.onErrors);
 	};
 	this.accept = function() {
-		itemService.approveIdeaItem(item,  $mdDialog.hide, this.onErrors);
+		itemService.approveIdeaItem(item,$scope.description,  $mdDialog.hide, this.onErrors);
 	};
         this.reject = function() {
-		itemService.rejectIdeaItem(item,  $mdDialog.hide, this.onErrors);
+		itemService.rejectIdeaItem(item,$scope.description,  $mdDialog.hide, this.onErrors);
 	};
         
 	this.onErrors = function(httpResponse) {
