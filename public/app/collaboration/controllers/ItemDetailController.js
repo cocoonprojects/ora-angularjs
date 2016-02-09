@@ -141,8 +141,8 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					fullscreen: true,
 					locals: {
-						item: item,
-						prevEstimation: item.members[$scope.identity.getId()].estimation
+						item: item
+						//prevEstimation: item.members[$scope.identity.getId()].estimation
 					}
 				}).then(this.updateItem);
 			};
