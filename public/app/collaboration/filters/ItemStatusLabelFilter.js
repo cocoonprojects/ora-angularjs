@@ -5,7 +5,8 @@ angular.module('app.collaboration')
 		20: 'Ongoing',
 		30: 'Completed',
 		40: 'Accepted',
-		50: 'Closed'
+		50: 'Closed',
+                '-20': 'Rejected'
 	})
 	.filter('itemStatusLabel', ['TASK_STATUS_LABEL', function(TASK_STATUS_LABEL) {
 		return function(status) {
