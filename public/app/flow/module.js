@@ -5,7 +5,7 @@ angular.module('app.flow', ['ui.router'])
 				state('flow', {
 					url: '/flow',
 					templateUrl: 'app/flow/partials/flow.html',
-					controller: 'FlowController'
+					controller: 'FlowController as ctrl'
 				});
 		}
 	]);

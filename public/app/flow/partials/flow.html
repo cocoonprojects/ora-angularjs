@@ -14,6 +14,21 @@
 	</div>
 </md-toolbar>
 <md-content class="md-padding">
+	<md-card ng-repeat="card in cards._embedded['ora:flowcard']" infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="cards.total == cards.count || isLoadingMore" infinite-scroll-immediate-check="false">
+		<md-card-title>
+			<md-card-title-text>
+				<span class="md-headline">{{card.title}}</span>
+				<span class="md-subhead">{{card.createdAt | date:'short' }}</span>
+			</md-card-title-text>
+		</md-card-title>
+		<md-card-content>
+			<p>{{card.content.description}}</p>
+		</md-card-content>
+		<md-card-actions layout="row" layout-align="end center">
+			<md-button class="md-secondary" aria-label="{{card.content.actions.secondary.text}}" ng-click="ctrl.route(card, 'secondary')" ng-if="card.content.actions.secondary.length > 0">{{card.content.actions.secondary.text}}</md-button>
+			<md-button class="md-secondary" aria-label="{{card.content.actions.primary.text}}" ng-click="ctrl.route(card, 'primary')">{{card.content.actions.primary.text}}</md-button>
+		</md-card-actions>
+	</md-card>
 	<md-card>
 		<md-card-content>
 			<h2 class="md-title">Welcome to O.R.A.</h2>
