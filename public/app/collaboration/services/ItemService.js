@@ -373,7 +373,8 @@ ItemService.prototype = {
                 approveIdea: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
-					resource.status == this.ITEM_STATUS.IDEA;
+					resource.status == this.ITEM_STATUS.IDEA && 
+                                        resource.approvals[this.getIdentity().getId()]=== undefined;
 		},
 		remindItemEstimate: function(resource) {
 			return resource &&
