@@ -39,7 +39,7 @@ var ItemService = function($resource, $interval, identity) {
                 approveItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
-			params: { controller: 'approval' }
+			params: { controller: 'approvals' }
 		},
 		remindItemEstimate: {
 			method: 'POST',
