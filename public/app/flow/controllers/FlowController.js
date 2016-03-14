@@ -43,6 +43,8 @@ angular.module('app.flow')
 							$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});	
 						}
 						break;
+					case "VoteForAccepted":
+						break;
 				}
 			};
 		}]);
