@@ -1,5 +1,5 @@
 <md-dialog aria-label="Approve Item">
-	<!--<form name="form" ng-submit="dialogCtrl.submit()" novalidate>-->
+	
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 			<h2>Approve Item</h2>
@@ -16,19 +16,7 @@
 					<input data-ng-model="description" name="description" type="text" >
 					
                      </md-input-container>
-               
-                    
-<!--			TODO: qui va messo il campo di descrizione del voto
-                        <md-input-container>
-				<label>Vote</label>
-				<input data-ng-model="value" name="value" type="number" min="0" step="1" required>
-				<div ng-messages="form.value.$error" role="alert">
-					<div ng-message="required">Value is required</div>
-					<div ng-message="min">Value must be positive or zero</div>
-					<div ng-message="number">Value must be an integer greater or equal to zero</div>
-					<div ng-message="remote">{{ form.value.$error.remote }}</div>
-				</div>
-			</md-input-container>-->
+
 		</div>
 	</md-dialog-content>
 	<md-dialog-actions layout="row" layout-align="end center">
@@ -36,7 +24,7 @@
 		<md-button type="button" ng-click="dialogCtrl.abstain()" class="md-accent">abstain</md-button>
                 <md-button type="button" ng-click="dialogCtrl.accept()" class="md-accent">accept</md-button>
                 <md-button type="button" ng-click="dialogCtrl.reject()" class="md-accent">reject</md-button>
-		<!--<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>-->
+		
 	</md-dialog-actions>
-	<!--</form>-->
+	
 </md-dialog>
