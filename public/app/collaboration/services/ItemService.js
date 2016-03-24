@@ -36,6 +36,11 @@ var ItemService = function($resource, $interval, identity) {
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'estimations' }
 		},
+                approveItem: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'approvals' }
+		},
 		remindItemEstimate: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
@@ -131,6 +136,15 @@ var ItemService = function($resource, $interval, identity) {
 	this.estimateItem = function(item, value, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
 	};
+        this.approveIdeaItem = function(item,description, success, error) {
+		return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 ,description:description}, success, error);
+	};
+        this.abstainIdeaItem = function (item,description,success,error){
+            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
+        };
+         this.rejectIdeaItem = function (item,description,success,error){
+            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
+        };
 	this.skipItemEstimation = function(item, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
 	};
@@ -199,7 +213,8 @@ ItemService.prototype = {
 		'ONGOING'  : 20,
 		'COMPLETED': 30,
 		'ACCEPTED' : 40,
-		'CLOSED'   : 50
+		'CLOSED'   : 50,
+                'ARCHIVED' : -20,
 	},
 	ITEM_ROLES: {
 		'ROLE_MEMBER': 'member',
@@ -354,6 +369,12 @@ ItemService.prototype = {
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ONGOING &&
 					this.hasJoined(resource, this.getIdentity().getId());
+		},
+                approveIdea: function(resource) {
+			return resource &&
+					this.getIdentity().isAuthenticated() &&
+					resource.status == this.ITEM_STATUS.IDEA && 
+                                        resource.approvals[this.getIdentity().getId()]=== undefined;
 		},
 		remindItemEstimate: function(resource) {
 			return resource &&

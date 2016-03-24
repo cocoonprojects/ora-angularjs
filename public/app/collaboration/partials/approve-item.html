@@ -1,0 +1,28 @@
+<md-dialog aria-label="Approve Item">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Approve Item</h2>
+			<span flex></span>
+			<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
+				<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content>
+		<div class="md-dialog-content" layout="column">
+                     <md-input-container>
+                    <label>Description</label>
+					<input data-ng-model="description" name="description" type="text" >
+					
+                     </md-input-container>
+
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions layout="row" layout-align="end center">
+		<md-button type="button" ng-click="dialogCtrl.cancel()">Cancel</md-button>
+		<md-button type="button" ng-click="dialogCtrl.abstain()" class="md-accent">abstain</md-button>
+                <md-button type="button" ng-click="dialogCtrl.accept()" class="md-accent">accept</md-button>
+                <md-button type="button" ng-click="dialogCtrl.reject()" class="md-accent">reject</md-button>
+	</md-dialog-actions>
+
+</md-dialog>
