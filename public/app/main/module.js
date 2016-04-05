@@ -44,7 +44,7 @@ angular.module('app', [
 									$scope.pillar.name = toState.data.pillarName;
 								}
 								if(toState.data && toState.data.selectedTab){
-									$scope.currentTab = toState.data.selectedTab;	
+									$scope.currentTab = toState.data.selectedTab;
 								}
 							}
 						);
@@ -54,7 +54,7 @@ angular.module('app', [
 	.config(['$mdThemingProvider',
 		function($mdThemingProvider) {
 			$mdThemingProvider.theme('default')
-				.primaryPalette('pink')
+				.primaryPalette('blue-grey')
 				.accentPalette('indigo');
 			$mdThemingProvider.theme('input', 'default')
 				.primaryPalette('grey');

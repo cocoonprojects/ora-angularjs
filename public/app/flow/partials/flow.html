@@ -1,51 +1,58 @@
-<md-toolbar>
+<md-toolbar class="border">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" aria-label="Side Nav" ng-click="toggleLeft()" hide-gt-md>
-			<md-icon md-svg-icon="menu" alt="menu"></md-icon>
+		<md-button class="md-icon-button logo" ng-click="toggleLeft()" hide-gt-md>
+			<img class="logo-image" ng-src="img/immagine.png"/>
 		</md-button>
-		<h2>Flow</h2>
+		<h2> Liquido > Flow</h2>
 		<span flex></span>
-		<md-button class="md-icon-button" aria-label="Search">
-			<md-icon md-svg-icon="search"></md-icon>
-		</md-button>
 		<md-button class="md-icon-button" aria-label="More">
-			<md-icon md-svg-icon="more"></md-icon>
+			<md-icon class="material-icons">&#xE8B8;</md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
-<md-content class="md-padding">
-	<md-card ng-repeat="card in cards._embedded['ora:flowcard']" infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="cards.total == cards.count || isLoadingMore" infinite-scroll-immediate-check="false">
-		<md-card-title>
-			<md-card-title-text>
-				<span class="md-headline">{{card.title}}</span>
-				<span class="md-subhead">{{card.createdAt | date:'short' }}</span>
-			</md-card-title-text>
-		</md-card-title>
-		<md-card-content>
-			<p>{{card.content.description}}</p>
-		</md-card-content>
-		<md-card-actions layout="row" layout-align="end center">
-			<md-button class="md-secondary" aria-label="{{card.content.actions.secondary.text}}" ng-click="ctrl.route(card, 'secondary')" ng-if="card.content.actions.secondary.length > 0">{{card.content.actions.secondary.text}}</md-button>
-			<md-button class="md-secondary" aria-label="{{card.content.actions.primary.text}}" ng-click="ctrl.route(card, 'primary')">{{card.content.actions.primary.text}}</md-button>
-		</md-card-actions>
-	</md-card>
-	<md-card>
-		<md-card-content>
-			<h2 class="md-title">Welcome to O.R.A.</h2>
-			<p>Your flow is where you will find notifications about most relevant events in your organizations, suggestions on how to contribute to activities and much more. Check it out frequently!</p>
-		</md-card-content>
-		<div class="md-actions" layout="row" layout-align="end center">
-			<md-button>Dismiss</md-button>
-			<md-button>Action 2</md-button>
-		</div>
-	</md-card>
-	<md-card>
-		<md-card-content>
-			<h2 class="md-title">Select your organization</h2>
-			<p>Select an organization from the side bar and start contributing! Or, if you are not yet member of any organization, join one the available organizations</p>
-		</md-card-content>
-		<div class="md-actions" layout="row" layout-align="end center">
-			<md-button ui-sref="organizations">Join</md-button>
-		</div>
-	</md-card>
+<md-toolbar class="height-toolbar">
+	<div class="md-toolbar-tools height">
+		<span flex></span>
+		<p style="margin-top: 25px;" class="p-size">Filter by:</p>
+		<md-menu>
+			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+				<md-icon style="font-size: 18px;" class="material-icons">&#xE313;</md-icon>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item>
+					<p>prova</p>
+				</md-menu-item>
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item>
+					<p>prova1</p>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<span flex></span>
+	</div>
+</md-toolbar>
+<md-content>
+	<md-subheader class="md-no-sticky">Latest Activity</md-subheader>
+	<md-divider></md-divider>
+	<md-list ng-repeat="card in cards._embedded['ora:flowcard']" infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="cards.total == cards.count || isLoadingMore" infinite-scroll-immediate-check="false">
+		<md-list-item class="md-3-line md-padding" layout="row">
+			<div layout="column">
+				<p flex> </p>
+				<img ng-src="img/immagine.png" class="md-avatar"/>
+			</div>
+			<div layout="column">
+				<h5 class="margin">{{card.type}}</h5>
+				<h4 class="margin2">{{card.title}}</h4>
+				<p class="margin2 p-size1">{{card.content.description}}</p>
+			</div>
+			<div class="secondary-button-padding">
+				<p class="p-size">{{card.createdAt | date:'short' }}</p>
+				<md-button ng-click="ctrl.route(card, 'primary')" class="md-icon-button">
+					<md-icon style="font-size: 36px;" class="material-icons">&#xE315;</md-icon>
+				</mdbutton>
+			</div>
+		</md-list-item>
+
+		<md-divider></md-divider>
+	</md-list>
 </md-content>
