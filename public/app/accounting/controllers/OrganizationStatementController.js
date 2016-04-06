@@ -1,7 +1,26 @@
 angular.module('app.accounting')
-	.controller('OrganizationStatementController', ['$scope', '$stateParams', '$mdDialog', 'accountService',
-		function ($scope, $stateParams, $mdDialog, accountService) {
+	.controller('OrganizationStatementController', ['$scope', '$stateParams', '$mdDialog', 'moment', 'accountService',
+		function ($scope, $stateParams, $mdDialog, moment, accountService) {
 			var that = this;
+			var initStatement = function(data){
+				$scope.statement = data;
+				$scope.statement._embedded.transactions = transactionOrderedByDate($scope.statement._embedded.transactions);
+			};
+			var transactionOrderedByDate = function(transactions){
+				var toReturn;
+				var orderedTransaction = _.sortBy(transactions, function(transaction){
+					return moment(transaction.date).unix();
+				});
+				if ($scope.orderDateRising){
+					toReturn = orderedTransaction;
+					$scope.availableOrganisationCredits = toReturn[toReturn.length - 1].balance;
+				}
+				else {
+					toReturn = orderedTransaction.reverse();
+					$scope.availableOrganisationCredits = toReturn[0].balance;
+				}
+				return toReturn;
+			};
 			this.isAllowed = accountService.isAllowed.bind(accountService);
 
 			this.onLoadingError = function(error) {
@@ -11,11 +30,12 @@ angular.module('app.accounting')
 						break;
 				}
 			};
+			$scope.orderDateRising = false;
 			$scope.filters = {
 				limit: 10
 			};
 			$scope.statement = null;
-			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) { $scope.statement = data; }, this.onLoadingError, 10000);
+			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, initStatement, this.onLoadingError, 10000);
 			this.cancelAutoUpdate = function() {
 				accountService.stopOrganizationPolling();
 			};
@@ -35,6 +55,10 @@ angular.module('app.accounting')
 							$scope.isLoadingMore = false;
 							that.onLoadingError(response);
 						});
+			};
+			this.invertOrderData = function() {
+				$scope.orderDateRising = !$scope.orderDateRising;
+				$scope.statement._embedded.transactions = transactionOrderedByDate($scope.statement._embedded.transactions);
 			};
 
 			this.addTransaction = function(transaction) {
