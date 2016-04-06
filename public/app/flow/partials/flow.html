@@ -33,17 +33,17 @@
 </md-toolbar>
 <md-subheader class="md-no-sticky">Latest Activity</md-subheader>
 <md-divider></md-divider>
-<md-content layout="row" layout-wrap>
+<md-content>
 	<md-list flex="100" ng-repeat="card in cards._embedded['ora:flowcard']" infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="cards.total == cards.count || isLoadingMore" infinite-scroll-immediate-check="false">
 		<md-list-item class="md-3-line md-padding">
 			<div layout="column">
 				<p flex> </p>
 				<img ng-src="img/immagine.png" class="md-avatar"/>
 			</div>
-			<div class="md-list-item">
+			<div class="md-list-item-text md-padding">
 				<p style="color: black; font-size: 14px;">{{card.type}}</p>
-				<p style="color: black; font-size: 18px;" class="margin2">{{card.title}}</h4>
-					<p style="color: gray; font-size: 12px;" class="margin2">{{card.content.description}}</p>
+				<p style="color: black; font-size: 18px;">{{card.title}}</h4>
+					<p style="color: gray; font-size: 12px;">{{card.content.description}}</p>
 				</div>
 				<div layout="column">
 					<p class="p-size">{{card.createdAt | date:'short' }}</p>
@@ -52,6 +52,6 @@
 					</mdbutton>
 				</div>
 			</md-list-item>
-			<md-divider></md-divider>
+			<md-divider md-inset></md-divider>
 		</md-list>
 	</md-content>
