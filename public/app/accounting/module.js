@@ -7,7 +7,7 @@ angular.module('app.accounting', ['ui.router', 'ngResource'])
 					templateUrl: 'app/accounting/partials/statement.html',
 					controller: 'OrganizationStatementController as ctrl',
 					data: {
-						pillarName: 'CREDITS',
+						pillarName: 'credits',
 						selectedTab: 0
 					}
 				})

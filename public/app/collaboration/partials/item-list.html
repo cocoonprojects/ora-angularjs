@@ -30,7 +30,7 @@
 						<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">{{ status | itemStatusLabel }}</md-option>
 					</md-select>
 				</md-input-container>
-				<md-button type="submit" class="md-raised">Search</md-button>
+				<md-button type="submit" class="md-raised">prova</md-button>
 			</div>
 		</form>
 	</md-card-content>
@@ -55,6 +55,6 @@
 		<md-button class="md-secondary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
 		<md-button class="md-secondary" aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
 		<md-button class="md-secondary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
-               
+
 	</md-card-actions>
 </md-card>

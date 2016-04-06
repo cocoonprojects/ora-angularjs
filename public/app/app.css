@@ -17,6 +17,9 @@ md-sidenav .md-button {
   font-size: 14px;
   color: gray;
 }
+.p-size2{
+  font-size: 14px;
+}
 .height{
   height: 20px !important;
 }
@@ -39,5 +42,14 @@ md-sidenav .md-button {
   margin-top: 10px !important;
 }
 .margin2 {
+  margin-top: -10px !important;
+}
+.margin3 {
   margin-top: -15px !important;
+}
+.center {
+  position: center;
+}
+.transparent {
+  background-color: transparent !important;
 }

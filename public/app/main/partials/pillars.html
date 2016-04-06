@@ -1,11 +1,10 @@
-<md-toolbar>
+<md-toolbar class="border">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" aria-label="Side Nav" ng-click="toggleLeft()" hide-gt-md>
-			<md-icon md-svg-icon="menu" alt="menu"></md-icon>
+		<md-button class="md-icon-button logo" ng-click="toggleLeft()" hide-gt-md>
+			<img class="logo-image" ng-src="img/immagine.png"/>
 		</md-button>
-		<h2>{{ organization.name }}</h2>
-		<span flex></span>
-		<h2>{{ pillar.name }}</h2>
+		<!--<h2>{{ organization.name }}</h2>-->
+		<h2> Liquido > {{ pillar.name }}</h2>
 		<span flex></span>
 		<md-menu>
 			<md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open menu">
@@ -19,6 +18,9 @@
 				<md-menu-item><md-button ui-sref="org.settings" aria-label="Settings">Settings</md-button></md-menu-item>
 			</md-menu-content>
 		</md-menu>
+		<md-button class="md-icon-button" aria-label="More">
+			<md-icon class="material-icons">&#xE8B8;</md-icon>
+		</md-button>
 	</div>
 </md-toolbar>
-<md-content ui-view></md-content>
+<md-content  ui-view></md-content>
