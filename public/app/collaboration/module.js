@@ -6,7 +6,7 @@ angular.module('app.collaboration', ['ui.router'])
 					url: '/items',
 					templateUrl: 'app/collaboration/partials/item-list.html',
 					data: {
-						pillarName: 'ITEMS'
+						pillarName: 'Items'
 					},
 					controller: 'ItemListController as ctrl'
 				})

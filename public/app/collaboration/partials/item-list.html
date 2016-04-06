@@ -13,28 +13,99 @@
 		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
-<md-card>
-	<md-card-content>
-		<form name="form" ng-submit="ctrl.loadItems()" novalidate>
-			<div layout="row" layout-sm="column">
-				<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
-				<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
-				<md-input-container flex>
-					<label>Member</label>
-					<input type="email" ng-model="filters.memberEmail">
-				</md-input-container>
-				<md-input-container>
-					<label>Status</label>
-					<md-select ng-model="filters.status">
-						<md-option value=""></md-option>
-						<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">{{ status | itemStatusLabel }}</md-option>
-					</md-select>
-				</md-input-container>
-				<md-button type="submit" class="md-raised">prova</md-button>
-			</div>
-		</form>
-	</md-card-content>
-</md-card>
+<!--<md-card>
+<md-card-content>
+<form name="form" ng-submit="ctrl.loadItems()" novalidate>
+<div layout="row" layout-sm="column">
+<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
+<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
+<md-input-container flex>
+<label>Member</label>
+<input type="email" ng-model="filters.memberEmail">
+</md-input-container>
+<md-input-container>
+<label>Status</label>
+<md-select ng-model="filters.status">
+<md-option value=""></md-option>
+<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">{{ status | itemStatusLabel }}</md-option>
+</md-select>
+</md-input-container>
+<md-button type="submit" class="md-raised">prova</md-button>
+</div>
+</form>
+</md-card-content>
+</md-card>-->
+<md-subheader class="md-no-sticky">Filter items by:</md-subheader>
+<md-toolbar style="margin-top: -16px;" class="height-toolbar transparent">
+	<div class="md-toolbar-tools height">
+		<span flex></span>
+		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Status(All)</p>
+		<md-menu>
+			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item>
+					<p>filtro da inserire</p>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<span flex></span>
+		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Lane</p>
+		<md-menu>
+			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item>
+					<p>filtro da inserire</p>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<span flex></span>
+		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">All Items</p>
+		<md-menu>
+			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item>
+					<p>filtro da inserire</p>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+	</div>
+</md-toolbar>
+<md-divider></md-divider>
+<md-toolbar class="height-toolbar transparent">
+	<div class="md-toolbar-tools height">
+		<span flex></span>
+		<span flex></span>
+		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Update Time</p>
+		<md-menu>
+			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item>
+					<p>filtro da inserire</p>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<span flex></span>
+		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Status change time</p>
+		<md-menu>
+			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item>
+					<p>filtro da inserire</p>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+	</div>
+</md-toolbar>
 <md-card ng-repeat="item in items._embedded['ora:task']" ng-init="owner = ctrl.getOwner(item)" infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="items.total == items.count || isLoadingMore" infinite-scroll-immediate-check="false">
 	<md-card-title>
 		<md-card-title-text>
@@ -43,18 +114,28 @@
 				<div class="md-subhead">{{ ctrl.stream(item).subject }}</div>
 			</div>
 		</md-card-title-text>
-		<md-card-avatar>
+		<md-card-avatar layout="column" layout-align="start end">
 			<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" ui-sref="org.profile({ memberId: owner.id })" md-ink-ripple>
+			<p style="margin-top: 1px; font-size: 14px; font-weight: bold">owner:</p>
+			<p style="margin-top: -16px; font-size: 12px; color: gray;">{{ owner.firstname }} {{ owner.lastname}} </p>
 		</md-card-avatar>
 	</md-card-title>
 	<md-card-content>
-			<p>{{ item | itemStatusResume }}</p>
+		<p>{{ item | itemStatusResume }}</p>
+	</div>
+</md-card-content>
+<!--<md-card-actions class="md-hue-2" layout="row" layout-align="end center" ng-if="ctrl.hasActions(item)">
+<md-button class="md-secondary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
+<md-button class="md-secondary" aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
+<md-button class="md-secondary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
+</md-card-actions>-->
+<md-card-action layout="row" layout-align="end end">
+	<md-toolbar class="md-hue-3" style="width: 90px; min-height: 40px;">
+		<div class="md-toolbar-tools" style="height: 30px;">
+			<img style="width: 20px; height: 20px; margin-top: 10px;" ng-src="img/immagine.png">
+			<span flex></span>
+			<p style="font-size: 14px; margin-top: 25px; color: black;">I'm in</p>
 		</div>
-	</md-card-content>
-	<md-card-actions layout="row" layout-align="end center" ng-if="ctrl.hasActions(item)">
-		<md-button class="md-secondary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
-		<md-button class="md-secondary" aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
-		<md-button class="md-secondary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
-
-	</md-card-actions>
+	</md-toolbar>
+</md-card-action>
 </md-card>
