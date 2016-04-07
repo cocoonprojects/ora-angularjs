@@ -96,12 +96,9 @@ module.exports = function(grunt) {
 	    },
 		watch: {
 		  scripts: {
-		    files: ['**/*.js'],
 		    tasks: ['jshint','shell:testSingle'],
-		    options: {
-		      spawn: false,
-		    },
-		  },
+		    files: ['public/**/*.js'],
+		  }
 		}
 	});
 	grunt.loadNpmTasks('grunt-contrib-concat');
