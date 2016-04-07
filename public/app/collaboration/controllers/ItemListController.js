@@ -1,13 +1,23 @@
 angular.module('app.collaboration')
-	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams', '$mdDialog', '$mdToast', 'streamService', 'itemService',
-		function ($scope, $log, $interval, $stateParams, $mdDialog, $mdToast, streamService, itemService) {
-			this.onLoadingError = function(error) {
-				switch (error.status) {
-					case 401:
-						this.cancelAutoUpdate();
-						break;
-				}
-			};
+	.controller('ItemListController', [
+		'$scope',
+		'$log',
+		'$interval',
+		'$stateParams',
+		'$mdDialog',
+		'$mdToast',
+		'streamService',
+		'itemService',
+		function (
+			$scope,
+			$log,
+			$interval,
+			$stateParams,
+			$mdDialog,
+			$mdToast,
+			streamService,
+			itemService) {
+
 			$scope.streams = null;
 			$scope.filters = {
 				limit: 10,
@@ -103,7 +113,7 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
-                        
+
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
 					controller: AssignSharesController,
@@ -153,5 +163,13 @@ angular.module('app.collaboration')
 				return this.isAllowed('joinItem', item) ||
 						this.isAllowed('estimateItem', item) ||
 						this.isAllowed('assignShares', item)|| this.isAllowed('approveIdea', item);
+			};
+
+			this.onLoadingError = function(error) {
+				switch (error.status) {
+					case 401:
+						this.cancelAutoUpdate();
+						break;
+				}
 			};
 		}]);
