@@ -35,25 +35,37 @@
 <md-divider></md-divider>
 <md-content>
 	<md-list flex="100" ng-repeat="card in cards._embedded['ora:flowcard']"
-	 infinite-scroll="ctrl.loadMore()"
-	  infinite-scroll-distance="1"
-		infinite-scroll-parent="true"
-		infinite-scroll-disabled="cards.total == cards.count || isLoadingMore"
-		infinite-scroll-immediate-check="false">
-		<md-list-item class="md-padding">
-			<img class="md-avatar" ng-src="img/immagine.png"/>
-					<div class="md-list-item-text md-padding">
-				<p style="color: black; font-size: 14px;">{{card.type}}</p>
-				<h1 style="color: black; font-size: 18px; margin-top: 2px;">{{card.title}}</h1>
-					<p style="color: gray; font-size: 12px; margin-top: -10px;">{{card.content.description}}</p>
-				</div>
-				<div layout="column">
-					<p class="p-size">{{card.createdAt | date:'short' }}</p>
-					<md-button ng-click="ctrl.route(card, 'primary')" class="md-icon-button">
-						<md-icon style="font-size: 36px;" class="material-icons">&#xE315;</md-icon>
-					</mdbutton>
-				</div>
-			</md-list-item>
-			<md-divider style="margin-left: 70px;"></md-divider>
-		</md-list>
-	</md-content>
+	infinite-scroll="ctrl.loadMore()"
+	infinite-scroll-distance="1"
+	infinite-scroll-parent="true"
+	infinite-scroll-disabled="cards.total == cards.count || isLoadingMore"
+	infinite-scroll-immediate-check="false">
+	<md-list-item class="md-padding">
+		<img class="md-avatar" ng-src="img/immagine.png"/>
+		<div class="md-list-item-text md-padding">
+			<p style="color: black; font-size: 14px;">{{card.type}}</p>
+			<h1 style="color: black; font-size: 18px; margin-top: 2px;">{{card.title}}</h1>
+			<p style="color: gray; font-size: 12px; margin-top: -10px;">{{card.content.description}}</p>
+		</div>
+		<div layout="column">
+			<p class="p-size">{{card.createdAt | date:'short' }}</p>
+			<md-button ng-click="ctrl.route(card, 'primary')" class="md-icon-button">
+				<md-icon style="font-size: 36px;" class="material-icons">&#xE315;</md-icon>
+			</mdbutton>
+		</div>
+	</md-list-item>
+	<md-divider style="margin-left: 70px;"></md-divider>
+</md-list>
+</md-content>
+<md-tabs style="position:absolute; bottom: 0; width: 100%;" md-dynamic-height class="md-primary" md-selected="0" md-stretch-tabs="always">
+	<md-tab label="Items">
+	</md-tab>
+	<md-tab label="Credits">
+	</md-tab>
+	<md-tab label="Flow">
+	</md-tab>
+	<md-tab label="Decisions">
+	</md-tab>
+	<md-tab label="People">
+	</md-tab>
+</md-tabs>
