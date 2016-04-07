@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+	require('load-grunt-tasks')(grunt);
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -87,6 +89,20 @@ module.exports = function(grunt) {
 				dest: 'build/icon-set.svg'
 			},
 		},
+		shell: {
+	        testSingle: {
+	            command: 'npm run test-single-run'
+	        }
+	    },
+		watch: {
+		  scripts: {
+		    files: ['**/*.js'],
+		    tasks: ['jshint','shell:testSingle'],
+		    options: {
+		      spawn: false,
+		    },
+		  },
+		}
 	});
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -96,5 +112,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-angular-templates');
 	grunt.loadNpmTasks('grunt-processhtml');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('build', ['jshint', 'clean:build', 'ngtemplates', 'concat', 'uglify', 'cssmin', 'processhtml', 'copy', 'clean:tmp']);
 };
