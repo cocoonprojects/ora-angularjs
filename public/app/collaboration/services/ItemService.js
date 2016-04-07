@@ -109,6 +109,7 @@ var ItemService = function($resource, $interval, identity) {
 	};
 	var isQueryPolling = false;
 	this.query = function(organizationId, filters, success, error) {
+		error = error || _.noop;
 		isQueryPolling = true;
 		return resource.query(
 				angular.extend({ orgId: organizationId }, filters),
@@ -373,7 +374,7 @@ ItemService.prototype = {
                 approveIdea: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
-					resource.status == this.ITEM_STATUS.IDEA && 
+					resource.status == this.ITEM_STATUS.IDEA &&
                                         resource.approvals[this.getIdentity().getId()]=== undefined;
 		},
 		remindItemEstimate: function(resource) {
