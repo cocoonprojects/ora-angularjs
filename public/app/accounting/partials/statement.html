@@ -20,8 +20,8 @@
 	</md-fab-actions>
 </md-fab-speed-dial>
 <md-tabs md-dynamic-height class="md-primary" md-selected="currentTab" md-stretch-tabs="always">
-	<md-tab label="Organization" ui-sref="org.organizationStatement">
-		<md-content>
+	<md-tab label="Organization">
+		<md-content data-ng-controller="OrganizationStatementController as ctrl">
 			<div class="md-padding" layout="column">
 				<h1 ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ availableOrganisationCredits || 0 | number:2 }}</h1>
 				<p class="p-size2 margin3">
@@ -90,99 +90,101 @@
 		</md-content>
 	</md-content>
 </md-tab>
-<md-tab label="My Wallet" style="text-transform: none !important;" ui-sref="org.personalStatement">
-	<div class="md-padding" layout="row">
-		<div flex="33" layout="column">
-			<center>
-				<h1>1050 <!--dato da inserire --></h1>
-				<p class="p-size2 margin2">avaible</p>
-				<p class="p-size2 margin2">credits</p>
-			</center>
-		</div>
-		<md-divider style="color: black;"></md-divider>
-		<div flex="33" layout="column">
-			<center>
-				<h1>4,350 <!--dato da inserire --></h1>
-				<p class="p-size2 margin2">Decision Making</p>
-				<p class="p-size2 margin2"> Credits</p>
-			</center>
-		</div>
-		<md-divider style="color: black !important;"></md-divider>
-		<div flex="33" layout="column">
-			<center>
-				<h1 ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }} <!--dato da inserire --></h1>
-				<p class="p-size2 margin2">Total Credits </p>
-				<p class="p-size2 margin2"> Generated</p>
-			</center>
-		</div>
-	</div>
-	<md-toolbar class="height-toolbar transparent">
-		<div class="md-toolbar-tools height">
-			<p style="margin-top: 25px; color: gray; font-size: 14px;">Filter Item by:</p>
-			<span flex></span>
-			<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Date</p>
-			<md-menu>
-				<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-					<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-				</md-button>
-				<md-menu-content>
-					<md-menu-item>
-						<p>prova</p>
-					</md-menu-item>
-					<md-menu-divider></md-menu-divider>
-					<md-menu-item>
-						<p>prova1</p>
-					</md-menu-item>
-				</md-menu-content>
-			</md-menu>
-			<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Type(all)</p>
-			<md-menu>
-				<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-					<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-				</md-button>
-				<md-menu-content>
-					<md-menu-item>
-						<p>prova</p>
-					</md-menu-item>
-					<md-menu-divider></md-menu-divider>
-					<md-menu-item>
-						<p>prova1</p>
-					</md-menu-item>
-				</md-menu-content>
-			</md-menu>
-		</div>
-	</md-toolbar>
-	<!--<md-content>
-		<md-list flex="100" infinite-scroll="ctrl.loadMore()"
-		infinite-scroll-distance="1"
-		infinite-scroll-parent="true"
-		infinite-scroll-disabled="statement.total == statement.count || isLoadingMore"
-		infinite-scroll-immediate-check="false"
-		data-ng-repeat="transaction in statement._embedded.transactions"
-		ng-switch="transaction.type"
-		infinite-scroll="ctrl.loadMore()">
-		<md-list-item class="md-3-line" >
-			<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
-			<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
-			<md-icon class="md-avatar-icon" ng-switch-when="Withdrawal" md-svg-icon="withdrawal"></md-icon>
-			<md-icon class="md-avatar-icon" ng-switch-when="Deposit" md-svg-icon="deposit"></md-icon>
-			<div class="md-list-item-text">
-				<p ng-style="transaction.amount < 0 ? { color : 'Red' } : {}">{{ transaction.amount | number:2 }}</p>
-				<h2 style="font-size: 16px; margin-top: 0px;">{{ transaction.description }}</h2>
-				<p style="margin-top: -10px;" ng-switch="transaction.type">
-					<span ng-switch-when="IncomingTransfer">from {{ transaction.payer }}</span>
-					<span ng-switch-when="OutgoingTransfer">to {{ transaction.payee }}</span>
-					<span ng-switch-when="Deposit">by {{ transaction.payer }}</span>
-					<span ng-switch-when="Withdrawal">by {{ transaction.payee }}</span>
-				</p>
+<md-tab label="My Wallet" style="text-transform: none !important;">
+	<md-content data-ng-controller="OrganizationStatementController as ctrl">
+		<div class="md-padding" layout="row">
+			<div flex="33" layout="column">
+				<center>
+					<h1>1050 <!--dato da inserire --></h1>
+					<p class="p-size2 margin2">avaible</p>
+					<p class="p-size2 margin2">credits</p>
+				</center>
 			</div>
-			<div layout="column">
-				<p style="color: gray; font-size: 14px; margin-top: 80%;">{{ transaction.date | date:short }}</p>
+			<md-divider style="color: black;"></md-divider>
+			<div flex="33" layout="column">
+				<center>
+					<h1>4,350 <!--dato da inserire --></h1>
+					<p class="p-size2 margin2">Decision Making</p>
+					<p class="p-size2 margin2"> Credits</p>
+				</center>
 			</div>
-		</md-list-item>
-		<md-divider md-inset></md-divider>
-	</md-list>
-		</md-content>
-	</md-content>-->
+			<md-divider style="color: black !important;"></md-divider>
+			<div flex="33" layout="column">
+				<center>
+					<h1 ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }} <!--dato da inserire --></h1>
+					<p class="p-size2 margin2">Total Credits </p>
+					<p class="p-size2 margin2"> Generated</p>
+				</center>
+			</div>
+		</div>
+		<md-toolbar class="height-toolbar transparent">
+			<div class="md-toolbar-tools height">
+				<p style="margin-top: 25px; color: gray; font-size: 14px;">Filter Item by:</p>
+				<span flex></span>
+				<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Date</p>
+				<md-menu>
+					<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+						<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+					</md-button>
+					<md-menu-content>
+						<md-menu-item>
+							<p>prova</p>
+						</md-menu-item>
+						<md-menu-divider></md-menu-divider>
+						<md-menu-item>
+							<p>prova1</p>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+				<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Type(all)</p>
+				<md-menu>
+					<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
+						<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+					</md-button>
+					<md-menu-content>
+						<md-menu-item>
+							<p>prova</p>
+						</md-menu-item>
+						<md-menu-divider></md-menu-divider>
+						<md-menu-item>
+							<p>prova1</p>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</div>
+		</md-toolbar>
+		<!--<md-content>
+			<md-list flex="100" infinite-scroll="ctrl.loadMore()"
+			infinite-scroll-distance="1"
+			infinite-scroll-parent="true"
+			infinite-scroll-disabled="statement.total == statement.count || isLoadingMore"
+			infinite-scroll-immediate-check="false"
+			data-ng-repeat="transaction in statement._embedded.transactions"
+			ng-switch="transaction.type"
+			infinite-scroll="ctrl.loadMore()">
+			<md-list-item class="md-3-line" >
+				<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
+				<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
+				<md-icon class="md-avatar-icon" ng-switch-when="Withdrawal" md-svg-icon="withdrawal"></md-icon>
+				<md-icon class="md-avatar-icon" ng-switch-when="Deposit" md-svg-icon="deposit"></md-icon>
+				<div class="md-list-item-text">
+					<p ng-style="transaction.amount < 0 ? { color : 'Red' } : {}">{{ transaction.amount | number:2 }}</p>
+					<h2 style="font-size: 16px; margin-top: 0px;">{{ transaction.description }}</h2>
+					<p style="margin-top: -10px;" ng-switch="transaction.type">
+						<span ng-switch-when="IncomingTransfer">from {{ transaction.payer }}</span>
+						<span ng-switch-when="OutgoingTransfer">to {{ transaction.payee }}</span>
+						<span ng-switch-when="Deposit">by {{ transaction.payer }}</span>
+						<span ng-switch-when="Withdrawal">by {{ transaction.payee }}</span>
+					</p>
+				</div>
+				<div layout="column">
+					<p style="color: gray; font-size: 14px; margin-top: 80%;">{{ transaction.date | date:short }}</p>
+				</div>
+			</md-list-item>
+			<md-divider md-inset></md-divider>
+		</md-list>
+			</md-content>
+		</md-content>-->
+	</md-content>
 </md-tab>
 </md-tabs>
