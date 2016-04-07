@@ -106,36 +106,71 @@
 		</md-menu>
 	</div>
 </md-toolbar>
-<md-card ng-repeat="item in items._embedded['ora:task']" ng-init="owner = ctrl.getOwner(item)" infinite-scroll="ctrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-parent="true" infinite-scroll-disabled="items.total == items.count || isLoadingMore" infinite-scroll-immediate-check="false">
-	<md-card-title>
-		<md-card-title-text>
-			<div ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
-				<div class="md-headline">{{ item.subject }}</div>
-				<div class="md-subhead">{{ ctrl.stream(item).subject }}</div>
-			</div>
-		</md-card-title-text>
-		<md-card-avatar layout="column" layout-align="start end">
-			<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" ui-sref="org.profile({ memberId: owner.id })" md-ink-ripple>
-			<p style="margin-top: 1px; font-size: 14px; font-weight: bold">owner:</p>
-			<p style="margin-top: -16px; font-size: 12px; color: gray;">{{ owner.firstname }} {{ owner.lastname}} </p>
-		</md-card-avatar>
-	</md-card-title>
-	<md-card-content>
-		<p>{{ item | itemStatusResume }}</p>
-	</div>
-</md-card-content>
+<md-card ng-repeat="item in items._embedded['ora:task']"
+ng-init="owner = ctrl.getOwner(item)"
+infinite-scroll="ctrl.loadMore()"
+infinite-scroll-distance="1"
+infinite-scroll-parent="true"
+infinite-scroll-disabled="items.total == items.count || isLoadingMore"
+infinite-scroll-immediate-check="false">
+<md-card-header style="margin-top: -10px;">
+	<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
+		<span style="margin-top: -5px;" class="md-subhead">
+			{{item.type}}
+		</span>
+		<span style="font-size: 22px; margin-top: -5px;">
+			{{ item.subject }}
+		</span>
+		<p style="text-transform: uppercase; font-size: 14px; margin-top: 0px;">
+			<span class="md-subhead">
+				#4530 <!--dato da inserire-->
+			</span>
+			{{ ctrl.stream(item).subject }}
+		</p>
+		<span style="font-size: 13px; margin-top: -15px; line-height: 14px;" class="md-subhead">
+			{{item.description}}
+		</span>
+		<div layout="row" style="width: 60%;">
+			<p style="font-size: 14px;">
+				status:
+				<span style="line-height: 16px" class="md-subhead">
+					{{item.status}}
+				</span>
+			</p>
+			<span flex></span>
+			<p style=" font-size: 14px;">
+				credit:
+				<span style="line-height: 16px" class="md-subhead">
+					52<!--dato da inserire-->
+				</span>
+			</p>
+		</div>
+	</md-card-header-text>
+	<md-card-media layout="column" layout-align="start end">
+		<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" ui-sref="org.profile({ memberId: owner.id })" md-ink-ripple>
+		<p style="margin-top: 1px; font-size: 14px; font-weight: bold">owner:</p>
+		<p style="margin-top: -16px; font-size: 12px; color: gray;">{{ owner.firstname }} {{ owner.lastname}} </p>
+	</md-card-media>
+</md-card-header>
+<!--<p>{{ item | itemStatusResume }}</p>-->
+
 <!--<md-card-actions class="md-hue-2" layout="row" layout-align="end center" ng-if="ctrl.hasActions(item)">
 <md-button class="md-secondary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
 <md-button class="md-secondary" aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
 <md-button class="md-secondary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
 </md-card-actions>-->
-<md-card-action layout="row" layout-align="end end">
-	<md-toolbar class="md-hue-3" style="width: 90px; min-height: 40px;">
-		<div class="md-toolbar-tools" style="height: 30px;">
-			<img style="width: 20px; height: 20px; margin-top: 10px;" ng-src="img/immagine.png">
-			<span flex></span>
-			<p style="font-size: 14px; margin-top: 25px; color: black;">I'm in</p>
-		</div>
-	</md-toolbar>
-</md-card-action>
+<div layout="row" style="margin-top: -32px;">
+	<p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
+		Last activity:
+		<span style="letter-spacing: .010em; color: rgba(0,0,0,0.54);">
+			12 minutes ago<!--dato da inserire-->
+		</span>
+	</p>
+	<span flex></span>
+	<div class="md-toolbar-tools" style="height: 40px; width: 90px;  background-color: #607D8B;">
+		<img style="width: 20px; height: 20px; margin-top: 10px; margin-bottom: 10px;" ng-src="img/immagine.png">
+		<span flex></span>
+		<p style="font-size: 14px; margin-top: 25px; color: white; margin-bottom: 25px;">I'm in</p>
+	</div>
+</div>
 </md-card>
