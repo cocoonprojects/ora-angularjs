@@ -6,21 +6,10 @@
 		<!--<h2>{{ organization.name }}</h2>-->
 		<h2> Liquido > {{ pillar.name }}</h2>
 		<span flex></span>
-		<md-menu>
-			<md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open menu">
-				<md-icon md-svg-icon="more"></md-icon>
-			</md-button>
-			<md-menu-content width=4>
-				<md-menu-item><md-button ui-sref="org.collaboration" aria-label="Items">Items</md-button></md-menu-item>
-				<md-menu-item><md-button ui-sref="org.organizationStatement" aria-label="Credits">Credits</md-button></md-menu-item>
-				<md-menu-item><md-button ui-sref="org.decisions" aria-label="Decisions">Decisions</md-button></md-menu-item>
-				<md-menu-item><md-button ui-sref="org.people" aria-label="People">People</md-button></md-menu-item>
-				<md-menu-item><md-button ui-sref="org.settings" aria-label="Settings">Settings</md-button></md-menu-item>
-			</md-menu-content>
-		</md-menu>
 		<md-button class="md-icon-button" aria-label="More">
 			<md-icon class="material-icons">&#xE8B8;</md-icon>
 		</md-button>
 	</div>
 </md-toolbar>
 <md-content ui-view></md-content>
+<navigation-bar/>

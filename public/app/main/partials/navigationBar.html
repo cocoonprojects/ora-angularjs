@@ -1,20 +1,21 @@
 <div>
     <md-tabs
+        data-ng-if="selectedIndex >= 0"
         style="width: 100%;"
         md-dynamic-height
         class="md-primary"
-        md-selected="0"
+        md-selected="selectedIndex"
         md-stretch-tabs="always"
         md-align-tabs="bottom">
-        	<md-tab label="Items">
+        	<md-tab ui-sref="org.collaboration" label="Items">
         	</md-tab>
-        	<md-tab label="Credits">
+        	<md-tab ui-sref="org.organizationStatement" label="Credits">
         	</md-tab>
-        	<md-tab label="Flow">
+        	<md-tab ui-sref="flow" label="Flow">
         	</md-tab>
-        	<md-tab label="Decisions">
+        	<md-tab ui-sref="org.decisions" label="Decisions">
         	</md-tab>
-        	<md-tab label="People">
+        	<md-tab ui-sref="org.people" label="People">
         	</md-tab>
     </md-tabs>
 </div>
