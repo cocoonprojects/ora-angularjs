@@ -6,7 +6,7 @@ angular.module('app.accounting')
 				$scope.statement = data;
 				$scope.statement._embedded.transactions = transactionOrderedByDate($scope.statement._embedded.transactions);
 			};
-			console.log("organizationsController")
+			console.log("organizationsController");
 			var transactionOrderedByDate = function(transactions){
 				var toReturn;
 				var orderedTransaction = _.sortBy(transactions, function(transaction){
