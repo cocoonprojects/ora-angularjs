@@ -1,4 +1,4 @@
-var Identity = function($http, $log) {
+var Identity = function($http, $log, $q) {
 	var token, id, firstname, lastname, email, avatar, memberships;
 
 	this.getToken        = function() { return token; };
@@ -39,7 +39,7 @@ var Identity = function($http, $log) {
 	};
 
 	this.updateMemberships = function() {
-		$http({method: 'GET', url: 'api/memberships', headers: {'GOOGLE-JWT': token}}).success(function(data) {
+		return $http({method: 'GET', url: 'api/memberships', headers: {'GOOGLE-JWT': token}}).success(function(data) {
 			id        = data.id;
 			firstname = data.firstname;
 			lastname  = data.lastname;
@@ -49,6 +49,18 @@ var Identity = function($http, $log) {
 			$log.info('User ' + firstname + ' is member of ' + memberships.length + " organizations");
 		});
 	};
+
+	this.loadMemberships = function(){
+		if(memberships){
+			var deferred = $q.defer();
+			deferred.resolve(memberships);
+			return deferred.promise;
+		}else{
+			return this.updateMemberships().then(function(){
+				return memberships;
+			});
+		}
+	};
 };
 angular.module('app.identity')
-	.service('identity', ['$http', '$log', Identity]);
+	.service('identity', ['$http', '$log', '$q', Identity]);

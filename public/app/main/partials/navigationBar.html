@@ -7,15 +7,15 @@
         md-selected="selectedIndex"
         md-stretch-tabs="always"
         md-align-tabs="bottom">
-        	<md-tab ui-sref="org.collaboration" label="Items">
+        	<md-tab ui-sref="org.collaboration({ orgId: organizationId })" label="Items">
         	</md-tab>
-        	<md-tab ui-sref="org.organizationStatement" label="Credits">
+        	<md-tab ui-sref="org.organizationStatement({ orgId: organizationId })" label="Credits">
         	</md-tab>
         	<md-tab ui-sref="flow" label="Flow">
         	</md-tab>
-        	<md-tab ui-sref="org.decisions" label="Decisions">
+        	<md-tab ui-sref="org.decisions({ orgId: organizationId })" label="Decisions">
         	</md-tab>
-        	<md-tab ui-sref="org.people" label="People">
+        	<md-tab ui-sref="org.people({ orgId: organizationId })" label="People">
         	</md-tab>
     </md-tabs>
 </div>
