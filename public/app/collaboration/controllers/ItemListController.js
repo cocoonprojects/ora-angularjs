@@ -48,7 +48,7 @@ angular.module('app.collaboration')
 
 			this.checkImIn = function(item){
 				return itemService.isIn(item,$scope.identity.getId());
-			}
+			};
 
 			this.loadItems = function() {
 				$scope.filters.limit = 10;
