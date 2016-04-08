@@ -15,7 +15,15 @@ angular.module('app.collaboration')
 			$log,
 			streamService,
 			itemService) {
-				
+
+			var onLoadItem = function(data){
+				$scope.owner = itemService.getOwner(data);
+				$scope.item = data;
+				$scope.members = _.filter(data.members,function(member){
+					return member.id !== $scope.owner.id;
+				});
+			};
+
 			$scope.streams = null;
 			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
 			this.onLoadingError = function(error) {
@@ -28,7 +36,7 @@ angular.module('app.collaboration')
 			};
 			$scope.item = null;
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
-			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, function(data) { $scope.item = data; }, this.onLoadingError, 10000);
+			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, onLoadItem, this.onLoadingError, 10000);
 			$scope.$on('$destroy', itemService.stopGetPolling);
 			this.stream = function(item) {
 				if($scope.streams && item && item.stream) {

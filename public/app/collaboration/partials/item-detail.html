@@ -15,8 +15,8 @@
 			</p>
 			<div layout="row" style="margin-top: -28px;">
 				<p style="font-size: 14px;">owner:</p>
-				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="img/immagine.png"> <!-- qua ci vuole l'immagine dell'owner-->
-				<p  style=" font-size: 14px; color: gray; margin-left: 2px;"><u> nome cognome</u><!-- l'owner--><!--ui-sref con account vero--> (member) <!--ruolo dell'owner--></p>
+				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="{{ owner.picture || 'img/account.jpg' }}"> <!-- qua ci vuole l'immagine dell'owner-->
+				<p ui-sref="org.profile({ memberId: owner.id })" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--><!--ui-sref con account vero--> (owner) <!--ruolo dell'owner--></p>
 			</div>
 		<p style="font-size: 14px; margin-top: -8px;">
 			status:
@@ -63,15 +63,17 @@
 	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
-<md-card-header>
+<md-card-header data-ng-if="members.length">
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Partecipant List</span>
-		<div style="margin-top: -10px; margin-bottom: -10px;"
-		layout="row" ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'"
-		data-ng-repeat="member in item.members"
-		ng-init="m = user(member)"> <!--div da fare ng-repeat e mettere i partecipanti-->
-		<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
-		<p ui-sref="org.profile({ memberId: owner.id })" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
+		<div
+			style="margin-top: -10px; margin-bottom: -10px;"
+			layout="row"
+			ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'"
+			data-ng-repeat="member in members"
+			ng-init="m = user(member)">
+				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
+				<p ui-sref="org.profile({ memberId: member.id })" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
 	</div>
 </md-card-header-text>
 </md-card-header>
