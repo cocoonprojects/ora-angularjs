@@ -14,9 +14,14 @@ angular.module('app', [
 ])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
-			$urlRouterProvider.otherwise(function($injector, $location) {
+			$urlRouterProvider.otherwise(function($injector) {
 				var $state = $injector.get("$state");
-				$state.go("flow");
+				var SelectedOrganizationId = $injector.get("SelectedOrganizationId");
+				if(SelectedOrganizationId.get()){
+					$state.go("flow");
+				}else{
+					$state.go("organizations");
+				}
 			});
 			$stateProvider
 				.state('org', {
