@@ -246,7 +246,7 @@ ItemService.prototype = {
 	isIn: function(item, userId) {
 		return item &&
 				item.members &&
-				item.members.hasOwnProperty(userId)
+				item.members.hasOwnProperty(userId);
 	},
 	hasJoined: function(item, userId) {
 		return item &&
