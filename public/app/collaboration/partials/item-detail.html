@@ -51,7 +51,7 @@
 	<md-button class="md-raised md-primary" aria-label="Accept item" ng-if="ctrl.isAllowed('acceptItem', item)" ng-click="ctrl.acceptItem(item)">Mark as Accepted</md-button>
 	<md-button class="md-raised md-primary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
 	<md-button class="md-raised md-primary" aria-label="Close item" ng-if="ctrl.isAllowed('closeItem', item)" ng-click="ctrl.closeItem(item)">Mark as Closed</md-button>
-	<md-button class="md-raised md-primary" aria-label="Close item" ng-if="ctrl.isAllowed('unjoinItem', item)" ng-click="ctrl.reCompleteItem(item)">Unjoin</md-button>
+	<md-button class="md-raised md-primary" aria-label="Close item" ng-if="ctrl.isAllowed('unjoinItem', item)" ng-click="ctrl.unjoinItem(item)">Unjoin</md-button>
 </md-card-action>
 <md-divider></md-divider>
 <md-card-header>
