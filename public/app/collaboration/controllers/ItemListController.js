@@ -46,6 +46,10 @@ angular.module('app.collaboration')
 				return $scope.user(member);
 			};
 
+			this.checkImIn = function(item){
+				return itemService.isIn(item,$scope.identity.getId());
+			}
+
 			this.loadItems = function() {
 				$scope.filters.limit = 10;
 				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
