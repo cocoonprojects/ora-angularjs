@@ -26,11 +26,19 @@ angular.module('app', [
 					resolve: {
 						members: function($stateParams, memberService) {
 							return memberService.query({ orgId: $stateParams.orgId });
-						}
+						},
+						streams:['streamService','$stateParams','$q',function(streamService,$stateParams,$q){
+							var deferred = $q.defer();
+							streamService.query($stateParams.orgId,function(data){
+								deferred.resolve(_.values(data._embedded['ora:stream']));
+							});
+							return deferred.promise;
+						}]
 					},
-					controller: function($scope, $log, $stateParams, members) {
+					controller: function($scope, $log, $stateParams, members,streams) {
 						$scope.organization = $scope.identity.getMembership($stateParams.orgId);
 						$scope.members = members;
+						$scope.stream = streams[0];
 						$scope.user = function(member) {
 							if($scope.members && member) {
 								return $scope.members._embedded['ora:member'][member.id];
