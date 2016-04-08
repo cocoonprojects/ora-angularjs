@@ -243,6 +243,11 @@ ItemService.prototype = {
 				item.members.hasOwnProperty(userId) &&
 				item.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
 	},
+	isIn: function(item, userId) {
+		return item &&
+				item.members &&
+				item.members.hasOwnProperty(userId)
+	},
 	hasJoined: function(item, userId) {
 		return item &&
 				item.members &&
