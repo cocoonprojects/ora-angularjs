@@ -8,6 +8,7 @@ angular.module('app.collaboration')
 		'$mdToast',
 		'streamService',
 		'itemService',
+		'$state',
 		function (
 			$scope,
 			$log,
@@ -16,7 +17,8 @@ angular.module('app.collaboration')
 			$mdDialog,
 			$mdToast,
 			streamService,
-			itemService) {
+			itemService,
+			$state) {
 
 			$scope.streams = null;
 			$scope.filters = {
@@ -85,6 +87,7 @@ angular.module('app.collaboration')
 					}
 				}).then(this.addStream);
 			};
+
 			this.openNewItem = function(ev) {
 				$mdDialog.show({
 					controller: NewItemController,
@@ -97,8 +100,26 @@ angular.module('app.collaboration')
 						orgId: $stateParams.orgId,
 						streams: $scope.streams
 					}
-				}).then(this.addItem);
+				}).then(this.onItemAdded);
 			};
+
+			this.onItemAdded = function(newItem){
+				$mdDialog.show({
+					controller: "OnItemAddedDialogController",
+					templateUrl: "app/collaboration/partials/on-item-added-dialog.html",
+					clickOutsideToClose: true,
+					fullscreen: true,
+					locals: {
+						item: newItem
+					}
+				}).then(function(){
+					$state.go('org.item',{
+						orgId: newItem.organization.id,
+						itemId: newItem.id
+					});
+				});
+			};
+
 			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
 					controller: EstimateItemController,
@@ -128,6 +149,7 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
+
 			this.addStream = function(stream) {
 				$scope.streams._embedded['ora:stream'][stream.id] = stream;
 				$mdToast.show(
@@ -137,9 +159,11 @@ angular.module('app.collaboration')
 						.hideDelay(3000)
 				);
 			};
+
 			this.addItem = function(item) {
 				$scope.items._embedded['ora:task'].unshift(item);
 			};
+
 			this.updateItem = function(item) {
 				var items = $scope.items._embedded['ora:task'];
 				for(var i = 0; i < items.length; i++) {

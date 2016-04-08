@@ -1,40 +1,6 @@
-<md-fab-speed-dial md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed" ng-if="ctrl.isNewEntitiesAllowed(organization)">
-	<md-fab-trigger>
-		<md-button aria-label="Item Menu" class="md-fab md-warn">
-			<md-icon md-svg-icon="add"></md-icon>
-		</md-button>
-	</md-fab-trigger>
-	<md-fab-actions>
-		<md-button aria-label="New item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<md-icon md-svg-icon="addItem" title="New Task" style="color: black"></md-icon>
-		</md-button>
-		<md-button aria-label="New stream" class="md-fab md-raised md-mini" ng-click="ctrl.openNewStream($event)" ng-if="ctrl.isAllowed('createStream', organization)">
-			<md-icon md-svg-icon="addStream" title="New Stream" style="color: black"></md-icon>
-		</md-button>
-	</md-fab-actions>
-</md-fab-speed-dial>
-<!--<md-card>
-<md-card-content>
-<form name="form" ng-submit="ctrl.loadItems()" novalidate>
-<div layout="row" layout-sm="column">
-<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
-<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
-<md-input-container flex>
-<label>Member</label>
-<input type="email" ng-model="filters.memberEmail">
-</md-input-container>
-<md-input-container>
-<label>Status</label>
-<md-select ng-model="filters.status">
-<md-option value=""></md-option>
-<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">{{ status | itemStatusLabel }}</md-option>
-</md-select>
-</md-input-container>
-<md-button type="submit" class="md-raised">prova</md-button>
-</div>
-</form>
-</md-card-content>
-</md-card>-->
+<md-button data-ng-click="ctrl.openNewItem($event)" aria-label="Item Menu" class="md-fab md-warn md-fab-bottom-right">
+	<md-icon md-svg-icon="add"></md-icon>
+</md-button>
 <md-subheader class="md-no-sticky">Filter items by:</md-subheader>
 <md-toolbar style="margin-top: -16px;" class="height-toolbar transparent">
 	<div class="md-toolbar-tools height">
