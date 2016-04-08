@@ -1,6 +1,21 @@
 angular.module('app.collaboration')
-	.controller('ItemDetailController', ['$scope', '$state', '$stateParams', '$mdDialog', '$log', 'streamService', 'itemService',
-		function ($scope, $state, $stateParams, $mdDialog, $log, streamService, itemService) {
+	.controller('ItemDetailController', [
+		'$scope',
+		'$state',
+		'$stateParams',
+		'$mdDialog',
+		'$log',
+		'streamService',
+		'itemService',
+		function (
+			$scope,
+			$state,
+			$stateParams,
+			$mdDialog,
+			$log,
+			streamService,
+			itemService) {
+				
 			$scope.streams = null;
 			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
 			this.onLoadingError = function(error) {
