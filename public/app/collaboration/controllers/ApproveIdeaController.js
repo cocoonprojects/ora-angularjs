@@ -4,7 +4,7 @@ function ApproveIdeaController(
 	$log,
 	item,
 	callbacks) {
-	//$scope.value = prevEstimation > 0 || prevEstimation === 0 ? prevEstimation : undefined;
+
 	this.cancel = function() {
 		$mdDialog.cancel();
 	};
