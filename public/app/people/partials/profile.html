@@ -38,11 +38,11 @@
 	</p>
 </div>
 <md-tabs
-style="width: 100%;"
-class="md-primary"
-md-dynamic-height
-md-selected="currentTab"
-md-stretch-tabs="always">
+ style="width: 100%;"
+ class="md-primary"
+ md-dynamic-height
+ md-selected="currentTab"
+ md-stretch-tabs="always">
 <md-tab label="Skills">
 	<div layout="column" style="margin-top: 32px;">
 		<div layout="row"  style="margin-top: -32px;">
@@ -180,95 +180,80 @@ md-stretch-tabs="always">
 <md-divider></md-divider>
 </md-tab>
 </md-tabs>
-	<md-subheader style="color: black; font-weight: normal; font-size: 12px;">Stefano is in organ. <br> Member since 19/02/2014 <br> First activity was 15/03/2014</md-subheader><!--quale dato è da inserire?-->
-
-<!--<md-list>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ credits.total | number }}</h3>
-<p>Generated Credits</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ credits.balance | number }}</h3>
-<p>Available Credits</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ credits.last3M | number }}</h3>
-<p>Last 3 months</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ credits.last6M | number }}</h3>
-<p>Last 6 months</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ credits.last1Y | number }}</h3>
-<p>Last year</p>
-</div>
-</md-list-item>
-</md-list>
-<h3 class="md-padding">Task contribution</h3>
-<form novalidate ng-submit="initTasks()">
-<div layout layout-sm="column">
-<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
-<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
-<md-button type="submit" class="md-raised">Search</md-button>
-</div>
-</form>
-<md-divider></md-divider>
-<md-list>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ stats.membershipsCount | number : 0 }}</h3>
-<p>Task Memberships</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ stats.ownershipsCount | number:0 }}</h3>
-<p>Owned Tasks</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ stats.creditsCount | number:2 }}</h3>
-<p>Earned Credits</p>
-</div>
-</md-list-item>
-<md-list-item class="md-2-line">
-<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-<div class="md-list-item-text">
-<h3>{{ stats.averageDelta | percentage:2:true }}</h3>
-<p>Auto-assessment gap</p>
-</div>
-</md-list-item>
-</md-list>
-<md-list>
-<md-list-item data-ng-repeat="task in tasks._embedded['ora:task']" ng-init="show = isAllowed('showShares', task)" ng-class="{'md-3-line': show, 'md-2-line': !show}">
-<div class="md-list-item-text" ui-sref="org.item({ orgId: task.organization.id, taskId: task.id })">
-<h3>
-{{ task.subject }}
-<md-icon md-svg-icon="star" ng-if="isOwner(task)" title="owner" style="width: 16px"></md-icon>
-</h3>
-<h4 ng-if="show">Earned Credits: {{ getCredits(task) | number }}<span ng-if="getShare(task)">, Team evaluated contribution: {{ getShare(task) | percentage:2 }}</span><span ng-if="getDelta(task)"> (Auto-assessment: {{ getDelta(task) | percentage:2:true }})</span></h4>
-<p>{{ task.status | itemStatusLabel }}</p>
-</div>
-</md-list-item>
-</md-list>
-<div class="md-padding">{{ tasks.count }} of {{ tasks.total }} <md-button ng-if="tasks.count < tasks.total" ng-click="loadMore()">More</md-button></div>
--->
+	<md-subheader style="color: black; font-weight: normal; font-size: 12px; z-index: 0;">Stefano is in organ. <br> Member since 19/02/2014 <br> First activity was 15/03/2014</md-subheader><!--quale dato è da inserire?-->
+	<md-card>
+		<md-card-header>
+			<md-card-header-text>
+				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAIBLE CREDIT
+					<span class="md-title" style="margin-left: 10px;"> 1050 <!-- dato da inserire-->
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
+ 					<span class="md-title" style="margin-left: 10px;"> 15.350 <!-- dato da inserire-->
+ 				 </span>
+			</md-card-header-text>
+		</md-card-header>
+				<md-card-content layout="row" style="margin-top: -12px; padding-left:5px; padding-right: 5px;">
+					<div flex="33" layout="column">
+						<center>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 3 MONTHS</span>
+							<span class="md-title">2.551 <!--dato da inserire --></span>
+						</center>
+					</div>
+					<div flex="33" layout="column">
+						<center>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 6 MONTHS</span>
+							<span class="md-title">3.750 <!--dato da inserire --></span>
+						</center>
+					</div>
+					<div flex="33" layout="column">
+						<center>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 12 MONTHS</span>
+							<span class="md-title">8.560 <!--dato da inserire --></span>
+						</center>
+					</div>
+				</md-card-content>
+	</md-card>
+	<md-card>
+		<md-card-header>
+			<md-card-header-text>
+					<span class="md-subheader" style="color: black; font-weight: 200;"> ITEM CONTRIBUTION </span>
+					<div layout="row" style="margin-top: -14px;">
+							<span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> FROM</span>
+							 <md-select style="z-index: 0;" ng-model="fromdate" placeholder="insert date">
+								 <md-option> 12/02/1016 </md-option>
+								 <md-option> 23/01/1016 </md-option>
+							 </md-select>
+							 <span flex></span>
+							 <span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> TO</span>
+ 							 <md-select ng-model="todate" style="z-index: 0;" placeholder="insert date">
+ 								 <md-option> 12/02/1016 </md-option>
+ 								 <md-option> 23/01/1016 </md-option>
+ 							 </md-select>
+					</div>
+					<div layout="row" style="margin-right: 10%; margin-top: -6px;" >
+						<span style="font-size: 14px; font-weight: 500;" flex><center>owned</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>item id</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>status</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>credit</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>distance</center></span>
+					</div>
+					<md-divider style="margin-right:16px; margin-top: 8px"></md-divider>
+					<div layout="row" style="margin-right: 10%; margin-top: 8px;" > <!--dati da inserire-->
+						<span style="font-weight: 300; font-size: 12px;" flex><center>&#x2713;</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>120</center></span>
+						<span  style="line-height: 12px; font-weight: 300; font-size: 12px;" flex><center>in progress</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>300</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>-5.00%</center></span>
+					</div>
+					<div layout="row" style="margin-right: 10%; margin-top: 8px;" > <!--dati da inserire-->
+						<span style="font-weight: 300; font-size: 12px;" flex><center>-</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>120</center></span>
+						<span  style="line-height: 12px; font-weight: 300; font-size: 12px;" flex><center>in progress</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>300</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>-5.00%</center></span>
+					</div>
+			</md-card-header-text>
+		</md-card-header>
+	</md-card>
+	<div style="height: 48px;">
+	</div>
