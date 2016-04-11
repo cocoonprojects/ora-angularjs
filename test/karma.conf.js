@@ -22,7 +22,6 @@ module.exports = function (config) {
 			'public/app/identity/module.js',
 			'public/app/organizations/module.js',
 			'public/app/people/module.js',
-			'public/app/decisions/module.js',
 			'public/app/main/module.js',
 			'public/app/**/*.js',
 			'test/unit/**/*.js'
