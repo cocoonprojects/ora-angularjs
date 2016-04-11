@@ -155,7 +155,7 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
-			
+
             this.openApproveIdea = function(ev, item) {
 				$mdDialog.show({
 					controller: ApproveIdeaController,
@@ -165,8 +165,12 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					fullscreen: true,
 					locals: {
-						item: item
-						//prevEstimation: item.members[$scope.identity.getId()].estimation
+						item: item,
+						callbacks:{
+							abstain:itemService.abstainIdeaItem,
+							accept:itemService.approveIdeaItem,
+							reject:itemService.rejectIdeaItem
+						}
 					}
 				}).then(this.updateItem);
 			};
