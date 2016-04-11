@@ -21,7 +21,7 @@ angular.module('app.collaboration')
 			$state) {
 
 			$scope.decisions = $state.$current.data.decisions;
-			
+
 			$scope.streams = null;
 			$scope.filters = {
 				limit: 10,
@@ -34,9 +34,11 @@ angular.module('app.collaboration')
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 			};
+			
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
+
 			this.isAllowed = function(command, resource) {
 				if(command == 'createStream') {
 					return streamService.isAllowed(command, resource);
