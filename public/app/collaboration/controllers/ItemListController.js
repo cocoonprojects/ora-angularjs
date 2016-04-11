@@ -20,6 +20,8 @@ angular.module('app.collaboration')
 			itemService,
 			$state) {
 
+			$scope.decisions = $state.$current.data.decisions;
+			
 			$scope.streams = null;
 			$scope.filters = {
 				limit: 10,
@@ -195,4 +197,5 @@ angular.module('app.collaboration')
 						break;
 				}
 			};
+
 		}]);

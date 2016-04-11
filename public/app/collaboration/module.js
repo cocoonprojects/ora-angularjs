@@ -6,7 +6,17 @@ angular.module('app.collaboration', ['ui.router'])
 					url: '/items',
 					templateUrl: 'app/collaboration/partials/item-list.html',
 					data: {
-						pillarName: 'Items'
+						pillarName: 'Items',
+						decisions: false
+					},
+					controller: 'ItemListController as ctrl'
+				})
+				.state('org.decisions', {
+					url: '/decisions',
+					templateUrl: 'app/collaboration/partials/item-list.html',
+					data: {
+						pillarName: 'Decisions',
+						decisions: true
 					},
 					controller: 'ItemListController as ctrl'
 				})
