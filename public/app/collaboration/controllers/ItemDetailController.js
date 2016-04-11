@@ -155,7 +155,8 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
-                        this.openApproveIdea = function(ev, item) {
+			
+            this.openApproveIdea = function(ev, item) {
 				$mdDialog.show({
 					controller: ApproveIdeaController,
 					controllerAs: 'dialogCtrl',
