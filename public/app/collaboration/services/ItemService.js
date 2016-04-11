@@ -121,52 +121,67 @@ var ItemService = function($resource, $interval, identity) {
 					isQueryPolling = false;
 					error(response);
 				});
-	};
+	}
+	;
 	this.delete = function(item, success, error) {
 		return resource.delete({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
+
 	this.edit = function(item, success, error) {
 		return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: item.subject, description: item.description }, success, error);
 	};
+
 	this.joinItem = function(item, success, error) {
 		return resource.joinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
+
 	this.unjoinItem = function(item, success, error) {
 		return resource.unjoinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
+
 	this.estimateItem = function(item, value, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
 	};
-        this.approveIdeaItem = function(item,description, success, error) {
+
+    this.approveIdeaItem = function(item,description, success, error) {
 		return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 ,description:description}, success, error);
 	};
-        this.abstainIdeaItem = function (item,description,success,error){
-            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
-        };
-         this.rejectIdeaItem = function (item,description,success,error){
-            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
-        };
+
+    this.abstainIdeaItem = function (item,description,success,error){
+        return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
+    };
+
+    this.rejectIdeaItem = function (item,description,success,error){
+        return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
+    };
+
 	this.skipItemEstimation = function(item, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
 	};
+
 	this.remindItemEstimate = function(item, success, error) {
 		return resource.remindItemEstimate({ orgId: item.organization.id, itemId: item.id }, { action: 'accept' }, success, error);
 	};
+
 	this.executeItem = function(item, success, error) {
 		return resource.executeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'execute' }, success, error);
 	};
+
 	this.completeItem = function(item, success, error) {
 		return resource.completeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'complete' }, success, error);
 	};
 	this.acceptItem = function(item, success, error) {
 		return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
 	};
+
 	this.assignShares = function(item, shares, success, error) {
 		return resource.assignShares({ orgId: item.organization.id, itemId: item.id }, shares, success, error);
 	};
+
 	this.skipShares = function(item, success, error) {
 		return resource.skipShares({ orgId: item.organization.id, itemId: item.id }, {}, success, error);
 	};
+
 	this.userStats = function(organizationId, filters) {
 		return r2.get(angular.extend({ orgId: organizationId }, filters));
 	};
