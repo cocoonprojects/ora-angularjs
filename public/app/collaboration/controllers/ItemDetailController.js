@@ -174,12 +174,15 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
+
 			this.remindItemEstimate = function(item) {
 				itemService.remindItemEstimate(item, $log.info, $log.warn);
 			};
+
 			this.updateItem = function(item) {
 				$scope.item = item;
 			};
+
 			this.closeItem = function(item) {
 				itemService.closeItem(item, this.updateItem, $log.warn);
 			};
