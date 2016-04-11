@@ -1,6 +1,16 @@
-function NewItemController($scope, $log, $mdDialog, itemService, orgId, streams) {
+function NewItemController(
+	$scope,
+	$log,
+	$mdDialog,
+	itemService,
+	orgId,
+	streams,
+	decisionMode) {
 	$scope.streams = streams;
-	$scope.task = {};
+	
+	$scope.task = {
+		decision:decisionMode
+	};
 
 	this.cancel = function() {
 		$mdDialog.cancel();

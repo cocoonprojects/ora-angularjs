@@ -23,11 +23,12 @@ angular.module('app.collaboration')
 			$scope.decisions = $state.$current.data.decisions;
 
 			$scope.streams = null;
-
+			
 			$scope.filters = {
 				limit: 10,
 				offset: 0,
-				status: "All"
+				status: "All",
+				decisions: $scope.decisions
 			};
 
 			this.cancelAutoUpdate = function() {
@@ -112,7 +113,8 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					locals: {
 						orgId: $stateParams.orgId,
-						streams: $scope.streams
+						streams: $scope.streams,
+						decisionMode: $scope.decisions
 					}
 				}).then(this.onItemAdded);
 			};
