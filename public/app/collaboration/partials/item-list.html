@@ -6,34 +6,15 @@
 <md-toolbar style="margin-top: -16px;" class="height-toolbar transparent">
 	<div class="md-toolbar-tools height">
 		<span flex></span>
-		<md-select ng-model="filters.status">
-			<md-option value="All">All</md-option>
-			<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">{{ status | itemStatusLabel }}</md-option>
+		<md-select style="font-size: 13px; margin-top: 25px;" placeholder="Status(All)" ng-model="filters.status">
+			<md-option ng-value="All">All</md-option>
+			<md-option ng-repeat="status in ITEM_STATUS" ng-value="{{status}}">{{ status | itemStatusLabel }}</md-option>
 		</md-select>
 		<span flex></span>
-		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Lane</p>
-		<md-menu>
-			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-			</md-button>
-			<md-menu-content>
-				<md-menu-item>
-					<p>filtro da inserire</p>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
-		<span flex></span>
-		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">All Items</p>
-		<md-menu>
-			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-			</md-button>
-			<md-menu-content>
-				<md-menu-item>
-					<p>filtro da inserire</p>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
+		<md-select style="font-size: 13px; margin-top: 25px;" placeholder="All Item" ng-model="dainserire">
+			<md-option>All Item</md-option>
+			<md-option>My Item</md-option>
+	</md-select>
 	</div>
 </md-toolbar>
 <md-divider></md-divider>
