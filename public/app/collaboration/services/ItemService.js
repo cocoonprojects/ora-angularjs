@@ -204,11 +204,21 @@ var ItemService = function($resource, $interval, identity) {
 
 	var queryPolling = null;
 	this.startQueryPolling = function(organizationId, filters, success, error, millis) {
-		this.query(organizationId, filters, success, error);
+		var newFilters = _.extend({},filters);
+
+		var status = _.find(_.values(ItemService.prototype.ITEM_STATUS),function(s){
+			return s == newFilters.status;
+		});
+
+		if(!status){
+			newFilters.status = null;
+		}
+
+		this.query(organizationId, newFilters, success, error);
 		var that = this;
 		queryPolling = $interval(function() {
 			if (isQueryPolling) return;
-			that.query(organizationId, filters, success, error);
+			that.query(organizationId, newFilters, success, error);
 		}, millis);
 	};
 	this.stopQueryPolling = function() {

@@ -23,18 +23,26 @@ angular.module('app.collaboration')
 			$scope.decisions = $state.$current.data.decisions;
 
 			$scope.streams = null;
+
 			$scope.filters = {
 				limit: 10,
-				offset: 0
+				offset: 0,
+				status: "All"
 			};
-			$scope.items = [];
-			streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-			itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+
 			this.cancelAutoUpdate = function() {
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 			};
-			
+
+			$scope.$watch('filters',function(){
+				streamService.stopQueryPolling();
+				itemService.stopQueryPolling();
+				$scope.items = [];
+				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
+				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+			},true);
+
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
