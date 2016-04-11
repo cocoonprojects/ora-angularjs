@@ -10,7 +10,8 @@ angular.module('app', [
 	'app.people',
 	'app.flow',
 	'app.accounting',
-	'app.kanbanize'
+	'app.kanbanize',
+	'app.decisions'
 ])
 	.config(['$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
