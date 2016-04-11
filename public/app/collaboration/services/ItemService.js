@@ -155,6 +155,21 @@ var ItemService = function($resource, $interval, identity) {
         return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
     };
 
+	//TODO: cambiare quando avremo accesso al backend
+	this.approveCompletedItem = function(item,description, success, error) {
+		return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+	};
+
+	//TODO: cambiare quando avremo accesso al backend
+    this.abstainCompletedItem = function (item,description,success,error){
+        return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+    };
+
+	//TODO: cambiare quando avremo accesso al backend
+    this.rejectCompletedItem = function (item,description,success,error){
+        return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+    };
+
 	this.skipItemEstimation = function(item, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
 	};
@@ -170,6 +185,7 @@ var ItemService = function($resource, $interval, identity) {
 	this.completeItem = function(item, success, error) {
 		return resource.completeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'complete' }, success, error);
 	};
+
 	this.acceptItem = function(item, success, error) {
 		return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
 	};

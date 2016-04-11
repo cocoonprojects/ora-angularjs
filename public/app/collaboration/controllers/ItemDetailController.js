@@ -138,8 +138,24 @@ angular.module('app.collaboration')
 			this.reCompleteItem = function(item) {
 				itemService.completeItem(item, this.updateItem, $log.warn);
 			};
-			this.acceptItem = function(item) {
-				itemService.acceptItem(item, this.updateItem, $log.warn);
+			this.acceptItem = function(ev,item) {
+				$mdDialog.show({
+					controller: ApproveIdeaController,
+					controllerAs: 'dialogCtrl',
+					templateUrl: 'app/collaboration/partials/approve-item.html',
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					fullscreen: true,
+					locals: {
+						title: 'Accept Item',
+						item: item,
+						callbacks:{
+							abstain:itemService.abstainCompletedItem,
+							accept:itemService.approveCompletedItem,
+							reject:itemService.rejectCompletedItem
+						}
+					}
+				}).then(this.updateItem);
 			};
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
@@ -165,6 +181,7 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					fullscreen: true,
 					locals: {
+						title: 'Approve Idea',
 						item: item,
 						callbacks:{
 							abstain:itemService.abstainIdeaItem,

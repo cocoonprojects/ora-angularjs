@@ -3,7 +3,10 @@ function ApproveIdeaController(
 	$mdDialog,
 	$log,
 	item,
-	callbacks) {
+	callbacks,
+	title) {
+
+	$scope.title = title;
 
 	this.cancel = function() {
 		$mdDialog.cancel();
