@@ -28,7 +28,8 @@ angular.module('app.collaboration')
 				limit: 10,
 				offset: 0,
 				status: "All",
-				decisions: $scope.decisions
+				decisions: $scope.decisions,
+				onlyMine: false
 			};
 
 			this.cancelAutoUpdate = function() {
