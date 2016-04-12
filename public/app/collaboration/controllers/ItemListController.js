@@ -23,7 +23,7 @@ angular.module('app.collaboration')
 			$scope.decisions = $state.$current.data.decisions;
 
 			$scope.streams = null;
-			
+
 			$scope.filters = {
 				limit: 10,
 				offset: 0,
@@ -37,13 +37,13 @@ angular.module('app.collaboration')
 				itemService.stopQueryPolling();
 			};
 
-			$scope.$watch('filters',function(){
+			$scope.$watchGroup(['filters.status','filters.onlyMine'],function(){
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 				$scope.items = [];
 				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
 				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
-			},true);
+			});
 
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
