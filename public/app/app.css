@@ -54,5 +54,6 @@ md-sidenav .md-button {
   text-transform: none;
   width: 100%;
   font-size: 12px;
-  padding: 12px;
+  padding: 0px;
+  padding-top: 12px;
 }
