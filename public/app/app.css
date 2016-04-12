@@ -50,12 +50,6 @@ md-sidenav .md-button {
 .margin3 {
   margin-top: -15px !important;
 }
-.center {
-  position: center;
-}
-.transparent {
-  background-color: transparent !important;
-}
 .md-tab{
   text-transform: none;
   width: 100%;

@@ -31,32 +31,19 @@
 				</p>
 			</div>
 			<md-divider></md-divider>
-			<md-toolbar class="height-toolbar transparent">
-				<div class="md-toolbar-tools height">
-					<p style="margin-top: 25px; color: gray; font-size: 14px;">Filter Item by:</p>
+				<div layout="row" style="margin-bottom:-26px;">
+					<p style="color: gray; font-size: 14px; margin-left: 16px;">Filter Item by:</p>
 					<span flex></span>
-					<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Date</p>
-					<md-button style="margin-top: 20px; margin-left: -10px;" class="md-icon-button"  data-ng-click="ctrl.invertOrderData()">
-						<md-icon data-ng-if="orderDateRising" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
-						<md-icon data-ng-if="!orderDateRising"  style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-					</md-button>
-					<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Type(all)</p>
-					<md-menu>
-						<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-							<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-						</md-button>
-						<md-menu-content>
-							<md-menu-item>
-								<p>prova</p>
-							</md-menu-item>
-							<md-menu-divider></md-menu-divider>
-							<md-menu-item>
-								<p>prova1</p>
-							</md-menu-item>
-						</md-menu-content>
-					</md-menu>
-				</div>
-			</md-toolbar>
+					<md-select style="font-size: 14px; margin-top: 5px; margin-right: 16px;" placeholder="Date" ng-model="dainserire1">
+						<md-option>date da inserire</md-option>
+						<md-option>date da inserire</md-option>
+				</md-select>
+				<md-select style="font-size: 14px; margin-top: 5px; margin-right: 16px;" placeholder="Item(all)" ng-model="dainserire2">
+					<md-option>primo stato</md-option>
+					<md-option>secondo stato</md-option>
+					<md-option>terzo stato</md-option>
+			</md-select>
+		</div>
 			<md-content>
 				<md-list flex="100" infinite-scroll="ctrl.loadMore()"
 				infinite-scroll-distance="1"
@@ -117,42 +104,18 @@
 				</center>
 			</div>
 		</div>
-		<md-toolbar class="height-toolbar transparent">
-			<div class="md-toolbar-tools height">
-				<p style="margin-top: 25px; color: gray; font-size: 14px;">Filter Item by:</p>
-				<span flex></span>
-				<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Date</p>
-				<md-menu>
-					<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-						<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-					</md-button>
-					<md-menu-content>
-						<md-menu-item>
-							<p>prova</p>
-						</md-menu-item>
-						<md-menu-divider></md-menu-divider>
-						<md-menu-item>
-							<p>prova1</p>
-						</md-menu-item>
-					</md-menu-content>
-				</md-menu>
-				<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Type(all)</p>
-				<md-menu>
-					<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-						<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-					</md-button>
-					<md-menu-content>
-						<md-menu-item>
-							<p>prova</p>
-						</md-menu-item>
-						<md-menu-divider></md-menu-divider>
-						<md-menu-item>
-							<p>prova1</p>
-						</md-menu-item>
-					</md-menu-content>
-				</md-menu>
-			</div>
-		</md-toolbar>
+		<div layout="row">
+			<p style="color: gray; font-size: 14px; margin-left: 16px;">Filter Item by:</p>
+			<span flex></span>
+			<md-select style="font-size: 14px; margin-top: 5px; margin-right: 16px;" placeholder="Date" ng-model="dainserire3">
+				<md-option>date da inserire</md-option>
+				<md-option>date da inserire</md-option>
+		</md-select>
+		<md-select style="font-size: 14px; margin-top: 5px; margin-right: 16px;" placeholder="Item(all)" ng-model="dainserire4">
+			<md-option>primo stato</md-option>
+			<md-option>secondo stato</md-option>
+			<md-option>terzo stato</md-option>
+	</md-select>
 		<!--<md-content>
 			<md-list flex="100" infinite-scroll="ctrl.loadMore()"
 			infinite-scroll-distance="1"
