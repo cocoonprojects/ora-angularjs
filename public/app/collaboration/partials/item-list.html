@@ -11,9 +11,9 @@
 			<md-option ng-repeat="status in ITEM_STATUS" ng-value="{{status}}">{{ status | itemStatusLabel }}</md-option>
 		</md-select>
 		<span flex></span>
-		<md-select ng-model="filters.onlyMine" style="font-size: 13px; margin-top: 25px;" placeholder="All Item" ng-model="dainserire">
-			<md-option ng-value="false">All Items</md-option>
-			<md-option ng-value="true">My Items</md-option>
+		<md-select style="font-size: 13px; margin-top: 25px;" placeholder="All Item" ng-model="dainserire">
+			<md-option>All Items</md-option>
+			<md-option>My Items</md-option>
 	</md-select>
 	</div>
 </md-toolbar>
@@ -23,28 +23,16 @@
 		<span flex></span>
 		<span flex></span>
 		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Update Time</p>
-		<md-menu>
-			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			<md-button style="margin-left: -10px; margin-top: 21px;" class="md-icon-button" ng-click="ctrl.invertUpdateTime()">
+				<md-icon data-ng-if="!changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+				<md-icon data-ng-if="changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
 			</md-button>
-			<md-menu-content>
-				<md-menu-item>
-					<p>filtro da inserire</p>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
 		<span flex></span>
 		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Status change time</p>
-		<md-menu>
-			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-				<md-icon style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+			<md-button style="margin-left: -10px; margin-top: 21px;" class="md-icon-button" ng-click="ctrl.invertStatusTime()">
+				<md-icon data-ng-if="!changeStatusTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
+				<md-icon data-ng-if="changeStatusTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
 			</md-button>
-			<md-menu-content>
-				<md-menu-item>
-					<p>filtro da inserire</p>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
 	</div>
 </md-toolbar>
 <md-card ng-repeat="item in items._embedded['ora:task']"
