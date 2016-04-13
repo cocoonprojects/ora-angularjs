@@ -9,6 +9,7 @@ angular.module('app.people')
 				memberId: $stateParams.memberId,
 				limit: 10
 			};
+			$scope.moreDetail = false;
 			$scope.initTasks = function() {
 				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.tasks = data; }, function(response) { $log.warn(response); });
 				$scope.stats   = itemService.userStats($stateParams.orgId, $scope.filters);
@@ -32,4 +33,8 @@ angular.module('app.people')
 			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 
 			$scope.initTasks();
+
+			$scope.showMore = function() {
+				$scope.moreDetail = !$scope.moreDetail;
+			};
 		}]);

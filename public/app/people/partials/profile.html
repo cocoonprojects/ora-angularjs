@@ -107,7 +107,72 @@
 		</div>
 	</div>
 	<div style="margin-top: -27px; margin-left: -8px;">
-	<md-button md-no-ink><span style="color: gray">Show all</span></md-button>
+	<md-button  ng-click="showMore()" md-no-ink>
+		<span data-ng-if="!moreDetail" style="color: gray" >Show all</span>
+		<span data-ng-if="moreDetail" style="color: gray" >Show Less</span>
+	</md-button>
+</div>
+	<div data-ng-if="moreDetail" layout="column" style="margin-top: 5px;">
+		<div layout="row"  style="margin-top: -32px;">
+			<div layout="row"  class="md-padding" flex="33">
+				<p style="font-size: 14px;">Photoshop</p>
+			</div>
+			<div layout="row" flex="40" style="margin-top: 10px;">
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+			</div>
+		</div>
+		<div layout="row"  style="margin-top: -32px;">
+			<div layout="row" class="md-padding" flex="33">
+				<p style="font-size: 14px;">Illustrator</p>
+			</div>
+			<div layout="row" flex="40" style="margin-top: 10px;">
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+			</div>
+		</div>
+		<div layout="row" style="margin-top: -32px;">
+			<div layout="row"  class="md-padding" flex="33">
+				<p style="font-size: 14px;">Sketchking</p>
+			</div>
+			<div layout="row" flex="40" style="margin-top: 10px;">
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+			</div>
+		</div>
+		<div layout="row" style="margin-top: -32px;">
+			<div  class="md-padding" layout="row" flex="33">
+				<p style="font-size: 14px;">Wireframe</p>
+			</div>
+			<div layout="row" flex="40" style="margin-top: 10px;">
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+			</div>
+		</div>
+		<div layout="row" style="margin-top: -32px;">
+			<div class="md-padding" layout="row" flex="33">
+				<p style="font-size: 14px;">Drawing</p>
+			</div>
+			<div layout="row" flex="40" style="margin-top: 10px;">
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+				<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+			</div>
+		</div>
 </div>
 <md-divider></md-divider>
 </md-tab>
