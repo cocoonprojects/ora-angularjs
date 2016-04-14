@@ -27,7 +27,7 @@
 					</md-select>
 				</md-input-container>
 				<md-input-container data-ng-if="template >= 0">
-					{{templates[template].value}}
+					<span data-template data-template-value="templates[template].value | noHTML | newline"></span>
 				</md-input-container>
 				<md-input-container data-ng-if="false">
 					<label>Description</label>
