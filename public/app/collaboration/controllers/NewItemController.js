@@ -3,11 +3,16 @@ function NewItemController(
 	$log,
 	$mdDialog,
 	itemService,
+	templateService,
 	orgId,
 	streams,
 	decisionMode) {
 	$scope.streams = streams;
-	
+
+	templateService.list().then(function(templates){
+		$scope.templates = templates;
+	});
+
 	$scope.task = {
 		decision:decisionMode
 	};
