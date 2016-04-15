@@ -62,9 +62,14 @@ module.exports = function(grunt) {
 			]
 		},
 		jshint: {
-			app: [
-				'public/app/**/*.js'
-			]
+			app: {
+				options: {
+					funcscope:true
+				},
+				files:{
+					src:['public/app/**/*.js']
+				}
+			}
 		},
 		processhtml: {
 			dist: {
@@ -90,15 +95,15 @@ module.exports = function(grunt) {
 			},
 		},
 		shell: {
-	        testSingle: {
-	            command: 'npm run test-single-run'
-	        }
-	    },
+			testSingle: {
+				command: 'npm run test-single-run'
+			}
+		},
 		watch: {
-		  scripts: {
-		    tasks: ['jshint','shell:testSingle'],
-		    files: ['public/**/*.js'],
-		  }
+			scripts: {
+				tasks: ['jshint','shell:testSingle'],
+				files: ['public/**/*.js'],
+			}
 		}
 	});
 	grunt.loadNpmTasks('grunt-contrib-concat');
