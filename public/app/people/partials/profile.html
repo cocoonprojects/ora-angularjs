@@ -250,10 +250,10 @@
 		<md-card-header>
 			<md-card-header-text>
 				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAIBLE CREDIT
-					<span class="md-title" style="margin-left: 10px;"> 1050 <!-- dato da inserire-->
+					<span class="md-title" style="margin-left: 10px;"> {{credits.balance}}
 				 </span>
 				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
- 					<span class="md-title" style="margin-left: 10px;"> 15.350 <!-- dato da inserire-->
+ 					<span class="md-title" style="margin-left: 10px;"> {{credits.total}}
  				 </span>
 			</md-card-header-text>
 		</md-card-header>
@@ -261,19 +261,19 @@
 					<div flex="33" layout="column">
 						<center>
 							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 3 MONTHS</span>
-							<span class="md-title">2.551 <!--dato da inserire --></span>
+							<span class="md-title">{{credits.last3M}}</span>
 						</center>
 					</div>
 					<div flex="33" layout="column">
 						<center>
 							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 6 MONTHS</span>
-							<span class="md-title">3.750 <!--dato da inserire --></span>
+							<span class="md-title">{{credits.last6M}}</span>
 						</center>
 					</div>
 					<div flex="33" layout="column">
 						<center>
 							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 12 MONTHS</span>
-							<span class="md-title">8.560 <!--dato da inserire --></span>
+							<span class="md-title">{{credits.last1Y}}</span>
 						</center>
 					</div>
 				</md-card-content>
