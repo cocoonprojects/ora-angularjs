@@ -7,6 +7,7 @@ angular.module('app.people')
 		'itemService',
 		'accountService',
 		'identity',
+		'$mdDialog',
 		function(
 			$scope,
 			$log,
@@ -14,7 +15,8 @@ angular.module('app.people')
 			memberService,
 			itemService,
 			accountService,
-			identity) {
+			identity,
+			$mdDialog) {
 
 			$scope.myProfile = identity.getId() === $stateParams.memberId;
 			$scope.shouldShowAskForMembership = false;
@@ -35,6 +37,20 @@ angular.module('app.people')
 					});
 				}
 			});
+
+			$scope.proposeMembership = function(ev) {
+				if($scope.myProfile)
+				var message = $scope.myProfile ? "Are you sure you want to become a member?" : "Are you sure you want to propose " + $scope.profile.firstname + " as a Member?";
+			    var confirm = $mdDialog.confirm()
+			          .title('Confirm')
+			          .textContent(message)
+			          .targetEvent(ev)
+					  .ok('Ok')
+          			  .cancel('Cancel');
+			    $mdDialog.show(confirm).then(function() {
+			     	alert('To Be implemented');
+			    });
+			};
 
 			$scope.tasks   = null;
 			$scope.stats   = null;

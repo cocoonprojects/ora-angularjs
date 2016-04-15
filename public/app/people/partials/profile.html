@@ -24,8 +24,8 @@
 			<p style="font-size: 14px; color: gray; margin-left: 2px;">Città Natale</p>
 		</div>
 		<div layout="row" style="margin-top: -34px;">
-			<md-button data-ng-if="shouldShowAskForMembership">Ask for membership</md-button>
-			<md-button data-ng-if="shouldShowProposeMembership">Propose for membership</md-button>
+			<md-button data-ng-if="shouldShowAskForMembership" data-ng-click="proposeMembership($event)">Ask for membership</md-button>
+			<md-button data-ng-if="shouldShowProposeMembership" data-ng-click="proposeMembership($event)">Propose for membership</md-button>
 		</div>
 	</div>
 </div>
