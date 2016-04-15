@@ -67,7 +67,7 @@ var Identity = function($http, $log, $q) {
 		return this.loadMemberships().then(function(){
 			return that.getMembership(orgId);
 		});
-	}
+	};
 };
 angular.module('app.identity')
 	.service('identity', ['$http', '$log', '$q', Identity]);
