@@ -1,8 +1,41 @@
 angular.module('app.people')
-	.controller('ProfileController', ['$scope', '$log', '$stateParams', 'memberService', 'itemService', 'accountService',
-		function($scope, $log, $stateParams, memberService, itemService, accountService) {
-			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
-			$scope.credits = accountService.userStats({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
+	.controller('ProfileController', [
+		'$scope',
+		'$log',
+		'$stateParams',
+		'memberService',
+		'itemService',
+		'accountService',
+		'identity',
+		function(
+			$scope,
+			$log,
+			$stateParams,
+			memberService,
+			itemService,
+			accountService,
+			identity) {
+
+			$scope.myProfile = identity.getId() === $stateParams.memberId;
+			$scope.shouldShowAskForMembership = false;
+			$scope.shouldShowProposeMembership = false;
+
+			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId },function(){
+				console.log($scope.profile);
+			});
+
+			$scope.credits = accountService.userStats({ orgId: $stateParams.orgId, memberId: $stateParams.memberId },function(){
+				if($scope.myProfile){
+					memberService.canIRequestMembership($stateParams.orgId,$scope.credits.balance).then(function(show){
+						$scope.shouldShowAskForMembership = show;
+					});
+				}else{
+					memberService.canProposeMembership($stateParams.orgId,$scope.profile.role,$scope.credits.balance).then(function(show){
+						$scope.shouldShowProposeMembership = show;
+					});
+				}
+			});
+
 			$scope.tasks   = null;
 			$scope.stats   = null;
 			$scope.filters = {

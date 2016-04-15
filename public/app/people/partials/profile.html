@@ -23,6 +23,10 @@
 			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
 			<p style="font-size: 14px; color: gray; margin-left: 2px;">Città Natale</p>
 		</div>
+		<div layout="row" style="margin-top: -34px;">
+			<md-button data-ng-if="shouldShowAskForMembership">Ask for membership</md-button>
+			<md-button data-ng-if="shouldShowProposeMembership">Propose for membership</md-button>
+		</div>
 	</div>
 </div>
 <div layout="row" style="padding-left: 8px; margin-top: -16px;">
