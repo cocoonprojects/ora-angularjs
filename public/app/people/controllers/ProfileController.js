@@ -39,7 +39,6 @@ angular.module('app.people')
 			});
 
 			$scope.proposeMembership = function(ev) {
-				if($scope.myProfile)
 				var message = $scope.myProfile ? "Are you sure you want to become a member?" : "Are you sure you want to propose " + $scope.profile.firstname + " as a Member?";
 			    var confirm = $mdDialog.confirm()
 			          .title('Confirm')
