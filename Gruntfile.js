@@ -104,7 +104,12 @@ module.exports = function(grunt) {
 				tasks: ['jshint','shell:testSingle'],
 				files: ['public/**/*.js'],
 			}
-		}
+		},
+		shell: {
+	        deploy_staging: {
+	            command: 'rsync ./build/* cocoon@10.250.2.44:/var/www/vhosts/cocoon/public --rsh ssh'
+	        }
+	    }
 	});
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -116,4 +121,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('build', ['jshint', 'clean:build', 'ngtemplates', 'concat', 'uglify', 'cssmin', 'processhtml', 'copy', 'clean:tmp']);
+	grunt.registerTask('deploy', ['build', 'shell:deploy_staging']);
 };
