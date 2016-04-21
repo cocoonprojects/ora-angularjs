@@ -90,8 +90,11 @@ module.exports = function(grunt) {
 		},
 		copy: {
 			main: {
-				src: 'public/icon-set.svg',
-				dest: 'build/icon-set.svg'
+				files: [
+					{src: 'public/icon-set.svg',dest: 'build/icon-set.svg'},
+					{expand: true, cwd: 'public/img/', src: ['**'], dest: 'build/img/'}
+				]
+
 			},
 		},
 		shell: {
@@ -107,7 +110,7 @@ module.exports = function(grunt) {
 		},
 		shell: {
 	        deploy_staging: {
-	            command: 'rsync ./build/* cocoon@10.250.2.44:/var/www/vhosts/cocoon/public --rsh ssh'
+	            command: 'rsync ./build/* cocoon@10.250.2.44:/var/www/vhosts/cocoon/public --rsh ssh -r --verbose'
 	        }
 	    }
 	});
