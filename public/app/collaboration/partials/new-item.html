@@ -22,14 +22,11 @@
 				</md-input-container>
 				<md-input-container>
 					<label>Template</label>
-					<md-select data-ng-model="template" name="template">
+					<md-select data-ng-model="template" name="template" data-md-on-close="onCloseTemplate()">
 						<md-option ng-repeat="template in templates" value="{{$index}}">{{ template.name }}</md-option>
 					</md-select>
 				</md-input-container>
-				<md-input-container data-ng-if="template >= 0">
-					<span data-template data-template-value="templates[template].value | noHTML | newline"></span>
-				</md-input-container>
-				<md-input-container data-ng-if="false">
+				<md-input-container>
 					<label>Description</label>
 					<textarea data-ng-model="task.description" columns="1" md-maxlength="255" rows="3" name="description" required></textarea>
 					<div ng-messages="form.description.$error" role="alert">
