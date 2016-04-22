@@ -82,7 +82,7 @@
 		<div class="md-padding" layout="row">
 			<div flex="33" layout="column">
 				<center>
-					<h1>1050 <!--dato da inserire --></h1>
+					<h1>XXXX</h1>
 					<p class="p-size2 margin2">avaible</p>
 					<p class="p-size2 margin2">credits</p>
 				</center>
@@ -90,7 +90,7 @@
 			<md-divider style="color: black;"></md-divider>
 			<div flex="33" layout="column">
 				<center>
-					<h1>4,350 <!--dato da inserire --></h1>
+					<h1 ng-style="statement._embedded.transactions[0].amount < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].amount || 0 | number:2 }}</h1>
 					<p class="p-size2 margin2">Decision Making</p>
 					<p class="p-size2 margin2"> Credits</p>
 				</center>
@@ -98,7 +98,7 @@
 			<md-divider style="color: black !important;"></md-divider>
 			<div flex="33" layout="column">
 				<center>
-					<h1 ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }} <!--dato da inserire --></h1>
+					<h1 ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }}</h1>
 					<p class="p-size2 margin2">Total Credits </p>
 					<p class="p-size2 margin2"> Generated</p>
 				</center>
