@@ -10,7 +10,8 @@ var Identity = function($http, $log, $q) {
 	this.isAuthenticated = function() { return token ? true : false; };
 	this.getMemberships  = function() { return memberships; };
 
-	this.isContributor = function(orgId){
+	//TODO: aggiungere gestione contributor
+	this.isMember = function(orgId){
 		return !!this.getMembership(orgId);
 	};
 

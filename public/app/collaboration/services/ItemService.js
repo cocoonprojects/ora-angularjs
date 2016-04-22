@@ -404,7 +404,7 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					identity.isContributor(resource.organization.id);
+					this.getIdentity().isMember(resource.organization.id);
 		},
 		estimateItem: function(resource) {
 			return resource &&
