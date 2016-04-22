@@ -41,6 +41,11 @@ var ItemService = function($resource, $interval, identity) {
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'approvals' }
 		},
+		approveCompletedItem: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'acceptances' }
+		},
 		remindItemEstimate: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
@@ -155,19 +160,16 @@ var ItemService = function($resource, $interval, identity) {
         return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
     };
 
-	//TODO: cambiare quando avremo accesso al backend
 	this.approveCompletedItem = function(item,description, success, error) {
-		return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+		return resource.approveCompletedItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 ,description:description}, success, error);
 	};
 
-	//TODO: cambiare quando avremo accesso al backend
-    this.abstainCompletedItem = function (item,description,success,error){
-        return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+	this.abstainCompletedItem = function (item,description,success,error){
+        return resource.approveCompletedItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
     };
 
-	//TODO: cambiare quando avremo accesso al backend
-    this.rejectCompletedItem = function (item,description,success,error){
-        return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
+	this.rejectCompletedItem = function (item,description,success,error){
+        return resource.approveCompletedItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
     };
 
 	this.skipItemEstimation = function(item, success, error) {
