@@ -410,7 +410,7 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
+					this.hasJoined(resource, this.getIdentity().getId()) &&
 					resource.type == 'task';
 		},
 		estimateItem: function(resource) {
