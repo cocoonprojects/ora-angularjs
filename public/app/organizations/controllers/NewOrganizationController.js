@@ -10,7 +10,7 @@ function NewOrganizationController(
 		};
 
 		var onCompleteNewOrganization = function(org){
-			$mdDialog.hide();
+			$mdDialog.hide(org);
 			streamService.save(org.id,{
 				subject:'Stream'
 			});
