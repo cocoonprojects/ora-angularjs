@@ -14,7 +14,7 @@ function NewOrganizationController(
 			streamService.save(org.id,{
 				subject:'Stream'
 			});
-		}
+		};
 
 		this.submit = function() {
 			organizationService.save({}, $scope.organization, onCompleteNewOrganization, function(httpResponse) {
