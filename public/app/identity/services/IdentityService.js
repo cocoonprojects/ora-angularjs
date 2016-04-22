@@ -10,6 +10,10 @@ var Identity = function($http, $log, $q) {
 	this.isAuthenticated = function() { return token ? true : false; };
 	this.getMemberships  = function() { return memberships; };
 
+	this.isContributor = function(orgId){
+		return !!this.getMembership(orgId);
+	};
+
 	this.getMembership = function(orgId) {
 		var rv = null;
 		angular.forEach(memberships, function(value) {
