@@ -46,7 +46,7 @@
 			<p style="color: gray; font-size: 12px; margin-top: -10px;">{{card.content.description}}</p>
 		</div>
 		<div layout="column">
-			<p class="p-size">{{card.createdAt | date:'short' }}</p>
+			<p am-time-ago="card.createdAt" class="p-size"></p>
 			<md-button ng-click="ctrl.route(card, 'primary')" class="md-icon-button">
 				<md-icon style="font-size: 36px;" class="material-icons">&#xE315;</md-icon>
 			</mdbutton>
