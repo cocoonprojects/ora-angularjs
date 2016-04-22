@@ -17,7 +17,7 @@
 				</div>
 				<md-list>
 					<md-list-item ng-repeat="member in item.members" ng-init="m = user(member)">
-						<img ng-src="{{ m.picture }}" class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
+						<img ng-src="{{ m.picture  || 'img/account.jpg'}} " class="md-avatar" alt="{{ m.firstname }} {{ m.lastname}}" title="{{ m.firstname }} {{ m.lastname}}">
 						<md-input-container flex>
 							<label>{{ m.firstname }} {{ m.lastname }}</label>
 							<input data-ng-model="shares[member.id]" name="{{ member.id }}" type="number" min="0" max="100" required ng-change="dialogCtrl.updatePercentage()">
