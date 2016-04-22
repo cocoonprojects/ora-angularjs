@@ -404,7 +404,8 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					(this.hasJoined(resource, this.getIdentity().getId()) || this.getIdentity().isMember(resource.organization.id));
+					(this.hasJoined(resource, this.getIdentity().getId()) || this.getIdentity().isMember(resource.organization.id)) &&
+					resource.acceptances[this.getIdentity().getId()]=== undefined;
 		},
 		estimateItem: function(resource) {
 			return resource &&
@@ -416,6 +417,7 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.IDEA &&
+					this.getIdentity().isMember(resource.organization.id) &&
                     resource.approvals[this.getIdentity().getId()]=== undefined;
 		},
 		remindItemEstimate: function(resource) {
