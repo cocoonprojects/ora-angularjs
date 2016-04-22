@@ -354,16 +354,14 @@ ItemService.prototype = {
 		},
 		editItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		deleteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status < this.ITEM_STATUS.COMPLETED &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
-					!this.isDeleteItemExpired(resource, new Date()) &&
-					resource.type == 'task';
+					!this.isDeleteItemExpired(resource, new Date());
 		},
 		joinItem: function(resource) {
 			return resource &&
@@ -381,37 +379,32 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.OPEN &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		reExecuteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		completeItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ONGOING &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
-					this.isEstimationCompleted(resource) &&
-					resource.type == 'task';
+					this.isEstimationCompleted(resource);
 		},
 		reCompleteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		acceptItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.hasJoined(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					identity.isContributor(resource.organization.id);
 		},
 		estimateItem: function(resource) {
 			return resource &&
@@ -423,7 +416,7 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.IDEA &&
-                                        resource.approvals[this.getIdentity().getId()]=== undefined;
+                    resource.approvals[this.getIdentity().getId()]=== undefined;
 		},
 		remindItemEstimate: function(resource) {
 			return resource &&
@@ -452,8 +445,7 @@ ItemService.prototype = {
 				resource.status == this.ITEM_STATUS.ACCEPTED &&
 				this.isOwner(resource, this.getIdentity().getId()) &&
 				(this.isShareAssignmentExpired(resource, new Date()) ||
-					this.isShareAssignmentCompleted(resource)) &&
-				resource.type == 'task';
+				this.isShareAssignmentCompleted(resource));
 		}
 	},
 	isAllowed: function(command, resource) {
