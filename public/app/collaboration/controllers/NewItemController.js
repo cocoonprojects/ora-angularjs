@@ -16,7 +16,7 @@ function NewItemController(
 	$scope.onCloseTemplate = function(){
 		if($scope.template){
 			$scope.task.description = $scope.templates[$scope.template].value
-		};
+		}
 	};
 
 	$scope.task = {
