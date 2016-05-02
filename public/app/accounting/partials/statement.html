@@ -21,7 +21,7 @@
 </md-fab-speed-dial>
 <md-tabs style="border-top-style: solid; border-color: white;" md-dynamic-height class="md-primary" md-selected="currentTab" md-stretch-tabs="always">
 	<md-tab label="Organization">
-		<md-content data-ng-controller="OrganizationStatementController as ctrl">
+		<md-content>
 			<div class="md-padding" layout="column">
 				<h1 ng-style="statement._embedded.transactions[0].balance < 0 ? { color : 'Red' } : {}">{{ statement._embedded.transactions[0].balance || 0 | number:2 }}</h1>
 				<p class="p-size2 margin3">
@@ -78,7 +78,7 @@
 	<div style="height:48px;"></div>
 </md-tab>
 <md-tab label="My Wallet" style="text-transform: none !important;">
-	<md-content data-ng-controller="OrganizationStatementController as ctrl">
+	<md-content>
 		<div class="md-padding" layout="row">
 			<div flex="33" layout="column">
 				<center>
