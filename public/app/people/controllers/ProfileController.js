@@ -1,14 +1,63 @@
 angular.module('app.people')
-	.controller('ProfileController', ['$scope', '$log', '$stateParams', 'memberService', 'itemService', 'accountService',
-		function($scope, $log, $stateParams, memberService, itemService, accountService) {
-			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
-			$scope.credits = accountService.userStats({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
+	.controller('ProfileController', [
+		'$scope',
+		'$log',
+		'$stateParams',
+		'memberService',
+		'itemService',
+		'accountService',
+		'identity',
+		'$mdDialog',
+		function(
+			$scope,
+			$log,
+			$stateParams,
+			memberService,
+			itemService,
+			accountService,
+			identity,
+			$mdDialog) {
+
+			$scope.myProfile = identity.getId() === $stateParams.memberId;
+			$scope.shouldShowAskForMembership = false;
+			$scope.shouldShowProposeMembership = false;
+
+			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId },function(){
+				console.log($scope.profile);
+			});
+
+			$scope.credits = accountService.userStats({ orgId: $stateParams.orgId, memberId: $stateParams.memberId },function(){
+				if($scope.myProfile){
+					memberService.canIRequestMembership($stateParams.orgId,$scope.credits.balance).then(function(show){
+						$scope.shouldShowAskForMembership = show;
+					});
+				}else{
+					memberService.canProposeMembership($stateParams.orgId,$scope.profile.role,$scope.credits.balance).then(function(show){
+						$scope.shouldShowProposeMembership = show;
+					});
+				}
+			});
+
+			$scope.proposeMembership = function(ev) {
+				var message = $scope.myProfile ? "Are you sure you want to become a member?" : "Are you sure you want to propose " + $scope.profile.firstname + " as a Member?";
+			    var confirm = $mdDialog.confirm()
+			          .title('Confirm')
+			          .textContent(message)
+			          .targetEvent(ev)
+					  .ok('Ok')
+          			  .cancel('Cancel');
+			    $mdDialog.show(confirm).then(function() {
+			     	alert('To Be implemented');
+			    });
+			};
+
 			$scope.tasks   = null;
 			$scope.stats   = null;
 			$scope.filters = {
 				memberId: $stateParams.memberId,
 				limit: 10
 			};
+			$scope.moreDetail = false;
 			$scope.initTasks = function() {
 				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.tasks = data; }, function(response) { $log.warn(response); });
 				$scope.stats   = itemService.userStats($stateParams.orgId, $scope.filters);
@@ -32,4 +81,8 @@ angular.module('app.people')
 			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 
 			$scope.initTasks();
+
+			$scope.showMore = function() {
+				$scope.moreDetail = !$scope.moreDetail;
+			};
 		}]);

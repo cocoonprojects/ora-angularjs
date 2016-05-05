@@ -1,16 +1,8 @@
 <md-dialog aria-label="New Item">
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
-		<md-toolbar>
-			<div class="md-toolbar-tools">
-				<h2>New Item</h2>
-				<span flex></span>
-				<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
-					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
+				<h2>Propose an idea</h2>
 				<md-input-container>
 					<label>Subject</label>
 					<input data-ng-model="task.subject" name="subject" type="text" required>
@@ -19,7 +11,7 @@
 						<div ng-message="remote">{{ form.subject.$error.remote }}</div>
 					</div>
 				</md-input-container>
-				<md-input-container>
+				<md-input-container data-ng-if="streams['_embedded']['ora:stream'].length > 0">
 					<label>Stream</label>
 					<md-select data-ng-model="task.streamID" name="stream" required>
 						<md-option ng-repeat="stream in streams['_embedded']['ora:stream']" value="{{ stream.id }}">{{ stream.subject }}</md-option>
@@ -27,6 +19,12 @@
 					<div ng-messages="form.stream.$error" role="alert">
 						<div ng-message="required">Stream is required</div>
 					</div>
+				</md-input-container>
+				<md-input-container>
+					<label>Template</label>
+					<md-select data-ng-model="template" name="template" data-md-on-close="onCloseTemplate()">
+						<md-option ng-repeat="template in templates" value="{{$index}}">{{ template.name }}</md-option>
+					</md-select>
 				</md-input-container>
 				<md-input-container>
 					<label>Description</label>
@@ -40,7 +38,7 @@
 		</md-dialog-content>
 		<md-dialog-actions layout="row" layout-align="end center">
 			<md-button type="button" ng-click="dialogCtrl.cancel()">Cancel</md-button>
-			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
+			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Create</md-button>
 		</md-dialog-actions>
 	</form>
 </md-dialog>

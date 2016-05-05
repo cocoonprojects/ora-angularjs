@@ -1,100 +1,330 @@
 <div layout="row" class="md-padding">
-	<div>
-		<img alt="{{ profile.firstname }} {{ profile.lastname }}" ng-src="{{ profile.picture }}" style="border-radius: 50%" />
+	<div layout="column">
+		<center>
+			<img alt="{{ profile.firstname }} {{ profile.lastname }}" ng-src="{{ profile.picture || 'img/account.jpg' }}" style="border-radius: 50%; height: 70px; width: 70px; margin-top:20px;" />
+			<p style="margin-top:-2px; font-size: 14px;">{{ profile.firstname }} {{ profile.lastname}}</p>
+			<p style="margin-top: -14px; font-size: 14px; color: gray;">({{profile.role}})</p>
+		</center>
 	</div>
 	<div layout="column" layout-padding>
-		<div class="md-headline">{{ profile.firstname }} {{ profile.lastname }}</div>
-		<p style="margin: 0">
-			{{ profile.role }} since {{ profile.createdAt | date : 'longDate' }}
-		</p>
+		<div layout="row">
+			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
+			<p style="font-size: 14px; color: gray; margin-left: 2px;">{{profile.email}}</p>
+		</div>
+		<div layout="row" style="margin-top: -34px;">
+			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
+			<p style="font-size: 14px; color: gray; margin-left: 2px;">@{{ profile.firstname }}{{ profile.lastname}}</p>
+		</div>
+		<div layout="row" style="margin-top: -34px;">
+			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
+			<p style="font-size: 14px; color: gray; margin-left: 2px;">INTERNET</p>
+		</div>
+		<div layout="row" style="margin-top: -34px;">
+			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
+			<p style="font-size: 14px; color: gray; margin-left: 2px;">CITY</p>
+		</div>
+		<div layout="row" style="margin-top: -34px;">
+			<md-button data-ng-if="shouldShowAskForMembership" data-ng-click="proposeMembership($event)">Ask for membership</md-button>
+			<md-button data-ng-if="shouldShowProposeMembership" data-ng-click="proposeMembership($event)">Propose for membership</md-button>
+		</div>
 	</div>
 </div>
-<md-list>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ credits.total | number }}</h3>
-			<p>Generated Credits</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ credits.balance | number }}</h3>
-			<p>Available Credits</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ credits.last3M | number }}</h3>
-			<p>Last 3 months</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ credits.last6M | number }}</h3>
-			<p>Last 6 months</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="credits" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ credits.last1Y | number }}</h3>
-			<p>Last year</p>
-		</div>
-	</md-list-item>
-</md-list>
-<h3 class="md-padding">Task contribution</h3>
-<form novalidate ng-submit="initTasks()">
-	<div layout layout-sm="column">
-		<md-datepicker ng-model="filters.startOn" md-placeholder="From"></md-datepicker>
-		<md-datepicker ng-model="filters.endOn" md-placeholder="To"></md-datepicker>
-		<md-button type="submit" class="md-raised">Search</md-button>
+<div layout="row" style="padding-left: 8px; margin-top: -16px;">
+	<p style="font-size: 14px; font-weight: bold; display: table;">Very good at</p>
+	<p style="font-size: 14px; margin-left: 6px">
+		XXXXX
+	</p>
+</div>
+<div layout="row" style="padding-left: 8px; margin-top: -24px;">
+	<p style="font-size: 14px; font-weight: bold;">Passion </p>
+	<p style="font-size: 14px; margin-left: 6px">
+		XXXXX
+	</p>
+</div>
+<md-tabs
+	 style="width: 100%;"
+	 class="md-primary"
+	 md-dynamic-height
+	 md-selected="currentTab"
+	 md-stretch-tabs="always">
+		<md-tab label="Skills">
+			<div layout="column" style="margin-top: 32px;">
+				<div layout="row"  style="margin-top: -32px;">
+					<div layout="row"  class="md-padding" flex="33">
+						<p style="font-size: 14px;">Photoshop</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row"  style="margin-top: -32px;">
+					<div layout="row" class="md-padding" flex="33">
+						<p style="font-size: 14px;">Illustrator</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div layout="row"  class="md-padding" flex="33">
+						<p style="font-size: 14px;">Sketchking</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div  class="md-padding" layout="row" flex="33">
+						<p style="font-size: 14px;">Wireframe</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div class="md-padding" layout="row" flex="33">
+						<p style="font-size: 14px;">Drawing</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+			</div>
+			<div style="margin-top: -27px; margin-left: -8px;">
+				<md-button  ng-click="showMore()" md-no-ink>
+					<span data-ng-if="!moreDetail" style="color: gray" >Show all</span>
+					<span data-ng-if="moreDetail" style="color: gray" >Show Less</span>
+				</md-button>
+			</div>
+			<div data-ng-if="moreDetail" layout="column" style="margin-top: 5px;">
+				<div layout="row"  style="margin-top: -32px;">
+					<div layout="row"  class="md-padding" flex="33">
+						<p style="font-size: 14px;">Photoshop</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row"  style="margin-top: -32px;">
+					<div layout="row" class="md-padding" flex="33">
+						<p style="font-size: 14px;">Illustrator</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div layout="row"  class="md-padding" flex="33">
+						<p style="font-size: 14px;">Sketchking</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div  class="md-padding" layout="row" flex="33">
+						<p style="font-size: 14px;">Wireframe</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div class="md-padding" layout="row" flex="33">
+						<p style="font-size: 14px;">Drawing</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+			</div>
+			<md-divider></md-divider>
+		</md-tab>
+		<md-tab label="Strenght">
+			<div layout="column" style="margin-top: 32px;">
+				<div layout="row"  style="margin-top: -32px;">
+					<div layout="row"  class="md-padding" flex="33">
+						<p style="font-size: 14px;">Photoshop</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row"  style="margin-top: -32px;">
+					<div layout="row" class="md-padding" flex="33">
+						<p style="font-size: 14px;">Illustrator</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div layout="row"  class="md-padding" flex="33">
+						<p style="font-size: 14px;">Sketchking</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div  class="md-padding" layout="row" flex="33">
+						<p style="font-size: 14px;">Wireframe</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+				<div layout="row" style="margin-top: -32px;">
+					<div class="md-padding" layout="row" flex="33">
+						<p style="font-size: 14px;">Drawing</p>
+					</div>
+					<div layout="row" flex="40" style="margin-top: 10px;">
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: black; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+						<md-icon style="color: #9E9F9E; font-size: 12px;" class="material-icons">&#xE3FA;</md-icon>
+					</div>
+				</div>
+			</div>
+			<div style="margin-top: -27px; margin-left: -8px;">
+				<md-button md-no-ink><span style="color: gray">Show all</span></md-button>
+			</div>
+			<md-divider></md-divider>
+		</md-tab>
+</md-tabs>
+	<md-subheader style="color: black; font-weight: normal; font-size: 12px; z-index: 0;">
+		<br> Member since {{profile.createdAt | date:'dd/MM/yyyy'}} <br> First activity was XXXX
+	</md-subheader>
+	<md-card>
+		<md-card-header>
+			<md-card-header-text>
+				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAIBLE CREDIT
+					<span class="md-title" style="margin-left: 10px;"> {{credits.balance}}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
+ 					<span class="md-title" style="margin-left: 10px;"> {{credits.total}}
+ 				 </span>
+			</md-card-header-text>
+		</md-card-header>
+				<md-card-content layout="row" style="margin-top: -12px; padding-left:5px; padding-right: 5px;">
+					<div flex="33" layout="column">
+						<center>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 3 MONTHS</span>
+							<span class="md-title">{{credits.last3M}}</span>
+						</center>
+					</div>
+					<div flex="33" layout="column">
+						<center>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 6 MONTHS</span>
+							<span class="md-title">{{credits.last6M}}</span>
+						</center>
+					</div>
+					<div flex="33" layout="column">
+						<center>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 12 MONTHS</span>
+							<span class="md-title">{{credits.last1Y}}</span>
+						</center>
+					</div>
+				</md-card-content>
+	</md-card>
+	<md-card>
+		<md-card-header>
+			<md-card-header-text>
+					<span class="md-subheader" style="color: black; font-weight: 200;"> ITEM CONTRIBUTION </span>
+					<div layout="row" style="margin-top: -14px;">
+							<span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> FROM</span>
+							 <md-select style="z-index: 0;" ng-model="fromdate" placeholder="insert date">
+								 <md-option> XXXX </md-option>
+								 <md-option> XXXX </md-option>
+							 </md-select>
+							 <span flex></span>
+							 <span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> TO</span>
+ 							 <md-select ng-model="todate" style="z-index: 0;" placeholder="insert date">
+ 								 <md-option> XXXX </md-option>
+ 								 <md-option> XXXX </md-option>
+ 							 </md-select>
+					</div>
+					<div layout="row" style="margin-right: 10%; margin-top: -6px;" >
+						<span style="font-size: 14px; font-weight: 500;" flex><center>owned</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>item id</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>status</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>credit</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>distance</center></span>
+					</div>
+					<md-divider style="margin-right:16px; margin-top: 8px"></md-divider>
+					<div layout="row" style="margin-right: 10%; margin-top: 8px;" > <!--dati da inserire-->
+						<span style="font-weight: 300; font-size: 12px;" flex><center>&#x2713;</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+						<span  style="line-height: 12px; font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+					</div>
+					<div layout="row" style="margin-right: 10%; margin-top: 8px;" > <!--dati da inserire-->
+						<span style="font-weight: 300; font-size: 12px;" flex><center>-</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>XXXX</center></span>
+						<span  style="line-height: 12px; font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
+					</div>
+			</md-card-header-text>
+		</md-card-header>
+	</md-card>
+	<div style="height: 48px;">
 	</div>
-</form>
-<md-divider></md-divider>
-<md-list>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ stats.membershipsCount | number : 0 }}</h3>
-			<p>Task Memberships</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ stats.ownershipsCount | number:0 }}</h3>
-			<p>Owned Tasks</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ stats.creditsCount | number:2 }}</h3>
-			<p>Earned Credits</p>
-		</div>
-	</md-list-item>
-	<md-list-item class="md-2-line">
-		<md-icon md-svg-icon="check" class="md-avatar-icon"></md-icon>
-		<div class="md-list-item-text">
-			<h3>{{ stats.averageDelta | percentage:2:true }}</h3>
-			<p>Auto-assessment gap</p>
-		</div>
-	</md-list-item>
-</md-list>
-<md-list>
-	<md-list-item data-ng-repeat="task in tasks._embedded['ora:task']" ng-init="show = isAllowed('showShares', task)" ng-class="{'md-3-line': show, 'md-2-line': !show}">
-		<div class="md-list-item-text" ui-sref="org.item({ orgId: task.organization.id, taskId: task.id })">
-			<h3>
-				{{ task.subject }}
-				<md-icon md-svg-icon="star" ng-if="isOwner(task)" title="owner" style="width: 16px"></md-icon>
-			</h3>
-			<h4 ng-if="show">Earned Credits: {{ getCredits(task) | number }}<span ng-if="getShare(task)">, Team evaluated contribution: {{ getShare(task) | percentage:2 }}</span><span ng-if="getDelta(task)"> (Auto-assessment: {{ getDelta(task) | percentage:2:true }})</span></h4>
-			<p>{{ task.status | itemStatusLabel }}</p>
-		</div>
-	</md-list-item>
-</md-list>
-<div class="md-padding">{{ tasks.count }} of {{ tasks.total }} <md-button ng-if="tasks.count < tasks.total" ng-click="loadMore()">More</md-button></div>

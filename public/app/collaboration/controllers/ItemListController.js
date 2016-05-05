@@ -1,28 +1,58 @@
 angular.module('app.collaboration')
-	.controller('ItemListController', ['$scope', '$log', '$interval', '$stateParams', '$mdDialog', '$mdToast', 'streamService', 'itemService',
-		function ($scope, $log, $interval, $stateParams, $mdDialog, $mdToast, streamService, itemService) {
-			this.onLoadingError = function(error) {
-				switch (error.status) {
-					case 401:
-						this.cancelAutoUpdate();
-						break;
-				}
-			};
+	.controller('ItemListController', [
+		'$scope',
+		'$log',
+		'$interval',
+		'$stateParams',
+		'$mdDialog',
+		'$mdToast',
+		'streamService',
+		'itemService',
+		'$state',
+		function (
+			$scope,
+			$log,
+			$interval,
+			$stateParams,
+			$mdDialog,
+			$mdToast,
+			streamService,
+			itemService,
+			$state) {
+
+			$scope.decisions = $state.$current.data.decisions;
+
+			$scope.changeUpdateTime = false;
+
+			$scope.changeStatusTime = false;
+
 			$scope.streams = null;
+
 			$scope.filters = {
 				limit: 10,
-				offset: 0
+				offset: 0,
+				status: "All",
+				decisions: $scope.decisions,
+				onlyMine: false
 			};
-			$scope.items = [];
-			streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-			itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+
 			this.cancelAutoUpdate = function() {
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 			};
+
+			$scope.$watchGroup(['filters.status','filters.onlyMine'],function(){
+				streamService.stopQueryPolling();
+				itemService.stopQueryPolling();
+				$scope.items = [];
+				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
+				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+			});
+
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
+
 			this.isAllowed = function(command, resource) {
 				if(command == 'createStream') {
 					return streamService.isAllowed(command, resource);
@@ -32,6 +62,10 @@ angular.module('app.collaboration')
 			this.getOwner = function(item) {
 				var member = itemService.getOwner(item);
 				return $scope.user(member);
+			};
+
+			this.checkImIn = function(item){
+				return itemService.isIn(item,$scope.identity.getId());
 			};
 
 			this.loadItems = function() {
@@ -69,26 +103,43 @@ angular.module('app.collaboration')
 					templateUrl: "app/collaboration/partials/new-stream.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						orgId: $stateParams.orgId
 					}
 				}).then(this.addStream);
 			};
-			this.openNewItem = function(ev) {
+
+			this.openNewItem = function(ev, decision) {
 				$mdDialog.show({
 					controller: NewItemController,
 					controllerAs: 'dialogCtrl',
 					templateUrl: "app/collaboration/partials/new-item.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						orgId: $stateParams.orgId,
-						streams: $scope.streams
+						streams: $scope.streams,
+						decisionMode: decision
 					}
-				}).then(this.addItem);
+				}).then(this.onItemAdded);
 			};
+
+			this.onItemAdded = function(newItem){
+				$mdDialog.show({
+					controller: "OnItemAddedDialogController",
+					templateUrl: "app/collaboration/partials/on-item-added-dialog.html",
+					clickOutsideToClose: true,
+					locals: {
+						item: newItem
+					}
+				}).then(function(){
+					$state.go('org.item',{
+						orgId: newItem.organization.id,
+						itemId: newItem.id
+					});
+				});
+			};
+
 			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
 					controller: EstimateItemController,
@@ -96,14 +147,13 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/estimate-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						item: item,
 						prevEstimation: item.members[$scope.identity.getId()].estimation
 					}
 				}).then(this.updateItem);
 			};
-                        
+
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
 					controller: AssignSharesController,
@@ -111,13 +161,13 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/assign-shares.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					scope: $scope.$new(),
 					locals: {
 						item: item
 					}
 				}).then(this.updateItem);
 			};
+
 			this.addStream = function(stream) {
 				$scope.streams._embedded['ora:stream'][stream.id] = stream;
 				$mdToast.show(
@@ -127,9 +177,11 @@ angular.module('app.collaboration')
 						.hideDelay(3000)
 				);
 			};
+
 			this.addItem = function(item) {
 				$scope.items._embedded['ora:task'].unshift(item);
 			};
+
 			this.updateItem = function(item) {
 				var items = $scope.items._embedded['ora:task'];
 				for(var i = 0; i < items.length; i++) {
@@ -154,4 +206,20 @@ angular.module('app.collaboration')
 						this.isAllowed('estimateItem', item) ||
 						this.isAllowed('assignShares', item)|| this.isAllowed('approveIdea', item);
 			};
+
+			this.onLoadingError = function(error) {
+				switch (error.status) {
+					case 401:
+						this.cancelAutoUpdate();
+						break;
+				}
+			};
+			this.invertUpdateTime = function() {
+				$scope.changeUpdateTime = !$scope.changeUpdateTime;
+			};
+			this.invertStatusTime = function() {
+				$scope.changeStatusTime = !$scope.changeStatusTime;
+			};
+
+
 		}]);

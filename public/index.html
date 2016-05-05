@@ -1,13 +1,12 @@
 <!doctype html>
-<html lang="en" ng-app="app">
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>O.R.A.</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<meta name="google-signin-client_id" content="539661597463-g8vv08j3f667ka6l8gpm0pn34kcmrvhk.apps.googleusercontent.com">
-	<script src="https://apis.google.com/js/client:plusone.js" async defer></script>
+	<meta name="google-signin-client_id" content="324494101979-kd155mfhheot9jjplga314139rl0p5pk.apps.googleusercontent.com">
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -50,11 +49,21 @@
 	<!-- build:[src] https://cdnjs.cloudflare.com/ajax/libs/ngInfiniteScroll/1.2.1/ng-infinite-scroll.min.js -->
 	<script src='components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
 	<!-- /build -->
+	<!-- build:[src] https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.8.2/lodash.min.js -->
+	<script src="components/lodash/dist/lodash.min.js"></script>
+	<!-- /build -->
 	<!-- build:js js/app.js -->
 	<script src="app/main/module.js"></script>
 	<script src="app/main/filters/PercentageFilter.js"></script>
+	<script src="app/main/filters/NewLineFilter.js"></script>
+	<script src="app/main/filters/NoHtmlFilter.js"></script>
 	<script src="app/main/controllers/AppController.js"></script>
 	<script src="app/main/controllers/LeftController.js"></script>
+	<script src="app/main/controllers/BaseOrganizationController.js"></script>
+	<script src="app/main/directives/NavigationBar.js"></script>
+	<script src="app/main/directives/SettingsMenu.js"></script>
+	<script src="app/main/directives/GoogleDrivePicker.js"></script>
+	<script src="app/main/services/SelectedOrganizationId.js"></script>
 	<script src="app/identity/module.js"></script>
 	<script src="app/identity/services/IdentityService.js"></script>
 	<script src="app/identity/controllers/IdentityController.js"></script>
@@ -68,22 +77,24 @@
 	<script src="app/kanbanize/services/KanbanizeService.js"></script>
 	<script src="app/kanbanize/controllers/BoardController.js"></script>
 	<script src="app/collaboration/module.js"></script>
+	<script src="app/collaboration/directives/Template.js"></script>
 	<script src="app/collaboration/services/ItemService.js"></script>
 	<script src="app/collaboration/services/StreamService.js"></script>
+	<script src="app/collaboration/services/TemplateService.js"></script>
 	<script src="app/collaboration/filters/ItemStatusLabelFilter.js"></script>
 	<script src="app/collaboration/filters/ItemStatusResumeFilter.js"></script>
 	<script src="app/collaboration/controllers/NewStreamController.js"></script>
 	<script src="app/collaboration/controllers/NewItemController.js"></script>
 	<script src="app/collaboration/controllers/EditItemController.js"></script>
 	<script src="app/collaboration/controllers/EstimateItemController.js"></script>
-        <script src="app/collaboration/controllers/ApproveIdeaController.js"></script>
+    <script src="app/collaboration/controllers/ApproveIdeaController.js"></script>
 	<script src="app/collaboration/controllers/ItemListController.js"></script>
 	<script src="app/collaboration/controllers/ItemDetailController.js"></script>
 	<script src="app/collaboration/controllers/AssignSharesController.js"></script>
+	<script src="app/collaboration/controllers/OnItemAddedDialogController.js"></script>
 	<script src="app/accounting/module.js"></script>
 	<script src="app/accounting/services/AccountService.js"></script>
-	<script src="app/accounting/controllers/PersonalStatementController.js"></script>
-	<script src="app/accounting/controllers/OrganizationStatementController.js"></script>
+	<script src="app/accounting/controllers/StatementController.js"></script>
 	<script src="app/accounting/controllers/NewDepositController.js"></script>
 	<script src="app/accounting/controllers/NewWithdrawalController.js"></script>
 	<script src="app/accounting/controllers/NewIncomingTransferController.js"></script>
@@ -98,7 +109,7 @@
 	<!-- /build -->
 </head>
 <body layout="column" ng-controller="AppController">
-	<section layout="row" flex ng-controller="IdentityController">
+	<section layout="row" flex ng-controller="IdentityController" data-ng-cloak>
 		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
 			<md-toolbar id="identityBox" class="md-tall md-hue-2">
 				<div layout="column" class="md-toolbar-tools-bottom inset" layout-align="center center">
@@ -128,6 +139,18 @@
 		</md-sidenav>
 		<md-content layout="column" flex ui-view></md-content>
 	</section>
+	<script>
+	//Manual Angular Bootstrap after google plus initialization
+	window.init = function() {
+		gapi.client.load('drive', 'v2', function(){
+			gapi.load('picker',function(){
+				angular.element(document).ready(function() {
+			      angular.bootstrap(document, ['app']);
+			    });
+			});
+		});
+  	}
+	</script>
+	<script src="https://apis.google.com/js/client:plusone.js?onload=init" async defer></script>
 </body>
 </html>
-

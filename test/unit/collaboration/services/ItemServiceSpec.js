@@ -267,7 +267,7 @@ describe('itemService', function() {
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
 	});
-	
+
 	it('should return what the owner can do on a work item idea created after 24 hours', function() {
 		var createdAt = new Date;
 		createdAt.setHours(createdAt.getHours() - 25);
@@ -478,7 +478,6 @@ describe('itemService', function() {
 		expect(service.isAllowed('remindItemEstimate', task)).toBe(false);
 		expect(service.isAllowed('completeItem', task)).toBe(false);
 		expect(service.isAllowed('reCompleteItem', task)).toBe(false);
-		expect(service.isAllowed('acceptItem', task)).toBe(true);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
 	});
@@ -504,7 +503,6 @@ describe('itemService', function() {
 		expect(service.isAllowed('remindItemEstimate', task)).toBe(false);
 		expect(service.isAllowed('completeItem', task)).toBe(false);
 		expect(service.isAllowed('reCompleteItem', task)).toBe(false);
-		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
 	});
@@ -530,7 +528,6 @@ describe('itemService', function() {
 		expect(service.isAllowed('remindItemEstimate', task)).toBe(false);
 		expect(service.isAllowed('completeItem', task)).toBe(false);
 		expect(service.isAllowed('reCompleteItem', task)).toBe(false);
-		expect(service.isAllowed('acceptItem', task)).toBe(false);
 		expect(service.isAllowed('assignShares', task)).toBe(false);
 		expect(service.isAllowed('showShares', task)).toBe(false);
 	});

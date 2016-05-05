@@ -1,7 +1,59 @@
-md-icon.owner {
+md-content{
+    overflow-x: hidden;
+}
+/*md-icon.owner {
     margin-left: -28px;
     margin-bottom: 4px;
 }
 md-sidenav .md-button {
     text-align: left;
+}*/
+.border {border-bottom-style: solid;
+}
+.height-toolbar{
+  min-height: 30px !important;
+}
+.p-size {
+  font-size: 12px;
+}
+.p-size1{
+  font-size: 14px;
+  color: gray;
+}
+.p-size2{
+  font-size: 14px;
+}
+.height{
+  height: 20px !important;
+}
+.png-icon{
+    margin: 5px auto auto;
+    padding: 0;
+    display: inline-block;
+    background-repeat: no-repeat no-repeat;
+    pointer-events: none;
+}
+.logo {
+   height: 9rem;
+   width: 9rem;
+ }
+ .logo-image {
+   height: 100%;
+   width: 100%;
+ }
+.margin {
+  margin-top: 10px !important;
+}
+.margin2 {
+  margin-top: -10px !important;
+}
+.margin3 {
+  margin-top: -15px !important;
+}
+.md-tab{
+  text-transform: none;
+  width: 100%;
+  font-size: 12px;
+  padding: 0px;
+  padding-top: 12px;
 }

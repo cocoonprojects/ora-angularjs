@@ -1,6 +1,21 @@
 angular.module('app.flow')
-	.controller('FlowController', ['$scope', '$log', '$interval', '$stateParams', 'flowService', '$state',
-		function ($scope, $log, $interval, $stateParams, flowService, $state) {
+	.controller('FlowController', [
+		'$scope',
+		'$log',
+		'$interval',
+		'$stateParams',
+		'flowService',
+		'$state',
+		'streams',
+		function (
+			$scope,
+			$log,
+			$interval,
+			$stateParams,
+			flowService,
+			$state,
+			streams) {
+			$scope.stream = streams[0];
 			$scope.filters = {
 					limit: 10,
 					offset: 0
@@ -18,7 +33,7 @@ angular.module('app.flow')
 			flowService.startQueryPolling($scope.filters, function(data) { $scope.cards = data; }, this.onLoadingError, 10000);
 			this.cancelAutoUpdate = function() {
 				flowService.stopQueryPolling();
-			};			
+			};
 			$scope.$on("$destroy", function(){
 				that.cancelAutoUpdate();
 			});
@@ -40,7 +55,7 @@ angular.module('app.flow')
 				switch (card.type){
 					case "VoteIdea":
 						if(hierarchy == 'primary'){
-							$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});	
+							$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});
 						}
 						break;
 				}

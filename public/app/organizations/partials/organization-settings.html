@@ -1,13 +1,13 @@
-<md-card> 
+<md-card>
 	<md-card-content>
 		<h1 flex>Kanbanize</h1>
 		<form name="form" ng-submit="ctrl.updateKanbanizeSettings()" novalidate>
 			<div layout="row">
 				<md-input-container> <label
-					class="md-container-ignore">Subdomain</label> 
+					class="md-container-ignore">Subdomain</label>
 					<input type="text"
-						data-ng-model="settings.subdomain" 
-						name="subdomain" 
+						data-ng-model="settings.subdomain"
+						name="subdomain"
 						aria-label="Kanbanize Subdomain"
 						required>
 					<div ng-messages="form.subdomain.$error" role="alert">
@@ -16,9 +16,9 @@
 					</div>
 				</md-input-container>
 				<md-input-container> <label
-					class="md-container-ignore">API Key</label> 
+					class="md-container-ignore">API Key</label>
 					<input type="text"
-						data-ng-model="settings.apiKey" 
+						data-ng-model="settings.apiKey"
 						name="apiKey"
 						aria-label="Kanbanize API Key"
 						required>
@@ -40,7 +40,7 @@
 	<md-card-content>
 		<h3 class="md-title" ng-if="projects">Boards</h3>
 		<div ng-repeat="project in projects">
-			<md-list-item ng-repeat="board in project.boards"> 
+			<md-list-item ng-repeat="board in project.boards">
 				<md-button
 					ui-sref="org.kanbanizeBoardSettings({
 						orgId: organization.id,
@@ -52,5 +52,20 @@
 				</md-button>
 			</md-list-item>
 		</div>
+	</md-card-content>
+</md-card>
+<md-card>
+	<md-card-content>
+		<h1 flex>Streams</h1>
+		<md-button data-ng-click="newStream($event)">
+			New Stream
+		</md-button>
+		<md-list>
+	      <md-list-item ng-repeat="stream in streams">
+	        <div class="md-list-item-text" layout="column">
+	        	{{stream.subject}}
+	        </div>
+	      </md-list-item>
+	  	</md-list>
 	</md-card-content>
 </md-card>

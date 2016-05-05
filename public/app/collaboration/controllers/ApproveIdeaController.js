@@ -1,18 +1,29 @@
-function ApproveIdeaController($scope, $mdDialog, $log, itemService, item) {
-	//$scope.value = prevEstimation > 0 || prevEstimation === 0 ? prevEstimation : undefined;
+function ApproveIdeaController(
+	$scope,
+	$mdDialog,
+	$log,
+	item,
+	callbacks,
+	title) {
+
+	$scope.title = title;
+
 	this.cancel = function() {
 		$mdDialog.cancel();
 	};
+
 	this.abstain = function() {
-		itemService.abstainIdeaItem(item,$scope.description, $mdDialog.hide, this.onErrors);
+		callbacks.abstain(item,$scope.description, $mdDialog.hide, this.onErrors);
 	};
+
 	this.accept = function() {
-		itemService.approveIdeaItem(item,$scope.description,  $mdDialog.hide, this.onErrors);
+		callbacks.accept(item,$scope.description, $mdDialog.hide, this.onErrors);
 	};
-        this.reject = function() {
-		itemService.rejectIdeaItem(item,$scope.description,  $mdDialog.hide, this.onErrors);
+
+    this.reject = function() {
+		callbacks.reject(item,$scope.description, $mdDialog.hide, this.onErrors);
 	};
-        
+
 	this.onErrors = function(httpResponse) {
 		switch(httpResponse.status) {
 			case 400:

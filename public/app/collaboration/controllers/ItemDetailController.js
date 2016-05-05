@@ -1,6 +1,33 @@
 angular.module('app.collaboration')
-	.controller('ItemDetailController', ['$scope', '$state', '$stateParams', '$mdDialog', '$log', 'streamService', 'itemService',
-		function ($scope, $state, $stateParams, $mdDialog, $log, streamService, itemService) {
+	.controller('ItemDetailController', [
+		'$scope',
+		'$state',
+		'$stateParams',
+		'$mdDialog',
+		'$log',
+		'streamService',
+		'itemService',
+		function (
+			$scope,
+			$state,
+			$stateParams,
+			$mdDialog,
+			$log,
+			streamService,
+			itemService) {
+
+			var onLoadItem = function(data){
+				$scope.owner = itemService.getOwner(data);
+				$scope.item = data;
+				$scope.members = _.filter(data.members,function(member){
+					return member.id !== $scope.owner.id;
+				});
+			};
+
+			$scope.goToProfile = function(id) {
+				$state.go("org.profile",{memberId:id});
+			};
+
 			$scope.streams = null;
 			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
 			this.onLoadingError = function(error) {
@@ -13,7 +40,7 @@ angular.module('app.collaboration')
 			};
 			$scope.item = null;
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
-			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, function(data) { $scope.item = data; }, this.onLoadingError, 10000);
+			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, onLoadItem, this.onLoadingError, 10000);
 			$scope.$on('$destroy', itemService.stopGetPolling);
 			this.stream = function(item) {
 				if($scope.streams && item && item.stream) {
@@ -115,8 +142,24 @@ angular.module('app.collaboration')
 			this.reCompleteItem = function(item) {
 				itemService.completeItem(item, this.updateItem, $log.warn);
 			};
-			this.acceptItem = function(item) {
-				itemService.acceptItem(item, this.updateItem, $log.warn);
+			this.acceptItem = function(ev,item) {
+				$mdDialog.show({
+					controller: ApproveIdeaController,
+					controllerAs: 'dialogCtrl',
+					templateUrl: 'app/collaboration/partials/approve-item.html',
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					fullscreen: true,
+					locals: {
+						title: 'Accept Item',
+						item: item,
+						callbacks:{
+							abstain:itemService.abstainCompletedItem,
+							accept:itemService.approveCompletedItem,
+							reject:itemService.rejectCompletedItem
+						}
+					}
+				}).then(this.updateItem);
 			};
 			this.openAssignShares = function(ev, item) {
 				$mdDialog.show({
@@ -132,7 +175,8 @@ angular.module('app.collaboration')
 					}
 				}).then(this.updateItem);
 			};
-                        this.openApproveIdea = function(ev, item) {
+
+            this.openApproveIdea = function(ev, item) {
 				$mdDialog.show({
 					controller: ApproveIdeaController,
 					controllerAs: 'dialogCtrl',
@@ -141,17 +185,25 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					fullscreen: true,
 					locals: {
-						item: item
-						//prevEstimation: item.members[$scope.identity.getId()].estimation
+						title: 'Approve Idea',
+						item: item,
+						callbacks:{
+							abstain:itemService.abstainIdeaItem,
+							accept:itemService.approveIdeaItem,
+							reject:itemService.rejectIdeaItem
+						}
 					}
 				}).then(this.updateItem);
 			};
+
 			this.remindItemEstimate = function(item) {
 				itemService.remindItemEstimate(item, $log.info, $log.warn);
 			};
+
 			this.updateItem = function(item) {
 				$scope.item = item;
 			};
+
 			this.closeItem = function(item) {
 				itemService.closeItem(item, this.updateItem, $log.warn);
 			};

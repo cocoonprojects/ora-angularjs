@@ -36,10 +36,15 @@ var ItemService = function($resource, $interval, identity) {
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'estimations' }
 		},
-                approveItem: {
+        approveItem: {
 			method: 'POST',
 			headers: { 'GOOGLE-JWT': identity.getToken() },
 			params: { controller: 'approvals' }
+		},
+		approveCompletedItem: {
+			method: 'POST',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			params: { controller: 'acceptances' }
 		},
 		remindItemEstimate: {
 			method: 'POST',
@@ -109,6 +114,7 @@ var ItemService = function($resource, $interval, identity) {
 	};
 	var isQueryPolling = false;
 	this.query = function(organizationId, filters, success, error) {
+		error = error || _.noop;
 		isQueryPolling = true;
 		return resource.query(
 				angular.extend({ orgId: organizationId }, filters),
@@ -120,63 +126,101 @@ var ItemService = function($resource, $interval, identity) {
 					isQueryPolling = false;
 					error(response);
 				});
-	};
+	}
+	;
 	this.delete = function(item, success, error) {
 		return resource.delete({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
+
 	this.edit = function(item, success, error) {
 		return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: item.subject, description: item.description }, success, error);
 	};
+
 	this.joinItem = function(item, success, error) {
 		return resource.joinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
+
 	this.unjoinItem = function(item, success, error) {
 		return resource.unjoinItem({ orgId: item.organization.id, itemId: item.id }, { }, success, error);
 	};
+
 	this.estimateItem = function(item, value, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: value }, success, error);
 	};
-        this.approveIdeaItem = function(item,description, success, error) {
+
+    this.approveIdeaItem = function(item,description, success, error) {
 		return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 ,description:description}, success, error);
 	};
-        this.abstainIdeaItem = function (item,description,success,error){
-            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
-        };
-         this.rejectIdeaItem = function (item,description,success,error){
-            return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
-        };
+
+    this.abstainIdeaItem = function (item,description,success,error){
+        return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
+    };
+
+    this.rejectIdeaItem = function (item,description,success,error){
+        return resource.approveItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
+    };
+
+	this.approveCompletedItem = function(item,description, success, error) {
+		return resource.approveCompletedItem({ orgId: item.organization.id, itemId: item.id }, { value: 1 ,description:description}, success, error);
+	};
+
+	this.abstainCompletedItem = function (item,description,success,error){
+        return resource.approveCompletedItem({ orgId: item.organization.id, itemId: item.id }, { value: 2, description:description }, success, error);
+    };
+
+	this.rejectCompletedItem = function (item,description,success,error){
+        return resource.approveCompletedItem({ orgId: item.organization.id, itemId: item.id }, { value: 0 ,description:description}, success, error);
+    };
+
 	this.skipItemEstimation = function(item, success, error) {
 		return resource.estimateItem({ orgId: item.organization.id, itemId: item.id }, { value: -1 }, success, error);
 	};
+
 	this.remindItemEstimate = function(item, success, error) {
 		return resource.remindItemEstimate({ orgId: item.organization.id, itemId: item.id }, { action: 'accept' }, success, error);
 	};
+
 	this.executeItem = function(item, success, error) {
 		return resource.executeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'execute' }, success, error);
 	};
+
 	this.completeItem = function(item, success, error) {
 		return resource.completeItem({ orgId: item.organization.id, itemId: item.id }, { action: 'complete' }, success, error);
 	};
+
 	this.acceptItem = function(item, success, error) {
 		return resource.acceptItem({ orgId: item.organization.id, itemId: item.id}, { action: 'accept' }, success, error);
 	};
+
 	this.assignShares = function(item, shares, success, error) {
 		return resource.assignShares({ orgId: item.organization.id, itemId: item.id }, shares, success, error);
 	};
+
 	this.skipShares = function(item, success, error) {
 		return resource.skipShares({ orgId: item.organization.id, itemId: item.id }, {}, success, error);
 	};
+
 	this.userStats = function(organizationId, filters) {
 		return r2.get(angular.extend({ orgId: organizationId }, filters));
 	};
 
 	var queryPolling = null;
 	this.startQueryPolling = function(organizationId, filters, success, error, millis) {
-		this.query(organizationId, filters, success, error);
+		var newFilters = _.extend({},filters);
+
+		var status = _.find(_.values(ItemService.prototype.ITEM_STATUS),function(s){
+			return s == newFilters.status;
+		});
+
+		if(!status){
+			newFilters.status = null;
+		}
+
+		this.query(organizationId, newFilters, success, error);
 		var that = this;
 		queryPolling = $interval(function() {
 			if (isQueryPolling) return;
-			that.query(organizationId, filters, success, error);
+			that.query(organizationId, newFilters, success, error);
 		}, millis);
 	};
 	this.stopQueryPolling = function() {
@@ -242,6 +286,11 @@ ItemService.prototype = {
 				item.members.hasOwnProperty(userId) &&
 				item.members[userId].role == this.ITEM_ROLES.ROLE_MEMBER;
 	},
+	isIn: function(item, userId) {
+		return item &&
+				item.members &&
+				item.members.hasOwnProperty(userId);
+	},
 	hasJoined: function(item, userId) {
 		return item &&
 				item.members &&
@@ -305,16 +354,14 @@ ItemService.prototype = {
 		},
 		editItem: function(resource) {
 			return this.getIdentity().isAuthenticated() &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		deleteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status < this.ITEM_STATUS.COMPLETED &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
-					!this.isDeleteItemExpired(resource, new Date()) &&
-					resource.type == 'task';
+					!this.isDeleteItemExpired(resource, new Date());
 		},
 		joinItem: function(resource) {
 			return resource &&
@@ -332,37 +379,33 @@ ItemService.prototype = {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.OPEN &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		reExecuteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		completeItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ONGOING &&
 					this.isOwner(resource, this.getIdentity().getId()) &&
-					this.isEstimationCompleted(resource) &&
-					resource.type == 'task';
+					this.isEstimationCompleted(resource);
 		},
 		reCompleteItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					this.isOwner(resource, this.getIdentity().getId());
 		},
 		acceptItem: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
-					this.isOwner(resource, this.getIdentity().getId()) &&
-					resource.type == 'task';
+					(this.hasJoined(resource, this.getIdentity().getId()) || this.getIdentity().isMember(resource.organization.id)) &&
+					resource.acceptances[this.getIdentity().getId()]=== undefined;
 		},
 		estimateItem: function(resource) {
 			return resource &&
@@ -370,11 +413,12 @@ ItemService.prototype = {
 					resource.status == this.ITEM_STATUS.ONGOING &&
 					this.hasJoined(resource, this.getIdentity().getId());
 		},
-                approveIdea: function(resource) {
+        approveIdea: function(resource) {
 			return resource &&
 					this.getIdentity().isAuthenticated() &&
-					resource.status == this.ITEM_STATUS.IDEA && 
-                                        resource.approvals[this.getIdentity().getId()]=== undefined;
+					resource.status == this.ITEM_STATUS.IDEA &&
+					this.getIdentity().isMember(resource.organization.id) &&
+                    resource.approvals[this.getIdentity().getId()]=== undefined;
 		},
 		remindItemEstimate: function(resource) {
 			return resource &&
@@ -403,8 +447,7 @@ ItemService.prototype = {
 				resource.status == this.ITEM_STATUS.ACCEPTED &&
 				this.isOwner(resource, this.getIdentity().getId()) &&
 				(this.isShareAssignmentExpired(resource, new Date()) ||
-					this.isShareAssignmentCompleted(resource)) &&
-				resource.type == 'task';
+				this.isShareAssignmentCompleted(resource));
 		}
 	},
 	isAllowed: function(command, resource) {

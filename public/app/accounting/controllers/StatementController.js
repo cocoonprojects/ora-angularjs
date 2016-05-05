@@ -1,7 +1,19 @@
 angular.module('app.accounting')
-	.controller('OrganizationStatementController', ['$scope', '$stateParams', '$mdDialog', 'accountService',
-		function ($scope, $stateParams, $mdDialog, accountService) {
-			var that = this;
+	.controller('StatementController', [
+        '$scope',
+        '$stateParams',
+        'accountService',
+        '$state',
+		'$mdDialog',
+		function (
+            $scope,
+            $stateParams,
+            accountService,
+            $state,
+			$mdDialog) {
+
+			$scope.selectedTab = $state.$current.data.currentTab;
+
 			this.isAllowed = accountService.isAllowed.bind(accountService);
 
 			this.onLoadingError = function(error) {
@@ -11,14 +23,17 @@ angular.module('app.accounting')
 						break;
 				}
 			};
+
 			$scope.filters = {
 				limit: 10
 			};
+
 			$scope.statement = null;
 			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) { $scope.statement = data; }, this.onLoadingError, 10000);
 			this.cancelAutoUpdate = function() {
 				accountService.stopOrganizationPolling();
 			};
+
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
 			$scope.isLoadingMore = false;

@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+	require('load-grunt-tasks')(grunt);
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -60,9 +62,14 @@ module.exports = function(grunt) {
 			]
 		},
 		jshint: {
-			app: [
-				'public/app/**/*.js'
-			]
+			app: {
+				options: {
+					funcscope:true
+				},
+				files:{
+					src:['public/app/**/*.js']
+				}
+			}
 		},
 		processhtml: {
 			dist: {
@@ -83,10 +90,29 @@ module.exports = function(grunt) {
 		},
 		copy: {
 			main: {
-				src: 'public/icon-set.svg',
-				dest: 'build/icon-set.svg'
+				files: [
+					{src: 'public/icon-set.svg',dest: 'build/icon-set.svg'},
+					{expand: true, cwd: 'public/img/', src: ['**'], dest: 'build/img/'}
+				]
+
 			},
 		},
+		shell: {
+			testSingle: {
+				command: 'npm run test-single-run'
+			}
+		},
+		watch: {
+			scripts: {
+				tasks: ['jshint','shell:testSingle'],
+				files: ['public/**/*.js'],
+			}
+		},
+		shell: {
+	        deploy_staging: {
+	            command: 'rsync ./build/* cocoon@10.250.2.44:/var/www/vhosts/cocoon/public --rsh ssh -r --verbose'
+	        }
+	    }
 	});
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -96,5 +122,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-angular-templates');
 	grunt.loadNpmTasks('grunt-processhtml');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('build', ['jshint', 'clean:build', 'ngtemplates', 'concat', 'uglify', 'cssmin', 'processhtml', 'copy', 'clean:tmp']);
+	grunt.registerTask('deploy', ['build', 'shell:deploy_staging']);
 };

@@ -22,6 +22,7 @@ var StreamService = function($resource, $interval, identity) {
 	var isQueryPolling = false;
 	this.query = function(organizationId, success, error) {
 		isQueryPolling = true;
+		error = error || _.noop;
 		resource.query(
 				{ orgId: organizationId },
 				function(data) {
