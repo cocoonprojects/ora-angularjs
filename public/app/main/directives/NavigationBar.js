@@ -24,7 +24,7 @@
 						identity.loadMemberships().then(function(memberships){
 							if(memberships && memberships.length){
 								$scope.organizationId = memberships[0].organization.id;
-							};
+							}
 						});
 					}
 
