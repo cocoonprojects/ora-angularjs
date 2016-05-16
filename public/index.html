@@ -120,9 +120,21 @@
 			<md-content flex layout-padding layout-fill ng-controller="LeftController">
 				<md-list>
 					<md-list-item>
-						<md-button ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
+						<md-button class="menu-button" ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
 					</md-list-item>
 					<md-divider></md-divider>
+					<md-list-item>
+						<md-button class="menu-button" ui-sref="org.collaboration({ orgId: organizationId })" ui-sref-active="md-primary" ng-click="toggleLeft()">Items</md-button>
+					</md-list-item>
+					<md-list-item>
+						<md-button class="menu-button" ui-sref="org.organizationStatement({ orgId: organizationId })" ui-sref-active="md-primary" ng-click="toggleLeft()">Credits</md-button>
+					</md-list-item>
+					<md-list-item>
+						<md-button class="menu-button" ui-sref="org.decisions({ orgId: organizationId })" ui-sref-active="md-primary" ng-click="toggleLeft()">Decisions</md-button>
+					</md-list-item>
+					<md-list-item>
+						<md-button class="menu-button" ui-sref="org.people({ orgId: organizationId })" ui-sref-active="md-primary" ng-click="toggleLeft()">People</md-button>
+					</md-list-item>
 	    			<md-subheader class="md-no-sticky">My Organizations</md-subheader>
 					<md-list-item ng-repeat="membership in identity.getMemberships()">
 						<md-button ui-sref="org.collaboration({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>

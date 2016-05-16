@@ -57,3 +57,7 @@ md-sidenav .md-button {
   padding: 0px;
   padding-top: 12px;
 }
+
+.menu-button{
+    text-align: left;
+}

@@ -19,6 +19,7 @@ angular.module('app')
 			$scope.$on('$stateChangeSuccess',function(){
 				if($stateParams.orgId){
 					SelectedOrganizationId.set($stateParams.orgId);
+					$scope.organizationId = $stateParams.orgId;
 				}
 			});
 
