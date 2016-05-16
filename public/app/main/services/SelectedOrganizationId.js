@@ -6,6 +6,9 @@ var SelectedOrganizationId = function($window) {
         },
         set:function(id){
             $window.localStorage.setItem('SELECTED_ORGANIZATION',JSON.stringify(id));
+        },
+        clear:function(){
+            $window.localStorage.removeItem('SELECTED_ORGANIZATION');
         }
     };
 };
