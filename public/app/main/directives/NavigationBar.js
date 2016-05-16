@@ -22,10 +22,12 @@
 					}else{
 						$scope.organizationId = null;
 						identity.loadMemberships().then(function(memberships){
-							$scope.organizationId = memberships[0].organization.id;
+							if(memberships && memberships.length){
+								$scope.organizationId = memberships[0].organization.id;
+							};
 						});
 					}
-					
+
 					$scope.selectedIndex = _.indexOf(STATES,$state.current.name);
                 }
 			};
