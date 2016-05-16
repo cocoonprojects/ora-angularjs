@@ -5,13 +5,22 @@ angular.module('app')
 		'$stateParams',
 		'members',
         'streams',
+		'SelectedOrganizationId',
+		'$state',
         function(
             $scope,
             $log,
             $stateParams,
             members,
-            streams) {
-                $scope.organization = $scope.identity.getMembership($stateParams.orgId);
+            streams,
+			SelectedOrganizationId,
+			$state) {
+				if(!SelectedOrganizationId.get()){
+					$state.go("organizations");
+					return;
+				}
+
+				$scope.organization = $scope.identity.getMembership($stateParams.orgId);
                 $scope.members = members;
                 $scope.stream = streams[0];
                 $scope.user = function(member) {
