@@ -6,7 +6,8 @@ angular.module('app.flow')
 		'$stateParams',
 		'flowService',
 		'$state',
-		'streams',
+		'SelectedOrganizationId',
+		'streamService',
 		function (
 			$scope,
 			$log,
@@ -14,8 +15,21 @@ angular.module('app.flow')
 			$stateParams,
 			flowService,
 			$state,
-			streams) {
-			$scope.stream = streams[0];
+			SelectedOrganizationId,
+			streamService) {
+			if(SelectedOrganizationId.get()){
+				streamService.query(SelectedOrganizationId.get(),function(data){
+					$scope.stream = _.values(data._embedded['ora:stream'])[0];
+				},function(){
+					$state.go("organizations");
+					return;
+				});
+
+			}else{
+				$state.go("organizations");
+				return;
+			}
+
 			$scope.filters = {
 					limit: 10,
 					offset: 0
