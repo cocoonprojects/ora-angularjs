@@ -208,4 +208,8 @@ angular.module('app.collaboration')
 			this.closeItem = function(item) {
 				itemService.closeItem(item, this.updateItem, $log.warn);
 			};
+
+			this.addAttachment = function(file){
+				$scope.attachments.push(_.pick(file,'name','url'));
+			};
 		}]);

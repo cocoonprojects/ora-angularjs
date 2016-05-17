@@ -78,15 +78,18 @@
 	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
-<md-card-header data-ng-if="attachments.length">
+<md-card-header>
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Attachments</span>
-		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row"> <!--div da fare ng-repeat e mettere i log-->
-			<p style=" font-size: 14px; color: gray; margin-left: 2px;">XXXXXXXX</p>
+		<md-button class="md-raised md-primary" aria-label="Add" data-google-drive-picker data-on-file-select="ctrl.addAttachment(file)">Add</md-button>
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" data-ng-repeat="a in attachments"> <!--div da fare ng-repeat e mettere i log-->
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">
+				<a ng-href="{{a.url}}" target="_blank">{{a.name}}</a>
+			</p>
 		</div>
 	</md-card-header-text>
 </md-card-header>
-<md-divider data-ng-if="attachments.length"></md-divider>
+<md-divider></md-divider>
 <md-card-header>
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Log Activity</span>
