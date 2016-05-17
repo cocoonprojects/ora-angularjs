@@ -7,6 +7,6 @@ angular.module('app.flow')
 	})
 	.filter('flowTypeLabel', ['FLOW_TYPES_LABEL', function(FLOW_TYPES_LABEL) {
 		return function(type) {
-			return FLOW_TYPES_LABEL[type] || type;
+			return FLOW_TYPES_LABEL[type] || type.replace(/([A-Z])/g, ' $1');
 		};
 	}]);
