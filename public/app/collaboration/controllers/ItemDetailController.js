@@ -28,6 +28,7 @@ angular.module('app.collaboration')
 				$state.go("org.profile",{memberId:id});
 			};
 
+			$scope.attachments = [];
 			$scope.streams = null;
 			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
 			this.onLoadingError = function(error) {

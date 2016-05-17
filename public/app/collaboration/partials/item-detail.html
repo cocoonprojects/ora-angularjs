@@ -74,18 +74,26 @@
 			ng-init="m = user(member)">
 				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
 				<p ng-click="goToProfile(member.id)" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
-	</div>
-</md-card-header-text>
+			</div>
+	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
+<md-card-header data-ng-if="attachments.length">
+	<md-card-header-text>
+		<span style="font-size: 14px;" class="md-title">Attachments</span>
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row"> <!--div da fare ng-repeat e mettere i log-->
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">XXXXXXXX</p>
+		</div>
+	</md-card-header-text>
+</md-card-header>
+<md-divider data-ng-if="attachments.length"></md-divider>
 <md-card-header>
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Log Activity</span>
-		<div style="margin-top: -10px; margin-bottom: -15px;"
-		layout="row"> <!--div da fare ng-repeat e mettere i log-->
-		<p style=" font-size: 14px; color: gray; margin-left: 2px;">XXXXXXXX</p>
-	</div>
-</md-card-header-text>
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row"> <!--div da fare ng-repeat e mettere i log-->
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">XXXXXXXX</p>
+		</div>
+	</md-card-header-text>
 </md-card-header>
 </md-card>
 
