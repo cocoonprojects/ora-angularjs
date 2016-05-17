@@ -1,14 +1,26 @@
 angular.module('app.identity')
-	.controller('SignInController', ['$scope', '$log', '$state',
-		function($scope, $log, $state) {
+	.controller('SignInController', [
+		'$scope',
+		'$log',
+		'$state',
+		'SelectedOrganizationId',
+		function(
+			$scope,
+			$log,
+			$state,
+			SelectedOrganizationId) {
 
 			$scope.onSuccess = function(googleUser) {
 				$scope.$apply(function() {
 					$scope.identity.signInFromGoogle(googleUser);
-					$log.info('User signed in');
-					var s = 'flow'; // TODO: bring back to requested route
-					$state.go(s);
-					$log.debug("Redirecting to '" + s + "' state");
+					$scope.identity.loadMemberships().then(function(memberships){
+						if(memberships && memberships.length){
+							SelectedOrganizationId.set(memberships[0].organization.id);
+							$state.go('flow');
+						}else{
+							$state.go('organizations');
+						}
+					});
 				});
 			};
 
