@@ -41,7 +41,7 @@
 	<md-list-item class="md-3-line md-padding">
 		<img class="md-avatar" ng-src="img/immagine.png"/>
 		<div class="md-list-item-text md-padding">
-			<p style="color: black; font-size: 14px;">{{card.type}}</p>
+			<p style="color: black; font-size: 14px;">{{card.type | flowTypeLabel}}</p>
 			<h1 style="color: black; font-size: 18px; margin-top: 2px;">{{card.title}}</h1>
 			<p style="color: gray; font-size: 12px; margin-top: -10px;">{{card.content.description}}</p>
 		</div>
