@@ -7,6 +7,9 @@ function NewItemController(
 	orgId,
 	streams,
 	decisionMode) {
+
+	$scope.decisionMode = decisionMode;
+
 	$scope.streams = streams;
 
 	templateService.list().then(function(templates){

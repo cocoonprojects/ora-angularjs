@@ -2,7 +2,7 @@
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
-				<h2>Propose an idea</h2>
+				<h2>Propose {{decisionMode ? 'a Decision' : 'an Idea'}}</h2>
 				<md-input-container>
 					<label>Subject</label>
 					<input data-ng-model="task.subject" name="subject" type="text" required>
