@@ -100,3 +100,7 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     color:white;
     line-height:40px;
 }
+
+.filterBar {
+    background-color: #91BACE !important;
+}
