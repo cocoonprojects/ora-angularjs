@@ -82,10 +82,13 @@
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Attachments</span>
 		<md-button class="md-raised md-primary" aria-label="Add" data-google-drive-picker data-on-file-select="ctrl.addAttachment(file)">Add</md-button>
-		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" data-ng-repeat="a in attachments"> <!--div da fare ng-repeat e mettere i log-->
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" layout-align="space-between center" data-ng-repeat="a in attachments"> <!--div da fare ng-repeat e mettere i log-->
 			<p style=" font-size: 14px; color: gray; margin-left: 2px;">
 				<a ng-href="{{a.url}}" target="_blank">{{a.name}}</a>
 			</p>
+			<md-button class="md-icon-button md-accent" aria-label="Delete">
+	   			<md-icon md-svg-icon="img/icons/delete.svg">delete</md-icon>
+	 		</md-button>
 		</div>
 	</md-card-header-text>
 </md-card-header>
