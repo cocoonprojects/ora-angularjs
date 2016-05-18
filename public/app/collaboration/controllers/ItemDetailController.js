@@ -212,4 +212,8 @@ angular.module('app.collaboration')
 			this.addAttachment = function(file){
 				$scope.attachments.push(_.pick(file,'name','url'));
 			};
+
+			this.deleteAttachment = function(file){
+				$scope.attachments = _.without($scope.attachments,file);
+			};
 		}]);

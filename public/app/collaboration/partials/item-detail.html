@@ -86,8 +86,8 @@
 			<p style=" font-size: 14px; color: gray; margin-left: 2px;">
 				<a ng-href="{{a.url}}" target="_blank">{{a.name}}</a>
 			</p>
-			<md-button class="md-icon-button md-accent" aria-label="Delete">
-	   				<md-icon class="material-icons"  aria-label="delete">delete</md-icon>
+			<md-button class="md-icon-button md-accent" aria-label="Delete" data-ng-click="ctrl.deleteAttachment(a)">
+   				<md-icon class="material-icons" aria-label="delete">delete</md-icon>
 	 		</md-button>
 		</div>
 	</md-card-header-text>
