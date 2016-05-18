@@ -2,11 +2,11 @@
     "use strict";
 
 
-    angular.module('app').directive('imgFilterByType', [
+    angular.module('app').directive('flowIcon', [
         function() {
             return {
                 restrict: 'E',
-                template: '<div><md-icon class="material-icons" aria-label="{{pippo}}">{{pippo}}</md-icon></div>',
+                template: '<div class="flowIconContainer"><md-icon class="material-icons flowIcon" aria-label="{{pippo}}">{{pippo}}</md-icon></div>',
                 scope: {
                     type: '='
                 },

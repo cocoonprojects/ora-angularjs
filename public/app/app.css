@@ -87,3 +87,16 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     background-color: #607d8b;
     color: #C3CDD3;
 }
+
+.flowIconContainer {
+    text-align:center;
+    border-radius:50%;
+    width:40px;
+    height:40px;
+    background-color:black;
+}
+
+.flowIcon {
+    color:white;
+    line-height:40px;
+}
