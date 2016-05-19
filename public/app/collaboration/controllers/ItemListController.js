@@ -221,5 +221,4 @@ angular.module('app.collaboration')
 				$scope.changeStatusTime = !$scope.changeStatusTime;
 			};
 
-
 		}]);

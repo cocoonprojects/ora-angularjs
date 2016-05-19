@@ -5,10 +5,10 @@
 		</md-button>
 	</md-fab-trigger>
 	<md-fab-actions>
-		<md-button aria-label="New Decision" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, false)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<md-icon md-svg-icon="addItem" title="New Decision" style="color: black"></md-icon>
+		<md-button aria-label="New Item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, false)" ng-if="ctrl.isAllowed('createItem', organization)">
+			<md-icon md-svg-icon="addItem" title="New Item" style="color: black"></md-icon>
 		</md-button>
-		<md-button aria-label="New Item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, true)" ng-if="ctrl.isAllowed('createStream', organization)">
+		<md-button aria-label="New Decision" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, true)" ng-if="ctrl.isAllowed('createItem', organization)">
 			<i class="material-icons" title="New Item" style="margin-top: 6px; color: black">&#xE90E;</i>
 		</md-button>
 	</md-fab-actions>
@@ -51,31 +51,25 @@ infinite-scroll-disabled="items.total == items.count || isLoadingMore"
 infinite-scroll-immediate-check="false">
 <md-card-header style="margin-top: -10px;">
 	<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
-		<span style="margin-top: -5px;" class="md-subhead">
-			{{item.type}}
-		</span>
 		<span style="font-size: 22px; margin-top: -5px;">
 			{{ item.subject }}
 		</span>
 		<p style="text-transform: uppercase; font-size: 14px; margin-top: 0px;">
-			<span class="md-subhead">
-				#XXXX
-			</span>
 			{{ ctrl.stream(item).subject }}
 		</p>
 		<span style="font-size: 13px; margin-top: -15px; line-height: 14px;" class="md-subhead">
 			{{item.description}}
 		</span>
-		<div layout="row" style="width: 60%;">
+		<div layout="row" style="">
 			<p style="font-size: 14px;">
-				status:
+				Status:
 				<span style="line-height: 16px" class="md-subhead">
 					{{item.status | itemStatusLabel}}
 				</span>
 			</p>
 			<span flex></span>
 			<p style=" font-size: 14px;">
-				credit:
+				Current Value:
 				<span style="line-height: 16px" class="md-subhead">
 					XXXX
 				</span>

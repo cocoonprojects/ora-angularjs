@@ -40,7 +40,6 @@
 
 					$scope.$on('$stateChangeSuccess',
 	                    function(event, toState) {
-							console.log(toState);
                         	$scope.selectedIndex = checkSelectedStateIndex(toState.name);
 	                    }
 	                );

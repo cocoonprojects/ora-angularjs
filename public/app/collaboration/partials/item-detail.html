@@ -1,22 +1,19 @@
 <md-card>
 	<md-card-header style="margin-top: -10px;">
 		<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
-			<span style="margin-top: -5px;" class="md-subhead">
+			<span style="text-transform: uppercase; margin-top: -5px;" class="md-subhead">
 				{{item.type}}
 			</span>
 			<span style="font-size: 26px; margin-top: -5px;">
 				{{ item.subject }}
 			</span>
 			<p style="text-transform: uppercase; font-size: 16px; margin-top: 0px;">
-				<span style="font-size: 16px" class="md-subhead">
-					#XXXX
-				</span>
 				{{ ctrl.stream(item).subject }}
 			</p>
 			<div layout="row" style="margin-top: -28px;">
-				<p style="font-size: 14px;">owner:</p>
-				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="{{ owner.picture || 'img/account.jpg' }}"> <!-- qua ci vuole l'immagine dell'owner-->
-				<p ng-click="goToProfile(owner.id)" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--><!--ui-sref con account vero--> (owner) <!--ruolo dell'owner--></p>
+				<p style="font-size: 14px;">Created by:</p>
+				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="{{ owner.picture || 'img/account.jpg' }}">
+				<p ng-click="goToProfile(owner.id)" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner-->(contributor)<!--ruolo dell'owner--></p>
 			</div>
 		<p style="font-size: 14px; margin-top: -8px;">
 			status:
@@ -31,16 +28,16 @@
 			</span>
 		</p>
 		<p style="font-size: 14px; margin-top: -8px;">
-			Credit:
+			Current Value:
 			<span style="line-height: 14px" class="md-subhead">
 				XXXX
 			</span>
 		</p>
 	</div>
 </md-card-header-text>
-<md-card-media layout="column" layout-align="start end">
+<!--<md-card-media layout="column" layout-align="start end">
 	<img style="max-width: 70px; border-radius: 50%" ng-src="img/immagine.png">
-</md-card-media>
+</md-card-media>-->
 </md-card-header>
 <md-card-action layout="row" layout-align="end end">
 	<md-button class="md-raised md-primary" aria-label="Start item" ng-if="ctrl.isAllowed('executeItem', item)" ng-click="ctrl.executeItem(item)">Start</md-button>
