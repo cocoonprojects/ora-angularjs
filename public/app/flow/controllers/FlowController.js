@@ -66,12 +66,8 @@ angular.module('app.flow')
 				});
 			};
 			this.route = function(card, hierarchy){
-				switch (card.type){
-					case "VoteIdea":
-						if(hierarchy == 'primary'){
-							$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});
-						}
-						break;
+				if (card.content.actions[hierarchy].orgId && card.content.actions[hierarchy].itemId) {
+					$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});
 				}
 			};
 		}]);
