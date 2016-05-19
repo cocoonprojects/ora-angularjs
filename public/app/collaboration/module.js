@@ -23,6 +23,9 @@ angular.module('app.collaboration', ['ui.router'])
 				.state('org.item', {
 					url: '/items/:itemId',
 					templateUrl: 'app/collaboration/partials/item-detail.html',
+					data: {
+						pillarName: 'Items',
+					},
 					controller: 'ItemDetailController as ctrl'
 				});
 		}

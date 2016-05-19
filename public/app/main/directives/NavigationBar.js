@@ -2,6 +2,14 @@
 	"use strict";
 
 	var STATES = ['org.collaboration','org.organizationStatement','flow','org.decisions','org.people'];
+	var MINORSTATES = {
+		"org.item":"org.collaboration"
+	};
+
+	var checkSelectedStateIndex = function(currentState) {
+		currentState = MINORSTATES[currentState] || currentState;
+		return _.indexOf(STATES,currentState);
+	};
 
 	angular.module('app').directive('navigationBar',[
 			'$state',
@@ -28,7 +36,16 @@
 						});
 					}
 
-					$scope.selectedIndex = _.indexOf(STATES,$state.current.name);
+					$scope.selectedIndex = checkSelectedStateIndex($state.current.name);
+
+					$scope.$on('$stateChangeSuccess',
+	                    function(event, toState) {
+							console.log(toState);
+                        	$scope.selectedIndex = checkSelectedStateIndex(toState.name);
+	                    }
+	                );
+
+
                 }
 			};
 		}
