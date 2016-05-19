@@ -23,7 +23,7 @@ function NewItemController(
 	};
 
 	$scope.task = {
-		decision:decisionMode
+		decision:"" + decisionMode
 	};
 
 	this.cancel = function() {
