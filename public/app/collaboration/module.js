@@ -24,7 +24,9 @@ angular.module('app.collaboration', ['ui.router'])
 					url: '/items/:itemId',
 					templateUrl: 'app/collaboration/partials/item-detail.html',
 					data: {
-						pillarName: 'Items',
+						showBack: true,
+						backTo: '',
+						backLabel: ''
 					},
 					controller: 'ItemDetailController as ctrl'
 				});

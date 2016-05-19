@@ -7,7 +7,7 @@
 	};
 
 	var checkSelectedStateIndex = function(currentState) {
-		currentState = MINORSTATES[currentState] || currentState;
+		//currentState = MINORSTATES[currentState] || currentState;
 		return _.indexOf(STATES,currentState);
 	};
 

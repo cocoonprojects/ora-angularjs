@@ -12,6 +12,9 @@ angular.module('app.people', ['ui.router', 'ngResource'])
 				.state('org.profile', {
 					url: '/people/:memberId',
 					templateUrl: 'app/people/partials/profile.html',
-					controller: 'ProfileController'
+					controller: 'ProfileController',
+					data: {
+						showBack: true
+					}
 				});
 		}]);

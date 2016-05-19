@@ -29,6 +29,9 @@ angular.module('app')
                     }
                     return null;
                 };
+				$scope.goBack = function() {
+					window.history.back();
+				};
                 $scope.pillar = {};
                 $scope.$on('$stateChangeSuccess',
                     function(event, toState) {
@@ -38,6 +41,11 @@ angular.module('app')
                         if(toState.data && toState.data.selectedTab){
                             $scope.currentTab = toState.data.selectedTab;
                         }
+						if(toState.data && toState.data.showBack) {
+							$scope.showBack = true;
+						} else {
+							$scope.showBack = false;
+						}
                     }
                 );
             }

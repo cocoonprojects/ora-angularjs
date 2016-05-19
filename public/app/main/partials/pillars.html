@@ -1,9 +1,18 @@
 <md-toolbar>
-	<div class="md-toolbar-tools">
+	<div class="md-toolbar-tools" ng-if="!showBack">
 		<md-button class="md-icon-button logo" ng-click="toggleLeft()" hide-gt-md>
 			<img class="logo-image" ng-src="img/immagine.png"/>
 		</md-button>
 		<h2> {{stream.subject}} > {{ pillar.name }}</h2>
+		<span flex></span>
+		<settings-menu/>
+	</div>
+	<!-- Back -->
+	<div class="md-toolbar-tools" ng-if="showBack">
+		<md-button class="md-icon-button" ng-click="goBack();">
+			<i class="material-icons" title="Back">&#xE314;</i>
+		</md-button>
+		<h2> back </h2>
 		<span flex></span>
 		<settings-menu/>
 	</div>
