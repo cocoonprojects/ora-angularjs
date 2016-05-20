@@ -34,7 +34,7 @@ angular.module('app.collaboration')
 				limit: 10,
 				offset: 0,
 				status: "All",
-				decisions: $scope.decisions,
+				cardType: ($scope.decisions ? "decisions" : "all"),
 				memberId: null
 			};
 
