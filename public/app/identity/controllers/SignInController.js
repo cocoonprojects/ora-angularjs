@@ -16,7 +16,7 @@ angular.module('app.identity')
 					$scope.identity.loadMemberships().then(function(memberships){
 						if(memberships && memberships.length){
 							SelectedOrganizationId.set(memberships[0].organization.id);
-							$state.go('flow');
+							$state.go('org.flow',{ orgId: memberships[0].organization.id });
 						}else{
 							$state.go('organizations');
 						}

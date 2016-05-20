@@ -1,7 +1,7 @@
 (function() {
 	"use strict";
 
-	var STATES = ['org.collaboration','org.organizationStatement','flow','org.decisions','org.people'];
+	var STATES = ['org.collaboration','org.organizationStatement','org.flow','org.decisions','org.people'];
 	var MINORSTATES = {
 		"org.item":"org.collaboration"
 	};
