@@ -21,9 +21,9 @@
 			<md-option ng-repeat="status in ITEM_STATUS" ng-value="{{status}}">{{ status | itemStatusLabel }}</md-option>
 		</md-select>
 		<span flex></span>
-		<md-select style="font-size: 14px; margin: 0px;" placeholder="All Item" ng-model="dainserire">
-			<md-option selected>All Items</md-option>
-			<md-option>My Items</md-option>
+		<md-select style="font-size: 14px; margin: 0px;" placeholder="All Item" ng-model="filters.memberId">
+			<md-option value="" selected>All Items</md-option>
+			<md-option ng-value="currentUserId">My Items</md-option>
 	</md-select>
 	<span flex></span>
 	</div>

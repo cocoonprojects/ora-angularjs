@@ -20,6 +20,8 @@ angular.module('app.collaboration')
 			itemService,
 			$state) {
 
+			$scope.currentUserId = $scope.identity.getId();
+
 			$scope.decisions = $state.$current.data.decisions;
 
 			$scope.changeUpdateTime = false;
@@ -33,7 +35,7 @@ angular.module('app.collaboration')
 				offset: 0,
 				status: "All",
 				decisions: $scope.decisions,
-				onlyMine: false
+				memberId: null
 			};
 
 			this.cancelAutoUpdate = function() {
@@ -41,7 +43,7 @@ angular.module('app.collaboration')
 				itemService.stopQueryPolling();
 			};
 
-			$scope.$watchGroup(['filters.status','filters.onlyMine'],function(){
+			$scope.$watchGroup(['filters.status','filters.memberId'],function(){
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 				$scope.items = [];
