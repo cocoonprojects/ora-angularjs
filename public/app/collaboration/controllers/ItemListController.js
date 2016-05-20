@@ -35,7 +35,9 @@ angular.module('app.collaboration')
 				offset: 0,
 				status: "All",
 				cardType: ($scope.decisions ? "decisions" : "all"),
-				memberId: null
+				memberId: null,
+				orderBy: 'mostRecentEditAt', //exeption for handle sort without break signature method
+				orderType: ($scope.changeUpdateTime ? "asc" : "desc") //exeption for handle sort without break signature method
 			};
 
 			this.cancelAutoUpdate = function() {
@@ -43,7 +45,7 @@ angular.module('app.collaboration')
 				itemService.stopQueryPolling();
 			};
 
-			$scope.$watchGroup(['filters.status','filters.memberId'],function(){
+			$scope.$watchGroup(['filters.status','filters.memberId','filters.orderType'],function(){
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 				$scope.items = [];
@@ -218,6 +220,7 @@ angular.module('app.collaboration')
 			};
 			this.invertUpdateTime = function() {
 				$scope.changeUpdateTime = !$scope.changeUpdateTime;
+				$scope.filters.orderType = ($scope.changeUpdateTime ? "asc" : "desc");
 			};
 			this.invertStatusTime = function() {
 				$scope.changeStatusTime = !$scope.changeStatusTime;

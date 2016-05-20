@@ -13,35 +13,45 @@
 		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
-<md-subheader class="md-no-sticky">Filter items by:</md-subheader>
-	<div layout="row" style="margin-top: -18px;">
+<md-toolbar class="filterBar" style="min-height:37px">
+	<div class="md-toolbar-tools" style="height:37px" >
+		<md-button   ng-click="showFilter=!showFilter" style="width:100%">
+			<span style="text-transform: uppercase;font-size: 10px;font-weight:600" >Filter items by:</span>
+			<span flex></span>
+			<md-icon style="font-size: 18px;margin-top:5px" class="material-icons">&#xE5C5;</md-icon>
+		</md-button>
+	</div>
+</md-toolbar>
+<!--<md-subheader class="md-no-sticky">Filter items by:</md-subheader>-->
+<md-content ng-show="showFilter" class="filterBar" layout-padding>
+	<div layout="row">
 		<span flex></span>
-		<md-select style="font-size: 14px; margin: 0px;" placeholder="Status" ng-model="filters.status">
+		<md-select style="font-size: 10px; margin: 0px;" placeholder="Status" ng-model="filters.status">
 			<md-option selected ng-value="All">All</md-option>
 			<md-option ng-repeat="status in ITEM_STATUS" ng-value="{{status}}">{{ status | itemStatusLabel }}</md-option>
 		</md-select>
 		<span flex></span>
-		<md-select style="font-size: 14px; margin: 0px;" placeholder="All Item" ng-model="filters.memberId">
+		<md-select style="font-size: 10px; margin: 0px;" placeholder="All Item" ng-model="filters.memberId">
 			<md-option value="" selected>All Items</md-option>
 			<md-option ng-value="currentUserId">My Items</md-option>
 	</md-select>
 	<span flex></span>
 	</div>
-<md-divider style="margin-top: 14px;"></md-divider>
-	<div layout="row" style="margin-top: -8px;">
+	<div layout="row">
 		<span flex></span>
 			<span flex></span>
-		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Update Time</p>
-			<md-button style="margin-left: -10px; margin-top: 18px;" class="md-icon-button" ng-click="ctrl.invertUpdateTime()">
+			<p style="font-size: 10px;" ng-click="ctrl.invertUpdateTime()">Update Time</p>
+			<md-button style="" class="md-icon-button" ng-click="ctrl.invertUpdateTime()">
 				<md-icon data-ng-if="!changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
 				<md-icon data-ng-if="changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
 			</md-button>
-		<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Status change time</p>
+		<!--<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Status change time</p>
 			<md-button style="margin-left: -10px; margin-top: 18px;" class="md-icon-button" ng-click="ctrl.invertStatusTime()">
 				<md-icon data-ng-if="!changeStatusTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
 				<md-icon data-ng-if="changeStatusTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
-			</md-button>
+			</md-button>-->
 	</div>
+</md-content>
 <md-card ng-repeat="item in items._embedded['ora:task']"
 ng-init="owner = ctrl.getOwner(item)"
 infinite-scroll="ctrl.loadMore()"
