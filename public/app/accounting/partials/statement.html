@@ -47,36 +47,37 @@
 		</div>
 		<md-content>
 			<md-list flex="100" infinite-scroll="ctrl.loadMore()"
-			infinite-scroll-distance="1"
-			infinite-scroll-parent="true"
-			infinite-scroll-disabled="statement.total == statement.count || isLoadingMore"
-			infinite-scroll-immediate-check="false"
-			data-ng-repeat="transaction in statement._embedded.transactions"
-			ng-switch="transaction.type"
-			infinite-scroll="ctrl.loadMore()">
-			<md-list-item class="md-3-line">
-				<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
-				<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
-				<md-icon class="md-avatar-icon" ng-switch-when="Withdrawal" md-svg-icon="withdrawal"></md-icon>
-				<md-icon class="md-avatar-icon" ng-switch-when="Deposit" md-svg-icon="deposit"></md-icon>
-				<div class="md-list-item-text">
-					<p ng-style="transaction.amount < 0 ? { color : 'Red' } : {}">{{ transaction.amount | number:2 }}</p>
-					<h2 style="font-size: 16px; margin-top: 0px;">{{ transaction.description }}</h2>
-					<p style="margin-top: -10px;" ng-switch="transaction.type">
-						<span ng-switch-when="IncomingTransfer">from {{ transaction.payer }}</span>
-						<span ng-switch-when="OutgoingTransfer">to {{ transaction.payee }}</span>
-						<span ng-switch-when="Deposit">by {{ transaction.payer }}</span>
-						<span ng-switch-when="Withdrawal">by {{ transaction.payee }}</span>
-					</p>
-				</div>
-				<div layout="column">
-					<p style="color: gray; font-size: 14px; margin-top: 80%;">{{ transaction.date | date:'dd/MM/yyyy' }}</p>
-				</div>
-			</md-list-item>
-		</md-list>
-	</md-content>
-	<div style="height:48px;"></div>
-</md-tab>
+				infinite-scroll-distance="1"
+				infinite-scroll-parent="true"
+				infinite-scroll-disabled="statement.total == statement.count || isLoadingMore"
+				infinite-scroll-immediate-check="false"
+				infinite-scroll="ctrl.loadMore()">
+				<md-list-item
+					class="md-3-line"
+					data-ng-repeat="transaction in statement._embedded.transactions"
+					ng-switch="transaction.type">
+					<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
+					<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
+					<md-icon class="md-avatar-icon" ng-switch-when="Withdrawal" md-svg-icon="withdrawal"></md-icon>
+					<md-icon class="md-avatar-icon" ng-switch-when="Deposit" md-svg-icon="deposit"></md-icon>
+					<div class="md-list-item-text">
+						<p ng-style="transaction.amount < 0 ? { color : 'Red' } : {}">{{ transaction.amount | number:2 }}</p>
+						<h2 style="font-size: 16px; margin-top: 0px;">{{ transaction.description }}</h2>
+						<p style="margin-top: -10px;" ng-switch="transaction.type">
+							<span ng-switch-when="IncomingTransfer">from {{ transaction.payer }}</span>
+							<span ng-switch-when="OutgoingTransfer">to {{ transaction.payee }}</span>
+							<span ng-switch-when="Deposit">by {{ transaction.payer }}</span>
+							<span ng-switch-when="Withdrawal">by {{ transaction.payee }}</span>
+						</p>
+					</div>
+					<div layout="column">
+						<p style="color: gray; font-size: 14px; margin-top: 80%;">{{ transaction.date | date:'dd/MM/yyyy' }}</p>
+					</div>
+				</md-list-item>
+			</md-list>
+		</md-content>
+		<div style="height:48px;"></div>
+	</md-tab>
 <md-tab label="My Wallet" style="text-transform: none !important;">
 	<md-content>
 		<div class="md-padding" layout="row">
