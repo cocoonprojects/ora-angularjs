@@ -1,32 +1,6 @@
-<md-toolbar class="border">
-	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button logo" ng-click="toggleLeft()" hide-gt-md>
-			<img class="logo-image" ng-src="img/immagine.png"/>
-		</md-button>
-		<h2> {{stream.subject}} > Flow</h2>
-		<span flex></span>
-		<settings-menu/>
-	</div>
-</md-toolbar>
-<md-toolbar class="height-toolbar filterBar">
-	<div class="md-toolbar-tools">
-		<span flex></span>
-		<p style="margin-top: 25px;" class="p-size" ng-if="false">Filter by:</p>
-		<md-menu ng-if="false">
-			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-				<md-icon style="font-size: 18px;" class="material-icons">&#xE313;</md-icon>
-			</md-button>
-			<md-menu-content>
-				<md-menu-item>
-					<p>XXXX</p>
-				</md-menu-item>
-				<md-menu-divider></md-menu-divider>
-				<md-menu-item>
-					<p>XXXX</p>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
-		<span flex></span>
+<md-toolbar class="filterBar" style="min-height:37px">
+	<div class="md-toolbar-tools" style="height:37px" >
+		<!-- To be defined -->
 	</div>
 </md-toolbar>
 <md-subheader class="md-no-sticky">Latest Activity</md-subheader>
@@ -56,5 +30,3 @@
 </md-list>
 <div style="height: 48px;"></div>
 </md-content>
-<navigation-bar>
-</navigation-bar>
