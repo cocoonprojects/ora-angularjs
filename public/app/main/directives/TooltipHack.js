@@ -9,7 +9,7 @@
                         element.css({
                             left:"",
                             right:'65px'
-                        })
+                        });
                     },100);
 				}
 			};
