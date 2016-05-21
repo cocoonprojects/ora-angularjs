@@ -55,7 +55,7 @@
 					data-ng-repeat="transaction in statement._embedded.transactions"
 					ng-switch="transaction.type"
 					infinite-scroll="ctrl.loadMore()">
-					<md-list-item class="md-3-line" >
+					<md-list-item class="md-3-line">
 						<md-icon class="md-avatar-icon" ng-switch-when="IncomingTransfer" md-svg-icon="transfer"></md-icon>
 						<md-icon class="md-avatar-icon" ng-switch-when="OutgoingTransfer" md-svg-icon="transfer"></md-icon>
 						<md-icon class="md-avatar-icon" ng-switch-when="Withdrawal" md-svg-icon="withdrawal"></md-icon>
