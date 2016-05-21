@@ -12,6 +12,10 @@ angular.module('app.accounting')
             $state,
 			$mdDialog) {
 
+			$scope.menu = {
+				open:false
+			};
+			
 			$scope.selectedTab = $state.$current.data.currentTab;
 
 			this.isAllowed = accountService.isAllowed.bind(accountService);
