@@ -15,7 +15,7 @@ angular.module('app.accounting')
 			$scope.menu = {
 				open:false
 			};
-			
+
 			$scope.selectedTab = $state.$current.data.currentTab;
 
 			this.isAllowed = accountService.isAllowed.bind(accountService);
@@ -33,7 +33,9 @@ angular.module('app.accounting')
 			};
 
 			$scope.statement = null;
-			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) { $scope.statement = data; }, this.onLoadingError, 10000);
+			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) {
+				$scope.statement = data;
+			}, this.onLoadingError, 10000);
 			this.cancelAutoUpdate = function() {
 				accountService.stopOrganizationPolling();
 			};
@@ -128,10 +130,14 @@ angular.module('app.accounting')
 					}
 				});
 			};
-			this.isNewTransactionsAllowed = function(account) {
+			this.isNewTransactionsAllowed = function() {
+				if(!$scope.statement){
+					return false;
+				}
+
 				return accountService.isAllowed('deposit', $scope.statement) ||
-								accountService.isAllowed('withdrawal', $scope.statement) ||
-								accountService.isAllowed('incomingTransfer', $scope.statement) ||
-								accountService.isAllowed('outgoingTransfer', $scope.statement);
+				accountService.isAllowed('withdrawal', $scope.statement) ||
+				accountService.isAllowed('incomingTransfer', $scope.statement) ||
+				accountService.isAllowed('outgoingTransfer', $scope.statement);
 			};
 		}]);

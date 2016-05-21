@@ -8,7 +8,7 @@
 					setInterval(function(){
                         element.css({
                             left:"",
-                            right:'65px'
+                            right:'85px'
                         });
                     },100);
 				}
