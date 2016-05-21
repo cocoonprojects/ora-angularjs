@@ -69,7 +69,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-deposit.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -82,7 +82,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-withdrawal.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -95,7 +95,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-incoming-transfer.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -116,7 +116,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-outgoing-transfer.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
