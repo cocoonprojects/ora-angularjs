@@ -7,7 +7,7 @@ angular.module('app.people', ['ui.router', 'ngResource'])
 					controller:'MemberListController',
 					templateUrl: 'app/people/partials/people.html',
 					data: {
-						pillarName: 'PEOPLE'
+						pillarName: 'People'
 					}
 				})
 				.state('org.profile', {

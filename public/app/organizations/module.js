@@ -14,7 +14,7 @@ angular.module('app.organizations', [
 				templateUrl: 'app/organizations/partials/organization-settings.html',
 				controller: 'OrganizationSettingsController as ctrl',
 				data: {
-					pillarName: 'SETTINGS'
+					pillarName: 'Settings'
 				}
 			});
 	}
