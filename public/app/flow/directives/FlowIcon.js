@@ -12,10 +12,10 @@
                 },
                 link: function($scope, element, attrs) {
                     var associate = {
-                        'VoteIdea': 'delete',
-                        'VoteCompletedItem': 'grade',
-                        'VoteCompletedItemVotingClosed': 'pan_tool',
-                        'VoteCompletedItemReopened': 'delete'
+                        'VoteIdea': 'lightbulb_outline',
+                        'VoteCompletedItem': 'done',
+                        'VoteCompletedItemVotingClosed': 'gavel',
+                        'VoteCompletedItemReopened': 'announcement'
                     };
 
                     $scope.pippo = associate[$scope.type] || 'info';
