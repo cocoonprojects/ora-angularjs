@@ -47,7 +47,10 @@ angular.module('app', [
 		function($mdThemingProvider) {
 			$mdThemingProvider.theme('default')
 				.primaryPalette('blue-grey')
-				.accentPalette('indigo');
+				.accentPalette('indigo')
+				.warnPalette('red', {
+      				'hue-1': 'A200'
+    			});
 			$mdThemingProvider.theme('input', 'default')
 				.primaryPalette('grey');
 		}])
