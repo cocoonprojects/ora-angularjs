@@ -19,7 +19,7 @@ angular.module('app.people')
 			$mdDialog) {
 
 			$scope.myProfile = identity.getId() === $stateParams.memberId;
-			
+
 			$scope.shouldShowAskForMembership = false;
 			$scope.shouldShowProposeMembership = false;
 
@@ -60,9 +60,21 @@ angular.module('app.people')
 			};
 			$scope.moreDetail = false;
 			$scope.initTasks = function() {
-				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.tasks = data; }, function(response) { $log.warn(response); });
+				itemService.query($stateParams.orgId, $scope.filters, function(data) {
+					$scope.tasks = data._embedded['ora:task'];
+					console.log($scope.tasks);
+				}, function(response) {
+					$log.warn(response);
+				});
 				$scope.stats   = itemService.userStats($stateParams.orgId, $scope.filters);
 			};
+
+			$scope.isOwned = function(task){
+				return !!_.find(_.values(task.members),function(membership){
+					return membership.role === 'owner' && $stateParams.memberId === membership.id;
+				});
+			};
+
 			$scope.loadMore = function() {
 				$scope.filters.limit += 10;
 				$scope.initTasks();
