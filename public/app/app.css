@@ -124,3 +124,20 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     margin-right: 20px;
     text-transform: uppercase;
 }
+
+.profile-info-icon{
+    width:20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+}
+
+.profile-basic-info {
+    padding-left: 5px;
+    font-size: 14px;
+    color: gray;
+    margin-left: 2px;
+}

@@ -19,6 +19,7 @@ angular.module('app.people')
 			$mdDialog) {
 
 			$scope.myProfile = identity.getId() === $stateParams.memberId;
+			
 			$scope.shouldShowAskForMembership = false;
 			$scope.shouldShowProposeMembership = false;
 

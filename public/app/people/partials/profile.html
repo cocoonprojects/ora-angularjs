@@ -6,11 +6,22 @@
 			<p style="margin-top: -14px; font-size: 14px; color: gray;">({{profile.role}})</p>
 		</center>
 	</div>
-	<div layout="column" layout-padding>
-		<div layout="row">
-			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
-			<p style="font-size: 14px; color: gray; margin-left: 2px;">{{profile.email}}</p>
-		</div>
+	<div layout="column">
+		<md-list>
+			<md-list-item style="padding-left:0px;">
+				<div class="profile-info-icon">
+					<i style="font-size:10px;" class="material-icons">mail_outline</i>
+				</div>
+				<p>
+					<a
+						class="profile-basic-info"
+						data-ng-href="mailto:{{profile.email}}" target="_top">
+						{{profile.email}}
+					</a>
+				</p>
+			</md-list-item>
+		</md-list>
+		<!-- TODO: Add additional profile informations
 		<div layout="row" style="margin-top: -34px;">
 			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
 			<p style="font-size: 14px; color: gray; margin-left: 2px;">@{{ profile.firstname }}{{ profile.lastname}}</p>
@@ -23,26 +34,29 @@
 			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
 			<p style="font-size: 14px; color: gray; margin-left: 2px;">CITY</p>
 		</div>
+		-->
 	</div>
 </div>
-<div layout="row" style="padding-left: 8px; margin-top: -16px;">
+<!-- TODO: skill management -->
+<div layout="row" style="padding-left: 8px; margin-top: -16px;" data-ng-if="false">
 	<p style="font-size: 14px; font-weight: bold; display: table;">Very good at</p>
 	<p style="font-size: 14px; margin-left: 6px">
 		XXXXX
 	</p>
 </div>
-<div layout="row" style="padding-left: 8px; margin-top: -24px;">
+<div layout="row" style="padding-left: 8px; margin-top: -24px;" data-ng-if="false">
 	<p style="font-size: 14px; font-weight: bold;">Passion </p>
 	<p style="font-size: 14px; margin-left: 6px">
 		XXXXX
 	</p>
 </div>
 <md-tabs
-	 style="width: 100%;"
-	 class="md-primary"
-	 md-dynamic-height
-	 md-selected="currentTab"
-	 md-stretch-tabs="always">
+	data-ng-if="false"
+	style="width: 100%;"
+	class="md-primary"
+	md-dynamic-height
+	md-selected="currentTab"
+	md-stretch-tabs="always">
 		<md-tab label="Skills">
 			<div layout="column" style="margin-top: 32px;">
 				<div layout="row"  style="margin-top: -32px;">
@@ -246,7 +260,7 @@
 		</md-tab>
 </md-tabs>
 	<md-subheader style="color: black; font-weight: normal; font-size: 12px; z-index: 0;">
-		<br> Member since {{profile.createdAt | date:'dd/MM/yyyy'}} <br> First activity was XXXX
+		Member since {{profile.createdAt | date:'dd/MM/yyyy'}}
 	</md-subheader>
 	<md-card>
 		<md-card-header>
