@@ -104,3 +104,15 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
 .filterBar {
     background-color: #91BACE !important;
 }
+
+.organization-logo {
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background-color:black;
+    color:white;
+    text-align:center;
+    line-height:40px;
+    margin-right:10px;
+    outline: none;
+}

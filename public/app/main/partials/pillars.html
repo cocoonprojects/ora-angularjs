@@ -1,8 +1,8 @@
 <md-toolbar>
 	<div class="md-toolbar-tools" ng-if="!showBack">
-		<md-button class="md-icon-button logo" ng-click="toggleLeft()" hide-gt-md>
-			<img class="logo-image" ng-src="img/immagine.png"/>
-		</md-button>
+		<div class="organization-logo" data-ng-click="toggleLeft();">
+			{{organization | organizationInitials}}
+		</div>
 		<h2> {{stream.subject}} > {{ pillar.name }}</h2>
 		<span flex></span>
 	</div>
