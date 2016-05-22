@@ -32,6 +32,9 @@ angular.module('app.accounting')
 				limit: 10
 			};
 
+			$scope.myWallet = accountService.userStats({ orgId: $stateParams.orgId, memberId: $scope.identity.getId() });
+
+
 			$scope.statement = null;
 			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) {
 				$scope.statement = data;
