@@ -4,6 +4,7 @@ angular.module('app.people', ['ui.router', 'ngResource'])
 			$stateProvider
 				.state('org.people', {
 					url: '/people',
+					controller:'MemberListController',
 					templateUrl: 'app/people/partials/people.html',
 					data: {
 						pillarName: 'PEOPLE'

@@ -116,3 +116,11 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     margin-right:10px;
     outline: none;
 }
+
+.people-you-label{
+    width: 30px;
+    line-height: 72px;
+    text-align: center;
+    margin-right: 20px;
+    text-transform: uppercase;
+}
