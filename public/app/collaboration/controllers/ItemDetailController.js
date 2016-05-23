@@ -68,7 +68,6 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/edit-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						task: item
 					}

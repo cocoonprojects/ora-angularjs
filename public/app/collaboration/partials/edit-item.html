@@ -1,16 +1,8 @@
 <md-dialog aria-label="Edit Item">
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
-		<md-toolbar>
-			<div class="md-toolbar-tools">
-				<h2>Edit Item</h2>
-				<span flex></span>
-				<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
-					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
+				<h2>Edit Item</h2>
 				<md-input-container>
 					<label>Subject</label>
 					<input data-ng-model="item.subject" name="subject" type="text" required>
