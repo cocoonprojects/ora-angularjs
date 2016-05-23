@@ -150,7 +150,6 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/approve-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						title: 'Accept Item',
 						item: item,
@@ -169,7 +168,6 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/assign-shares.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					scope: $scope.$new(),
 					locals: {
 						item: item
@@ -184,7 +182,6 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/approve-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						title: 'Approve Idea',
 						item: item,

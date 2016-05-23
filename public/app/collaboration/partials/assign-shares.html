@@ -1,16 +1,8 @@
 <md-dialog aria-label="Assign Shares" ng-cloak>
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
-		<md-toolbar>
-			<div class="md-toolbar-tools">
-				<h2>Assign Shares</h2>
-				<span flex></span>
-				<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
-					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
+				<h2>Assign Shares</h2>
 				<p>Assign a contribution percentage to each member. You have to distribute {{ available }} remaining points</p>
 				<div ng-messages="form.$error" role="alert" style="font-size: 12px; color: Red">
 					<div ng-message="remote">{{ form.$error.remote }}</div>
