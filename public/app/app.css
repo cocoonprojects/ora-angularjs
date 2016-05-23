@@ -170,3 +170,7 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
   font-size: 12px;
   margin-top: -10px;"
 }
+
+#googleSignIn {
+    padding-top: 50px;
+}
