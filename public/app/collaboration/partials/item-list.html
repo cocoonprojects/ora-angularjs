@@ -80,7 +80,8 @@ infinite-scroll-immediate-check="false">
 				</span>
 			</p>
 			<span flex></span>
-			<p style=" font-size: 14px;">
+			<!-- TODO: print current value for item -->
+			<p style=" font-size: 14px;" data-ng-if="false">
 				Current Value:
 				<span style="line-height: 16px" class="md-subhead">
 					XXXX
@@ -105,7 +106,7 @@ infinite-scroll-immediate-check="false">
 	<p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
 		Last activity:
 		<span style="letter-spacing: .010em; color: rgba(0,0,0,0.54);">
-			XXXXX
+			{{item.mostRecentEditAt | date:'dd/MM/yyyy'}}
 		</span>
 	</p>
 	<span flex></span>

@@ -15,6 +15,16 @@ var Identity = function($http, $log, $q) {
 		return !!this.getMembership(orgId);
 	};
 
+	this.getMembershipRole = function(orgId){
+		var rv = null;
+		angular.forEach(memberships, function(value) {
+			if(value.organization.id === orgId) {
+				rv = value.role;
+			}
+		});
+		return rv;
+	};
+
 	this.getMembership = function(orgId) {
 		var rv = null;
 		angular.forEach(memberships, function(value) {

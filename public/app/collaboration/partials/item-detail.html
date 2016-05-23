@@ -2,7 +2,7 @@
 	<md-card-header style="margin-top: -10px;">
 		<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
 			<span style="text-transform: uppercase; margin-top: -5px;" class="md-subhead">
-				{{item.type}}
+				{{item.decision ? 'Decision' : ''}}
 			</span>
 			<span style="font-size: 26px; margin-top: -5px;">
 				{{ item.subject }}
@@ -13,7 +13,7 @@
 			<div layout="row" style="margin-top: -28px;">
 				<p style="font-size: 14px;">Created by:</p>
 				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="{{ owner.picture || 'img/account.jpg' }}">
-				<p ng-click="goToProfile(owner.id)" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--> (contributor)<!--ruolo dell'owner--></p>
+				<p ng-click="goToProfile(owner.id)" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--> ({{membershipRole}})<!--ruolo dell'owner--></p>
 			</div>
 		<p style="font-size: 14px; margin-top: -8px;">
 			status:
@@ -24,10 +24,11 @@
 		<p style="font-size: 14px; margin-top: -8px;">
 			Last Activity:
 			<span style="line-height: 14px" class="md-subhead">
-				XXXXX
+				{{item.mostRecentEditAt | date:'dd/MM/yyyy'}}
 			</span>
 		</p>
-		<p style="font-size: 14px; margin-top: -8px;">
+		<!-- TODO: print current value for item -->
+		<p style="font-size: 14px; margin-top: -8px;" data-ng-if="false">
 			Current Value:
 			<span style="line-height: 14px" class="md-subhead">
 				XXXX
@@ -90,7 +91,8 @@
 	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
-<md-card-header>
+<!-- TODO: show log activity -->
+<md-card-header data-ng-if="false">
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Log Activity</span>
 		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row"> <!--div da fare ng-repeat e mettere i log-->

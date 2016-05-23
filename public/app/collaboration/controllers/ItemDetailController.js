@@ -24,6 +24,8 @@ angular.module('app.collaboration')
 				});
 			};
 
+			$scope.membershipRole = $scope.identity.getMembershipRole($stateParams.orgId);
+
 			$scope.goToProfile = function(id) {
 				$state.go("org.profile",{memberId:id});
 			};
