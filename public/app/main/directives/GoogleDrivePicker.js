@@ -27,6 +27,8 @@
 			setAppId(CLIENT_ID_GOOLE).
 			setOAuthToken(access_token).
 			setCallback(pickerCallback).
+			setSize(1051,650).
+			setTitle("Select an Attachment").
 			build().
 			setVisible(true);
 	};
