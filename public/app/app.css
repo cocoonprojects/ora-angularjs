@@ -117,6 +117,10 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     outline: none;
 }
 
+.stream-subject {
+    color: #9fa7aa;
+}
+
 .people-you-label{
     width: 30px;
     line-height: 72px;
@@ -168,7 +172,7 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
 .flow-description {
   color: gray;
   font-size: 12px;
-  margin-top: -10px;"
+  margin-top: -10px;
 }
 
 #googleSignIn {
