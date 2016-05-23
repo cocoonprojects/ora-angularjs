@@ -141,3 +141,15 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     color: gray;
     margin-left: 2px;
 }
+
+.im-in-icon {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
