@@ -93,7 +93,7 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     border-radius:50%;
     width:40px;
     height:40px;
-    background-color:black;
+    background-color:#44515a;
 }
 
 .flowIcon {
@@ -109,8 +109,8 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     width:40px;
     height:40px;
     border-radius:50%;
-    background-color:black;
-    color:white;
+    background-color:#e5eaec;
+    color:#455A64;
     text-align:center;
     line-height:40px;
     margin-right:10px;
