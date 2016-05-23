@@ -179,8 +179,13 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     padding-top: 50px;
 }
 
+.main {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
 .logo {
-    margin-top: 250px;
     height:52px;
     background-repeat: no-repeat;
     background-image: url('../img/liquido_icon_flow_v1.svg');
