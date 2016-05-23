@@ -15,9 +15,9 @@
 	<md-list-item class="md-3-line md-padding">
 		<flow-icon type="card.type"></flow-icon>
 		<div class="md-list-item-text md-padding">
-			<p style="color: black; font-size: 14px;">{{card.type | flowTypeLabel}}</p>
-			<h1 style="color: black; font-size: 18px; margin-top: 2px;">{{card.title}}</h1>
-			<p style="color: gray; font-size: 12px; margin-top: -10px;">{{card.content.description}}</p>
+			<p class="flow-type">{{card.type | flowTypeLabel}}</p>
+			<h1 class="flow-title"  >{{card.title}}</h1>
+			<p class="flow-description">{{card.content.description}}</p>
 		</div>
 		<div layout="column">
 			<p am-time-ago="card.createdAt" class="p-size"></p>

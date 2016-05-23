@@ -153,3 +153,20 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.flow-type {
+  color: #455a64;
+  font-size: 14px;
+}
+
+.flow-title {
+  color: #303030;
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.flow-description {
+  color: gray;
+  font-size: 12px;
+  margin-top: -10px;"
+}
