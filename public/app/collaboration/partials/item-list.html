@@ -54,14 +54,14 @@
 			</md-button>-->
 	</div>
 </md-content>
-<md-card ng-repeat="item in items._embedded['ora:task']"
+<md-card  class="card-item" ng-repeat="item in items._embedded['ora:task']"
 ng-init="owner = ctrl.getOwner(item)"
 infinite-scroll="ctrl.loadMore()"
 infinite-scroll-distance="1"
 infinite-scroll-parent="true"
 infinite-scroll-disabled="items.total == items.count || isLoadingMore"
 infinite-scroll-immediate-check="false">
-<md-card-header style="margin-top: -10px;">
+<md-card-header item-card-color card="item" style="margin-top: -10px;">
 	<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
 		<span style="font-size: 22px; margin-top: -5px;">
 			{{ item.subject }}
