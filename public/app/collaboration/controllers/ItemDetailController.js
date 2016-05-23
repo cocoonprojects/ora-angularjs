@@ -103,7 +103,6 @@ angular.module('app.collaboration')
 					templateUrl: 'app/collaboration/partials/estimate-item.html',
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
 					locals: {
 						item: item,
 						prevEstimation: item.members[$scope.identity.getId()].estimation
