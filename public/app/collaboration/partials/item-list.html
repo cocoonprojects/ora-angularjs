@@ -63,6 +63,9 @@ infinite-scroll-disabled="items.total == items.count || isLoadingMore"
 infinite-scroll-immediate-check="false">
 <md-card-header item-card-color card="item" style="margin-top: -10px;">
 	<md-card-header-text>
+		<div layout="row">
+			<span style="font-size: 13px; margin-bottom:5px;" ng-show="item.decision" >Decision</span>
+		</div>
 		<span style="font-size: 22px; margin-top: -5px;">
 			{{ item.subject }}
 		</span>
