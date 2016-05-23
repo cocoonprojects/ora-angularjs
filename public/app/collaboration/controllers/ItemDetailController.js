@@ -24,6 +24,10 @@ angular.module('app.collaboration')
 				});
 			};
 
+			itemService.getAttachments($stateParams.orgId,$stateParams.itemId).then(function(attachments){
+				console.log(attachments);
+			});
+
 			$scope.membershipRole = $scope.identity.getMembershipRole($stateParams.orgId);
 
 			$scope.goToProfile = function(id) {
