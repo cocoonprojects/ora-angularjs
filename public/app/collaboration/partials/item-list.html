@@ -83,9 +83,10 @@ infinite-scroll-immediate-check="false">
 				</span>
 			</p>
 			<!-- TODO: print current value for item -->
-			<p style=" font-size: 14px; padding-left:20px;" data-ng-if="item.estimation">
+			<p style=" font-size: 14px; padding-left:20px;" >
 				Current Value:
-				<span style="line-height: 16px;" class="md-subhead">{{item.estimation}}&nbspCredits</span>
+				<span data-ng-if="item.estimation" style="line-height: 16px;" class="md-subhead">{{item.estimation}}&nbspCredits</span>
+				<span data-ng-if="!item.estimation" style="line-height: 16px;" class="md-subhead">To Be estimated</span>
 			</p>
 		</div>
 	</md-card-header-text>

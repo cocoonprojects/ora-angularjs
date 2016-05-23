@@ -28,11 +28,10 @@
 				</span>
 			</p>
 			<!-- TODO: print current value for item -->
-			<p style="font-size: 14px; margin-top: -8px;" data-ng-if="false">
+			<p style="font-size: 14px; margin-top: -8px;" >
 				Current Value:
-				<span style="line-height: 14px" class="md-subhead">
-					XXXX
-				</span>
+			<span data-ng-if="item.estimation" style="line-height: 14px;" class="md-subhead">{{item.estimation}}&nbspCredits</span>
+			<span data-ng-if="!item.estimation" style="line-height: 14px;" class="md-subhead">To Be estimated</span>
 			</p>
 		</div>
 	</md-card-header-text>
