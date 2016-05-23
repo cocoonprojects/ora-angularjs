@@ -15,8 +15,7 @@ angular.module('app')
 					controllerAs: 'dialogCtrl',
 					templateUrl: "app/organizations/partials/new-organization.html",
 					targetEvent: ev,
-					clickOutsideToClose: true,
-					fullscreen: true
+					clickOutsideToClose: true
 				}).then(this.addOrganization);
 			};
 			this.addOrganization = function(organization) {
