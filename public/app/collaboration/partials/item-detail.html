@@ -67,15 +67,15 @@
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Partecipant List</span>
 		<div
-		style="margin-top: -10px; margin-bottom: -10px;"
-		layout="row"
-		ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'"
-		data-ng-repeat="member in members"
-		ng-init="m = user(member)">
-		<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
-		<p ng-click="goToProfile(member.id)" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
-	</div>
-</md-card-header-text>
+			style="margin-top: -10px; margin-bottom: -10px;"
+			layout="row"
+			ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'"
+			data-ng-repeat="member in members"
+			ng-init="m = user(member)">
+				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
+				<p ng-click="goToProfile(member.id)" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
+		</div>
+	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
 <md-card-header>

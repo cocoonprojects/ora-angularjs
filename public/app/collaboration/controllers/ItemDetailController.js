@@ -22,7 +22,7 @@ angular.module('app.collaboration')
 				$scope.owner = itemService.getOwner(data);
 				$scope.item = data;
 				$scope.attachments = data.attachments || [];
-				$scope.members = _.filter(data.members,function(member){
+				$scope.members = _.filter(_.values(data.members),function(member){
 					return member.id !== $scope.owner.id;
 				});
 			};
