@@ -20,6 +20,10 @@ angular.module('app.collaboration')
 			itemService,
 			$state) {
 
+			$scope.menu = {
+				open:false
+			};
+
 			$scope.currentUserId = $scope.identity.getId();
 
 			$scope.decisions = $state.$current.data.decisions;
