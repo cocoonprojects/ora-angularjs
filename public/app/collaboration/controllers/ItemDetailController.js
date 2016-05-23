@@ -16,17 +16,16 @@ angular.module('app.collaboration')
 			streamService,
 			itemService) {
 
+			$scope.attachments = [];
+
 			var onLoadItem = function(data){
 				$scope.owner = itemService.getOwner(data);
 				$scope.item = data;
+				$scope.attachments = data.attachments || [];
 				$scope.members = _.filter(data.members,function(member){
 					return member.id !== $scope.owner.id;
 				});
 			};
-
-			itemService.getAttachments($stateParams.orgId,$stateParams.itemId).then(function(attachments){
-				console.log(attachments);
-			});
 
 			$scope.membershipRole = $scope.identity.getMembershipRole($stateParams.orgId);
 
@@ -34,7 +33,6 @@ angular.module('app.collaboration')
 				$state.go("org.profile",{memberId:id});
 			};
 
-			$scope.attachments = [];
 			$scope.streams = null;
 			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
 			this.onLoadingError = function(error) {
@@ -211,10 +209,12 @@ angular.module('app.collaboration')
 			};
 
 			this.addAttachment = function(file){
-				$scope.attachments.push(_.pick(file,'name','url'));
+				$scope.attachments.push(file);
+				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments);
 			};
 
 			this.deleteAttachment = function(file){
 				$scope.attachments = _.without($scope.attachments,file);
+				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments);
 			};
 		}]);
