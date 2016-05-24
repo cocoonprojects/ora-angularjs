@@ -20,9 +20,6 @@ angular.module('app.people')
 
 			$scope.myProfile = identity.getId() === $stateParams.memberId;
 
-			$scope.shouldShowAskForMembership = false;
-			$scope.shouldShowProposeMembership = false;
-
 			$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId },function(){
 				console.log($scope.profile);
 			});
@@ -39,17 +36,19 @@ angular.module('app.people')
 				}
 			});
 
-			$scope.proposeMembership = function(ev) {
-				var message = $scope.myProfile ? "Are you sure you want to become a member?" : "Are you sure you want to propose " + $scope.profile.firstname + " as a Member?";
+			$scope.askChangeRole = function(ev) {
+				var message = "Are you sure you want to change the role of this user to ";
+				var newRole = $scope.profile.role === 'contributor' ? 'member' : 'contributor';
+				message += newRole + "?";
 			    var confirm = $mdDialog.confirm()
 			          .title('Confirm')
 			          .textContent(message)
 			          .targetEvent(ev)
 					  .ok('Ok')
           			  .cancel('Cancel');
-			    $mdDialog.show(confirm).then(function() {
-			     	memberService.changeMembership($stateParams.orgId, $stateParams.memberId, "contributor",function(data) {
-						console.log(data);
+			    $mdDialog.show(confirm).then(function(role) {
+			     	memberService.changeMembership($stateParams.orgId, $scope.profile.id, newRole,function(data) {
+						$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
 					}, function(response) {
 						$log.warn(response);
 					});
@@ -95,6 +94,15 @@ angular.module('app.people')
 			$scope.getDelta = function(task) {
 				return task.members[$stateParams.memberId].delta;
 			};
+
+			$scope.isChangeUserAllowed = function(){
+				var isAllowed = memberService.isAllowed.bind(memberService);
+				return isAllowed('changeRole',{
+					orgId:$stateParams.orgId,
+					userId:$stateParams.memberId
+				});
+			};
+
 			$scope.isAllowed = itemService.isAllowed.bind(itemService);
 
 			$scope.initTasks();

@@ -70,6 +70,11 @@ MemberService.prototype = {
 		unjoinOrganization: function(organization) {
 			return organization &&
 					this.getIdentity().getMembership(organization.id);
+		},
+		changeRole: function(data){
+			var role = this.getIdentity().getMembershipRole(data.orgId);
+			//Not me && I'm not a contributor
+			return data && data.userId && this.getIdentity().getId() !== data.userId && role && role !== "contributor";
 		}
 	},
 	isAllowed: function(command, resource) {
