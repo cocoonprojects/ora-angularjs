@@ -1,7 +1,7 @@
 var MINIMAL_CREDITS = 3000; //Dati da settings
 
 var MemberService = function($resource, identity) {
-	var resource = $resource('api/:orgId/people/members/:memberId', { orgId: '@orgId' }, {
+	var resource = $resource('api/:orgId/people/members/:memberId', { orgId: '@orgId', memberId: '@memberId' }, {
 		get: {
 			method: 'GET',
 			headers: { 'GOOGLE-JWT': identity.getToken() }
@@ -18,6 +18,10 @@ var MemberService = function($resource, identity) {
 		delete: {
 			method: 'DELETE',
 			headers: { 'GOOGLE-JWT': identity.getToken() }
+		},
+		put: {
+			method: 'PUT',
+			headers: { 'GOOGLE-JWT': identity.getToken() }
 		}
 	});
 
@@ -30,6 +34,10 @@ var MemberService = function($resource, identity) {
 
 	this.unjoinOrganization = function(organization, success, error) {
 		resource.delete({ orgId: organization.id }, success, error);
+	};
+
+	this.changeMembership = function(orgId, memberId, newrole, success, error) {
+		resource.put({ orgId: orgId, memberId: memberId, role: newrole}, success, error);
 	};
 
 	this.getIdentity = function() {

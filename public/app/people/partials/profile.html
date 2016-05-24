@@ -4,6 +4,7 @@
 			<img alt="{{ profile.firstname }} {{ profile.lastname }}" ng-src="{{ profile.picture || 'img/account.jpg' }}" style="border-radius: 50%; height: 70px; width: 70px; margin-top:20px;" />
 			<p style="margin-top:-2px; font-size: 14px;">{{ profile.firstname }} {{ profile.lastname}}</p>
 			<p style="margin-top: -14px; font-size: 14px; color: gray;">({{profile.role}})</p>
+			<p><md-button class="md-raised md-primary" ng-click="proposeMembership($event)">Diventa Member</md-button></p>
 		</center>
 	</div>
 	<div layout="column">

@@ -40,6 +40,7 @@ angular.module('app.people')
 			});
 
 			$scope.proposeMembership = function(ev) {
+				console.log("E?");
 				var message = $scope.myProfile ? "Are you sure you want to become a member?" : "Are you sure you want to propose " + $scope.profile.firstname + " as a Member?";
 			    var confirm = $mdDialog.confirm()
 			          .title('Confirm')
@@ -48,7 +49,11 @@ angular.module('app.people')
 					  .ok('Ok')
           			  .cancel('Cancel');
 			    $mdDialog.show(confirm).then(function() {
-			     	alert('To Be implemented');
+			     	memberService.changeMembership($stateParams.orgId, $stateParams.memberId, "contributor",function(data) {
+						console.log(data);
+					}, function(response) {
+						$log.warn(response);
+					});
 			    });
 			};
 
