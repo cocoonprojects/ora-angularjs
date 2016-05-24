@@ -421,6 +421,7 @@ var ItemService = function(
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.COMPLETED &&
 					(this.hasJoined(resource, this.getIdentity().getId()) || this.getIdentity().isMember(resource.organization.id)) &&
+					this.getIdentity().getMembershipRole(resource.organization.id) !== 'contributor' &&
 					resource.acceptances[this.getIdentity().getId()]=== undefined;
 				},
 				estimateItem: function(resource) {
@@ -434,6 +435,7 @@ var ItemService = function(
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.IDEA &&
 					this.getIdentity().isMember(resource.organization.id) &&
+					this.getIdentity().getMembershipRole(resource.organization.id) !== 'contributor' &&
 					resource.approvals[this.getIdentity().getId()]=== undefined;
 				},
 				remindItemEstimate: function(resource) {
