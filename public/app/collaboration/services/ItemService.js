@@ -464,6 +464,10 @@ var ItemService = function(
 					this.isOwner(resource, this.getIdentity().getId()) &&
 					(this.isShareAssignmentExpired(resource, new Date()) ||
 					this.isShareAssignmentCompleted(resource));
+				},
+				addAttachment: function(resource) {
+					return resource &&
+					(resource.status >= this.ITEM_STATUS.ONGOING);
 				}
 			},
 			isAllowed: function(command, resource) {

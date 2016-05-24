@@ -78,7 +78,7 @@
 	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
-<md-card-header>
+<md-card-header ng-if="ctrl.isAllowed('addAttachment', item)">
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Attachments</span>
 		<md-button class="md-raised md-primary" aria-label="Add" data-google-drive-picker data-on-file-select="ctrl.addAttachment(file)">Add</md-button>
