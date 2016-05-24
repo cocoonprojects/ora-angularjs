@@ -2,7 +2,7 @@
 	<md-card-header style="margin-top: -10px;">
 		<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
 			<span style="text-transform: uppercase; margin-top: -5px;" class="md-subhead">
-				{{item.decision ? 'Decision' : ''}}
+				{{item.decision === 'true' ? 'Decision' : ''}}
 			</span>
 			<span style="font-size: 26px; margin-top: -5px;">
 				{{ item.subject }}

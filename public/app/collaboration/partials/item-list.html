@@ -64,7 +64,7 @@ infinite-scroll-immediate-check="false">
 <md-card-header item-card-color card="item" style="margin-top: -10px;">
 	<md-card-header-text>
 		<div layout="row">
-			<span style="font-size: 13px; color:#5f6b76; margin-bottom:5px;" ng-show="item.decision" >Decision</span>
+			<span style="font-size: 13px; color:#5f6b76; margin-bottom:5px;" data-ng-show="item.decision === 'true'">Decision</span>
 		</div>
 		<span style="font-size: 22px; color:#203946; margin-top: -5px;">
 			{{ item.subject }}
