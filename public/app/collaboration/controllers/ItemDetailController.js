@@ -7,6 +7,7 @@ angular.module('app.collaboration')
 		'$log',
 		'streamService',
 		'itemService',
+		'identity',
 		function (
 			$scope,
 			$state,
@@ -14,9 +15,59 @@ angular.module('app.collaboration')
 			$mdDialog,
 			$log,
 			streamService,
-			itemService) {
+			itemService,
+			identity) {
 
 			$scope.attachments = [];
+
+			$scope.suggest = '';
+
+			$scope.myId = identity.getId();
+
+			$scope.busy = true;
+
+			this.iVoted = function(elm) {
+				if (elm.status < 30) {
+					if (elm.approvals.hasOwnProperty($scope.myId)) {
+						switch (elm.approvals[$scope.myId].approval) {
+							case 0:
+								$scope.suggest = "You rejected this idea";
+								break;
+							case 1:
+								$scope.suggest = "You have already accepted this idea";
+								break;
+							case 2:
+								$scope.suggest = "You have absteined from vote this idea";
+								break;
+						}
+						return true;
+					}
+				}
+				if (elm.status === 40) {
+					if (elm.acceptances.hasOwnProperty($scope.myId)) {
+						switch (elm.approvals[$scope.myId].approval) {
+							case 0:
+								$scope.suggest = "You haven't accepted";
+								break;
+							case 1:
+								$scope.suggest = "You have accepted";
+								break;
+							case 2:
+								$scope.suggest = "You have absteined from accept this idea";
+								break;
+						}
+						return true;
+					}
+				}
+
+				if (elm.status === 50) {
+					$scope.suggest = "This idea has been completed";
+					return true;
+				}
+
+				$scope.suggest = '';
+				return false;
+			};
 
 			var onLoadItem = function(data){
 				$scope.owner = itemService.getOwner(data);
