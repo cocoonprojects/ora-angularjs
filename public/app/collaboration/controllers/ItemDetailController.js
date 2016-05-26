@@ -72,6 +72,7 @@ angular.module('app.collaboration')
 			var onLoadItem = function(data){
 				$scope.owner = itemService.getOwner(data);
 				$scope.item = data;
+				$scope.busy = false;
 				$scope.attachments = data.attachments || [];
 				$scope.members = _.filter(_.values(data.members),function(member){
 					return member.id !== $scope.owner.id;
