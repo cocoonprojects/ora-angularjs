@@ -27,7 +27,7 @@ angular.module('app.collaboration')
 			$scope.busy = true;
 
 			this.iVoted = function(elm) {
-				if (elm.status < 30) {
+				if (elm.status === 0) {
 					if (elm.approvals.hasOwnProperty($scope.myId)) {
 						switch (elm.approvals[$scope.myId].approval) {
 							case 0:
@@ -53,7 +53,7 @@ angular.module('app.collaboration')
 								$scope.suggest = "You have accepted";
 								break;
 							case 2:
-								$scope.suggest = "You have absteined from accept this idea";
+								$scope.suggest = "You have absteined from accepting this idea";
 								break;
 						}
 						return true;
