@@ -98,8 +98,7 @@
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Log Activity</span>
 		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" data-ng-repeat="h in history">
-			<p style=" font-size: 14px; color: gray; margin-left: 2px;">{{h.name}}</p>
-			<p style=" font-size: 14px; color: gray; margin-left: 2px;">{{h.on}}</p>
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">{{h | logActivityFilter}}</p>
 		</div>
 	</md-card-header-text>
 </md-card-header>
