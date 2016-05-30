@@ -90,9 +90,9 @@ infinite-scroll-immediate-check="false">
 			</p>
 		</div>
 	</md-card-header-text>
-	<md-card-media layout="column" layout-align="start end">
+	<md-card-media layout="column" layout-align="start end" ng-if="item.status != ITEM_STATUS.OPEN">
 		<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" ui-sref="org.profile({ memberId: owner.id })" md-ink-ripple>
-		<p style="margin-top: 1px; font-size: 14px; font-weight: bold">owner:</p>
+		<p style="margin-top: 1px; font-size: 14px; font-weight: bold">{{item.status | ownerLabel}}:</p>
 		<p style="margin-top: -16px; font-size: 12px; color: gray;">{{ owner.firstname }} {{ owner.lastname}} </p>
 	</md-card-media>
 </md-card-header>

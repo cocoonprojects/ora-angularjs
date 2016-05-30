@@ -121,6 +121,7 @@ var ItemService = function(
 		this.query = function(organizationId, filters, success, error) {
 			error = error || _.noop;
 			isQueryPolling = true;
+			console.log(filters);
 			return resource.query(
 				angular.extend({ orgId: organizationId }, filters),
 				function (data) {
@@ -402,8 +403,8 @@ var ItemService = function(
 				executeItem: function(resource) {
 					return resource &&
 					this.getIdentity().isAuthenticated() &&
-					resource.status == this.ITEM_STATUS.OPEN &&
-					this.isOwner(resource, this.getIdentity().getId());
+					resource.status == this.ITEM_STATUS.OPEN; //&&
+					//this.isOwner(resource, this.getIdentity().getId());
 				},
 				reExecuteItem: function(resource) {
 					return resource &&
