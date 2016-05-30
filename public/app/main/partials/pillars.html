@@ -15,6 +15,7 @@
 		<span flex></span>
 	</div>
 </md-toolbar>
-<md-content ui-view></md-content>
+<md-content data-ng-if="!fullHeight" ui-view></md-content>
+<md-content data-ng-if="fullHeight" layout="row" flex ui-view></md-content>
 <navigation-bar>
 <navigation-bar/>

@@ -46,6 +46,10 @@ angular.module('app')
 						} else {
 							$scope.showBack = false;
 						}
+
+						if(toState.data){
+                            $scope.fullHeight = toState.data.fullHeight;
+                        }
                     }
                 );
             }

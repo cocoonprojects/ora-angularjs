@@ -1,0 +1,34 @@
+<md-dialog aria-label="Invitation">
+	<form name="form" ng-submit="submit()" novalidate>
+		<md-dialog-content>
+			<div class="md-dialog-content" layout="column">
+				<h2>Invite new User</h2>
+				<md-input-container>
+					<label>Name</label>
+					<input data-ng-model="invitation.name" name="name" type="text" required>
+					<div ng-messages="form.name.$error" role="alert">
+						<div ng-message="required">Name is required</div>
+					</div>
+				</md-input-container>
+                <md-input-container>
+					<label>Surname</label>
+					<input data-ng-model="invitation.surname" name="surname" type="text" required>
+					<div ng-messages="form.surname.$error" role="alert">
+						<div ng-message="required">Surname is required</div>
+					</div>
+				</md-input-container>
+                <md-input-container>
+					<label>Email</label>
+					<input data-ng-model="invitation.email" name="email" type="email" placeholder="Insert a valid Google email address" required>
+					<div ng-messages="form.email.$error" role="alert">
+						<div ng-message="required">Email is required</div>
+					</div>
+				</md-input-container>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions layout="row" layout-align="end center">
+			<md-button type="button" ng-click="cancel()">Cancel</md-button>
+			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>
