@@ -26,6 +26,8 @@ angular.module('app.collaboration')
 
 			$scope.busy = true;
 
+			$scope.history = [];
+
 			this.iVoted = function(elm) {
 				if (elm.status === 0) {
 					if (elm.approvals.hasOwnProperty($scope.myId)) {
@@ -76,6 +78,10 @@ angular.module('app.collaboration')
 				$scope.attachments = data.attachments || [];
 				$scope.members = _.filter(_.values(data.members),function(member){
 					return member.id !== $scope.owner.id;
+				});
+
+				itemService.getHistory($scope.item).then(function(response){
+					$scope.history = response.data;
 				});
 			};
 

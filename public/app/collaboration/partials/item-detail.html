@@ -94,12 +94,12 @@
 	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
-<!-- TODO: show log activity -->
-<md-card-header data-ng-if="false">
+<md-card-header>
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Log Activity</span>
-		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row"> <!--div da fare ng-repeat e mettere i log-->
-			<p style=" font-size: 14px; color: gray; margin-left: 2px;">XXXXXXXX</p>
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" data-ng-repeat="h in history">
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">{{h.name}}</p>
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">{{h.on}}</p>
 		</div>
 	</md-card-header-text>
 </md-card-header>

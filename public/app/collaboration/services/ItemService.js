@@ -209,6 +209,14 @@ var ItemService = function(
 				return r2.get(angular.extend({ orgId: organizationId }, filters));
 			};
 
+			this.getHistory = function(item){
+				return $http({
+					method:'GET',
+					url:'api/' + item.organization.id + '/task-management/tasks/' + item.id + '/history',
+					headers: { 'GOOGLE-JWT': identity.getToken() }
+				});
+			};
+
 			this.setAttachments = function(organizationId,itemId,attachments){
 				return $http({
 					url:'api/' + organizationId + '/task-management/tasks/' + itemId + '/attachments',
