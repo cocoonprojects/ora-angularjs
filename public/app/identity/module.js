@@ -13,7 +13,7 @@ angular.module('app.identity', ['ui.router'])
 		function($rootScope, $state, $log, identity) {
 			$rootScope.$on("$stateChangeStart",
 				function(event, toState) {
-					if(toState.name === "sign-in") {
+					if(toState.name === "sign-in" || toState.name === 'invitation') {
 						return;
 					}
 					if(identity.isAuthenticated()) {
