@@ -1,3 +1,4 @@
+<div class="bkg-color-secondary">
 <md-fab-speed-dial md-open="menu.open" md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed; margin-bottom: 40px;" ng-if="!decisions">
 	<md-fab-trigger>
 		<md-button aria-label="Item Menu" class="md-fab md-warn md-hue-1">
@@ -25,7 +26,7 @@
 	</div>
 </md-toolbar>
 <!--<md-subheader class="md-no-sticky">Filter items by:</md-subheader>-->
-<md-content ng-show="showFilter" class="filterBar" layout-padding>
+<md-content  ng-show="showFilter" class="filterBar" layout-padding>
 	<div layout="row"  layout-align="space-around center" class="no-padding">
 
 		<md-select class="font-size12" style=" margin: 0px;" placeholder="Status" ng-model="filters.status">
@@ -116,14 +117,16 @@ infinite-scroll-immediate-check="false">
 		{{printVote(item)}}
 	</p>
 </div>
-<md-card-action layout="row" ayout="row"       layout-align="space-between center">
+<md-card-action layout="row"  layout-align="end center">
 	<div data-ng-if="ctrl.checkImIn(item)" class="md-toolbar-tools" style="height: 40px; width: 150px;  ">
 		<div class="im-in-icon margin-left-10">
 			<i style="font-size:16px;" class="material-icons">person</i>
 		</div>
 		<p class="margin-left-10" style="font-size: 14px; margin-top: 25px; color: #607D8B;; margin-bottom: 25px;">I'm involved</p>
 	</div>
+	 <span flex></span>
 	<md-button class="md-raised md-button md-warn md-ink-ripple" ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">VIEW ITEM</md-button>
 </md-card-action>
 </md-card>
 <div class="space-at-end"></div>
+</div>

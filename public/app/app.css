@@ -246,3 +246,7 @@ border-radius: 0 !important;
 .text-align-left {
   text-align: left;
 }
+
+.bkg-color-secondary {
+  background-color: #b6b6b6;
+}
