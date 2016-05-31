@@ -1,8 +1,8 @@
-<md-toolbar class="filterBar" style="min-height:37px">
+<!-- <md-toolbar class="filterBar" style="min-height:37px">
 	<div class="md-toolbar-tools" style="height:37px" >
-		<!-- To be defined -->
+		<!-- To be defined 
 	</div>
-</md-toolbar>
+</md-toolbar> -->
 <md-subheader class="md-no-sticky">Latest Activity</md-subheader>
 <md-divider></md-divider>
 <md-content>
@@ -17,7 +17,7 @@
 		<div class="md-list-item-text md-padding">
 			<p class="flow-type">{{card.type | flowTypeLabel}}</p>
 			<h1 class="flow-title"  >{{card.title}}</h1>
-			<p class="flow-description">{{card.content.description}}</p>
+			<p class="flow-description justify padding-right-30">{{card.content.description}}</p>
 		</div>
 		<div layout="column">
 			<p am-time-ago="card.createdAt" class="p-size"></p>
