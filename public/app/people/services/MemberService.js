@@ -61,12 +61,8 @@ var MemberService = function($http,$resource, identity) {
 	};
 
 	this.canInviteNewUser = function(organization){
-		return identity.loadMembership(organization).then(function(m){
-			if(m.role === 'contributor'){
-				return false;
-			}
-			return true;
-		});
+		var role = identity.getMembershipRole(organization);
+		return role === 'contributor' ? false : true;
 	};
 
 	this.inviteNewUser = function(orgId,data){
