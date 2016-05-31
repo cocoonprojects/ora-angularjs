@@ -26,20 +26,24 @@ angular.module('app.people')
 			var name = data.name;
 			if(data.surname){
 				name += " " + data.surname;
+			}else{
+				data.surname = "";
 			}
 
 			memberService.inviteNewUser($stateParams.orgId,data).then(function(){
-				$mdDialog.alert({
+				return $mdDialog.alert({
 			        title: 'Invite sent',
 			        textContent: name + ' invited to your organization',
 			        ok: 'Close'
 				});
 			},function(){
-				$mdDialog.alert({
+				return $mdDialog.alert({
 			        title: 'Error',
 			        textContent: 'Error during invitation. Please retry',
 			        ok: 'Close'
 				});
+			}).then(function(dialog){
+				$mdDialog.show(dialog);
 			});
 		};
 
