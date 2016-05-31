@@ -19,11 +19,12 @@
 				</md-input-container>
                 <md-input-container>
 					<label>Email</label>
-					<input data-ng-model="invitation.email" name="email" type="email" placeholder="Insert a valid Google email address" required>
+					<input data-ng-model="invitation.email" name="email" type="email"required>
 					<div ng-messages="form.email.$error" role="alert">
 						<div ng-message="required">Email is required</div>
 					</div>
 				</md-input-container>
+				<small>Insert a valid Google email address</small>
 			</div>
 		</md-dialog-content>
 		<md-dialog-actions layout="row" layout-align="end center">
