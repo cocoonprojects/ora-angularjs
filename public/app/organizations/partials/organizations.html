@@ -12,9 +12,11 @@
 <md-content layout-padding>
 	<md-list>
 		<md-list-item ng-repeat="org in organizations._embedded['ora:organization']">
-			<p>{{ org.name }}</p>
+			<md-button md-no-ink class="full-width text-align-left" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)">{{ org.name }}</md-button>
+			<md-button md-no-ink class="full-width text-align-left" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">{{ org.name }}</md-button>
 			<md-button aria-label="Join Organization" class="md-secondary" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)">Join</md-button>
 			<md-button aria-label="Unjoin Organization" class="md-secondary" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
 		</md-list-item>
 	</md-list>
 </md-content>
+<div class="space-at-end"></div>
