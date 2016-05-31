@@ -1,4 +1,4 @@
-<md-sidenav layout="column" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
+<md-sidenav layout="column" md-swipe-left="toggleLeft()" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
     <md-toolbar id="identityBox" class="md-tall md-hue-2">
         <div layout="column" class="md-toolbar-tools-bottom inset">
             <img data-ng-if="identity.getAvatar()" ng-src="{{ identity.getAvatar() }}" style="width: 60px; height: 60px; border-radius: 50%">
