@@ -454,11 +454,13 @@ var ItemService = function(
 					!this.isEstimationCompleted(resource);
 				},
 				assignShares: function(resource) {
+					var shares = resource.members[this.getIdentity().getId()] && resource.members[this.getIdentity().getId()].shares || [];
+
 					return resource &&
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
 					this.hasJoined(resource, this.getIdentity().getId()) &&
-					resource.members[this.getIdentity().getId()].shares === undefined &&
+					shares.length === 0 &&
 					!this.isShareAssignmentExpired(resource, new Date());
 				},
 				skipShares: this.assignShares,
