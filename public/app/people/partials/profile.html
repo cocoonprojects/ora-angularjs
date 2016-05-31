@@ -7,6 +7,7 @@
 		</center>
 	</div>
 	<div layout="column">
+
 		<md-list>
 			<md-list-item style="padding-left:0px;">
 				<div class="profile-info-icon">
@@ -271,6 +272,21 @@
 				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
  					<span class="md-title" style="margin-left: 10px;"> {{credits.total}}
  				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
+				   <span class="md-title" style="margin-left: 10px;"> {{credits.total}}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TASK MEMBERSHIPS
+				   <span class="md-title" style="margin-left: 10px;"> {{ stats.membershipsCount | number : 0 }}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> OWNED TASKS
+				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.ownershipsCount | number : 0 }}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> EARNED CREDITS
+				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.creditsCount | number : 2 }}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> AUTO-ASSESSMENT GAP
+				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.averageDelta | percentage:2:true }}
+				 </span>
 			</md-card-header-text>
 		</md-card-header>
 				<md-card-content layout="row" style="margin-top: -12px; padding-left:5px; padding-right: 5px;">
