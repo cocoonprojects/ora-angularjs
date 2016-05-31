@@ -9,6 +9,7 @@ angular.module('app.collaboration')
 		'streamService',
 		'itemService',
 		'$state',
+		'voteExtractor',
 		function (
 			$scope,
 			$log,
@@ -18,7 +19,8 @@ angular.module('app.collaboration')
 			$mdToast,
 			streamService,
 			itemService,
-			$state) {
+			$state,
+			voteExtractor) {
 
 			$scope.menu = {
 				open:false
@@ -79,6 +81,10 @@ angular.module('app.collaboration')
 			this.loadItems = function() {
 				$scope.filters.limit = 10;
 				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
+			};
+
+			$scope.printVote = function(item){
+				return voteExtractor($scope.currentUserId,item);
 			};
 
 			$scope.isLoadingMore = false;

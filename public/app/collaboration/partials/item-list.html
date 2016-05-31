@@ -96,13 +96,6 @@ infinite-scroll-immediate-check="false">
 		<p style="margin-top: -16px; font-size: 12px; color: gray;">{{ owner.firstname }} {{ owner.lastname}} </p>
 	</md-card-media>
 </md-card-header>
-<!--<p>{{ item | itemStatusResume }}</p>-->
-
-<!--<md-card-actions class="md-hue-2" layout="row" layout-align="end center" ng-if="ctrl.hasActions(item)">
-<md-button class="md-secondary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
-<md-button class="md-secondary" aria-label="Estimate item" ng-if="ctrl.isAllowed('estimateItem', item)" ng-click="ctrl.openEstimateItem($event, item)">Estimate</md-button>
-<md-button class="md-secondary" aria-label="Assign shares" ng-if="ctrl.isAllowed('assignShares', item)" ng-click="ctrl.openAssignShares($event, item)">Assign Shares</md-button>
-</md-card-actions>-->
 <div layout="row" style="margin-top: -32px;">
 	<p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
 		Last activity:
@@ -110,7 +103,11 @@ infinite-scroll-immediate-check="false">
 			{{item.mostRecentEditAt | date:'dd/MM/yyyy'}}
 		</span>
 	</p>
-
+</div>
+<div layout="row">
+	<p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
+		{{printVote(item)}}
+	</p>
 </div>
 <md-card-action layout="row" layout-align="end center">
 	<md-button class="md-warn md-hue-1" ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">VIEW ITEM</md-button>
