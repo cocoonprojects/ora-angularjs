@@ -26,6 +26,10 @@ angular.module('app.people')
 			alert('To Be Implemented');
 		};
 
+		memberService.canInviteNewUser($stateParams.orgId).then(function(result){
+			$scope.canInviteNewUser = result;
+		});
+
 		$scope.openInvitationDialog = function(ev){
 			$mdDialog.show({
 				controller: 'InvitationController',

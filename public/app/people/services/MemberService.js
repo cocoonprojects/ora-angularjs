@@ -59,6 +59,15 @@ var MemberService = function($resource, identity) {
 			}
 		});
 	};
+
+	this.canInviteNewUser = function(organization){
+		return identity.loadMembership(organization).then(function(m){
+			if(m.role === 'contributor'){
+				return false;
+			}
+			return true;
+		});
+	};
 };
 MemberService.prototype = {
 	constructor: MemberService,
