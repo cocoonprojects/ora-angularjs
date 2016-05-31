@@ -12,5 +12,9 @@ angular.module('app.people')
 				$mdDialog.cancel();
 			};
 
+			$scope.submit = function() {
+				$mdDialog.hide($scope.invitation);
+			};
+
 	}
 ]);

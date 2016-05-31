@@ -22,8 +22,25 @@ angular.module('app.people')
 			});
 		});
 
-		var sendInvitation = function(){
-			alert('To Be Implemented');
+		var sendInvitation = function(data){
+			var name = data.name;
+			if(data.surname){
+				name += " " + data.surname;
+			}
+
+			memberService.inviteNewUser($stateParams.orgId,data).then(function(){
+				$mdDialog.alert({
+			        title: 'Invite sent',
+			        textContent: name + ' invited to your organization',
+			        ok: 'Close'
+				});
+			},function(){
+				$mdDialog.alert({
+			        title: 'Error',
+			        textContent: 'Error during invitation. Please retry',
+			        ok: 'Close'
+				});
+			});
 		};
 
 		memberService.canInviteNewUser($stateParams.orgId).then(function(result){

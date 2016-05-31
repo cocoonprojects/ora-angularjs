@@ -1,6 +1,6 @@
 var MINIMAL_CREDITS = 3000; //Dati da settings
 
-var MemberService = function($resource, identity) {
+var MemberService = function($http,$resource, identity) {
 	var resource = $resource('api/:orgId/people/members/:memberId', { orgId: '@orgId', memberId: '@memberId' }, {
 		get: {
 			method: 'GET',
@@ -68,6 +68,15 @@ var MemberService = function($resource, identity) {
 			return true;
 		});
 	};
+
+	this.inviteNewUser = function(orgId,data){
+		return $http({
+			method:'POST',
+			url:'api/organizations/' + orgId + '/invites',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			data:data
+		});
+	};
 };
 MemberService.prototype = {
 	constructor: MemberService,
@@ -96,4 +105,4 @@ MemberService.prototype = {
 	}
 };
 angular.module('app.people')
-	.service('memberService', ['$resource', 'identity', MemberService]);
+	.service('memberService', ['$http','$resource', 'identity', MemberService]);
