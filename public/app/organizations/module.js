@@ -12,7 +12,12 @@ angular.module('app.organizations', [
 			.state('invitation', {
 				url: '/organizations/acceptinvite?token',
 				templateUrl: 'app/organizations/partials/confirmInvitation.html',
-				controller: 'ConfirmInvitationController'
+				controller: 'ConfirmInvitationController',
+				resolve:{
+					InvitationData:['$stateParams',function($stateParams){
+						return JSON.parse(atob($stateParams.token));
+					}]
+				}
 			})
 			.state('org.settings', {
 				url: '/settings',

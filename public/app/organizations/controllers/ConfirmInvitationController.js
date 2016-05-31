@@ -4,10 +4,12 @@ angular.module('app')
 		'$stateParams',
 		'$state',
 		'$mdDialog',
+		'InvitationData',
 		function (
 			$scope,
 			$stateParams,
 			$state,
-			$mdDialog) {
-
+			$mdDialog,
+			InvitationData) {
+				console.log(InvitationData);
 		}]);
