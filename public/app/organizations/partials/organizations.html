@@ -14,8 +14,8 @@
 		<md-list-item ng-repeat="org in organizations._embedded['ora:organization']">
 			<md-button md-no-ink class="full-width text-align-left" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)">{{ org.name }}</md-button>
 			<md-button md-no-ink class="full-width text-align-left" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">{{ org.name }}</md-button>
-			<md-button aria-label="Join Organization" class="md-secondary" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)">Join</md-button>
-			<md-button aria-label="Unjoin Organization" class="md-secondary" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
+			<md-button aria-label="Join Organization" class="md-raised" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)"><span class="warn">Join</span></md-button>
+			<md-button aria-label="Unjoin Organization" class="md-raised md-warn" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
 		</md-list-item>
 	</md-list>
 </md-content>
