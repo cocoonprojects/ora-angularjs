@@ -195,3 +195,51 @@ border-left:10px solid;
     background-image: url('../img/ora_icon_flow_v1.svg');
     background-position: center center;
 }
+
+/* NEW */
+.no-margin {
+  margin: 0;
+}
+.no-padding {
+  padding: 0;
+}
+.full-width {
+  width: 100%;
+}
+.selected-item {
+border-left: 4px solid rgb(96,125,139);
+border-radius: 0 !important;
+}
+.selected-bold {
+  color:black;
+  font-weight: bold;
+}
+.margin-left-10 {
+  margin-left: 10px;
+}
+.margin-right-10 {
+  maegin-right: 10px;
+}
+.margin-top-10 {
+  margin-top: 10px;
+}
+.margin-bottom-10 {
+  maegin-bottom: 10px;
+}
+.padding-right-10 {
+  padding-right: 10px;
+}
+.padding-right-30 {
+  padding-right: 30px;
+}
+.space-at-end {
+  height: 116px;
+}
+
+.justify {
+  text-align: justify;
+}
+
+.font-size12 {
+  font-size: 12px;
+}
