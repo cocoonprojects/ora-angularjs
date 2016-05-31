@@ -31,13 +31,5 @@ describe('memberService', function() {
 		service = new MemberService($resource, identity);
 	}));
 
-	it('should return true if a not member try to join an organization', function() {
-		expect(service.isAllowed('joinOrganization', { id: '00000000-0000-0000-0000-000000000000' })).toBeTruthy();
-		expect(service.isAllowed('joinOrganization', { id: '00000000-0000-0000-0000-000000000001' })).toBeFalsy();
-	});
-
-	it('should return true if a member try to unjoin an organization', function() {
-		expect(service.isAllowed('unjoinOrganization', { id: '00000000-0000-0000-0000-000000000001' })).toBeTruthy();
-		expect(service.isAllowed('unjoinOrganization', { id: '00000000-0000-0000-0000-000000000000' })).toBeFalsy();
-	});
+	
 });
