@@ -35,8 +35,13 @@ angular.module('app')
 								if(result){
 									$scope.identity.signInFromGoogle(googleUser);
 									SelectedOrganizationId.set(InvitationData.orgId);
-									memberService.joinOrganization({ id: InvitationData.orgId }, function(){
-										$state.go('org.flow',{ orgId: InvitationData.orgId });
+									memberService.joinOrganizationAfterInvite({ id: InvitationData.orgId }, function(){
+										$scope.identity.updateMemberships().then(function(){
+											$state.go('org.flow',{ orgId: InvitationData.orgId });
+											window.location.href = location.href.split('#')[0];
+										});
+									}, function() {
+										console.log("Error");
 									});
 								}
 							});

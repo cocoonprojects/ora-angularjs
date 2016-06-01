@@ -32,6 +32,15 @@ var MemberService = function($http,$resource, identity) {
 		resource.save({ orgId: organization.id }, success, error);
 	};
 
+	this.joinOrganizationAfterInvite = function(organization, success, error) {
+		$http({
+ 			method: 'POST',
+ 			url: 'api/'+organization.id+'/people/members',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+ 			data: { orgId: organization.id }
+		}).success(success).error(error);
+	};
+
 	this.unjoinOrganization = function(organization, success, error) {
 		resource.delete({ orgId: organization.id }, success, error);
 	};
