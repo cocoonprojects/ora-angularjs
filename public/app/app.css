@@ -195,3 +195,9 @@ border-left:10px solid;
     background-image: url('../img/ora_icon_flow_v1.svg');
     background-position: center center;
 }
+
+/*NEW*/
+
+.vertical-space {
+  height: 120px;
+}
