@@ -460,8 +460,7 @@ var ItemService = function(
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
 					this.hasJoined(resource, this.getIdentity().getId()) &&
-					shares.length === 0 &&
-					!this.isShareAssignmentExpired(resource, new Date());
+					shares.length === 0
 				},
 				skipShares: this.assignShares,
 				showShares: function(resource) {
