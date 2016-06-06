@@ -201,3 +201,7 @@ border-left:10px solid;
 .vertical-space {
   height: 120px;
 }
+
+.hand-pointer {
+  cursor: pointer;
+}
