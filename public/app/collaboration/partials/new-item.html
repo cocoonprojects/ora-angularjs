@@ -28,7 +28,7 @@
 				</md-input-container>
 				<md-input-container>
 					<label>Description</label>
-					<textarea data-ng-model="task.description" columns="1" md-maxlength="255" rows="3" name="description" required></textarea>
+					<textarea data-ng-model="task.description" columns="1" maxlength="420" md-maxlength="420" name="description" required></textarea>
 					<div ng-messages="form.description.$error" role="alert">
 						<div ng-message="required">Description is required</div>
 						<div ng-message="remote">{{ form.description.$error.remote }}</div>
