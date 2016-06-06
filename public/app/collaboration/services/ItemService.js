@@ -282,7 +282,7 @@ var ItemService = function(
 				'COMPLETED': 30,
 				'ACCEPTED' : 40,
 				'CLOSED'   : 50,
-				'ARCHIVED' : -20
+				'REJECTED' : -20
 			},
 			ITEM_ROLES: {
 				'ROLE_MEMBER': 'member',
