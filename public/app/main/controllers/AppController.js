@@ -25,6 +25,7 @@ angular.module('app')
 
             $scope.toggleLeft = buildToggler('left');
             $scope.toggleRight = buildToggler('right');
+            $scope.closeLeft = buildClose('left');
             /**
              * Build handler to open/close a SideNav; when animation finishes
              * report completion in console
@@ -39,5 +40,18 @@ angular.module('app')
                 }, 200);
                 return debounceFn;
             }
+
+            function buildClose(navID) {
+                var debounceFn = $mdUtil.debounce(function() {
+                    $mdSidenav(navID)
+                        .close()
+                        .then(function() {
+                            $log.debug("toggle " + navID + " is closed");
+                        });
+                }, 200);
+                return debounceFn;
+            }
+
+
         }
     ]);

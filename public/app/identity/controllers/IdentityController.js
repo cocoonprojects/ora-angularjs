@@ -15,7 +15,7 @@ angular.module('app.identity')
 
 			$scope.signOut = function() {
 				//Method inhetered from parent
-				$scope.toggleLeft();
+				$scope.closeLeft();
 				var auth2 = gapi.auth2.getAuthInstance();
 				auth2.signOut().then(function () {
 					$scope.$apply(function() {
