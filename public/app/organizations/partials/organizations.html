@@ -11,9 +11,8 @@
 </md-toolbar>
 <md-content layout-padding>
 	<md-list>
-		<md-list-item ng-repeat="org in organizations._embedded['ora:organization']">
+		<md-list-item ng-repeat="org in organizations" ui-sref="org.collaboration({ orgId: org.id })">
 			<p>{{ org.name }}</p>
-			<md-button aria-label="Join Organization" class="md-secondary" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)">Join</md-button>
 			<md-button aria-label="Unjoin Organization" class="md-secondary" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
 		</md-list-item>
 	</md-list>
