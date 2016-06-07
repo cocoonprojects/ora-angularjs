@@ -9,7 +9,7 @@
       30: '#44515a',
       40: '#1e2c36',
       50: '#050e14',
-      '-20': '#050e14'
+      '-20': '#ebeef0'
     })
     .directive('itemCardColor', [
       "TASK_STATUS_COLORS",

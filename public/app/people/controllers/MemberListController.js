@@ -47,10 +47,8 @@ angular.module('app.people')
 			});
 		};
 
-		memberService.canInviteNewUser($stateParams.orgId).then(function(result){
-			$scope.canInviteNewUser = result;
-		});
-
+		$scope.canInviteNewUser = memberService.canInviteNewUser($stateParams.orgId);
+		
 		$scope.openInvitationDialog = function(ev){
 			$mdDialog.show({
 				controller: 'InvitationController',

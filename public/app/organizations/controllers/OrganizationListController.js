@@ -1,14 +1,30 @@
 angular.module('app')
-	.controller('OrganizationListController', ['$scope', '$mdDialog', 'organizationService', 'memberService',
-		function ($scope, $mdDialog, organizationService, memberService) {
-			$scope.organizations = organizationService.query();
+	.controller('OrganizationListController', [
+		'$scope',
+		'$mdDialog',
+		'memberService',
+		function (
+			$scope,
+			$mdDialog,
+			memberService) {
+
+			var load = function(){
+				$scope.identity.loadMemberships().then(function(memberships){
+					$scope.organizations = _.map(memberships,function(m){
+						return m.organization;
+					});
+				});
+			};
+
 			this.isAllowed = memberService.isAllowed.bind(memberService);
-			this.joinOrganization = function(organization) {
-				memberService.joinOrganization(organization, $scope.identity.updateMemberships);
-			};
+
 			this.unjoinOrganization = function(organization) {
-				memberService.unjoinOrganization(organization, $scope.identity.updateMemberships);
+				memberService.unjoinOrganization(organization, function(){
+					$scope.identity.updateMemberships();
+					$scope.organizations = _.without($scope.organizations,organization);
+				});
 			};
+
 			this.openNewOrganization = function(ev) {
 				$mdDialog.show({
 					controller: NewOrganizationController,
@@ -18,8 +34,11 @@ angular.module('app')
 					clickOutsideToClose: true
 				}).then(this.addOrganization);
 			};
+
 			this.addOrganization = function(organization) {
-				$scope.organizations._embedded['ora:organization'].unshift(organization);
+				$scope.organizations.unshift(organization);
 				$scope.identity.updateMemberships();
 			};
+
+			load();
 		}]);

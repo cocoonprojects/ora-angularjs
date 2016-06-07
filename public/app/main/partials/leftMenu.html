@@ -33,7 +33,7 @@
                         Organizations
                 </md-button>
             </md-list-item>
-            <md-list-item data-ng-if="organization">
+            <md-list-item data-ng-if="canShowOrganizationSettings">
                 <md-button
                     class="full-width no-margin no-padding"
                     style="text-align:left"
@@ -60,10 +60,12 @@
                     class="full-width no-margin no-padding"
                     style="text-align:left"
                     ng-if="identity.isAuthenticated()"
-                    ng-click="toggleLeft();signOut()">
+
+                    ng-click="signOut()">
                         <md-icon class="material-icons
                           margin-left-10
                           padding-right-10"></md-icon>
+
                         Logout
                 </md-button>
             </md-list-item>

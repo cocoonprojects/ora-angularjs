@@ -11,6 +11,7 @@
 </md-toolbar>
 <md-content layout-padding>
 	<md-list>
+
 		<md-list-item ng-repeat="org in organizations._embedded['ora:organization']">
 			<md-button md-no-ink class="full-width text-align-left" ng-click="ctrl.joinOrganization(org)" ng-if="ctrl.isAllowed('joinOrganization', org)">{{ org.name }}</md-button>
 			<md-button md-no-ink class="full-width text-align-left" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">{{ org.name }}</md-button>

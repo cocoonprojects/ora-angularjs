@@ -268,4 +268,13 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 
 .md-button.md-default-theme.md-raised:not([disabled]):hover >.warn, a.md-button.md-raised:not([disabled]):hover >.warn, .md-button.md-default-theme.md-raised:not([disabled]):hover>.warn, .md-button.md-raised:not([disabled]):hover >.warn{
     color: black;
+
+
+.vertical-space {
+  height: 120px;
+}
+
+.hand-pointer {
+  cursor: pointer;
+
 }

@@ -282,7 +282,7 @@ var ItemService = function(
 				'COMPLETED': 30,
 				'ACCEPTED' : 40,
 				'CLOSED'   : 50,
-				'ARCHIVED' : -20
+				'REJECTED' : -20
 			},
 			ITEM_ROLES: {
 				'ROLE_MEMBER': 'member',
@@ -460,8 +460,7 @@ var ItemService = function(
 					this.getIdentity().isAuthenticated() &&
 					resource.status == this.ITEM_STATUS.ACCEPTED &&
 					this.hasJoined(resource, this.getIdentity().getId()) &&
-					shares.length === 0 &&
-					!this.isShareAssignmentExpired(resource, new Date());
+					shares.length === 0;
 				},
 				skipShares: this.assignShares,
 				showShares: function(resource) {
