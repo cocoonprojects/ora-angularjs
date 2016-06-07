@@ -250,6 +250,10 @@ border-radius: 0 !important;
 .bkg-color-secondary {
   background-color: #cfd8dc;
 }
+.bkg-color-primary {
+  background-color: white;
+}
+
 
 .warn {
   color: #f44336;
