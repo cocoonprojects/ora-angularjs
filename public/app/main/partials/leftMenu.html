@@ -10,15 +10,11 @@
             <md-subheader class="md-no-sticky">
                 My Organizations
             </md-subheader>
-            <md-list-item ng-repeat="membership in identity.getMemberships()">
-                <md-button
+            <md-list-item ng-repeat="membership in identity.getMemberships()"
                     class="full-width md-primary no-margin no-padding"
-                    style="text-align:left"
                     ui-sref="org.collaboration({ orgId: membership.organization.id })"
                     ui-sref-active="selected-item selected-bold"
-                    ng-click="toggleLeft()"
-                    >
-                    <md-icon class="material-icons"></md-icon>
+                    ng-click="toggleLeft()">
                     {{membership.organization.name}}
                 </md-button>
             </md-list-item>
