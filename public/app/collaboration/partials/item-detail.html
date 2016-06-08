@@ -38,7 +38,7 @@
 		</div>
 	</md-card-header-text>
 </md-card-header>
-<md-card-action layout="row" layout-align="end end">
+<md-card-action layout="row" layout-align="end end" layout-xs="column">
 	<p style="padding-right: 30px;" aria-label="Yet Voted"  ng-if="ctrl.iVoted(item)">{{suggest}}</p>
 	<md-button class="md-raised md-primary" aria-label="Start item" ng-if="ctrl.isAllowed('executeItem', item)" ng-click="ctrl.executeItem(item)">Start</md-button>
 	<md-button class="md-raised md-primary" aria-label="Approve Idea"  ng-if="ctrl.isAllowed('approveIdea', item)" ng-click="ctrl.openApproveIdea($event, item)">Vote</md-button>
