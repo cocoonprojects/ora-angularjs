@@ -45,6 +45,16 @@ angular.module('app.collaboration')
 						return true;
 					}
 				}
+
+				if (elm.status === 40) {
+					if (elm.members.hasOwnProperty($scope.myId)) {
+						if (elm.members[$scope.myId].shares.hasOwnProperty($scope.myId)) {
+							$scope.suggest = "You have just assigned shares";
+						}
+						return true;
+					}
+				}
+
 				if (elm.status === 40) {
 					if (elm.acceptances.hasOwnProperty($scope.myId)) {
 						switch (elm.approvals[$scope.myId].approval) {
@@ -57,15 +67,6 @@ angular.module('app.collaboration')
 							case 2:
 								$scope.suggest = "You have absteined from accepting this idea";
 								break;
-						}
-						return true;
-					}
-				}
-
-				if (elm.status === 40) {
-					if (elm.members.hasOwnProperty($scope.myId)) {
-						if (elm.members[$scope.myId].shares.hasOwnProperty($scope.myId)) {
-							$scope.suggest = "You have just assigned shares";
 						}
 						return true;
 					}
