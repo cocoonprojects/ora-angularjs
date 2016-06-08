@@ -4,12 +4,12 @@
 	<md-icon md-svg-icon="add"></md-icon>
 </md-button>
 <md-list>
-	<md-list-item class="md-2-line" ng-repeat="person in members['_embedded']['ora:member']">
+	<md-list-item ui-sref="org.profile({ memberId: person.id })" class="md-2-line hand-pointer" ng-repeat="person in members['_embedded']['ora:member']">
 		<span class="md-primary people-you-label">
 			{{isMe(person) ? 'You' : ''}}
 		</span>
 		<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture || 'img/account.jpg' }}" class="md-avatar" />
-		<div class="md-list-item-text" ui-sref="org.profile({ memberId: person.id })" md-ink-ripple>
+		<div class="md-list-item-text"  md-ink-ripple>
 			<h3>{{ person.firstname }} {{ person.lastname }}</h3>
 			<p>{{ person.role }}</p>
 		</div>
