@@ -236,7 +236,16 @@ angular.module('app.collaboration')
 			};
 
 			this.removeTaskMember = function(ev,item,member){
-				itemService.removeTaskMember(item.organization.id,item.id,member.id);
+				var confirm = $mdDialog.confirm()
+						.title("Would you remove this user from the task?")
+						.textContent("This operation cannot be undone.")
+						.targetEvent(ev)
+						.ok("Yes")
+						.cancel("No");
+
+				$mdDialog.show(confirm).then(function() {
+					itemService.removeTaskMember(item.organization.id,item.id,member.id);
+				});
 			};
 
             this.openApproveIdea = function(ev, item) {

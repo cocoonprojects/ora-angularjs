@@ -79,9 +79,9 @@
 				<img style="max-width: 30px; max-height: 30px; border-radius: 50%;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
 				<p ng-click="goToProfile(member.id)" class="padding-left-10 margin-top-10 warn no-margin" style=" font-size: 14px; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} <span style="color:gray;">({{ member.role }})</span></p>
 			</div>
-				<md-button class="md-icon-button md-accent" data-ng-if="ctrl.isAllowed('removeTaskMember', item.organization)" aria-label="Delete" data-ng-click="ctrl.removeTaskMember($event,item,member)">
-					<md-icon class="material-icons" aria-label="delete">delete</md-icon>
-				</md-button>
+			<md-button class="md-icon-button md-accent" data-ng-if="ctrl.isAllowed('removeTaskMember', item.organization)" aria-label="Delete" data-ng-click="ctrl.removeTaskMember($event,item,member)">
+				<md-icon class="material-icons" aria-label="delete">delete</md-icon>
+			</md-button>
 		</div>
 	</md-card-header-text>
 </md-card-header>
