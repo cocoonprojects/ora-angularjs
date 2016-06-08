@@ -4,7 +4,7 @@
 	<md-icon md-svg-icon="add"></md-icon>
 </md-button>
 <md-list>
-	<md-list-item ui-sref="org.profile({ memberId: person.id })" class="md-2-line hand-pointer" ng-repeat="person in members['_embedded']['ora:member']">
+	<md-list-item style="padding: 0 16px 0 16px"  ui-sref="org.profile({ memberId: person.id })" class="md-2-line hand-pointer" ng-repeat="person in members['_embedded']['ora:member']">
 		<span class="md-primary people-you-label">
 			{{isMe(person) ? 'You' : ''}}
 		</span>
@@ -13,6 +13,9 @@
 			<h3>{{ person.firstname }} {{ person.lastname }}</h3>
 			<p>{{ person.role }}</p>
 		</div>
+		<md-button class="md-icon-button md-warn" data-ng-if="!isMe(person) && isAllowed('removeUser', orgId)" aria-label="Delete" data-ng-click="removeUser($event,person)">
+			<md-icon class="material-icons" aria-label="delete">delete</md-icon>
+		</md-button>
 		<md-divider ng-if="!$last"></md-divider>
 	</md-list-item>
 	<div class="space-at-end"></div>

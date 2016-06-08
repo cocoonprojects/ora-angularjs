@@ -16,7 +16,13 @@
 			<md-button aria-label="Unjoin Organization" class="md-secondary md-raised md-warn" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
 		</md-list-item>
 		<md-list-item data-ng-if="!organizations.length">
-			<p md-no-ink class="full-width text-align-left">You have not joined any organization. You can create a new one clicking on the button on the bottom of the page.</p>
+			<p md-no-ink class="full-width text-align-left">
+				Aloha {{identity.getFirstname()}}, welcome to your first time with us!
+				<br/><br/>
+				You might want to ask some colleagues to invite you in an existing organisation, or just go ahead creating one on your own. For doing so, click on the red button here below.
+				<br/><br/>
+				Let us know if you need any assistance. Happy work life with LiquidO.
+			</p>
 		</md-list-item>
 	</md-list>
 	<div class="space-at-end"></div>

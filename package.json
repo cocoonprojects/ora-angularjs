@@ -30,7 +30,6 @@
     "tmp": "0.0.23"
   },
   "scripts": {
-    "postinstall": "node_modules/bower/bin/bower install",
     "prestart": "npm install",
     "start": "node index.js",
     "pretest": "npm install",
