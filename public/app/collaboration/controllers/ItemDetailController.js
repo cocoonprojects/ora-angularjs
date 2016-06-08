@@ -235,6 +235,10 @@ angular.module('app.collaboration')
 				}).then(this.updateItem);
 			};
 
+			this.removeTaskMember = function(ev,item,member){
+				itemService.removeTaskMember(item.organization.id,item.id,member.id);
+			};
+
             this.openApproveIdea = function(ev, item) {
 				$mdDialog.show({
 					controller: ApproveIdeaController,

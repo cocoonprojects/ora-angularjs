@@ -228,6 +228,17 @@ var ItemService = function(
 				});
 			};
 
+			this.removeTaskMember = function(organizationId,itemId,memberId){
+				return $http({
+					url:'api/' + organizationId + '/task-management/tasks/' + itemId + '/members',
+					method:'DELETE',
+					data:{
+						memberId:memberId
+					},
+					headers: { 'GOOGLE-JWT': identity.getToken() }
+				});
+			};
+
 			var queryPolling = null;
 			this.startQueryPolling = function(organizationId, filters, success, error, millis) {
 				var newFilters = _.extend({},filters);
@@ -371,6 +382,9 @@ var ItemService = function(
 				return true;
 			},
 			visibilityCriteria: {
+				removeTaskMember: function(organization){
+					return 'admin' === this.getIdentity().getMembershipRole(organization.id);
+				},
 				createItem: function(organization) {
 					return organization &&
 					this.getIdentity().isAuthenticated() &&
