@@ -62,7 +62,7 @@
 			</md-button>
 	</div> -->
 </md-content>
-<md-card  class="card-item" ng-repeat="item in items._embedded['ora:task']"
+<md-card ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })" class="card-item" ng-repeat="item in items._embedded['ora:task']"
 ng-init="owner = ctrl.getOwner(item)"
 infinite-scroll="ctrl.loadMore()"
 infinite-scroll-distance="1"
@@ -123,7 +123,7 @@ infinite-scroll-immediate-check="false">
 		<p class="margin-left-10" style="font-size: 14px; margin-top: 25px; color: #607D8B;; margin-bottom: 25px;">I'm involved</p>
 	</div>
 	 <span flex></span>
-	<md-button class="md-button md-warn md-ink-ripple" ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">VIEW ITEM</md-button>
+	<md-button class="md-button md-warn md-ink-ripple">VIEW ITEM</md-button>
 </md-card-action>
 </md-card>
 <div class="space-at-end"></div>
