@@ -332,12 +332,16 @@
 						<span style="font-size: 14px; font-weight: 500;" flex><center>owned</center></span>
 						<span style="font-size: 14px; font-weight: 500;" flex><center>subject</center></span>
 						<span style="font-size: 14px; font-weight: 500;" flex><center>status</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>credtis</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>gap</center></span>
 					</div>
 					<md-divider style="margin-right:16px; margin-top: 8px"></md-divider>
 					<div layout="row" style="margin-right: 10%; margin-top: 8px;" data-ng-repeat="task in tasks"> <!--dati da inserire-->
 						<span style="font-weight: 300; font-size: 12px;" flex><center>{{isOwned(task) ? '&#x2713;' : '-'}}</center></span>
 						<span style="font-weight: 300; font-size: 12px;" flex><center>{{task.subject}}</center></span>
 						<span style="font-weight: 300; font-size: 12px;" flex><center>{{task.status | itemStatusLabel}}</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>{{getCredits(task) | number:0}}</center></span>
+						<span style="font-weight: 300; font-size: 12px;" flex><center>{{(getDelta(task) | number:2) + ' %'}}</center></span>
 					</div>
 			</md-card-header-text>
 		</md-card-header>

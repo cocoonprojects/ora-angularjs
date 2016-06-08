@@ -82,15 +82,19 @@ angular.module('app.people')
 				$scope.filters.limit += 10;
 				$scope.initTasks();
 			};
+			
 			$scope.isOwner = function(task) {
 				return itemService.isOwner(task, $stateParams.memberId);
 			};
+
 			$scope.getCredits  = function(task) {
 				return task.members[$stateParams.memberId].credits;
 			};
+
 			$scope.getShare = function(task) {
 				return task.members[$stateParams.memberId].share;
 			};
+
 			$scope.getDelta = function(task) {
 				return task.members[$stateParams.memberId].delta;
 			};
