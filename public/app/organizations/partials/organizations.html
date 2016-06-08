@@ -15,6 +15,9 @@
 			<p style="cursor:pointer;" ui-sref="org.collaboration({ orgId: org.id })">{{ org.name }}</p>
 			<md-button aria-label="Unjoin Organization" class="md-raised md-warn" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
 		</md-list-item>
+		<md-list-item data-ng-if="!organizations.length">
+			<p md-no-ink class="full-width text-align-left">You have not joined any organization. You can create a new one clicking on the button on the bottom of the page.</p>
+		</md-list-item>
 	</md-list>
 	<div class="space-at-end"></div>
 </md-content>
