@@ -36,9 +36,8 @@ angular.module('app.people')
 				}
 			});
 
-			$scope.askChangeRole = function(ev) {
+			$scope.askChangeRole = function(ev,newRole) {
 				var message = "Are you sure you want to change the role of this user to ";
-				var newRole = $scope.profile.role === 'contributor' ? 'member' : 'contributor';
 				message += newRole + "?";
 			    var confirm = $mdDialog.confirm()
 			          .title('Confirm')
@@ -82,7 +81,7 @@ angular.module('app.people')
 				$scope.filters.limit += 10;
 				$scope.initTasks();
 			};
-			
+
 			$scope.isOwner = function(task) {
 				return itemService.isOwner(task, $stateParams.memberId);
 			};
@@ -105,6 +104,17 @@ angular.module('app.people')
 					orgId:$stateParams.orgId,
 					userId:$stateParams.memberId
 				});
+			};
+
+			$scope.canChangeTo = function(newRole){
+				switch($scope.profile.role) {
+				    case 'contributor':
+				        return 'member' === newRole;
+				    case 'member':
+				        return 'contributor' === newRole || 'admin' === newRole;
+				    case 'admin':
+						return 'member' === newRole;
+				}
 			};
 
 			$scope.isAllowed = itemService.isAllowed.bind(itemService);

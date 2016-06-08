@@ -308,7 +308,15 @@
 				</md-card-content>
 	</md-card>
 	<md-card data-ng-if="isChangeUserAllowed()">
-		<md-button class="md-raised md-primary" ng-click="askChangeRole($event)">Change User Role</md-button>
+		<md-button class="md-raised md-primary" data-ng-if="canChangeTo('contributor')" ng-click="askChangeRole($event,'contributor')">Change User Role to contributor</md-button>
+		<md-button class="md-raised md-primary" data-ng-if="canChangeTo('member')" ng-click="askChangeRole($event,'member')">Change User Role to member</md-button>
+		<md-button class="md-raised md-primary" data-ng-if="canChangeTo('admin')" ng-click="askChangeRole($event,'admin')">Change User Role to admin</md-button>
+	</md-card>
+	<md-card data-ng-if="isMakeAdminAllowed()">
+		<md-button class="md-raised md-primary" ng-click="askMakeAdmine($event)">Make Member Admin</md-button>
+	</md-card>
+	<md-card data-ng-if="isBackToMemberAllowed()">
+		<md-button class="md-raised md-primary" ng-click="askBackToMemberRole($event)">Release Admin to Member</md-button>
 	</md-card>
 	<md-card>
 		<md-card-header>
