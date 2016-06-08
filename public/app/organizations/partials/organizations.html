@@ -11,9 +11,9 @@
 </md-toolbar>
 <md-content layout-padding>
 	<md-list>
-		<md-list-item ng-repeat="org in organizations">
-			<p style="cursor:pointer;" ui-sref="org.collaboration({ orgId: org.id })">{{ org.name }}</p>
-			<md-button aria-label="Unjoin Organization" class="md-raised md-warn" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
+		<md-list-item ng-repeat="org in organizations" ui-sref="org.collaboration({ orgId: org.id })">
+			<p md-ink-ripple style="cursor:pointer;" >{{ org.name }}</p>
+			<md-button aria-label="Unjoin Organization" class="md-secondary md-raised md-warn" ng-click="ctrl.unjoinOrganization(org)" ng-if="ctrl.isAllowed('unjoinOrganization', org)">Unjoin</md-button>
 		</md-list-item>
 		<md-list-item data-ng-if="!organizations.length">
 			<p md-no-ink class="full-width text-align-left">You have not joined any organization. You can create a new one clicking on the button on the bottom of the page.</p>
