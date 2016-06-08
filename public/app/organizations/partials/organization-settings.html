@@ -1,5 +1,45 @@
 <md-card>
 	<md-card-content>
+		<h1 flex>Organization Settings</h1>
+		<form name="orgSettingsForm" ng-submit="ctrl.updateSettings()" novalidate>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Assign shares timeboxing (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.assignment_of_shares_timebox"
+						name="assignment_of_shares_timebox"
+						aria-label="Assign shares timeboxing (days)"
+						required>
+					<div ng-messages="orgSettingsForm.assignment_of_shares_timebox.$error" role="alert">
+						<div ng-message="required">Assign shares timeboxing is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Assign shares remind interval (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.assignment_of_shares_remind_interval"
+						name="assignment_of_shares_remind_interval"
+						aria-label="Assign shares remind interval (days)"
+						required>
+					<div ng-messages="orgSettingsForm.assignment_of_shares_remind_interval.$error" role="alert">
+						<div ng-message="required">Assign shares remind interval is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row" layout-align="end center">
+				<md-button
+					ng-if="ctrl.kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
+					type="submit" class="md-raised" aria-label="Save settings"
+					ng-disabled="orgSettingsForm.$invalid">Save
+				</md-button>
+			</div>
+		</form>
+	</md-card-content>
+</md-card>
+<md-card>
+	<md-card-content>
 		<h1 flex>Kanbanize</h1>
 		<form name="form" ng-submit="ctrl.updateKanbanizeSettings()" novalidate>
 			<div layout="row">
