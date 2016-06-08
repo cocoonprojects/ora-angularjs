@@ -2,6 +2,7 @@ angular.module('app', [
 	'ui.router',
 	'ngMessages',
 	'ngMaterial',
+	'ngCookies',
 	'angularMoment',
 	'infinite-scroll',
 	'app.identity',
