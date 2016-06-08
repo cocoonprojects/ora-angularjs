@@ -37,7 +37,6 @@ angular.module('app.collaboration')
 			$scope.streams = null;
 
 			$scope.filters = {
-				limit: 10,
 				offset: 0,
 				status: "All",
 				cardType: ($scope.decisions ? "decisions" : "all"),

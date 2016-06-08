@@ -28,6 +28,110 @@
 					</div>
 				</md-input-container>
 			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Completed Item voting timeboxing (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.completed_item_voting_timebox"
+						name="completed_item_voting_timebox"
+						aria-label="Completed Item voting timeboxing (days)"
+						required>
+					<div ng-messages="orgSettingsForm.completed_item_voting_timebox.$error" role="alert">
+						<div ng-message="required">Completed Item voting timeboxing is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Completed Item close task interval (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.completed_item_interval_close_task"
+						name="completed_item_interval_close_task"
+						aria-label="Completed Item close task interval (days)"
+						required>
+					<div ng-messages="orgSettingsForm.completed_item_interval_close_task.$error" role="alert">
+						<div ng-message="required">Completed Item close task interval is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Idea voting timeboxing (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.item_idea_voting_timebox"
+						name="item_idea_voting_timebox"
+						aria-label="Idea voting timeboxing (days)"
+						required>
+					<div ng-messages="orgSettingsForm.item_idea_voting_timebox.$error" role="alert">
+						<div ng-message="required">Idea voting timeboxing is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Idea voting remind interval (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.item_idea_voting_remind_interval"
+						name="item_idea_voting_remind_interval"
+						aria-label="Idea voting remind interval (days)"
+						required>
+					<div ng-messages="orgSettingsForm.item_idea_voting_remind_interval.$error" role="alert">
+						<div ng-message="required">Idea voting remind interval is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Task limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.tasks_limit_per_page"
+						name="tasks_limit_per_page"
+						aria-label="Task limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.tasks_limit_per_page.$error" role="alert">
+						<div ng-message="required">Task limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Organization member limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.org_members_limit_per_page"
+						name="org_members_limit_per_page"
+						aria-label="Organization member limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.org_members_limit_per_page.$error" role="alert">
+						<div ng-message="required">Organization member limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Organization transaction limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.org_transaction_limit_per_page"
+						name="org_transaction_limit_per_page"
+						aria-label="Organization transaction limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.org_transaction_limit_per_page.$error" role="alert">
+						<div ng-message="required">Organization transaction limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Organization transaction limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.org_transaction_limit_per_page"
+						name="org_transaction_limit_per_page"
+						aria-label="Organization transaction limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.org_transaction_limit_per_page.$error" role="alert">
+						<div ng-message="required">Organization transaction limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
 			<div layout="row" layout-align="end center">
 				<md-button
 					ng-if="ctrl.kanbanizeSectionAllowed('editKanbanizeSettings', organization)"

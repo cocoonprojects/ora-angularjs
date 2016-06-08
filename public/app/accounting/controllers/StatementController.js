@@ -29,7 +29,6 @@ angular.module('app.accounting')
 			};
 
 			$scope.filters = {
-				limit: 10
 			};
 
 			$scope.myWallet = accountService.userStats({ orgId: $stateParams.orgId, memberId: $scope.identity.getId() });

@@ -57,8 +57,7 @@ angular.module('app.people')
 			$scope.tasks   = null;
 			$scope.stats   = null;
 			$scope.filters = {
-				memberId: $stateParams.memberId,
-				limit: 10
+				memberId: $stateParams.memberId
 			};
 			$scope.moreDetail = false;
 			$scope.initTasks = function() {
