@@ -47,7 +47,7 @@ angular.module('app.collaboration')
 				}
 
 				if (elm.status === 40) {
-					if (elm.members.hasOwnProperty($scope.myId)) {
+					if (elm.members[$scope.myId] && elm.members[$scope.myId].shares) {
 						if (elm.members[$scope.myId].shares.hasOwnProperty($scope.myId)) {
 							$scope.suggest = "You have just assigned shares";
 						}
