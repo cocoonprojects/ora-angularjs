@@ -266,10 +266,10 @@
 	<md-card>
 		<md-card-header>
 			<md-card-header-text>
-				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAILABLE CREDIT
+				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAILABLE CREDITS
 					<span class="md-title" style="margin-left: 10px;"> {{credits.balance}}
 				 </span>
-				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDITS
  					<span class="md-title" style="margin-left: 10px;"> {{credits.total}}
  				 </span>
 				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TASK MEMBERSHIPS
@@ -278,10 +278,10 @@
 				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> OWNED TASKS
 				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.ownershipsCount | number : 0 }}
 				 </span>
-				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> EARNED CREDITS
+				 <span data-ng-if="false" class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> EARNED CREDITS
 				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.creditsCount | number : 2 }}
 				 </span>
-				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> AUTO-ASSESSMENT GAP
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> AUTO-ASSESSMENT AVG GAP
 				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.averageDelta | percentage:2:true }}
 				 </span>
 			</md-card-header-text>
@@ -332,7 +332,7 @@
 						<span style="font-size: 14px; font-weight: 500;" flex><center>owned</center></span>
 						<span style="font-size: 14px; font-weight: 500;" flex><center>subject</center></span>
 						<span style="font-size: 14px; font-weight: 500;" flex><center>status</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>credtis</center></span>
+						<span style="font-size: 14px; font-weight: 500;" flex><center>credits</center></span>
 						<span style="font-size: 14px; font-weight: 500;" flex><center>gap</center></span>
 					</div>
 					<md-divider style="margin-right:16px; margin-top: 8px"></md-divider>
@@ -341,7 +341,7 @@
 						<span style="font-weight: 300; font-size: 12px;" flex><center>{{task.subject}}</center></span>
 						<span style="font-weight: 300; font-size: 12px;" flex><center>{{task.status | itemStatusLabel}}</center></span>
 						<span style="font-weight: 300; font-size: 12px;" flex><center>{{getCredits(task) | number:0}}</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>{{(getDelta(task) | number:2) + ' %'}}</center></span>
+						<span data-ng-show="getDelta(task)" style="font-weight: 300; font-size: 12px;" flex><center>{{(getDelta(task) | number:2) + ' %'}}</center></span>
 					</div>
 			</md-card-header-text>
 		</md-card-header>
