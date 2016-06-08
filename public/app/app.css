@@ -223,8 +223,25 @@ border-radius: 0 !important;
   margin-top: 10px;
 }
 .margin-bottom-10 {
-  maegin-bottom: 10px;
+  margin-bottom: 10px;
 }
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
+.margin-left-20 {
+  margin-left: 20px;
+}
+
+.margin-right-20 {
+  margin-right: 20px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
+}
+
 .padding-right-10 {
   padding-right: 10px;
 }
@@ -276,4 +293,8 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 .hand-pointer {
   cursor: pointer;
 
+}
+
+.color-gray {
+  color: gray;
 }

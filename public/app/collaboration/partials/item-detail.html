@@ -1,19 +1,21 @@
 <md-card data-ng-if="!busy">
 	<md-card-header style="margin-top: -10px;">
 		<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
-			<span style="text-transform: uppercase; margin-top: -5px;" class="md-subhead">
+			<span style="text-transform: uppercase;" class="md-subhead">
 				{{item.decision === 'true' ? 'Decision' : ''}}
 			</span>
-			<span style="font-size: 26px; margin-top: -5px;">
+			<span style="font-size: 26px;">
 				{{ item.subject }}
 			</span>
-			<p style="text-transform: uppercase; font-size: 16px; margin-top: 0px;">
+			<p style="text-transform: uppercase; font-size: 16px;">
 				{{ ctrl.stream(item).subject }}
 			</p>
-			<div layout="row" style="margin-top: -28px;" ng-if="item.status != ITEM_STATUS.OPEN">
-				<p style="font-size: 14px;">{{item.status | ownerLabel}}:</p>
-				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="{{ owner.picture || 'img/account.jpg' }}">
-				<p ng-click="goToProfile(owner.id)" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--> ({{membershipRole}})<!--ruolo dell'owner--></p>
+			<div layout="row" class="margin-bottom-20" ng-if="item.status != ITEM_STATUS.OPEN">
+				<img class="margin-right-20" style="max-width: 60px; max-height: 60px; border-radius: 50%;" ng-src="{{ owner.picture || 'img/account.jpg' }}">
+				<div>
+					<p class="no-margin no-padding" style="font-size: 14px;">{{item.status | ownerLabel}}:</p>
+					<p class="no-margin no-padding warn" style="font-size: 14px;" ng-click="goToProfile(owner.id)"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--> ({{membershipRole}})<!--ruolo dell'owner--></p>
+				</div>
 			</div>
 			<p style="font-size: 14px; margin-top: -8px;">
 				status:
@@ -68,13 +70,15 @@
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Partecipant List</span>
 		<div
-			style="margin-top: -10px; margin-bottom: -10px;"
 			layout="row"
+			layout-align="space-between center"
 			ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'"
 			data-ng-repeat="member in members"
 			ng-init="m = user(member)">
-				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
-				<p ng-click="goToProfile(member.id)" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
+			<div layout="row">
+				<img style="max-width: 30px; max-height: 30px; border-radius: 50%;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
+				<p ng-click="goToProfile(member.id)" class="padding-left-10 margin-top-10 warn no-margin" style=" font-size: 14px; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} <span style="color:gray;">({{ member.role }})</span></p>
+			</div>
 				<md-button class="md-icon-button md-accent" data-ng-if="ctrl.isAllowed('removeTaskMember', item.organization)" aria-label="Delete" data-ng-click="ctrl.removeTaskMember($event,item,member)">
 					<md-icon class="material-icons" aria-label="delete">delete</md-icon>
 				</md-button>
