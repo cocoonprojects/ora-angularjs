@@ -118,10 +118,10 @@
 	<script src="app/flow/controllers/FlowController.js"></script>
 	<!-- /build -->
 </head>
-<body layout="column" ng-controller="AppController">
+<body layout="column" style="overflow-y: hidden;" ng-controller="AppController">
 	<section layout="row" flex ng-controller="IdentityController" data-ng-cloak>
 		<left-menu></left-menu>
-		<md-content layout="column" flex ui-view></md-content>
+		<md-content layout="column"   flex ui-view></md-content>
 	</section>
 	<script>
 	//Manual Angular Bootstrap after google plus initialization

@@ -1,3 +1,4 @@
+
 <md-toolbar>
 	<div class="md-toolbar-tools" ng-if="!showBack">
 		<div class="organization-logo hand-pointer" data-ng-click="toggleLeft();">
@@ -15,7 +16,6 @@
 		<span flex></span>
 	</div>
 </md-toolbar>
-<md-content data-ng-if="!fullHeight" ui-view></md-content>
-<md-content data-ng-if="fullHeight" layout="row" flex ui-view></md-content>
-<navigation-bar>
-<navigation-bar/>
+<md-content class="bkg-color-secondary" data-ng-if="!fullHeight" flex ui-view></md-content>
+<md-content class="bkg-color-secondary" data-ng-if="fullHeight" layout="row" flex ui-view></md-content>
+<navigation-bar><navigation-bar/>
