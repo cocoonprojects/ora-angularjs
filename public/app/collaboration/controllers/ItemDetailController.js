@@ -62,6 +62,15 @@ angular.module('app.collaboration')
 					}
 				}
 
+				if (elm.status === 40) {
+					if (elm.members.hasOwnProperty($scope.myId)) {
+						if (elm.members[$scope.myId].shares.hasOwnProperty($scope.myId)) {
+							$scope.suggest = "You have just assigned shares";
+						}
+						return true;
+					}
+				}
+
 				if (elm.status === 50) {
 					$scope.suggest = "This idea has been completed";
 					return true;
