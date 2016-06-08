@@ -17,6 +17,7 @@ angular.module('app')
 			};
 
 			this.isAllowed = memberService.isAllowed.bind(memberService);
+			$scope.organizations = [];
 
 			this.unjoinOrganization = function(organization) {
 				memberService.unjoinOrganization(organization, function(){
