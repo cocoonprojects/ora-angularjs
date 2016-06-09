@@ -69,7 +69,7 @@ infinite-scroll-distance="1"
 infinite-scroll-parent="true"
 infinite-scroll-disabled="items.total == items.count || isLoadingMore"
 infinite-scroll-immediate-check="false">
-<md-card-header  item-card-color card="item" style="margin-top: -10px;">
+<md-card-header  item-card-color card="item" class="margin-top-10">
 	<md-card-header-text>
 		<div layout="row">
 			<span style="font-size: 13px; color:#5f6b76; margin-bottom:5px;" data-ng-show="item.decision === 'true'">Decision</span>
@@ -95,7 +95,7 @@ infinite-scroll-immediate-check="false">
 			</p>
 		</div>
 	</md-card-header-text>
-	<md-card-media layout="column" layout-align="start end" ng-if="item.status != ITEM_STATUS.OPEN">
+	<md-card-media layout="column" layout-align="start end" class="margin-top-10" ng-if="item.status != ITEM_STATUS.OPEN">
 		<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" ui-sref="org.profile({ memberId: owner.id })" md-ink-ripple>
 		<p class="margin-top-10 no-margin" style="font-size: 14px; font-weight: bold">{{item.status | ownerLabel}}:</p>
 		<p class="font-size12 no-margin" style="text-align:right;">{{ owner.firstname }} {{ owner.lastname}} </p>
