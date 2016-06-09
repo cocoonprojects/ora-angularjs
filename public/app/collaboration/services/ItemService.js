@@ -282,6 +282,17 @@ var ItemService = function(
 			this.closeItem = function(item, success, error){
 				return resource.closeItem({ orgId: item.organization.id, itemId: item.id}, { action: 'close' }, success, error);
 			};
+
+			this.changeOwner = function(item,owner){
+				return $http({
+					url:'api/' + item.organization.id + '/task-management/tasks/' + item.id + '/owner',
+					method:'POST',
+					data:{
+						ownerId:owner
+					},
+					headers: { 'GOOGLE-JWT': identity.getToken() }
+				});
+			};
 		};
 
 		ItemService.prototype = {
@@ -468,7 +479,7 @@ var ItemService = function(
 					!this.isEstimationCompleted(resource);
 				},
 				assignShares: function(resource) {
-					var shares = resource.members[this.getIdentity().getId()] && resource.members[this.getIdentity().getId()].shares || [];
+					var shares = resource && resource.members[this.getIdentity().getId()] && resource.members[this.getIdentity().getId()].shares || [];
 
 					return resource &&
 					this.getIdentity().isAuthenticated() &&
@@ -496,8 +507,8 @@ var ItemService = function(
 				},
 				changeOwner:  function(resource) {
 					return resource &&
+					resource.status >= this.ITEM_STATUS.ONGOING &&
 					this.getIdentity().getMembershipRole(resource.organization.id) === 'admin';
-					//resource.members > 1
 				}
 			},
 			isAllowed: function(command, resource) {

@@ -312,11 +312,9 @@ angular.module('app.collaboration')
 						owner: $scope.owner
 					}
 				}).then(function(owner) {
-					console.log(owner);
 					itemService.changeOwner(item,owner).then(function(){
-						alert("ale");
+						itemService.query($stateParams.orgId, $stateParams.itemId, onLoadItem);
 					});
-					//that.updateItem();
 				});
 			};
 		}]);
