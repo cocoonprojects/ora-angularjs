@@ -135,6 +135,11 @@ md-tabs.md-default-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagin
   opacity: 0;
 }
 
+i.hideelement {
+  color: red;
+  opacity: 0;
+}
+
 .profile-info-icon{
     width:20px;
     height: 20px;

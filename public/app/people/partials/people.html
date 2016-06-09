@@ -8,6 +8,7 @@
 		<span hide-xs class="md-primary people-you-label" data-ng-class="{hideelement:!isMe(person)}">
 	you
 		</span>
+		<i class="material-icons margin-right-20" data-ng-class="{hideelement:!isMe(person)}" hide-gt-xs>&#xE037;</i>
 		<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture || 'img/account.jpg' }}" class="md-avatar" />
 		<div class="md-list-item-text"  md-ink-ripple>
 			<h3>{{ person.firstname }} {{ person.lastname }}</h3>
