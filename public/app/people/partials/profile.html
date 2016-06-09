@@ -322,35 +322,26 @@
 		<md-card-header>
 			<md-card-header-text>
 					<span class="md-subheader" style="color: black; font-weight: 200;">ITEM CONTRIBUTION</span>
-					<!-- TODO: add filtering tasks -->
-					<div layout="row" style="margin-top: -14px;" data-ng-if="false">
-							<span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> FROM</span>
-							 <md-select style="z-index: 0;" ng-model="fromdate" placeholder="insert date">
-								 <md-option> XXXX </md-option>
-								 <md-option> XXXX </md-option>
-							 </md-select>
-							 <span flex></span>
-							 <span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> TO</span>
- 							 <md-select ng-model="todate" style="z-index: 0;" placeholder="insert date">
- 								 <md-option> XXXX </md-option>
- 								 <md-option> XXXX </md-option>
- 							 </md-select>
-					</div>
-					<div layout="row" style="margin-right: 10%; margin-top: 10px;" >
-						<span style="font-size: 14px; font-weight: 500;" flex><center>owned</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>subject</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>status</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>credits</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>gap</center></span>
-					</div>
-					<md-divider style="margin-right:16px; margin-top: 8px"></md-divider>
-					<div layout="row" style="margin-right: 10%; margin-top: 8px;" data-ng-repeat="task in tasks"> <!--dati da inserire-->
-						<span style="font-weight: 300; font-size: 12px;" flex><center>{{isOwned(task) ? '&#x2713;' : '-'}}</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>{{task.subject}}</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>{{task.status | itemStatusLabel}}</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>{{getCredits(task) | number:0}}</center></span>
-						<span data-ng-show="getDelta(task)" style="font-weight: 300; font-size: 12px;" flex><center>{{(getDelta(task) | number:2) + ' %'}}</center></span>
-					</div>
+					<table class="profile-item-table">
+						<thead class="profile-item-table-header">
+							<tr>
+								<th>owned</th>
+								<th>subject</th>
+								<th>status</th>
+								<th>credits</th>
+								<th>gap</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="profile-item-table-row" data-ng-repeat="task in tasks">
+								<td>{{isOwned(task) ? '&#x2713;' : '-'}}</td>
+								<td>{{task.subject}}</td>
+								<td>{{task.status | itemStatusLabel}}</td>
+								<td>{{getCredits(task)}}</td>
+								<td data-ng-show="getDelta(task)">{{(getDelta(task) * 100 | number:2) + ' %'}}</td>
+							</tr>
+						</tbody>
+					</table>
 			</md-card-header-text>
 		</md-card-header>
 	</md-card>

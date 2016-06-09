@@ -300,6 +300,7 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 
 .md-button.md-default-theme.md-raised:not([disabled]):hover >.warn, a.md-button.md-raised:not([disabled]):hover >.warn, .md-button.md-default-theme.md-raised:not([disabled]):hover>.warn, .md-button.md-raised:not([disabled]):hover >.warn{
     color: black;
+}
 
 .hand-pointer {
   cursor: pointer;
@@ -312,4 +313,21 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 
 .space-between {
   width: 52px;
+}
+
+.profile-item-table{
+    width: 100%;
+    padding: 16px 16px 16px 0;
+}
+
+.profile-item-table-header{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.profile-item-table-row{
+    text-align: center;
+    font-weight: 300;
+    font-size: 12px;
 }

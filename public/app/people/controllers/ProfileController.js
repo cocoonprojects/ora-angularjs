@@ -25,15 +25,7 @@ angular.module('app.people')
 			});
 
 			$scope.credits = accountService.userStats({ orgId: $stateParams.orgId, memberId: $stateParams.memberId },function(){
-				if($scope.myProfile){
-					memberService.canIRequestMembership($stateParams.orgId,$scope.credits.balance).then(function(show){
-						$scope.shouldShowAskForMembership = show;
-					});
-				}else{
-					memberService.canProposeMembership($stateParams.orgId,$scope.profile.role,$scope.credits.balance).then(function(show){
-						$scope.shouldShowProposeMembership = show;
-					});
-				}
+				console.log($scope.credits);
 			});
 
 			$scope.askChangeRole = function(ev,newRole) {
