@@ -19,11 +19,21 @@ angular.module('app')
 			this.isAllowed = memberService.isAllowed.bind(memberService);
 			$scope.organizations = [];
 
-			this.unjoinOrganization = function(organization) {
-				memberService.unjoinOrganization(organization, function(){
-					$scope.identity.updateMemberships();
-					$scope.organizations = _.without($scope.organizations,organization);
+			this.unjoinOrganization = function(ev, organization) {
+				var confirm = $mdDialog.confirm()
+						.title("Are you sure you want to unjoin the organization '" + organization.name + "'?")
+						.textContent("This operation cannot be undone.")
+						.targetEvent(ev)
+						.ok("Yes")
+						.cancel("No");
+
+				$mdDialog.show(confirm).then(function() {
+					memberService.unjoinOrganization(organization, function(){
+						$scope.identity.updateMemberships();
+						$scope.organizations = _.without($scope.organizations,organization);
+					});
 				});
+
 			};
 
 			this.openNewOrganization = function(ev) {
