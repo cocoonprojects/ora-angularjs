@@ -1,0 +1,22 @@
+<md-dialog aria-label="Edit Item">
+	<form name="form" ng-submit="close()" novalidate>
+		<md-dialog-content>
+			<div class="md-dialog-content" layout="column">
+				<h2>Change owner</h2>
+				<md-input-container data-ng-if="partecipants.length">
+					<label>Partecipants</label>
+					<md-select data-ng-model="result.owner" name="owner" required>
+						<md-option ng-repeat="user in partecipants" value="{{ user.id }}">{{user.firstname }} {{ user.lastname }}</md-option>
+					</md-select>
+					<div ng-messages="form.owner.$error" role="alert">
+						<div ng-message="required">Owner is required</div>
+					</div>
+				</md-input-container>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions layout="row" layout-align="end center">
+			<md-button type="button" ng-click="cancel()">Cancel</md-button>
+			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

@@ -298,4 +298,25 @@ angular.module('app.collaboration')
 				$scope.attachments = _.without($scope.attachments,file);
 				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments);
 			};
+
+			var that = this;
+
+			this.changeOwner = function(ev, item) {
+				$mdDialog.show({
+					controller: 'ChangeOwnerController',
+					templateUrl: 'app/collaboration/partials/change-owner.html',
+					targetEvent: ev,
+					clickOutsideToClose: true,
+					locals: {
+						item: item,
+						owner: $scope.owner
+					}
+				}).then(function(owner) {
+					console.log(owner);
+					itemService.changeOwner(item,owner).then(function(){
+						alert("ale");
+					});
+					//that.updateItem();
+				});
+			};
 		}]);

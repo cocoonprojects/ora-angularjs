@@ -493,6 +493,11 @@ var ItemService = function(
 				addAttachment: function(resource) {
 					return resource &&
 					(resource.status >= this.ITEM_STATUS.ONGOING);
+				},
+				changeOwner:  function(resource) {
+					return resource &&
+					this.getIdentity().getMembershipRole(resource.organization.id) === 'admin';
+					//resource.members > 1
 				}
 			},
 			isAllowed: function(command, resource) {
