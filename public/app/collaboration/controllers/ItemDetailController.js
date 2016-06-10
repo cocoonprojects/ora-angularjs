@@ -113,7 +113,7 @@ angular.module('app.collaboration')
 			};
 			$scope.item = null;
 			$scope.ITEM_STATUS = itemService.ITEM_STATUS;
-			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, onLoadItem, this.onLoadingError, 1000);
+			itemService.startGetPolling($stateParams.orgId, $stateParams.itemId, onLoadItem, this.onLoadingError, 10000);
 			$scope.$on('$destroy', itemService.stopGetPolling);
 			this.stream = function(item) {
 				if($scope.streams && item && item.stream) {
