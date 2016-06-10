@@ -16,7 +16,7 @@ angular.module('app')
 			organizationService,
 			kanbanizeService,
 			$state,
-			streamService,
+            streamService,
 			$mdDialog,
             settingsService) {
 
@@ -55,7 +55,8 @@ angular.module('app')
 
 			kanbanizeService.query($stateParams.orgId,
 				function(data) {
-					$scope.settings.subdomain = data.subdomain;
+                    $scope.settings.subdomain = data.subdomain;
+                    $scope.settings.apiKey = data.apikey;
 					$scope.projects = data.projects;
 				},
 				function(httpResponse) {
