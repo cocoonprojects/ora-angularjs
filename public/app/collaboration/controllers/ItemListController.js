@@ -10,6 +10,7 @@ angular.module('app.collaboration')
 		'itemService',
 		'$state',
 		'voteExtractor',
+		'$timeout',
 		function (
 			$scope,
 			$log,
@@ -20,11 +21,24 @@ angular.module('app.collaboration')
 			streamService,
 			itemService,
 			$state,
-			voteExtractor) {
+			voteExtractor,
+			$timeout) {
 
 			$scope.menu = {
 				open:false
 			};
+
+			$scope.visibility = false;
+
+			$scope.$watch('menu.open', function(open) {
+			 if (open) {
+				 $timeout(function() {
+					 $scope.visibility = true;
+				 }, 200);
+			 } else {
+				 $scope.visibility = false;
+			 }
+		 });
 
 			$scope.currentUserId = $scope.identity.getId();
 

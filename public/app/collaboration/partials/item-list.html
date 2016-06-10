@@ -1,21 +1,35 @@
 
-<md-fab-speed-dial md-open="menu.open" md-direction="up" class="md-scale md-fab-bottom-right" style="position: fixed; margin-bottom: 40px;" ng-if="!decisions">
+<md-fab-speed-dial
+		md-open="menu.open"
+		ng-mouseenter="menu.open=true"
+		ng-mouseleave="menu.open=false"
+		md-direction="up" class="md-scale md-fab-bottom-right"
+		style="position: fixed; margin-bottom: 40px;"
+		ng-if="!decisions"
+		ng-cloak>
 	<md-fab-trigger>
 		<md-button aria-label="Item Menu" class="md-fab md-warn md-hue-1">
 			<md-icon md-svg-icon="add"></md-icon>
 		</md-button>
 	</md-fab-trigger>
 	<md-fab-actions>
-		<md-button aria-label="New Item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, false)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Create Working Item</md-tooltip>
+		<md-button aria-label="New Item"
+							 class="md-fab md-raised md-mini"
+							 ng-click="ctrl.openNewItem($event, false)"
+							 ng-show="ctrl.isAllowed('createItem', organization)">
+			<md-tooltip  md-direction="left" md-visible="visibility">Create Working Item</md-tooltip>
 			<md-icon md-svg-icon="addItem" title="New Item" style="color: black"></md-icon>
 		</md-button>
-		<md-button aria-label="New Decision" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, true)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Create Decision Item</md-tooltip>
+		<md-button aria-label="New Decision"
+							 class="md-fab md-raised md-mini"
+							 ng-click="ctrl.openNewItem($event, true)"
+							 ng-show="ctrl.isAllowed('createItem', organization)">
+			<md-tooltip  md-direction="left" md-visible="visibility">Create Decision Item</md-tooltip>
 			<i class="material-icons" title="New Item" style="margin-top: 6px; color: black">&#xE90E;</i>
 		</md-button>
 	</md-fab-actions>
 </md-fab-speed-dial>
+
 <md-toolbar class="filterBar" style="min-height:37px">
 	<div class="md-toolbar-tools" style="height:37px" >
 		<md-button   ng-click="showFilter=!showFilter" style="width:100%">
