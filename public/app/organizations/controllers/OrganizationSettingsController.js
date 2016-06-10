@@ -21,12 +21,30 @@ angular.module('app')
             settingsService) {
 
 			$scope.settings = {};
+			$scope.boards = [];
+
+			var readBoards = function(projects){
+				var boards = _.map(projects,function (p) {
+					return p.boards;
+				});
+
+				boards = _.flatten(boards,true);
+
+                _.each(boards,function(b){
+                    kanbanizeService.getBoardDetails($stateParams.orgId,b.id,
+                        function(data) {
+                            angular.extend(b, data);
+                        }
+                    );
+                });
+
+                return boards;
+			};
 
 			this.kanbanizeSectionAllowed = kanbanizeService.isAllowed.bind(kanbanizeService);
 
             $scope.orgSettings = {};
             settingsService.get($stateParams.orgId).then(function(settings){
-                console.log(settings);
                 $scope.orgSettings = settings;
             });
 
@@ -37,7 +55,7 @@ angular.module('app')
 			this.updateKanbanizeSettings = function(){
 				kanbanizeService.updateSettings($stateParams.orgId, $scope.settings,
 					function(data) {
-						$scope.projects = data.projects;
+                        $scope.boards = readBoards(data.projects);
 					},
 					function(httpResponse) {
 						switch(httpResponse.status) {
@@ -57,7 +75,7 @@ angular.module('app')
 				function(data) {
                     $scope.settings.subdomain = data.subdomain;
                     $scope.settings.apiKey = data.apikey;
-					$scope.projects = data.projects;
+                    $scope.boards = readBoards(data.projects);
 				},
 				function(httpResponse) {
 					switch(httpResponse.status) {
