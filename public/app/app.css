@@ -316,6 +316,7 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 }
 
 .profile-item-table{
+    border-collapse: collapse;
     width: 100%;
     padding: 16px 16px 16px 0;
 }
@@ -324,10 +325,16 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
     text-align: center;
     font-size: 14px;
     font-weight: 500;
+    height: 50px;
+
 }
 
 .profile-item-table-row{
     text-align: center;
     font-weight: 300;
     font-size: 12px;
+}
+
+.subject-column {
+    width: 20%;
 }
