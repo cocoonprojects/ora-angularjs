@@ -334,11 +334,11 @@
 						</thead>
 						<tbody>
 							<tr class="profile-item-table-row" data-ng-repeat="task in tasks">
-								<td>{{isOwned(task) ? '&#x2713;' : '-'}}</td>
-								<td class="subject-column">{{task.subject}}</td>
-								<td>{{task.status | itemStatusLabel}}</td>
-								<td>{{getCredits(task)}}</td>
-								<td data-ng-show="getDelta(task)">{{(getDelta(task) * 100 | number:2) + ' %'}}</td>
+								<td class="col-20">{{isOwned(task) ? '&#x2713;' : '-'}}</td>
+								<td class="col-20 subject-column">{{task.subject}}</td>
+								<td class="col-20">{{task.status | itemStatusLabel}}</td>
+								<td class="col-20">{{getCredits(task)}}</td>
+								<td class="col-20" data-ng-show="getDelta(task)">{{(getDelta(task) * 100 | number:2) + ' %'}}</td>
 							</tr>
 						</tbody>
 					</table>

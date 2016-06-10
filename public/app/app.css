@@ -320,17 +320,28 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 }
 
 .profile-item-table{
+    table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
-    padding: 16px 16px 16px 0;
+    margin: 16px 16px 16px 0;
 }
 
 .profile-item-table-header{
     text-align: center;
     font-size: 14px;
     font-weight: 500;
-    height: 50px;
+}
 
+.profile-item-table-header tr{
+    border-bottom: 1px solid black;
+}
+
+.profile-item-table-header th{
+    padding: 10px 0 15px 0;
+}
+
+.profile-item-table-row:first-child td{
+    padding-top: 15px;
 }
 
 .profile-item-table-row{
@@ -339,10 +350,15 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
     font-size: 12px;
 }
 
-.subject-column {
+.col-20{
     width: 20%;
 }
 
+.subject-column {
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
 .no-border {
   border: 0;
 }
