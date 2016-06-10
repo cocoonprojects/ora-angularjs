@@ -326,7 +326,7 @@
 						<thead class="profile-item-table-header">
 							<tr>
 								<th>owned</th>
-								<th>subject</th>
+								<th class="subject-column">subject</th>
 								<th>status</th>
 								<th>credits</th>
 								<th>gap</th>
@@ -335,7 +335,7 @@
 						<tbody>
 							<tr class="profile-item-table-row" data-ng-repeat="task in tasks">
 								<td>{{isOwned(task) ? '&#x2713;' : '-'}}</td>
-								<td>{{task.subject}}</td>
+								<td class="subject-column">{{task.subject}}</td>
 								<td>{{task.status | itemStatusLabel}}</td>
 								<td>{{getCredits(task)}}</td>
 								<td data-ng-show="getDelta(task)">{{(getDelta(task) * 100 | number:2) + ' %'}}</td>
