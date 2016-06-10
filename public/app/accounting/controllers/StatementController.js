@@ -35,21 +35,41 @@ angular.module('app.accounting')
 
 
 			$scope.statement = null;
+
 			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) {
 				$scope.statement = data;
 			}, this.onLoadingError, 10000);
-			this.cancelAutoUpdate = function() {
+
+			cancelAutoUpdate = function() {
 				accountService.stopOrganizationPolling();
 			};
 
-			$scope.$on('$destroy', this.cancelAutoUpdate);
+			$scope.personalStatement = null;
+
+			accountService.startPersonalPolling($stateParams.orgId,{}, function(data) {
+				$scope.personalStatement = data;
+			}, this.onLoadingError, 10000);
+
+			cancelAutoUpdatePersonal = function() {
+				accountService.stopPersonalPolling();
+			};
+
+			$scope.$on('$destroy', function(){
+				cancelAutoUpdate();
+				cancelAutoUpdatePersonal();
+			});
 
 			$scope.isLoadingMore = false;
 			this.loadMore = function() {
 				$scope.isLoadingMore = true;
-				$scope.filters.limit = $scope.statement.count + 10;
+
+				var filters = {
+					limit:$scope.statement.count + 10
+				};
+
 				var that = this;
-				accountService.organizationStatement($stateParams.orgId, $scope.filters,
+
+				accountService.organizationStatement($stateParams.orgId, filters,
 						function(data) {
 							$scope.isLoadingMore = false;
 							$scope.statement = data;
@@ -58,6 +78,27 @@ angular.module('app.accounting')
 							$scope.isLoadingMore = false;
 							that.onLoadingError(response);
 						});
+			};
+
+			$scope.isLoadingMorePersonal = false;
+			this.loadMorePersonal = function() {
+				$scope.isLoadingMorePersonal = true;
+
+				var filters = {
+					limit:$scope.personalStatement.count + 10
+				};
+
+				var that = this;
+
+				accountService.personalStatement($stateParams.orgId, filters,
+					function(data) {
+						$scope.isLoadingMorePersonal = false;
+						$scope.personalStatement = data;
+					},
+					function(response) {
+						$scope.isLoadingMorePersonal = false;
+						that.onLoadingError(response);
+					});
 			};
 
 			this.addTransaction = function(transaction) {
