@@ -9,6 +9,7 @@ angular.module('app')
 		'streamService',
 		'$mdDialog',
         'settingsService',
+        'itemService',
 		function (
 			$scope,
 			$log,
@@ -18,10 +19,15 @@ angular.module('app')
 			$state,
             streamService,
 			$mdDialog,
-            settingsService) {
+            settingsService,
+            itemService) {
 
 			$scope.settings = {};
 			$scope.boards = [];
+            $scope.board = null;
+            $scope.columns = [];
+            $scope.projects = [];
+            $scope.ITEM_STATUS = itemService.ITEM_STATUS;
 
 			var readBoards = function(projects){
 				var boards = _.map(projects,function (p) {
@@ -38,8 +44,18 @@ angular.module('app')
                     );
                 });
 
+                $scope.board = findSelectedBoard(boards);
+
                 return boards;
 			};
+
+            var findSelectedBoard = function(boards){
+                var board = _.find(boards,function(b){
+                   return !!b.streamId;
+                });
+
+                return board && board.id;
+            };
 
 			this.kanbanizeSectionAllowed = kanbanizeService.isAllowed.bind(kanbanizeService);
 
@@ -55,6 +71,7 @@ angular.module('app')
 			this.updateKanbanizeSettings = function(){
 				kanbanizeService.updateSettings($stateParams.orgId, $scope.settings,
 					function(data) {
+                        $scope.projects = data.projects;
                         $scope.boards = readBoards(data.projects);
 					},
 					function(httpResponse) {
@@ -75,6 +92,7 @@ angular.module('app')
 				function(data) {
                     $scope.settings.subdomain = data.subdomain;
                     $scope.settings.apiKey = data.apikey;
+                    $scope.projects = data.projects;
                     $scope.boards = readBoards(data.projects);
 				},
 				function(httpResponse) {
@@ -97,19 +115,29 @@ angular.module('app')
 				});
 			};
 
-			loadStreams();
+            var findProjectId = function(projects,boardId){
+                var project = _.find(projects,function(project){
+                    return _.find(project.boards,function(board){
+                       return board.id === boardId;
+                    });
+                });
 
-			$scope.newStream = function(ev){
-				$mdDialog.show({
-					controller: NewStreamController,
-					controllerAs: 'dialogCtrl',
-					templateUrl: "app/collaboration/partials/new-stream.html",
-					targetEvent: ev,
-					clickOutsideToClose: true,
-					locals: {
-						orgId: $stateParams.orgId
-					}
-				}).then(loadStreams);
-			};
+                return project && project.id;
+            };
+
+            var unwatchBoard = $scope.$watch('board',function(){
+               if($scope.board){
+                   kanbanizeService.getBoardDetails($stateParams.orgId, $scope.board,function(data){
+                       $scope.boardSetting = _.extend({
+                           "projectId" : findProjectId($scope.projects,$scope.board)
+                       },data);
+                       console.log($scope.boardSetting);
+                   });
+               }
+            });
+
+            $scope.$on('$destroy',function(){
+               unwatchBoard();
+            });
 
 		}]);
