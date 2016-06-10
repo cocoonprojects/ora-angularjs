@@ -342,3 +342,11 @@ a.md-button.md-default-theme.md-raised, a.md-button.md-raised, .md-button.md-def
 .subject-column {
     width: 20%;
 }
+
+.no-border {
+  border: 0;
+}
+div:focus {
+    outline: none;
+    border: 0;
+ }

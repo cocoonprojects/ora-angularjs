@@ -96,7 +96,9 @@ infinite-scroll-immediate-check="false">
 		</div>
 	</md-card-header-text>
 	<md-card-media layout="column" layout-align="start end" class="margin-top-10" ng-if="item.status != ITEM_STATUS.OPEN">
-		<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" ui-sref="org.profile({ memberId: owner.id })" md-ink-ripple>
+		<div ng-click="$event.stopPropagation()" class="hand-pointer" >
+			<img  ui-sref="org.profile({ memberId: owner.id })" style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" >
+		</div>
 		<p class="margin-top-10 no-margin" style="font-size: 14px; font-weight: bold">{{item.status | ownerLabel}}:</p>
 		<p class="font-size12 no-margin" style="text-align:right;">{{ owner.firstname }} {{ owner.lastname}} </p>
 	</md-card-media>
