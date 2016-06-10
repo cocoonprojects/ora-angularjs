@@ -235,4 +235,16 @@ angular.module('app.collaboration')
 				$scope.changeStatusTime = !$scope.changeStatusTime;
 			};
 
+			$scope.goToDetail = function($event,item){
+				$event.preventDefault();
+				$event.stopPropagation();
+				$state.go("org.item",{ orgId: item.organization.id, itemId: item.id });
+			};
+
+			$scope.goToProfile = function($event,ownerId){
+				$event.preventDefault();
+				$event.stopPropagation();
+				$state.go("org.profile",{ memberId: ownerId });
+			};
+
 		}]);
