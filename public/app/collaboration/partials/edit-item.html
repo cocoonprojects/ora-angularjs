@@ -11,6 +11,15 @@
 						<div ng-message="remote">{{ form.subject.$error.remote }}</div>
 					</div>
 				</md-input-container>
+				<md-input-container data-ng-if="lanes.length > 0">
+					<label>Lane</label>
+					<md-select data-ng-model="item.lane" name="lane">
+						<md-option ng-repeat="lane in lanes" value="{{ lane.lcname }}">{{ lane.lcname }}</md-option>
+					</md-select>
+					<div ng-messages="form.lane.$error" role="alert">
+						<div ng-message="required">Lane is required</div>
+					</div>
+				</md-input-container>
 				<md-input-container>
 					<label>Description</label>
 					<textarea data-ng-model="item.description" columns="1" maxlength="420" md-maxlength="420" name="description" required></textarea>

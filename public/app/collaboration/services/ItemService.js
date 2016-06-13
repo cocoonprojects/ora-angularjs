@@ -138,7 +138,7 @@ var ItemService = function(
 			};
 
 			this.edit = function(item, success, error) {
-				return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: item.subject, description: item.description }, success, error);
+				return resource.edit({ orgId: item.organization.id, itemId: item.id }, { subject: item.subject, description: item.description, lane:item.lane }, success, error);
 			};
 
 			this.joinItem = function(item, success, error) {
