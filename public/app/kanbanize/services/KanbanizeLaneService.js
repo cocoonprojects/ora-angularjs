@@ -1,9 +1,8 @@
 var Service = function(
 	$http,
 	$q,
-	identity) {
-
-	var lanes = {};
+	identity,
+	LanesCache) {
 
 	var readBoards = function(projects){
 
@@ -24,23 +23,40 @@ var Service = function(
 		return board;
 	};
 
+	var updateLanes = function(organizationId){
+		return $http({
+			url: "api/" + organizationId + "/kanbanize/settings",
+			method: 'GET',
+			headers: {'GOOGLE-JWT': identity.getToken()}
+		}).then(function (response) {
+			var data = response.data;
+			var board = findSelectedBoard(readBoards(data.projects));
+
+			if(board){
+				LanesCache.set(organizationId,board.lanes);
+			}
+
+			return (board && board.lanes) || [];
+		});
+	};
+
+	var updateIfStaleLanes = function(lanes, organizationId) {
+		if(moment().diff(moment(lanes.lastUpdate),"days") > 0){
+			updateLanes(organizationId);
+		}
+	};
+
 	return {
 		getLanes: function (organizationId) {
 			var deferred = $q.defer();
 
-			if (lanes[organizationId]) {
-				deferred.resolve(lanes[organizationId]);
+			var lanes = LanesCache.get(organizationId);
+
+			if (lanes) {
+				deferred.resolve(lanes.lanes);
+				updateIfStaleLanes(lanes,organizationId);
 			} else {
-				return $http({
-					url: "api/" + organizationId + "/kanbanize/settings",
-					method: 'GET',
-					headers: {'GOOGLE-JWT': identity.getToken()}
-				}).then(function (response) {
-					var data = response.data;
-					var board = findSelectedBoard(readBoards(data.projects));
-					lanes[organizationId] = (board && board.lanes) || [];
-					return lanes[organizationId];
-				});
+				return updateLanes(organizationId);
 			}
 
 			return deferred.promise;
@@ -53,4 +69,5 @@ angular.module('app.organizations')
 		"$http",
 		'$q',
 		'identity',
+		'LanesCache',
 		Service]);
