@@ -4,11 +4,13 @@ angular.module('app.identity')
 		'$log',
 		'$state',
 		'SelectedOrganizationId',
+		'kanbanizeLaneService',
 		function(
 			$scope,
 			$log,
 			$state,
-			SelectedOrganizationId) {
+			SelectedOrganizationId,
+			kanbanizeLaneService) {
 
 			$scope.onSuccess = function(googleUser) {
 				$scope.$apply(function() {
@@ -16,7 +18,9 @@ angular.module('app.identity')
 					$scope.identity.loadMemberships().then(function(memberships){
 						if(memberships && memberships.length){
 							SelectedOrganizationId.set(memberships[0].organization.id);
-							$state.go('org.flow',{ orgId: memberships[0].organization.id });
+							kanbanizeLaneService.getLanes(memberships[0].organization.id).finally(function(){
+								$state.go('org.flow',{ orgId: memberships[0].organization.id });
+							});
 						}else{
 							$state.go('organizations');
 						}

@@ -10,6 +10,7 @@ angular.module('app.collaboration')
 		'itemService',
 		'$state',
 		'voteExtractor',
+		'kanbanizeLaneService',
 		function (
 			$scope,
 			$log,
@@ -20,7 +21,8 @@ angular.module('app.collaboration')
 			streamService,
 			itemService,
 			$state,
-			voteExtractor) {
+			voteExtractor,
+			kanbanizeLaneService) {
 
 			$scope.menu = {
 				open:false
@@ -35,6 +37,8 @@ angular.module('app.collaboration')
 			$scope.changeStatusTime = false;
 
 			$scope.streams = null;
+
+			$scope.lanes = null;
 
 			$scope.filters = {
 				offset: 0,
@@ -54,8 +58,13 @@ angular.module('app.collaboration')
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 				$scope.items = [];
+				$scope.lanes = null;
 				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+				kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
+					console.log(lanes);
+					$scope.lanes = lanes;
+					itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+				});
 			});
 
 			$scope.$on('$destroy', this.cancelAutoUpdate);
@@ -79,7 +88,10 @@ angular.module('app.collaboration')
 
 			this.loadItems = function() {
 				$scope.filters.limit = 10;
-				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
+				kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
+					$scope.lanes = lanes;
+					itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
+				});
 			};
 
 			$scope.printVote = function(item){
