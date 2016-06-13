@@ -69,6 +69,10 @@ angular.module('app.collaboration')
 						$scope.loadingItems = false;
 						$scope.items = data;
 					}, this.onLoadingError, 10000);
+				},function (httpResponse) {
+					if(httpResponse.status === 500){
+						alert('Generic Error during server communication');
+					}
 				});
 			});
 
