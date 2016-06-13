@@ -65,6 +65,7 @@
 			</md-button>
 	</div> -->
 </md-content>
+<md-progress-linear data-ng-if="loadingItems" md-mode="query"></md-progress-linear>
 <md-card
 		data-ng-click="goToDetail($event,item)"
 		class="card-item" ng-repeat="item in items._embedded['ora:task']"

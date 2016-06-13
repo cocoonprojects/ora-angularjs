@@ -54,16 +54,21 @@ angular.module('app.collaboration')
 				itemService.stopQueryPolling();
 			};
 
+			$scope.loadingItems = true;
+
 			$scope.$watchGroup(['filters.status','filters.memberId','filters.orderType'],function(){
 				streamService.stopQueryPolling();
 				itemService.stopQueryPolling();
 				$scope.items = [];
 				$scope.lanes = null;
+				$scope.loadingItems = true;
 				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
 				kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
-					console.log(lanes);
 					$scope.lanes = lanes;
-					itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+					itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) {
+						$scope.loadingItems = false;
+						$scope.items = data;
+					}, this.onLoadingError, 10000);
 				});
 			});
 
