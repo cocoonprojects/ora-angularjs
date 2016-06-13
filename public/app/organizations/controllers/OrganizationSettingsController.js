@@ -28,6 +28,7 @@ angular.module('app')
             $scope.columns = [];
             $scope.projects = [];
             $scope.ITEM_STATUS = itemService.ITEM_STATUS;
+			$scope.loadingKanbanize = true;
 
 			var readBoards = function(projects){
 				var boards = _.map(projects,function (p) {
@@ -57,7 +58,7 @@ angular.module('app')
                 return board && board.id;
             };
 
-			this.kanbanizeSectionAllowed = kanbanizeService.isAllowed.bind(kanbanizeService);
+			$scope.kanbanizeSectionAllowed = kanbanizeService.isAllowed.bind(kanbanizeService);
 
             $scope.orgSettings = {};
             settingsService.get($stateParams.orgId).then(function(settings){
@@ -94,6 +95,7 @@ angular.module('app')
                     $scope.settings.apiKey = data.apikey;
                     $scope.projects = data.projects;
                     $scope.boards = readBoards(data.projects);
+					$scope.loadingKanbanize = false;
 				},
 				function(httpResponse) {
 					switch(httpResponse.status) {

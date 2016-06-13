@@ -134,7 +134,7 @@
 			</div>
 			<div layout="row" layout-align="end center">
 				<md-button
-					ng-if="ctrl.kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
+					ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
 					type="submit" class="md-raised" aria-label="Save settings"
 					ng-disabled="orgSettingsForm.$invalid">Save
 				</md-button>
@@ -142,7 +142,13 @@
 		</form>
 	</md-card-content>
 </md-card>
-<md-card>
+<md-card data-ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && loadingKanbanize">
+	<md-card-content>
+		<md-progress-linear md-mode="query"></md-progress-linear>
+		<h1 flex>Loading Kanbanize Settings</h1>
+	</md-card-content>
+</md-card>
+<md-card data-ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize">
 	<md-card-content>
 		<h1 flex>Kanbanize Account</h1>
 		<form name="form" ng-submit="ctrl.updateKanbanizeSettings()" novalidate>
@@ -176,7 +182,6 @@
 			</div>
 			<div layout="row" layout-align="end center">
 				<md-button
-					ng-if="ctrl.kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
 					type="submit" class="md-raised" aria-label="Save settings"
 					ng-disabled="form.$invalid">Save
 				</md-button>
@@ -184,7 +189,7 @@
 		</form>
 	</md-card-content>
 </md-card>
-<md-card>
+<md-card data-ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize">
 	<md-card-content>
 		<h1 flex>Board Settings</h1>
 		<form name="boards" ng-submit="ctrl.saveBoardSettings()" novalidate>
