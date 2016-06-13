@@ -183,20 +183,20 @@
 			<div layout="row" layout-align="end center">
 				<md-button
 					type="submit" class="md-raised" aria-label="Save settings"
-					ng-disabled="form.$invalid">Save
+					ng-disabled="updatingKanbanize || form.$invalid">Save
 				</md-button>
 			</div>
 		</form>
 	</md-card-content>
 </md-card>
-<md-card data-ng-show="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize">
+<md-card data-ng-show="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize && projects.length">
 	<md-card-content>
 		<h1 flex>Board Settings</h1>
 		<form name="boardList" ng-submit="ctrl.saveKanbanizeBoards()" novalidate>
 			<div layout="row">
 				<md-input-container>
 					<label class="md-container-ignore">Board</label>
-					<md-select ng-model="board" placeholder="Select a Board" name="board" required>
+					<md-select data-ng-disabled="!boards || !boards.length" ng-model="board" placeholder="Select a Board" name="board" required>
 						<md-option ng-value="board.id" ng-repeat="board in boards">{{board.name}}</md-option>
 					</md-select>
 					<div ng-messages="boards.board.$error" role="alert">
@@ -220,7 +220,7 @@
 				</md-input-container>
 			</div>
 			<div ng-if="streams.length && boardSetting.mapping" layout="row" layout-align="end center">
-				<md-button type="submit" ng-disabled="boardList.$invalid" class="md-raised">Save</md-button>
+				<md-button type="submit" ng-disabled="updatingKanbanize || boardList.$invalid" class="md-raised">Save</md-button>
 			</div>
 		</form>
 	</md-card-content>

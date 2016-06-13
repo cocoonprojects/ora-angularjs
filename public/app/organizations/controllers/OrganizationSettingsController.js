@@ -65,12 +65,17 @@ angular.module('app')
             };
 
 			this.updateKanbanizeSettings = function(){
+				$scope.projects = [];
+				$scope.boards = [];
+				$scope.updatingKanbanize = true;
 				kanbanizeService.updateSettings($stateParams.orgId, $scope.settings,
 					function(data) {
                         $scope.projects = data.projects;
                         $scope.boards = readBoards(data.projects);
+						$scope.updatingKanbanize = false;
 					},
 					function(httpResponse) {
+						$scope.updatingKanbanize = false;
 						switch(httpResponse.status) {
 							case 400:
 								httpResponse.data.errors.forEach(function(error) {
@@ -84,9 +89,27 @@ angular.module('app')
 				);
 			};
 
+			var printMappingError = function(data) {
+
+				var mappingError = _.find(data.errors,function(error){
+					return error.field === 'mapping';
+				});
+
+				if(mappingError){
+					$mdToast.show(
+						$mdToast.simple()
+							.textContent(mappingError.message)
+							.position('bottom left')
+							.hideDelay(3000)
+					);
+				}
+			};
+
 			this.saveKanbanizeBoards = function(){
+				$scope.updatingKanbanize = true;
 				kanbanizeService.saveBoardSettings($stateParams.orgId, $scope.board, $scope.boardSetting,
 					function(data) {
+						$scope.updatingKanbanize = false;
 						$mdToast.show(
 							$mdToast.simple()
 								.textContent('Board configuration saved')
@@ -95,10 +118,14 @@ angular.module('app')
 						);
 					},
 					function(httpResponse) {
+						$scope.updatingKanbanize = false;
 						switch(httpResponse.status) {
 							case 400:
+								printMappingError(httpResponse.data);
 								httpResponse.data.errors.forEach(function(error) {
-									$scope.boardList[error.field].$error.remote = error.message;
+									if($scope.boardList[error.field]){
+										$scope.boardList[error.field].$error.remote = error.message;
+									}
 								});
 								break;
 							default:
@@ -110,7 +137,7 @@ angular.module('app')
 
 			kanbanizeService.query($stateParams.orgId,
 				function(data) {
-                    $scope.settings.subdomain = data.subdomain;
+					$scope.settings.subdomain = data.subdomain;
                     $scope.settings.apiKey = data.apikey;
                     $scope.projects = data.projects;
                     $scope.boards = readBoards(data.projects);
