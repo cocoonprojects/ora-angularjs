@@ -189,10 +189,10 @@
 		</form>
 	</md-card-content>
 </md-card>
-<md-card data-ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize">
+<md-card data-ng-show="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize">
 	<md-card-content>
 		<h1 flex>Board Settings</h1>
-		<form name="boards" ng-submit="ctrl.saveBoardSettings()" novalidate>
+		<form name="boardList" ng-submit="ctrl.saveKanbanizeBoards()" novalidate>
 			<div layout="row">
 				<md-input-container>
 					<label class="md-container-ignore">Board</label>
@@ -207,16 +207,20 @@
 			<div layout="row" ng-repeat="(key, value) in boardSetting.mapping">
 				<md-input-container>
 					<label class="md-container-ignore">{{key}}</label>
-					<md-select ng-model="boardSetting.mapping[key]" aria-label="Column {{key}} mapping" name="{{key}}"git>
+					<md-select ng-model="boardSetting.mapping[key]" aria-label="Column {{key}} mapping" name="{{key}}" required>
 						<md-option value=""></md-option>
 						<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">
 							{{status | itemStatusLabel }}
 						</md-option>
 					</md-select>
+					<div ng-messages="boardList[key].$error" role="alert">
+						<div ng-message="required">{{key}} is required</div>
+						<div ng-message="remote">{{ boardList[key].$error.remote }}</div>
+					</div>
 				</md-input-container>
 			</div>
-			<div ng-if="boardSetting.mapping" layout="row" layout-align="end center">
-				<md-button type="submit" ng-disabled="form.$invalid" class="md-raised">Save</md-button>
+			<div ng-if="streams.length && boardSetting.mapping" layout="row" layout-align="end center">
+				<md-button type="submit" ng-disabled="boardList.$invalid" class="md-raised">Save</md-button>
 			</div>
 		</form>
 	</md-card-content>

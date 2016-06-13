@@ -10,6 +10,7 @@ angular.module('app')
 		'$mdDialog',
         'settingsService',
         'itemService',
+		'$mdToast',
 		function (
 			$scope,
 			$log,
@@ -20,7 +21,8 @@ angular.module('app')
             streamService,
 			$mdDialog,
             settingsService,
-            itemService) {
+            itemService,
+			$mdToast) {
 
 			$scope.settings = {};
 			$scope.boards = [];
@@ -31,19 +33,12 @@ angular.module('app')
 			$scope.loadingKanbanize = true;
 
 			var readBoards = function(projects){
+
 				var boards = _.map(projects,function (p) {
 					return p.boards;
 				});
 
 				boards = _.flatten(boards,true);
-
-                _.each(boards,function(b){
-                    kanbanizeService.getBoardDetails($stateParams.orgId,b.id,
-                        function(data) {
-                            angular.extend(b, data);
-                        }
-                    );
-                });
 
                 $scope.board = findSelectedBoard(boards);
 
@@ -80,6 +75,30 @@ angular.module('app')
 							case 400:
 								httpResponse.data.errors.forEach(function(error) {
 									$scope.form[error.field].$error.remote = error.message;
+								});
+								break;
+							default:
+								$log.warn(httpResponse);
+						}
+					}
+				);
+			};
+
+			this.saveKanbanizeBoards = function(){
+				kanbanizeService.saveBoardSettings($stateParams.orgId, $scope.board, $scope.boardSetting,
+					function(data) {
+						$mdToast.show(
+							$mdToast.simple()
+								.textContent('Board configuration saved')
+								.position('bottom left')
+								.hideDelay(3000)
+						);
+					},
+					function(httpResponse) {
+						switch(httpResponse.status) {
+							case 400:
+								httpResponse.data.errors.forEach(function(error) {
+									$scope.boardList[error.field].$error.remote = error.message;
 								});
 								break;
 							default:
@@ -130,9 +149,14 @@ angular.module('app')
             var unwatchBoard = $scope.$watch('board',function(){
                if($scope.board){
                    kanbanizeService.getBoardDetails($stateParams.orgId, $scope.board,function(data){
-                       $scope.boardSetting = _.extend({
-                           "projectId" : findProjectId($scope.projects,$scope.board)
-                       },data);
+					   var stream = $scope.streams[0];
+
+					   $scope.boardSetting = _.extend(data,{
+                           projectId : findProjectId($scope.projects,$scope.board),
+						   streamId: stream.id,
+						   streamName: stream.subject
+                       });
+
                        console.log($scope.boardSetting);
                    });
                }
@@ -141,5 +165,7 @@ angular.module('app')
             $scope.$on('$destroy',function(){
                unwatchBoard();
             });
+
+			loadStreams();
 
 		}]);
