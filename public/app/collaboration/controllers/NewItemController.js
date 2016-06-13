@@ -6,7 +6,10 @@ function NewItemController(
 	templateService,
 	orgId,
 	streams,
-	decisionMode) {
+	decisionMode,
+	lanes) {
+
+	$scope.lanes = lanes || [];
 
 	$scope.decisionMode = decisionMode;
 

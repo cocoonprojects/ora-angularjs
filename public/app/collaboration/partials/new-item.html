@@ -11,13 +11,13 @@
 						<div ng-message="remote">{{ form.subject.$error.remote }}</div>
 					</div>
 				</md-input-container>
-				<md-input-container data-ng-if="streams['_embedded']['ora:stream'].length > 0">
-					<label>Stream</label>
-					<md-select data-ng-model="task.streamID" name="stream" required>
-						<md-option ng-repeat="stream in streams['_embedded']['ora:stream']" value="{{ stream.id }}">{{ stream.subject }}</md-option>
+				<md-input-container data-ng-if="lanes.length > 0">
+					<label>Lane</label>
+					<md-select data-ng-model="task.lane" name="lane">
+						<md-option ng-repeat="lane in lanes" value="{{ lane.lcname }}">{{ lane.lcname }}</md-option>
 					</md-select>
-					<div ng-messages="form.stream.$error" role="alert">
-						<div ng-message="required">Stream is required</div>
+					<div ng-messages="form.lane.$error" role="alert">
+						<div ng-message="required">Lane is required</div>
 					</div>
 				</md-input-container>
 				<md-input-container>

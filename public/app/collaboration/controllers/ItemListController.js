@@ -144,7 +144,8 @@ angular.module('app.collaboration')
 					locals: {
 						orgId: $stateParams.orgId,
 						streams: $scope.streams,
-						decisionMode: decision
+						decisionMode: decision,
+						lanes: $scope.lanes
 					}
 				}).then(this.onItemAdded);
 			};
