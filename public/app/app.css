@@ -399,3 +399,7 @@ div:focus {
     color:#192b34;
     margin-top: -5px;
 }
+
+.statement-item {
+    background-color: white;
+}
