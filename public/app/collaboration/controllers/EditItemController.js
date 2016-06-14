@@ -11,7 +11,6 @@ function EditItemController($scope, $mdDialog, $log, itemService, kanbanizeLaneS
 	});
 
 	this.submit = function() {
-		console.log($scope.item);
 		itemService.edit($scope.item, $mdDialog.hide, function(httpResponse) {
 			switch(httpResponse.status) {
 				case 400:
@@ -20,6 +19,7 @@ function EditItemController($scope, $mdDialog, $log, itemService, kanbanizeLaneS
 					});
 					break;
 				default:
+					alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 					$log.warn(httpResponse);
 			}
 		});
