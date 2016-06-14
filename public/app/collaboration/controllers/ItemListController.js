@@ -56,25 +56,35 @@ angular.module('app.collaboration')
 
 			$scope.loadingItems = true;
 
-			$scope.$watchGroup(['filters.status','filters.memberId','filters.orderType'],function(){
-				streamService.stopQueryPolling();
+
+			var restartPollingItems = function() {
 				itemService.stopQueryPolling();
 				$scope.items = [];
-				$scope.lanes = null;
 				$scope.loadingItems = true;
-				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-				kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
-					$scope.lanes = lanes;
-					itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) {
-						$scope.loadingItems = false;
-						$scope.items = data;
-					}, this.onLoadingError, 10000);
-				},function (httpResponse) {
-					if(httpResponse.status === 500){
-						alert('Generic Error during server communication');
+				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) {
+					$scope.loadingItems = false;
+					$scope.items = data;
+				}, this.onLoadingError, 30000);
+			};
+
+			kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
+				$scope.lanes = lanes;
+
+				$scope.$watchGroup(['filters.status','filters.memberId','filters.orderType'],function(newValue,oldValue){
+					if (newValue!=oldValue) {
+						restartPollingItems();
 					}
 				});
+				restartPollingItems();
+
+
+			},function (httpResponse) {
+				if(httpResponse.status === 500){
+					alert('Generic Error during server communication');
+				}
 			});
+
+
 
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
@@ -123,12 +133,12 @@ angular.module('app.collaboration')
 				});
 			};
 
-			this.stream = function(task) {
+			/*this.stream = function(task) {
 				if($scope.streams && task.stream) {
 					return $scope.streams._embedded['ora:stream'][task.stream.id];
 				}
 				return null;
-			};
+			};*/
 
 			this.openNewStream = function(ev) {
 				$mdDialog.show({
@@ -152,7 +162,7 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					locals: {
 						orgId: $stateParams.orgId,
-						streams: $scope.streams,
+						streams: [$scope.stream],
 						decisionMode: decision,
 						lanes: $scope.lanes
 					}

@@ -15,6 +15,8 @@ function NewItemController(
 
 	$scope.streams = streams;
 
+	console.log($scope.streams);
+
 	templateService.list().then(function(templates){
 		$scope.templates = templates;
 	});
@@ -38,7 +40,8 @@ function NewItemController(
 		};
 
 		if(!$scope.task.streamID){
-			$scope.task.streamID = _.values(streams._embedded['ora:stream'])[0].id;
+			//$scope.task.streamID = _.values(streams._embedded['ora:stream'])[0].id;
+			$scope.task.streamID = $scope.streams[0].id;
 		}
 
 		if(!$scope.task.description){
