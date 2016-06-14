@@ -18,6 +18,11 @@ angular.module('app.collaboration')
 			itemService,
 			identity) {
 
+			var onHttpGenericError  = function(httpResponse) {
+				alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
+				$log.warn(httpResponse);
+			};
+
 			$scope.attachments = [];
 
 			$scope.suggest = '';
@@ -92,7 +97,7 @@ angular.module('app.collaboration')
 
 				itemService.getHistory($scope.item).then(function(response){
 					$scope.history = response.data;
-				});
+				},onHttpGenericError);
 			};
 
 			$scope.membershipRole = $scope.identity.getMembershipRole($stateParams.orgId);
@@ -102,13 +107,17 @@ angular.module('app.collaboration')
 			};
 
 			$scope.streams = null;
-			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; });
+			streamService.query($stateParams.orgId, function(data) { $scope.streams = data; }, onHttpGenericError);
 			this.onLoadingError = function(error) {
 				$log.debug(error);
 				switch (error.status) {
-					case 401:
+					/*case 401:
 						itemService.stopGetPolling();
-						break;
+						break;*/
+					default:
+						alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
+						$log.warn(httpResponse);
+						itemService.stopGetPolling();
 				}
 			};
 			$scope.item = null;
@@ -156,15 +165,15 @@ angular.module('app.collaboration')
 						function() {
 							$state.go('org.collaboration', { orgId: item.organization.id });
 						},
-						$log.warn
+						onHttpGenericError
 					);
 				});
 			};
 			this.joinItem = function(item) {
-				itemService.joinItem(item, this.updateItem, $log.warn);
+				itemService.joinItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.unjoinItem = function(item) {
-				itemService.unjoinItem(item, this.updateItem, $log.warn);
+				itemService.unjoinItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.openEstimateItem = function(ev, item) {
 				$mdDialog.show({
@@ -180,7 +189,7 @@ angular.module('app.collaboration')
 				}).then(this.updateItem);
 			};
 			this.executeItem = function(item) {
-				itemService.executeItem(item, this.updateItem, $log.warn);
+				itemService.executeItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.reExecuteItem = function(ev, item) {
 				var that = this;
@@ -211,7 +220,7 @@ angular.module('app.collaboration')
 						});
 			};
 			this.reCompleteItem = function(item) {
-				itemService.completeItem(item, this.updateItem, $log.warn);
+				itemService.completeItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.acceptItem = function(ev,item) {
 				$mdDialog.show({
@@ -254,7 +263,7 @@ angular.module('app.collaboration')
 						.cancel("No");
 
 				$mdDialog.show(confirm).then(function() {
-					itemService.removeTaskMember(item.organization.id,item.id,member.id);
+					itemService.removeTaskMember(item.organization.id,item.id,member.id).then($log.info,onHttpGenericError);
 				});
 			};
 
@@ -278,7 +287,7 @@ angular.module('app.collaboration')
 			};
 
 			this.remindItemEstimate = function(item) {
-				itemService.remindItemEstimate(item, $log.info, $log.warn);
+				itemService.remindItemEstimate(item, $log.info, onHttpGenericError);
 			};
 
 			this.updateItem = function(item) {
@@ -286,17 +295,17 @@ angular.module('app.collaboration')
 			};
 
 			this.closeItem = function(item) {
-				itemService.closeItem(item, this.updateItem, $log.warn);
+				itemService.closeItem(item, this.updateItem, onHttpGenericError);
 			};
 
 			this.addAttachment = function(file){
 				$scope.attachments.push(file);
-				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments);
+				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments).then($log.info,onHttpGenericError);
 			};
 
 			this.deleteAttachment = function(file){
 				$scope.attachments = _.without($scope.attachments,file);
-				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments);
+				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments).then($log.info,onHttpGenericError);
 			};
 
 			var that = this;
@@ -314,7 +323,7 @@ angular.module('app.collaboration')
 				}).then(function(owner) {
 					itemService.changeOwner(item,owner).then(function(){
 						itemService.query($stateParams.orgId, $stateParams.itemId, onLoadItem);
-					});
+					},onHttpGenericError);
 				});
 			};
 		}]);
