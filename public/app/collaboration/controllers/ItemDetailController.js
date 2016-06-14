@@ -78,7 +78,7 @@ angular.module('app.collaboration')
 				}
 
 				if (elm.status === 50) {
-					$scope.suggest = "This idea has been completed";
+					$scope.suggest = "This item has been closed";
 					return true;
 				}
 
