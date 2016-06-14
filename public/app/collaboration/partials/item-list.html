@@ -105,7 +105,7 @@
 				</div>
 			</md-card-header-text>
 			<md-card-media layout="column" layout-align="start end" class="margin-top-10" ng-if="item.status != ITEM_STATUS.OPEN">
-				<div ng-click="$event.stopPropagation()" class="hand-pointer" >
+				<div>
 					<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" >
 				</div>
 				<p class="margin-top-10 no-margin" style="font-size: 14px; font-weight: bold">{{item.status | ownerLabel}}:</p>
