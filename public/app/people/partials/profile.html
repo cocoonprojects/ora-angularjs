@@ -260,7 +260,7 @@
 			<md-divider></md-divider>
 		</md-tab>
 </md-tabs>
-	<md-subheader class="member-since-label">
+	<md-subheader class="member-since-label" data-ng-if="profile.createdAt">
 		{{organization.name}} joined on {{profile.createdAt | date:'dd/MM/yyyy'}}
 	</md-subheader>
 	<md-card>
