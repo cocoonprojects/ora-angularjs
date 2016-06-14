@@ -403,3 +403,10 @@ div:focus {
 .statement-item {
     background-color: white;
 }
+
+.member-since-label {
+    color: black;
+    font-weight: normal;
+    font-size: 12px;
+    z-index: 0;
+}

@@ -260,8 +260,8 @@
 			<md-divider></md-divider>
 		</md-tab>
 </md-tabs>
-	<md-subheader style="color: black; font-weight: normal; font-size: 12px; z-index: 0;">
-		Member since {{profile.createdAt | date:'dd/MM/yyyy'}}
+	<md-subheader class="member-since-label">
+		{{organization.name}} joined on {{profile.createdAt | date:'dd/MM/yyyy'}}
 	</md-subheader>
 	<md-card>
 		<md-card-header>
