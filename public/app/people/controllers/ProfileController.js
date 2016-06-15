@@ -41,6 +41,7 @@ angular.module('app.people')
 			     	memberService.changeMembership($stateParams.orgId, $scope.profile.id, newRole,function(data) {
 						$scope.profile = memberService.get({ orgId: $stateParams.orgId, memberId: $stateParams.memberId });
 					}, function(response) {
+						alert('Generic Error during server communication (error: ' + response.status + ' ' + response.statusText + ') ');
 						$log.warn(response);
 					});
 			    });
@@ -57,6 +58,7 @@ angular.module('app.people')
 					$scope.tasks = data._embedded['ora:task'];
 					console.log($scope.tasks);
 				}, function(response) {
+					alert('Generic Error during server communication (error: ' + response.status + ' ' + response.statusText + ') ');
 					$log.warn(response);
 				});
 				$scope.stats   = itemService.userStats($stateParams.orgId, $scope.filters);

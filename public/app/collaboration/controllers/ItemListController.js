@@ -84,7 +84,10 @@ angular.module('app.collaboration')
 				}
 			});
 
-
+			var onHttpGenericError  = function(httpResponse) {
+				alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
+				$log.warn(httpResponse);
+			};
 
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
@@ -237,10 +240,10 @@ angular.module('app.collaboration')
 				}
 			};
 			this.joinItem = function(item) {
-				itemService.joinItem(item, this.updateItem, $log.warn);
+				itemService.joinItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.unjoinItem = function(item) {
-				itemService.unjoinItem(item, this.updateItem, $log.warn);
+				itemService.unjoinItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.isNewEntitiesAllowed = function(organization) {
 				return itemService.isAllowed('createItem', organization) ||

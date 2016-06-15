@@ -12,6 +12,7 @@ function NewDepositController($scope, $log, $stateParams, $mdDialog, accountServ
 						});
 						break;
 					default:
+						alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 						$log.warn(httpResponse);
 				}
 			});
