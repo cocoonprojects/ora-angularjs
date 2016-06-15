@@ -455,3 +455,31 @@ div:focus {
     z-index: 100;
     text-align: center;
 }
+
+
+.content-wrapper {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    overflow-y: scroll;
+}
+
+.navigation-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    height: 48px;
+    z-index: 58;
+}
+
+@media (min-width: 600px) {
+    .content-wrapper {
+        left: 320px;
+    }
+    .navigation-wrapper {
+        left: 320px;
+    }
+}

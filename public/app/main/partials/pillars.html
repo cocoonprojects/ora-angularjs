@@ -16,6 +16,6 @@
 		<span flex></span>
 	</div>
 </md-toolbar>
-<md-content class="bkg-color-secondary" data-ng-if="!fullHeight" flex ui-view></md-content>
-<md-content class="bkg-color-secondary" data-ng-if="fullHeight" layout="row" flex ui-view></md-content>
-<navigation-bar><navigation-bar/>
+<div class="bkg-color-secondary content-wrapper" data-ng-if="!fullHeight" flex ui-view></div>
+<div class="bkg-color-secondary content-wrapper" data-ng-if="fullHeight" layout="row" flex ui-view></div>
+<navigation-bar class="navigation-wrapper"><navigation-bar/>
