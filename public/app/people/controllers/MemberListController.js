@@ -17,8 +17,12 @@ angular.module('app.people')
 		};
 
 		$scope.$on('$stateChangeSuccess',function(){
+			$scope.loading = true;
 			memberService.query({ orgId: $stateParams.orgId },function(data){
 				$scope.members = data;
+				$scope.loading = false;
+			},function(){
+				$scope.loading = false;
 			});
 		});
 
