@@ -9,24 +9,24 @@
     <md-fab-actions>
         <md-button aria-label="Add Credit" class="md-fab md-raised md-mini" ng-click="ctrl.openNewDeposit($event)"
                    data-ng-show="ctrl.isAllowed('deposit', statement)">
-            <md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Deposit</md-tooltip>
+            <!--<md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Deposit</md-tooltip>-->
             <md-icon md-svg-icon="deposit" style="fill: Black" title="New Deposit"></md-icon>
         </md-button>
         <md-button aria-label="Withdrawal" class="md-fab md-raised md-mini" ng-click="ctrl.openNewWithdrawal($event)"
                    ng-if="ctrl.isAllowed('withdrawal', statement)">
-            <md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Withdrawal</md-tooltip>
+            <!--<md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Withdrawal</md-tooltip>-->
             <md-icon md-svg-icon="withdrawal" style="fill: Black" title="New Withdrawal"></md-icon>
         </md-button>
         <md-button aria-label="Incoming Transfer" class="md-fab md-raised md-mini"
                    ng-click="ctrl.openNewIncomingTransfer($event)"
                    ng-if="ctrl.isAllowed('incomingTransfer', statement)">
-            <md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Incoming Transfer</md-tooltip>
+            <!--<md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Incoming Transfer</md-tooltip>-->
             <md-icon md-svg-icon="transfer" style="fill: Black" title="New Incoming Transfer"></md-icon>
         </md-button>
         <md-button aria-label="Outgoing Transfer" class="md-fab md-raised md-mini"
                    ng-click="ctrl.openNewOutgoingTransfer($event)"
                    ng-if="ctrl.isAllowed('outgoingTransfer', statement)">
-            <md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Outgoing Transfer</md-tooltip>
+            <!--<md-tooltip tooltip-hack md-direction="left" md-visible="menu.open">Outgoing Transfer</md-tooltip>-->
             <md-icon md-svg-icon="transfer" style="fill: Black" title="New Outgoing Transfer"></md-icon>
         </md-button>
     </md-fab-actions>
