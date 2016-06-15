@@ -483,3 +483,9 @@ div:focus {
         left: 320px;
     }
 }
+
+.ora-fab {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+}
