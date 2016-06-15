@@ -6,6 +6,7 @@
 <md-subheader class="md-no-sticky">Latest Activity</md-subheader>
 <md-divider></md-divider>
 <md-content>
+	<md-progress-linear data-ng-if="loading" md-mode="query"></md-progress-linear>
 	<md-list flex="100" ng-repeat="card in cards._embedded['ora:flowcard']"
 	infinite-scroll="ctrl.loadMore()"
 	infinite-scroll-distance="1"

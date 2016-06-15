@@ -38,13 +38,23 @@ angular.module('app.flow')
 			$scope.isLoadingMore = false;
 			var that = this;
 			this.onLoadingError = function(error) {
+				$scope.loading = false;
 				switch (error.status) {
 					case 401:
 						that.cancelAutoUpdate();
 						break;
+					default:
+						alert('Generic Error during server communication (error: ' + error.status + ' ' + error.statusText + ') ');
+						$log.warn(error);
 				}
 			};
-			flowService.startQueryPolling($scope.filters, function(data) { $scope.cards = data; }, this.onLoadingError, 10000);
+
+			$scope.loading = true;
+			flowService.startQueryPolling($scope.filters, function(data) {
+				$scope.loading = false;
+				$scope.cards = data;
+			}, this.onLoadingError, 10000);
+
 			this.cancelAutoUpdate = function() {
 				flowService.stopQueryPolling();
 			};
