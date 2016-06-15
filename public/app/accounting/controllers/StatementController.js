@@ -48,7 +48,7 @@ angular.module('app.accounting')
 			}, function(error){
 				this.onLoadingError(error);
 				$scope.loadingOrganizationTransactions = false;
-			}, 10000);
+			}, 30000);
 
 			var cancelAutoUpdate = function () {
 				accountService.stopOrganizationPolling();
@@ -68,7 +68,7 @@ angular.module('app.accounting')
 			}, function(error){
 				this.onLoadingError(error);
 				$scope.loadingPersonalTransactions = false;
-			}, 10000);
+			}, 30000);
 
 			$scope.$on('$destroy', function(){
 				cancelAutoUpdate();
