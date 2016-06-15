@@ -86,6 +86,7 @@
         </div>
     </div>
 </md-content>
+<md-progress-linear data-ng-if="currentTab === 0 && loadingOrganizationTransactions" md-mode="query"></md-progress-linear>
 <md-list flex="100"
          data-ng-if="currentTab === 0"
          infinite-scroll-distance="1"
@@ -115,7 +116,9 @@
             <p style="color: gray; font-size: 14px; margin-top: 80%;">{{ transaction.date | date:'dd/MM/yyyy' }}</p>
         </div>
     </md-list-item>
+    <p data-ng-if="emptyOrganizationTransactions" class="no-transaction-label">No organization transactions available</p>
 </md-list>
+<md-progress-linear data-ng-if="currentTab === 1 && loadingPersonalTransactions" md-mode="query"></md-progress-linear>
 <md-list flex="100"
          data-ng-if="currentTab === 1"
          infinite-scroll-distance="1"
@@ -145,4 +148,5 @@
             <p style="color: gray; font-size: 14px; margin-top: 80%;">{{ transaction.date | date:'dd/MM/yyyy' }}</p>
         </div>
     </md-list-item>
+    <p data-ng-if="emptyPersonalTransactions" class="no-transaction-label">No personal transactions available</p>
 </md-list>

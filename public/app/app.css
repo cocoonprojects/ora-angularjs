@@ -489,3 +489,10 @@ div:focus {
     bottom: 60px;
     right: 20px;
 }
+
+.no-transaction-label {
+    padding-top: 20px;
+    text-align: center;
+    font-size: 20pt;
+    font-weight: 500;
+}

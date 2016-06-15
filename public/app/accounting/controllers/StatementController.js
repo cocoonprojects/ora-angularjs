@@ -36,27 +36,42 @@ angular.module('app.accounting')
 
 			$scope.statement = null;
 
+			$scope.emptyOrganizationTransactions = false;
+			$scope.loadingOrganizationTransactions = true;
 			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) {
+				$scope.loadingOrganizationTransactions = false;
+				var transactions = data._embedded.transactions || [];
+				if(transactions.length === 0){
+					$scope.emptyOrganizationTransactions = true;
+				}
 				$scope.statement = data;
-			}, this.onLoadingError, 10000);
+			}, function(error){
+				this.onLoadingError(error);
+				$scope.loadingOrganizationTransactions = false;
+			}, 10000);
 
-			cancelAutoUpdate = function() {
+			var cancelAutoUpdate = function () {
 				accountService.stopOrganizationPolling();
-			};
-
-			$scope.personalStatement = null;
-
-			accountService.startPersonalPolling($stateParams.orgId,{}, function(data) {
-				$scope.personalStatement = data;
-			}, this.onLoadingError, 10000);
-
-			cancelAutoUpdatePersonal = function() {
 				accountService.stopPersonalPolling();
 			};
 
+			$scope.personalStatement = null;
+			$scope.emptyPersonalTransactions = false;
+			$scope.loadingPersonalTransactions = true;
+			accountService.startPersonalPolling($stateParams.orgId,{}, function(data) {
+				$scope.loadingPersonalTransactions = false;
+				var transactions = data._embedded.transactions || [];
+				if(transactions.length === 0){
+					$scope.emptyPersonalTransactions = true;
+				}
+				$scope.personalStatement = data;
+			}, function(error){
+				this.onLoadingError(error);
+				$scope.loadingPersonalTransactions = false;
+			}, 10000);
+
 			$scope.$on('$destroy', function(){
 				cancelAutoUpdate();
-				cancelAutoUpdatePersonal();
 			});
 
 			$scope.isLoadingMore = false;
