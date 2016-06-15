@@ -44,6 +44,7 @@ angular.module('app.flow')
 						that.cancelAutoUpdate();
 						break;
 					default:
+						that.cancelAutoUpdate();
 						alert('Generic Error during server communication (error: ' + error.status + ' ' + error.statusText + ') ');
 						$log.warn(error);
 				}
