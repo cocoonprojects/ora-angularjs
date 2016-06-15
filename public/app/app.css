@@ -475,7 +475,7 @@ div:focus {
     z-index: 58;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1280px) {
     .content-wrapper {
         left: 320px;
     }
