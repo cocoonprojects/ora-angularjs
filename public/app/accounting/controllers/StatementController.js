@@ -12,6 +12,10 @@ angular.module('app.accounting')
             $state,
 			$mdDialog) {
 
+			$scope.menu = {
+				open:false
+			};
+
 			$scope.selectedTab = $state.$current.data.currentTab;
 
 			this.isAllowed = accountService.isAllowed.bind(accountService);
@@ -25,23 +29,62 @@ angular.module('app.accounting')
 			};
 
 			$scope.filters = {
-				limit: 10
 			};
+
+			$scope.myWallet = accountService.userStats({ orgId: $stateParams.orgId, memberId: $scope.identity.getId() });
+
 
 			$scope.statement = null;
-			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) { $scope.statement = data; }, this.onLoadingError, 10000);
-			this.cancelAutoUpdate = function() {
+
+			$scope.emptyOrganizationTransactions = false;
+			$scope.loadingOrganizationTransactions = true;
+			accountService.startOrganizationPolling($stateParams.orgId, $scope.filters, function(data) {
+				$scope.loadingOrganizationTransactions = false;
+				var transactions = data._embedded.transactions || [];
+				if(transactions.length === 0){
+					$scope.emptyOrganizationTransactions = true;
+				}
+				$scope.statement = data;
+			}, function(error){
+				this.onLoadingError(error);
+				$scope.loadingOrganizationTransactions = false;
+			}, 30000);
+
+			var cancelAutoUpdate = function () {
 				accountService.stopOrganizationPolling();
+				accountService.stopPersonalPolling();
 			};
 
-			$scope.$on('$destroy', this.cancelAutoUpdate);
+			$scope.personalStatement = null;
+			$scope.emptyPersonalTransactions = false;
+			$scope.loadingPersonalTransactions = true;
+			accountService.startPersonalPolling($stateParams.orgId,{}, function(data) {
+				$scope.loadingPersonalTransactions = false;
+				var transactions = data._embedded.transactions || [];
+				if(transactions.length === 0){
+					$scope.emptyPersonalTransactions = true;
+				}
+				$scope.personalStatement = data;
+			}, function(error){
+				this.onLoadingError(error);
+				$scope.loadingPersonalTransactions = false;
+			}, 30000);
+
+			$scope.$on('$destroy', function(){
+				cancelAutoUpdate();
+			});
 
 			$scope.isLoadingMore = false;
 			this.loadMore = function() {
 				$scope.isLoadingMore = true;
-				$scope.filters.limit = $scope.statement.count + 10;
+
+				var filters = {
+					limit:$scope.statement.count + 10
+				};
+
 				var that = this;
-				accountService.organizationStatement($stateParams.orgId, $scope.filters,
+
+				accountService.organizationStatement($stateParams.orgId, filters,
 						function(data) {
 							$scope.isLoadingMore = false;
 							$scope.statement = data;
@@ -50,6 +93,27 @@ angular.module('app.accounting')
 							$scope.isLoadingMore = false;
 							that.onLoadingError(response);
 						});
+			};
+
+			$scope.isLoadingMorePersonal = false;
+			this.loadMorePersonal = function() {
+				$scope.isLoadingMorePersonal = true;
+
+				var filters = {
+					limit:$scope.personalStatement.count + 10
+				};
+
+				var that = this;
+
+				accountService.personalStatement($stateParams.orgId, filters,
+					function(data) {
+						$scope.isLoadingMorePersonal = false;
+						$scope.personalStatement = data;
+					},
+					function(response) {
+						$scope.isLoadingMorePersonal = false;
+						that.onLoadingError(response);
+					});
 			};
 
 			this.addTransaction = function(transaction) {
@@ -63,7 +127,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-deposit.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -76,7 +140,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-withdrawal.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -89,7 +153,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-incoming-transfer.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -110,7 +174,7 @@ angular.module('app.accounting')
 					templateUrl: "app/accounting/partials/new-outgoing-transfer.html",
 					targetEvent: ev,
 					clickOutsideToClose: true,
-					fullscreen: true,
+
 					locals: {
 						account: $scope.statement
 					}
@@ -124,10 +188,14 @@ angular.module('app.accounting')
 					}
 				});
 			};
-			this.isNewTransactionsAllowed = function(account) {
+			this.isNewTransactionsAllowed = function() {
+				if(!$scope.statement){
+					return false;
+				}
+
 				return accountService.isAllowed('deposit', $scope.statement) ||
-								accountService.isAllowed('withdrawal', $scope.statement) ||
-								accountService.isAllowed('incomingTransfer', $scope.statement) ||
-								accountService.isAllowed('outgoingTransfer', $scope.statement);
+				accountService.isAllowed('withdrawal', $scope.statement) ||
+				accountService.isAllowed('incomingTransfer', $scope.statement) ||
+				accountService.isAllowed('outgoingTransfer', $scope.statement);
 			};
 		}]);

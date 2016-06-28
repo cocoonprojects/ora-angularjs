@@ -12,6 +12,7 @@ function NewIncomingTransferController($scope, $log, $stateParams, $mdDialog, ac
 						});
 						break;
 					default:
+						alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 						$log.warn(httpResponse);
 				}
 			});

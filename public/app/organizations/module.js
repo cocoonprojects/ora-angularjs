@@ -9,12 +9,22 @@ angular.module('app.organizations', [
 				templateUrl: 'app/organizations/partials/organizations.html',
 				controller: 'OrganizationListController as ctrl'
 			})
+			.state('invitation', {
+				url: '/organizations/acceptinvite?token',
+				templateUrl: 'app/organizations/partials/confirmInvitation.html',
+				controller: 'ConfirmInvitationController',
+				resolve:{
+					InvitationData:['$stateParams',function($stateParams){
+						return JSON.parse(atob($stateParams.token));
+					}]
+				}
+			})
 			.state('org.settings', {
 				url: '/settings',
 				templateUrl: 'app/organizations/partials/organization-settings.html',
 				controller: 'OrganizationSettingsController as ctrl',
 				data: {
-					pillarName: 'SETTINGS'
+					pillarName: 'Settings'
 				}
 			});
 	}

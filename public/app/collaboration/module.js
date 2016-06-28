@@ -23,6 +23,11 @@ angular.module('app.collaboration', ['ui.router'])
 				.state('org.item', {
 					url: '/items/:itemId',
 					templateUrl: 'app/collaboration/partials/item-detail.html',
+					data: {
+						showBack: true,
+						backTo: '',
+						backLabel: ''
+					},
 					controller: 'ItemDetailController as ctrl'
 				});
 		}

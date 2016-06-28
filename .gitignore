@@ -9,3 +9,4 @@ build/
 .idea/
 
 config.development.js
+npm-debug.log

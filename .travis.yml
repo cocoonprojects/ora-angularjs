@@ -15,4 +15,3 @@ notifications:
 
 script:
   - grunt jshint
-  - npm run test-single-run

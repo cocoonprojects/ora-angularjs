@@ -9,6 +9,8 @@ angular.module('app.collaboration')
 		'streamService',
 		'itemService',
 		'$state',
+		'voteExtractor',
+		'kanbanizeLaneService',
 		function (
 			$scope,
 			$log,
@@ -18,7 +20,15 @@ angular.module('app.collaboration')
 			$mdToast,
 			streamService,
 			itemService,
-			$state) {
+			$state,
+			voteExtractor,
+			kanbanizeLaneService) {
+
+			$scope.menu = {
+				open:false
+			};
+
+			$scope.currentUserId = $scope.identity.getId();
 
 			$scope.decisions = $state.$current.data.decisions;
 
@@ -28,12 +38,15 @@ angular.module('app.collaboration')
 
 			$scope.streams = null;
 
+			$scope.lanes = null;
+
 			$scope.filters = {
-				limit: 10,
 				offset: 0,
 				status: "All",
-				decisions: $scope.decisions,
-				onlyMine: false
+				cardType: ($scope.decisions ? "decisions" : "all"),
+				memberId: null,
+				orderBy: 'mostRecentEditAt', //exeption for handle sort without break signature method
+				orderType: ($scope.changeUpdateTime ? "asc" : "desc") //exeption for handle sort without break signature method
 			};
 
 			this.cancelAutoUpdate = function() {
@@ -41,13 +54,40 @@ angular.module('app.collaboration')
 				itemService.stopQueryPolling();
 			};
 
-			$scope.$watchGroup(['filters.status','filters.onlyMine'],function(){
-				streamService.stopQueryPolling();
+			$scope.loadingItems = true;
+
+
+			var restartPollingItems = function() {
 				itemService.stopQueryPolling();
 				$scope.items = [];
-				streamService.startQueryPolling($stateParams.orgId, function(data) { $scope.streams = data; }, this.onLoadingError, 605000);
-				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError, 10000);
+				$scope.loadingItems = true;
+				itemService.startQueryPolling($stateParams.orgId, $scope.filters, function(data) {
+					$scope.loadingItems = false;
+					$scope.items = data;
+				}, this.onLoadingError, 30000);
+			};
+
+			kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
+				$scope.lanes = lanes;
+
+				$scope.$watchGroup(['filters.status','filters.memberId','filters.orderType'],function(newValue,oldValue){
+					if (newValue!=oldValue) {
+						restartPollingItems();
+					}
+				});
+				restartPollingItems();
+
+
+			},function (httpResponse) {
+				if(httpResponse.status === 500){
+					alert('Generic Error during server communication');
+				}
 			});
+
+			var onHttpGenericError  = function(httpResponse) {
+				alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
+				$log.warn(httpResponse);
+			};
 
 			$scope.$on('$destroy', this.cancelAutoUpdate);
 
@@ -70,7 +110,14 @@ angular.module('app.collaboration')
 
 			this.loadItems = function() {
 				$scope.filters.limit = 10;
-				itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
+				kanbanizeLaneService.getLanes($stateParams.orgId).then(function(lanes){
+					$scope.lanes = lanes;
+					itemService.query($stateParams.orgId, $scope.filters, function(data) { $scope.items = data; }, this.onLoadingError);
+				});
+			};
+
+			$scope.printVote = function(item){
+				return voteExtractor($scope.currentUserId,item);
 			};
 
 			$scope.isLoadingMore = false;
@@ -89,12 +136,12 @@ angular.module('app.collaboration')
 				});
 			};
 
-			this.stream = function(task) {
+			/*this.stream = function(task) {
 				if($scope.streams && task.stream) {
 					return $scope.streams._embedded['ora:stream'][task.stream.id];
 				}
 				return null;
-			};
+			};*/
 
 			this.openNewStream = function(ev) {
 				$mdDialog.show({
@@ -118,8 +165,9 @@ angular.module('app.collaboration')
 					clickOutsideToClose: true,
 					locals: {
 						orgId: $stateParams.orgId,
-						streams: $scope.streams,
-						decisionMode: decision
+						streams: [$scope.stream],
+						decisionMode: decision,
+						lanes: $scope.lanes
 					}
 				}).then(this.onItemAdded);
 			};
@@ -192,10 +240,10 @@ angular.module('app.collaboration')
 				}
 			};
 			this.joinItem = function(item) {
-				itemService.joinItem(item, this.updateItem, $log.warn);
+				itemService.joinItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.unjoinItem = function(item) {
-				itemService.unjoinItem(item, this.updateItem, $log.warn);
+				itemService.unjoinItem(item, this.updateItem, onHttpGenericError);
 			};
 			this.isNewEntitiesAllowed = function(organization) {
 				return itemService.isAllowed('createItem', organization) ||
@@ -216,10 +264,22 @@ angular.module('app.collaboration')
 			};
 			this.invertUpdateTime = function() {
 				$scope.changeUpdateTime = !$scope.changeUpdateTime;
+				$scope.filters.orderType = ($scope.changeUpdateTime ? "asc" : "desc");
 			};
 			this.invertStatusTime = function() {
 				$scope.changeStatusTime = !$scope.changeStatusTime;
 			};
 
+			$scope.goToDetail = function($event,item){
+				$event.preventDefault();
+				$event.stopPropagation();
+				$state.go("org.item",{ orgId: item.organization.id, itemId: item.id });
+			};
+
+			$scope.goToProfile = function($event,ownerId){
+				$event.preventDefault();
+				$event.stopPropagation();
+				$state.go("org.profile",{ memberId: ownerId });
+			};
 
 		}]);

@@ -1,7 +1,7 @@
 var Identity = function($http, $log, $q) {
 	var token, id, firstname, lastname, email, avatar, memberships;
 
-	this.getToken        = function() { return token; };
+	this.getToken        = function() {	return token; };
 	this.getId           = function() { return id; };
 	this.getFirstname    = function() { return firstname; };
 	this.getLastname     = function() { return lastname; };
@@ -10,9 +10,18 @@ var Identity = function($http, $log, $q) {
 	this.isAuthenticated = function() { return token ? true : false; };
 	this.getMemberships  = function() { return memberships; };
 
-	//TODO: aggiungere gestione contributor
 	this.isMember = function(orgId){
 		return !!this.getMembership(orgId);
+	};
+
+	this.getMembershipRole = function(orgId){
+		var rv = null;
+		angular.forEach(memberships, function(value) {
+			if(value.organization.id === orgId) {
+				rv = value.role;
+			}
+		});
+		return rv;
 	};
 
 	this.getMembership = function(orgId) {

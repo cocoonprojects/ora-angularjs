@@ -1,22 +1,25 @@
+<div class="navigation" >
     <md-tabs
-        data-ng-if="selectedIndex >= 0"
-        style="width: 100%; position: absolute; bottom: 0;"
+        data-ng-if="organizationId && selectedIndex>=0"
+
         md-dynamic-height
-        class="md-primary"
+        md-no-ink-bar
         md-selected="selectedIndex"
         md-stretch-tabs="always">
-        	<md-tab style="padding: 0px;" ui-sref="org.collaboration({ orgId: organizationId })" label="Items">
-        	</md-tab>
+        	<md-tab  style="padding: 0px;" ui-sref="org.collaboration({ orgId: organizationId })" label="Items">
+            </md-tab>
         	<md-tab style="padding: 0px;" ui-sref="org.organizationStatement({ orgId: organizationId })" label="Credits">
-        	</md-tab>
-        	<md-tab style="padding: 0px;" ui-sref="flow">
-            <label>
-              	<img style="height: 18px; width: 18px; margin-bottom: -4px;" ng-src="img/immagine.png"/>
-                <span>Flow</span>
-            </label>
+            </md-tab>
+        	<md-tab style="padding: 0px;" ui-sref="org.flow">
+                <label layout="column"  layout-align="space-between center" >
+                  	<img data-ng-if="selectedIndex === 2" style="height: 18px; width: 18px; margin-bottom: -4px;" ng-src="img/cup-white.png"/>
+                    <img data-ng-if="selectedIndex !== 2" style="height: 18px; width: 18px; margin-bottom: -4px;" ng-src="img/cup-grey.png"/>
+                    <span>Flow</span>
+                </label>
         	</md-tab>
         	<md-tab style="padding: 0px;" ui-sref="org.decisions({ orgId: organizationId })" label="Decisions">
-        	</md-tab>
+            </md-tab>
         	<md-tab style="padding: 0px;" ui-sref="org.people({ orgId: organizationId })" label="People">
-        	</md-tab>
+            </md-tab>
     </md-tabs>
+</div>

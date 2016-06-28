@@ -1,9 +1,6 @@
 angular.module('app.collaboration').service('templateService', ['$q',function($q){
 
     var TEMPLATES = [{
-        name: "User story",
-        value: "As a <role>, I want <goal/desire> so that <benefit>"
-    },{
         name: "Ordinary Activity",
         value: "This activity should be done because:\n[insert reasons of this work item]\n\nThe expected outcome / deliverables will be:\n[insert list and descriptions of the results that are expected and that will be examined for acceptance]"
     },{

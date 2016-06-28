@@ -2,6 +2,7 @@ angular.module('app', [
 	'ui.router',
 	'ngMessages',
 	'ngMaterial',
+	'ngCookies',
 	'angularMoment',
 	'infinite-scroll',
 	'app.identity',
@@ -18,7 +19,7 @@ angular.module('app', [
 				var $state = $injector.get("$state");
 				var SelectedOrganizationId = $injector.get("SelectedOrganizationId");
 				if(SelectedOrganizationId.get()){
-					$state.go("flow");
+					$state.go("org.flow");
 				}else{
 					$state.go("organizations");
 				}
@@ -47,7 +48,10 @@ angular.module('app', [
 		function($mdThemingProvider) {
 			$mdThemingProvider.theme('default')
 				.primaryPalette('blue-grey')
-				.accentPalette('indigo');
+				.accentPalette('indigo')
+				.warnPalette('red', {
+      				'hue-1': 'A200'
+    			});
 			$mdThemingProvider.theme('input', 'default')
 				.primaryPalette('grey');
 		}])

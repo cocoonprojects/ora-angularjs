@@ -1,48 +1,49 @@
-<md-card>
+<md-card data-ng-if="!busy">
 	<md-card-header style="margin-top: -10px;">
 		<md-card-header-text ui-sref="org.item({ orgId: item.organization.id, itemId: item.id })">
-			<span style="margin-top: -5px;" class="md-subhead">
-				{{item.type}}
+			<span style="text-transform: uppercase;" class="md-subhead">
+				{{item.decision === 'true' ? 'Decision' : ''}}
 			</span>
-			<span style="font-size: 26px; margin-top: -5px;">
+			<span style="font-size: 26px;">
 				{{ item.subject }}
 			</span>
-			<p style="text-transform: uppercase; font-size: 16px; margin-top: 0px;">
-				<span style="font-size: 16px" class="md-subhead">
-					#XXXX
-				</span>
-				{{ ctrl.stream(item).subject }}
+			<p style="text-transform: uppercase; font-size: 16px;">
+				{{ item.lane }}
 			</p>
-			<div layout="row" style="margin-top: -28px;">
-				<p style="font-size: 14px;">owner:</p>
-				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px; margin-left: 4px;" ng-src="{{ owner.picture || 'img/account.jpg' }}"> <!-- qua ci vuole l'immagine dell'owner-->
-				<p ng-click="goToProfile(owner.id)" style="font-size: 14px; color: gray; margin-left: 2px;"><u> {{ owner.firstname }} {{ owner.lastname }}</u><!-- l'owner--><!--ui-sref con account vero--> (owner) <!--ruolo dell'owner--></p>
+			<div layout="row" class="margin-bottom-20" ng-if="item.status != ITEM_STATUS.OPEN">
+				<img class="margin-right-20" style="max-width: 60px; max-height: 60px; border-radius: 50%;" ng-src="{{ owner.picture || 'img/account.jpg' }}">
+				<div>
+					<p class="no-margin no-padding" style="font-size: 14px;">{{item.status | ownerLabel}}:</p>
+					<p class="no-margin no-padding" style="font-size: 14px;">
+						<u class="warn" ng-click="goToProfile(owner.id)"> {{ owner.firstname }} {{ owner.lastname }}</u>
+						<i style="font-size:16px;" ng-if="ctrl.isAllowed('changeOwner', item)" class="material-icons" ng-click="ctrl.changeOwner($event, item);">&#xE254;</i>
+					</p>
+
+				</div>
 			</div>
-		<p style="font-size: 14px; margin-top: -8px;">
-			status:
-			<span style="line-height: 14px" class="md-subhead">
-				{{item.status | itemStatusLabel}}
-			</span>
-		</p>
-		<p style="font-size: 14px; margin-top: -8px;">
-			Last Activity:
-			<span style="line-height: 14px" class="md-subhead">
-				XXXXX
-			</span>
-		</p>
-		<p style="font-size: 14px; margin-top: -8px;">
-			Credit:
-			<span style="line-height: 14px" class="md-subhead">
-				XXXX
-			</span>
-		</p>
-	</div>
-</md-card-header-text>
-<md-card-media layout="column" layout-align="start end">
-	<img style="max-width: 70px; border-radius: 50%" ng-src="img/immagine.png">
-</md-card-media>
+			<p style="font-size: 14px; margin-top: -8px;">
+				status:
+				<span style="line-height: 14px" class="md-subhead">
+					{{item.status | itemStatusLabel}}
+				</span>
+			</p>
+			<p style="font-size: 14px; margin-top: -8px;">
+				Last Activity:
+				<span style="line-height: 14px" class="md-subhead">
+					{{item.mostRecentEditAt | date:'dd/MM/yyyy'}}
+				</span>
+			</p>
+			<!-- TODO: print current value for item -->
+			<p style="font-size: 14px; margin-top: -8px;" >
+				Current Value:
+			<span data-ng-if="item.estimation" style="line-height: 14px;" class="md-subhead">{{item.estimation}}&nbspCredits</span>
+			<span data-ng-if="!item.estimation" style="line-height: 14px;" class="md-subhead">To Be estimated</span>
+			</p>
+		</div>
+	</md-card-header-text>
 </md-card-header>
-<md-card-action layout="row" layout-align="end end">
+<md-card-action layout="row" layout-align="end end" layout-xs="column">
+	<p style="padding-right: 30px;" aria-label="Yet Voted"  ng-if="ctrl.iVoted(item)">{{suggest}}</p>
 	<md-button class="md-raised md-primary" aria-label="Start item" ng-if="ctrl.isAllowed('executeItem', item)" ng-click="ctrl.executeItem(item)">Start</md-button>
 	<md-button class="md-raised md-primary" aria-label="Approve Idea"  ng-if="ctrl.isAllowed('approveIdea', item)" ng-click="ctrl.openApproveIdea($event, item)">Vote</md-button>
 	<md-button class="md-raised md-primary" aria-label="Join item" ng-if="ctrl.isAllowed('joinItem', item)" ng-click="ctrl.joinItem(item)">Join</md-button>
@@ -56,6 +57,12 @@
 <md-divider></md-divider>
 <md-card-header>
 	<md-card-header-text>
+		<md-button class="md-raised md-primary" ng-if="ctrl.isAllowed('editItem', item)" ng-click="ctrl.openEditItem($event,item)">Edit this item</md-button>
+	</md-card-header-text>
+</md-card-header>
+<md-divider></md-divider>
+<md-card-header>
+	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Description</span>
 		<span style="font-size: 14px; line-height: 14px; color: gray;" class="md-subhead">
 			{{item.description}}
@@ -65,27 +72,46 @@
 <md-divider></md-divider>
 <md-card-header data-ng-if="members.length">
 	<md-card-header-text>
-		<span style="font-size: 14px;" class="md-title">Partecipant List</span>
+		<span style="font-size: 14px;" class="md-title margin-bottom-10">Partecipant List</span>
 		<div
-			style="margin-top: -10px; margin-bottom: -10px;"
 			layout="row"
+			layout-align="space-between center"
 			ng-class="ctrl.isAllowed('showShares', item) && member.share ? 'md-3-line' : 'md-2-line'"
 			data-ng-repeat="member in members"
 			ng-init="m = user(member)">
-				<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:16px;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
-				<p ng-click="goToProfile(member.id)" style=" font-size: 14px; color: gray; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} ({{ member.role }})</p>
-	</div>
-</md-card-header-text>
+			<div layout="row">
+				<img style="max-width: 30px; max-height: 30px; border-radius: 50%;" ng-src="{{ member.picture || 'img/account.jpg' }}"  md-ink-ripple>
+				<p ng-click="goToProfile(member.id)" class="padding-left-10 margin-top-10 warn no-margin" style=" font-size: 14px; margin-left: 2px;">{{ member.firstname }} {{ member.lastname }} <span style="color:gray;">({{ member.role }})</span></p>
+			</div>
+			<md-button class="md-icon-button md-warn" data-ng-if="ctrl.isAllowed('removeTaskMember', item.organization)" aria-label="Delete" data-ng-click="ctrl.removeTaskMember($event,item,member)">
+				<md-icon class="material-icons" aria-label="delete">delete</md-icon>
+			</md-button>
+		</div>
+	</md-card-header-text>
+</md-card-header>
+<md-divider></md-divider>
+<md-card-header ng-if="ctrl.isAllowed('addAttachment', item)">
+	<md-card-header-text>
+		<span style="font-size: 14px;" class="md-title">Attachments</span>
+		<md-button class="md-raised md-primary" aria-label="Add" data-google-drive-picker data-on-file-select="ctrl.addAttachment(file)">Add</md-button>
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" layout-align="space-between center" data-ng-repeat="a in attachments"> <!--div da fare ng-repeat e mettere i log-->
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">
+				<a ng-href="{{a.url}}" target="_blank">{{a.name}}</a>
+			</p>
+			<md-button class="md-icon-button md-accent" aria-label="Delete" data-ng-click="ctrl.deleteAttachment(a)">
+				<md-icon class="material-icons" aria-label="delete">delete</md-icon>
+			</md-button>
+		</div>
+	</md-card-header-text>
 </md-card-header>
 <md-divider></md-divider>
 <md-card-header>
 	<md-card-header-text>
 		<span style="font-size: 14px;" class="md-title">Log Activity</span>
-		<div style="margin-top: -10px; margin-bottom: -15px;"
-		layout="row"> <!--div da fare ng-repeat e mettere i log-->
-		<p style=" font-size: 14px; color: gray; margin-left: 2px;">XXXXXXXX</p>
-	</div>
-</md-card-header-text>
+		<div style="margin-top: -10px; margin-bottom: -15px;" layout="row" data-ng-repeat="h in history">
+			<p style=" font-size: 14px; color: gray; margin-left: 2px;">{{h | logActivityFilter}}</p>
+		</div>
+	</md-card-header-text>
 </md-card-header>
 </md-card>
 

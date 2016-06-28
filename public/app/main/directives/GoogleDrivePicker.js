@@ -23,10 +23,12 @@
 		};
 
 		picker = new google.picker.PickerBuilder().
-			addView(google.picker.ViewId.DOCUMENTS).
+			addView(google.picker.ViewId.DOCS).
 			setAppId(CLIENT_ID_GOOLE).
 			setOAuthToken(access_token).
 			setCallback(pickerCallback).
+			setSize(1051,650).
+			setTitle("Select an Attachment").
 			build().
 			setVisible(true);
 	};

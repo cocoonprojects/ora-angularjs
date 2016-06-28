@@ -1,10 +1,37 @@
-<md-list>
-	<md-list-item class="md-2-line" ng-repeat="person in members['_embedded']['ora:member']">
-		<img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture || 'img/account.jpg' }}" class="md-avatar" />
-		<div class="md-list-item-text" ui-sref="org.profile({ memberId: person.id })" md-ink-ripple>
-			<h3>{{ person.firstname }} {{ person.lastname }}</h3>
-			<p>{{ person.role }}</p>
-		</div>
-		<md-divider ng-if="!$last"></md-divider>
-	</md-list-item>
-</md-list>
+<md-content class="bkg-color-primary full-width">
+    <md-button data-ng-if="canInviteNewUser" data-ng-click="openInvitationDialog($event)" aria-label="Item Menu"
+               class="md-fab md-warn md-hue-1 md-fab-bottom-right" style="position: fixed; margin-bottom: 40px;">
+        <md-icon md-svg-icon="add"></md-icon>
+    </md-button>
+    <md-progress-linear data-ng-if="loading" md-mode="query"></md-progress-linear>
+    <md-list>
+        <md-list-item layout="row" layout-align="space-between center" style="padding: 0"
+                      ui-sref="org.profile({ memberId: person.id })" class="md-2-line hand-pointer"
+                      ng-repeat="person in members['_embedded']['ora:member']">
+            <span hide-xs class="md-primary people-you-label" data-ng-class="{hideelement:!isMe(person)}">you</span>
+            <i style="width:5%" class="material-icons margin-right-20" data-ng-class="{hideelement:!isMe(person)}"
+               hide-gt-xs>&#xE037;</i>
+
+            <img alt="{{ person.firstname }} {{ person.lastname }}" ng-src="{{ person.picture || 'img/account.jpg' }}"
+                 class="md-avatar"/>
+
+            <div flex="50">
+                <div class="md-list-item-text" md-ink-ripple>
+                    <h3>{{ person.firstname }} {{ person.lastname }}</h3>
+                    <p>{{ person.role }}</p>
+                </div>
+            </div>
+
+            <div>
+                <md-button class="md-secondary md-icon-button md-warn"
+                           data-ng-if="!isMe(person) && isAllowed('removeUser', orgId)" aria-label="Delete"
+                           ng-click="removeUser($event,person)">
+                    <md-icon class="material-icons" aria-label="delete">delete</md-icon>
+                </md-button>
+            </div>
+
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+        <div class="space-at-end"></div>
+    </md-list>
+</md-content>

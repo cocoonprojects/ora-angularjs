@@ -1,14 +1,30 @@
 angular.module('app.identity')
-	.controller('SignInController', ['$scope', '$log', '$state',
-		function($scope, $log, $state) {
+	.controller('SignInController', [
+		'$scope',
+		'$log',
+		'$state',
+		'SelectedOrganizationId',
+		'kanbanizeLaneService',
+		function(
+			$scope,
+			$log,
+			$state,
+			SelectedOrganizationId,
+			kanbanizeLaneService) {
 
 			$scope.onSuccess = function(googleUser) {
 				$scope.$apply(function() {
 					$scope.identity.signInFromGoogle(googleUser);
-					$log.info('User signed in');
-					var s = 'flow'; // TODO: bring back to requested route
-					$state.go(s);
-					$log.debug("Redirecting to '" + s + "' state");
+					$scope.identity.loadMemberships().then(function(memberships){
+						if(memberships && memberships.length){
+							SelectedOrganizationId.set(memberships[0].organization.id);
+							kanbanizeLaneService.getLanes(memberships[0].organization.id).finally(function(){
+								$state.go('org.flow',{ orgId: memberships[0].organization.id });
+							});
+						}else{
+							$state.go('organizations');
+						}
+					});
 				});
 			};
 

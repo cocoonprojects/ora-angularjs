@@ -12,7 +12,7 @@ function NewOrganizationController(
 		var onCompleteNewOrganization = function(org){
 			$mdDialog.hide(org);
 			streamService.save(org.id,{
-				subject:'Stream'
+				subject:org.name
 			});
 		};
 
@@ -25,6 +25,7 @@ function NewOrganizationController(
 						});
 						break;
 					default:
+						alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 						$log.warn(httpResponse);
 				}
 			});

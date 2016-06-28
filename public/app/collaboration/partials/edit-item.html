@@ -1,16 +1,8 @@
 <md-dialog aria-label="Edit Item">
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
-		<md-toolbar>
-			<div class="md-toolbar-tools">
-				<h2>Edit Item</h2>
-				<span flex></span>
-				<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
-					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
+				<h2>Edit Item</h2>
 				<md-input-container>
 					<label>Subject</label>
 					<input data-ng-model="item.subject" name="subject" type="text" required>
@@ -19,9 +11,18 @@
 						<div ng-message="remote">{{ form.subject.$error.remote }}</div>
 					</div>
 				</md-input-container>
+				<md-input-container data-ng-if="lanes.length > 0">
+					<label>Lane</label>
+					<md-select data-ng-model="item.lane" name="lane">
+						<md-option ng-repeat="lane in lanes" value="{{ lane.lcname }}">{{ lane.lcname }}</md-option>
+					</md-select>
+					<div ng-messages="form.lane.$error" role="alert">
+						<div ng-message="required">Lane is required</div>
+					</div>
+				</md-input-container>
 				<md-input-container>
 					<label>Description</label>
-					<textarea data-ng-model="item.description" columns="1" md-maxlength="255" rows="3" name="description" required></textarea>
+					<textarea data-ng-model="item.description" columns="1" maxlength="420" md-maxlength="420" name="description" required></textarea>
 					<div ng-messages="form.description.$error" role="alert">
 						<div ng-message="required">Description is required</div>
 						<div ng-message="remote">{{ form.description.$error.remote }}</div>

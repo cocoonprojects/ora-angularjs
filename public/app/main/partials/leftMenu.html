@@ -1,0 +1,70 @@
+<md-sidenav layout="column" md-swipe-left="toggleLeft()" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
+    <md-toolbar id="identityBox" class="md-tall md-hue-2">
+        <div layout="column" class="md-toolbar-tools-bottom inset">
+            <img data-ng-if="identity.getAvatar()" ng-src="{{ identity.getAvatar() }}" style="width: 60px; height: 60px; border-radius: 50%">
+            <div style="padding-top:20px" data-ng-if="organization">{{organization.name}}</div>
+        </div>
+    </md-toolbar>
+    <md-content flex layout-padding ng-controller="LeftController" class="no-margin no-padding">
+        <md-list class="no-margin no-padding">
+            <md-subheader class="md-no-sticky">
+                My Organizations
+            </md-subheader>
+            <md-list-item ng-repeat="membership in identity.getMemberships()"
+                    class="full-width md-primary no-margin no-padding"
+                    ui-sref="org.collaboration({ orgId: membership.organization.id })"
+                    ui-sref-active="selected-item selected-bold"
+                    ng-click="toggleLeft()">
+                    {{membership.organization.name}}
+                </md-button>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-button
+                    class="full-width  no-margin no-padding"
+                    style="text-align:left"
+                    ui-sref="organizations"
+                    ng-click="toggleLeft()">
+                        <md-icon class="material-icons"></md-icon>
+                        Organizations
+                </md-button>
+            </md-list-item>
+            <md-list-item data-ng-if="canShowOrganizationSettings">
+                <md-button
+                    class="full-width no-margin no-padding"
+                    style="text-align:left"
+                    ng-click="toggleLeft()"
+                    ui-sref="org.settings({ orgId: organizationId })">
+                        <md-icon
+                            class="material-icons
+                                  margin-left-10
+                                  padding-right-10">&#xE8B8;</md-icon>
+                        Settings
+                </md-button>
+            </md-list-item>
+            <!-- Todo: add account settings -->
+            <md-list-item data-ng-if="false">
+                <md-button
+                    class="full-width"
+                    style="text-align:left"
+                    ng-click="toggleLeft()">
+                    Account Settings
+                </md-button>
+            </md-list-item>
+            <md-list-item>
+                <md-button
+                    class="full-width no-margin no-padding"
+                    style="text-align:left"
+                    ng-if="identity.isAuthenticated()"
+
+                    ng-click="signOut()">
+                        <md-icon class="material-icons
+                          margin-left-10
+                          padding-right-10"></md-icon>
+
+                        Logout
+                </md-button>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</md-sidenav>

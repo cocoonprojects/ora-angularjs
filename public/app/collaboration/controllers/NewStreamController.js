@@ -12,6 +12,7 @@ function NewStreamController($scope, $log, $mdDialog, streamService, orgId) {
 					});
 					break;
 				default:
+					alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 					$log.warn(httpResponse);
 			}
 		});

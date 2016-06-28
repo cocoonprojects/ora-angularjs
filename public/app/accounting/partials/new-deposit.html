@@ -1,16 +1,8 @@
 <md-dialog aria-label="New Deposit">
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
-		<md-toolbar>
-			<div class="md-toolbar-tools">
-				<h2>New Deposit</h2>
-				<span flex></span>
-				<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
-					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
+				<h4>New Deposit</h4>
 				<md-input-container>
 					<label>Credits</label>
 					<input type="number" min="0" required data-ng-model="deposit.amount" name="amount">
@@ -31,7 +23,7 @@
 		</md-dialog-content>
 		<md-dialog-actions layout="row" layout-align="end center">
 			<md-button type="button" ng-click="dialogCtrl.cancel()">Cancel</md-button>
-			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Submit</md-button>
+			<md-button type="submit" style="margin-right:20px;" class="md-primary" ng-disabled="form.$invalid">Confirm</md-button>
 		</md-dialog-actions>
 	</form>
 </md-dialog>

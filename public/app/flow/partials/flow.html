@@ -1,37 +1,12 @@
-<md-toolbar class="border">
-	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button logo" ng-click="toggleLeft()" hide-gt-md>
-			<img class="logo-image" ng-src="img/immagine.png"/>
-		</md-button>
-		<h2> {{stream.subject}} > Flow</h2>
-		<span flex></span>
-		<settings-menu/>
+<!-- <md-toolbar class="filterBar" style="min-height:37px">
+	<div class="md-toolbar-tools" style="height:37px" >
+		<!-- To be defined 
 	</div>
-</md-toolbar>
-<md-toolbar class="height-toolbar">
-	<div class="md-toolbar-tools height">
-		<span flex></span>
-		<p style="margin-top: 25px;" class="p-size">Filter by:</p>
-		<md-menu>
-			<md-button style="margin-left: -10px;" class="md-icon-button"  ng-click="$mdOpenMenu()">
-				<md-icon style="font-size: 18px;" class="material-icons">&#xE313;</md-icon>
-			</md-button>
-			<md-menu-content>
-				<md-menu-item>
-					<p>XXXX</p>
-				</md-menu-item>
-				<md-menu-divider></md-menu-divider>
-				<md-menu-item>
-					<p>XXXX</p>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
-		<span flex></span>
-	</div>
-</md-toolbar>
+</md-toolbar> -->
 <md-subheader class="md-no-sticky">Latest Activity</md-subheader>
 <md-divider></md-divider>
 <md-content>
+	<md-progress-linear data-ng-if="loading" md-mode="query"></md-progress-linear>
 	<md-list flex="100" ng-repeat="card in cards._embedded['ora:flowcard']"
 	infinite-scroll="ctrl.loadMore()"
 	infinite-scroll-distance="1"
@@ -39,11 +14,11 @@
 	infinite-scroll-disabled="cards.total == cards.count || isLoadingMore"
 	infinite-scroll-immediate-check="false">
 	<md-list-item class="md-3-line md-padding">
-		<img class="md-avatar" ng-src="img/immagine.png"/>
+		<flow-icon type="card.type"></flow-icon>
 		<div class="md-list-item-text md-padding">
-			<p style="color: black; font-size: 14px;">{{card.type}}</p>
-			<h1 style="color: black; font-size: 18px; margin-top: 2px;">{{card.title}}</h1>
-			<p style="color: gray; font-size: 12px; margin-top: -10px;">{{card.content.description}}</p>
+			<p class="flow-type">{{card.type | flowTypeLabel}}</p>
+			<h1 class="flow-title"  >{{card.title}}</h1>
+			<p class="flow-description justify padding-right-30">{{card.content.description}}</p>
 		</div>
 		<div layout="column">
 			<p am-time-ago="card.createdAt" class="p-size"></p>
@@ -56,5 +31,3 @@
 </md-list>
 <div style="height: 48px;"></div>
 </md-content>
-<navigation-bar>
-</navigation-bar>

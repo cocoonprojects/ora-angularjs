@@ -6,7 +6,8 @@ angular.module('app.flow')
 		'$stateParams',
 		'flowService',
 		'$state',
-		'streams',
+		'SelectedOrganizationId',
+		'streamService',
 		function (
 			$scope,
 			$log,
@@ -14,8 +15,21 @@ angular.module('app.flow')
 			$stateParams,
 			flowService,
 			$state,
-			streams) {
-			$scope.stream = streams[0];
+			SelectedOrganizationId,
+			streamService) {
+			if(SelectedOrganizationId.get()){
+				streamService.query(SelectedOrganizationId.get(),function(data){
+					$scope.stream = _.values(data._embedded['ora:stream'])[0];
+				},function(){
+					$state.go("organizations");
+					return;
+				});
+
+			}else{
+				$state.go("organizations");
+				return;
+			}
+
 			$scope.filters = {
 					limit: 10,
 					offset: 0
@@ -24,13 +38,24 @@ angular.module('app.flow')
 			$scope.isLoadingMore = false;
 			var that = this;
 			this.onLoadingError = function(error) {
+				$scope.loading = false;
 				switch (error.status) {
 					case 401:
 						that.cancelAutoUpdate();
 						break;
+					default:
+						that.cancelAutoUpdate();
+						alert('Generic Error during server communication (error: ' + error.status + ' ' + error.statusText + ') ');
+						$log.warn(error);
 				}
 			};
-			flowService.startQueryPolling($scope.filters, function(data) { $scope.cards = data; }, this.onLoadingError, 10000);
+
+			$scope.loading = true;
+			flowService.startQueryPolling($scope.filters, function(data) {
+				$scope.loading = false;
+				$scope.cards = data;
+			}, this.onLoadingError, 10000);
+
 			this.cancelAutoUpdate = function() {
 				flowService.stopQueryPolling();
 			};
@@ -52,12 +77,8 @@ angular.module('app.flow')
 				});
 			};
 			this.route = function(card, hierarchy){
-				switch (card.type){
-					case "VoteIdea":
-						if(hierarchy == 'primary'){
-							$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});
-						}
-						break;
+				if (card.content.actions[hierarchy].orgId && card.content.actions[hierarchy].itemId) {
+					$state.go('org.item', { orgId: card.content.actions[hierarchy].orgId, itemId: card.content.actions[hierarchy].itemId});
 				}
 			};
 		}]);

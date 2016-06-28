@@ -1,7 +1,7 @@
 var MINIMAL_CREDITS = 3000; //Dati da settings
 
-var MemberService = function($resource, identity) {
-	var resource = $resource('api/:orgId/people/members/:memberId', { orgId: '@orgId' }, {
+var MemberService = function($http,$resource, identity) {
+	var resource = $resource('api/:orgId/people/members/:memberId', { orgId: '@orgId', memberId: '@memberId' }, {
 		get: {
 			method: 'GET',
 			headers: { 'GOOGLE-JWT': identity.getToken() }
@@ -18,6 +18,10 @@ var MemberService = function($resource, identity) {
 		delete: {
 			method: 'DELETE',
 			headers: { 'GOOGLE-JWT': identity.getToken() }
+		},
+		put: {
+			method: 'PUT',
+			headers: { 'GOOGLE-JWT': identity.getToken() }
 		}
 	});
 
@@ -28,8 +32,29 @@ var MemberService = function($resource, identity) {
 		resource.save({ orgId: organization.id }, success, error);
 	};
 
+	this.joinOrganizationAfterInvite = function(organization, success, error) {
+		$http({
+ 			method: 'POST',
+ 			url: 'api/'+organization.id+'/people/members',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+ 			data: { orgId: organization.id }
+		}).success(success).error(error);
+	};
+
+	this.removeUserFromOrganization = function(organizationId, memberId) {
+		return $http({
+ 			method: 'DELETE',
+ 			url: 'api/'+organizationId+'/people/members/' + memberId,
+			headers: { 'GOOGLE-JWT': identity.getToken() }
+		});
+	};
+
 	this.unjoinOrganization = function(organization, success, error) {
 		resource.delete({ orgId: organization.id }, success, error);
+	};
+
+	this.changeMembership = function(orgId, memberId, newrole, success, error) {
+		resource.put({ orgId: orgId, memberId: memberId, role: newrole}, success, error);
 	};
 
 	this.getIdentity = function() {
@@ -51,10 +76,27 @@ var MemberService = function($resource, identity) {
 			}
 		});
 	};
+
+	this.canInviteNewUser = function(organization){
+		var role = identity.getMembershipRole(organization);
+		return role === 'contributor' ? false : true;
+	};
+
+	this.inviteNewUser = function(orgId,data){
+		return $http({
+			method:'POST',
+			url:'api/organizations/' + orgId + '/invites',
+			headers: { 'GOOGLE-JWT': identity.getToken() },
+			data:data
+		});
+	};
 };
 MemberService.prototype = {
 	constructor: MemberService,
 	visibilityCriteria: {
+		removeUser: function(organizationId) {
+			return 'admin' === this.getIdentity().getMembershipRole(organizationId);
+		},
 		joinOrganization: function(organization) {
 			return organization &&
 					this.getIdentity().getMembership(organization.id) === null;
@@ -62,6 +104,11 @@ MemberService.prototype = {
 		unjoinOrganization: function(organization) {
 			return organization &&
 					this.getIdentity().getMembership(organization.id);
+		},
+		changeRole: function(data){
+			var role = this.getIdentity().getMembershipRole(data.orgId);
+			//Not me && I'm not a contributor
+			return data && data.userId && this.getIdentity().getId() !== data.userId && role && role !== "contributor";
 		}
 	},
 	isAllowed: function(command, resource) {
@@ -74,4 +121,4 @@ MemberService.prototype = {
 	}
 };
 angular.module('app.people')
-	.service('memberService', ['$resource', 'identity', MemberService]);
+	.service('memberService', ['$http','$resource', 'identity', MemberService]);

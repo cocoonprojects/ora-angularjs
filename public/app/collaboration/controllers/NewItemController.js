@@ -6,8 +6,16 @@ function NewItemController(
 	templateService,
 	orgId,
 	streams,
-	decisionMode) {
+	decisionMode,
+	lanes) {
+
+	$scope.lanes = lanes || [];
+
+	$scope.decisionMode = decisionMode;
+
 	$scope.streams = streams;
+
+	console.log($scope.streams);
 
 	templateService.list().then(function(templates){
 		$scope.templates = templates;
@@ -20,7 +28,7 @@ function NewItemController(
 	};
 
 	$scope.task = {
-		decision:decisionMode
+		decision:"" + decisionMode
 	};
 
 	this.cancel = function() {
@@ -32,7 +40,8 @@ function NewItemController(
 		};
 
 		if(!$scope.task.streamID){
-			$scope.task.streamID = _.values(streams._embedded['ora:stream'])[0].id;
+			//$scope.task.streamID = _.values(streams._embedded['ora:stream'])[0].id;
+			$scope.task.streamID = $scope.streams[0].id;
 		}
 
 		if(!$scope.task.description){
@@ -47,6 +56,7 @@ function NewItemController(
 					});
 					break;
 				default:
+					alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 					$log.warn(httpResponse);
 			}
 		});

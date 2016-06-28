@@ -1,6 +1,156 @@
 <md-card>
 	<md-card-content>
-		<h1 flex>Kanbanize</h1>
+		<h1 flex>Organization Settings</h1>
+		<form name="orgSettingsForm" ng-submit="ctrl.updateSettings()" novalidate>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Assign shares timeboxing (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.assignment_of_shares_timebox"
+						name="assignment_of_shares_timebox"
+						aria-label="Assign shares timeboxing (days)"
+						required>
+					<div ng-messages="orgSettingsForm.assignment_of_shares_timebox.$error" role="alert">
+						<div ng-message="required">Assign shares timeboxing is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Assign shares remind interval (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.assignment_of_shares_remind_interval"
+						name="assignment_of_shares_remind_interval"
+						aria-label="Assign shares remind interval (days)"
+						required>
+					<div ng-messages="orgSettingsForm.assignment_of_shares_remind_interval.$error" role="alert">
+						<div ng-message="required">Assign shares remind interval is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Completed Item voting timeboxing (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.completed_item_voting_timebox"
+						name="completed_item_voting_timebox"
+						aria-label="Completed Item voting timeboxing (days)"
+						required>
+					<div ng-messages="orgSettingsForm.completed_item_voting_timebox.$error" role="alert">
+						<div ng-message="required">Completed Item voting timeboxing is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Completed Item close task interval (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.completed_item_interval_close_task"
+						name="completed_item_interval_close_task"
+						aria-label="Completed Item close task interval (days)"
+						required>
+					<div ng-messages="orgSettingsForm.completed_item_interval_close_task.$error" role="alert">
+						<div ng-message="required">Completed Item close task interval is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Idea voting timeboxing (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.item_idea_voting_timebox"
+						name="item_idea_voting_timebox"
+						aria-label="Idea voting timeboxing (days)"
+						required>
+					<div ng-messages="orgSettingsForm.item_idea_voting_timebox.$error" role="alert">
+						<div ng-message="required">Idea voting timeboxing is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Idea voting remind interval (days)</label>
+					<input type="text"
+						data-ng-model="orgSettings.item_idea_voting_remind_interval"
+						name="item_idea_voting_remind_interval"
+						aria-label="Idea voting remind interval (days)"
+						required>
+					<div ng-messages="orgSettingsForm.item_idea_voting_remind_interval.$error" role="alert">
+						<div ng-message="required">Idea voting remind interval is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Task limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.tasks_limit_per_page"
+						name="tasks_limit_per_page"
+						aria-label="Task limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.tasks_limit_per_page.$error" role="alert">
+						<div ng-message="required">Task limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Organization member limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.org_members_limit_per_page"
+						name="org_members_limit_per_page"
+						aria-label="Organization member limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.org_members_limit_per_page.$error" role="alert">
+						<div ng-message="required">Organization member limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Organization transaction limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.org_transaction_limit_per_page"
+						name="org_transaction_limit_per_page"
+						aria-label="Organization transaction limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.org_transaction_limit_per_page.$error" role="alert">
+						<div ng-message="required">Organization transaction limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Organization transaction limit per page</label>
+					<input type="text"
+						data-ng-model="orgSettings.org_transaction_limit_per_page"
+						name="org_transaction_limit_per_page"
+						aria-label="Organization transaction limit per page"
+						required>
+					<div ng-messages="orgSettingsForm.org_transaction_limit_per_page.$error" role="alert">
+						<div ng-message="required">Organization transaction limit per page is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row" layout-align="end center">
+				<md-button
+					ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
+					type="submit" class="md-raised" aria-label="Save settings"
+					ng-disabled="orgSettingsForm.$invalid">Save
+				</md-button>
+			</div>
+		</form>
+	</md-card-content>
+</md-card>
+<md-card data-ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && loadingKanbanize">
+	<md-card-content>
+		<md-progress-linear md-mode="query"></md-progress-linear>
+		<h1 flex>Loading Kanbanize Settings</h1>
+	</md-card-content>
+</md-card>
+<md-card data-ng-if="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize">
+	<md-card-content>
+		<h1 flex>Kanbanize Account</h1>
 		<form name="form" ng-submit="ctrl.updateKanbanizeSettings()" novalidate>
 			<div layout="row">
 				<md-input-container> <label
@@ -15,6 +165,8 @@
 						<div ng-message="remote">{{ form.subdomain.$error.remote }}</div>
 					</div>
 				</md-input-container>
+			</div>
+			<div layout="row">
 				<md-input-container> <label
 					class="md-container-ignore">API Key</label>
 					<input type="text"
@@ -30,42 +182,46 @@
 			</div>
 			<div layout="row" layout-align="end center">
 				<md-button
-					ng-if="ctrl.kanbanizeSectionAllowed('editKanbanizeSettings', organization)"
 					type="submit" class="md-raised" aria-label="Save settings"
-					ng-disabled="form.$invalid">Save
+					ng-disabled="updatingKanbanize || form.$invalid">Save
 				</md-button>
 			</div>
 		</form>
 	</md-card-content>
-	<md-card-content>
-		<h3 class="md-title" ng-if="projects">Boards</h3>
-		<div ng-repeat="project in projects">
-			<md-list-item ng-repeat="board in project.boards">
-				<md-button
-					ui-sref="org.kanbanizeBoardSettings({
-						orgId: organization.id,
-						boardId: board.id,
-						projectId: project.id
-					})"
-					ui-sref-active="md-primary">
-					{{project.name }} / {{ board.name }}
-				</md-button>
-			</md-list-item>
-		</div>
-	</md-card-content>
 </md-card>
-<md-card>
+<md-card data-ng-show="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize && projects.length">
 	<md-card-content>
-		<h1 flex>Streams</h1>
-		<md-button data-ng-click="newStream($event)">
-			New Stream
-		</md-button>
-		<md-list>
-	      <md-list-item ng-repeat="stream in streams">
-	        <div class="md-list-item-text" layout="column">
-	        	{{stream.subject}}
-	        </div>
-	      </md-list-item>
-	  	</md-list>
+		<h1 flex>Board Settings</h1>
+		<form name="boardList" ng-submit="ctrl.saveKanbanizeBoards()" novalidate>
+			<div layout="row">
+				<md-input-container>
+					<label class="md-container-ignore">Board</label>
+					<md-select data-ng-disabled="!boards || !boards.length" ng-model="board" placeholder="Select a Board" name="board" required>
+						<md-option ng-value="board.id" ng-repeat="board in boards">{{board.name}}</md-option>
+					</md-select>
+					<div ng-messages="boards.board.$error" role="alert">
+						<div ng-message="required">Board is required</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row" ng-repeat="(key, value) in boardSetting.mapping">
+				<md-input-container>
+					<label class="md-container-ignore">{{key}}</label>
+					<md-select ng-model="boardSetting.mapping[key]" aria-label="Column {{key}} mapping" name="{{key}}" required>
+						<md-option value=""></md-option>
+						<md-option ng-repeat="status in ITEM_STATUS" value="{{status}}">
+							{{status | itemStatusLabel }}
+						</md-option>
+					</md-select>
+					<div ng-messages="boardList[key].$error" role="alert">
+						<div ng-message="required">{{key}} is required</div>
+						<div ng-message="remote">{{ boardList[key].$error.remote }}</div>
+					</div>
+				</md-input-container>
+			</div>
+			<div ng-if="streams.length && boardSetting.mapping" layout="row" layout-align="end center">
+				<md-button type="submit" ng-disabled="updatingKanbanize || boardList.$invalid" class="md-raised">Save</md-button>
+			</div>
+		</form>
 	</md-card-content>
 </md-card>

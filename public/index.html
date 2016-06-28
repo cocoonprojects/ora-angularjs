@@ -34,6 +34,9 @@
 	<!-- build:[src] https://code.angularjs.org/1.4.8/angular-messages.min.js -->
 	<script src="components/angular-messages/angular-messages.min.js"></script>
 	<!-- /build -->
+	<!-- build:[src] https://code.angularjs.org/1.4.8/angular-cookies.min.js -->
+	<script src="components/angular-cookies/angular-cookies.min.js"></script>
+	<!-- /build -->
 	<!-- build:[src] https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js -->
 	<script src="components/angular-material/angular-material.min.js"></script>
 	<!-- /build -->
@@ -57,12 +60,14 @@
 	<script src="app/main/filters/PercentageFilter.js"></script>
 	<script src="app/main/filters/NewLineFilter.js"></script>
 	<script src="app/main/filters/NoHtmlFilter.js"></script>
+	<script src="app/main/filters/OrganizationInitials.js"></script>
 	<script src="app/main/controllers/AppController.js"></script>
 	<script src="app/main/controllers/LeftController.js"></script>
 	<script src="app/main/controllers/BaseOrganizationController.js"></script>
 	<script src="app/main/directives/NavigationBar.js"></script>
-	<script src="app/main/directives/SettingsMenu.js"></script>
+	<script src="app/main/directives/LeftMenu.js"></script>
 	<script src="app/main/directives/GoogleDrivePicker.js"></script>
+	<script src="app/main/directives/TooltipHack.js"></script>
 	<script src="app/main/services/SelectedOrganizationId.js"></script>
 	<script src="app/identity/module.js"></script>
 	<script src="app/identity/services/IdentityService.js"></script>
@@ -73,21 +78,30 @@
 	<script src="app/organizations/controllers/OrganizationListController.js"></script>
 	<script src="app/organizations/controllers/NewOrganizationController.js"></script>
 	<script src="app/organizations/controllers/OrganizationSettingsController.js"></script>
+	<script src="app/organizations/controllers/ConfirmInvitationController.js"></script>
+	<script src="app/organizations/services/SettingsService.js"></script>
 	<script src="app/kanbanize/module.js"></script>
 	<script src="app/kanbanize/services/KanbanizeService.js"></script>
+	<script src="app/kanbanize/services/KanbanizeLaneService.js"></script>
+	<script src="app/kanbanize/services/LanesCache.js"></script>
 	<script src="app/kanbanize/controllers/BoardController.js"></script>
 	<script src="app/collaboration/module.js"></script>
 	<script src="app/collaboration/directives/Template.js"></script>
+	<script src="app/collaboration/directives/ItemCardColor.js"></script>
 	<script src="app/collaboration/services/ItemService.js"></script>
 	<script src="app/collaboration/services/StreamService.js"></script>
 	<script src="app/collaboration/services/TemplateService.js"></script>
+	<script src="app/collaboration/services/VoteExtractor.js"></script>
 	<script src="app/collaboration/filters/ItemStatusLabelFilter.js"></script>
+	<script src="app/collaboration/filters/OwnerLabelFilter.js"></script>
 	<script src="app/collaboration/filters/ItemStatusResumeFilter.js"></script>
+	<script src="app/collaboration/filters/LogActivityFilter.js"></script>
 	<script src="app/collaboration/controllers/NewStreamController.js"></script>
 	<script src="app/collaboration/controllers/NewItemController.js"></script>
 	<script src="app/collaboration/controllers/EditItemController.js"></script>
 	<script src="app/collaboration/controllers/EstimateItemController.js"></script>
-    <script src="app/collaboration/controllers/ApproveIdeaController.js"></script>
+  	<script src="app/collaboration/controllers/ApproveIdeaController.js"></script>
+	<script src="app/collaboration/controllers/ChangeOwnerController.js"></script>
 	<script src="app/collaboration/controllers/ItemListController.js"></script>
 	<script src="app/collaboration/controllers/ItemDetailController.js"></script>
 	<script src="app/collaboration/controllers/AssignSharesController.js"></script>
@@ -103,41 +117,19 @@
 	<script src="app/people/services/MemberService.js"></script>
 	<script src="app/people/controllers/MemberListController.js"></script>
 	<script src="app/people/controllers/ProfileController.js"></script>
+	<script src="app/people/controllers/InvitationController.js"></script>
+	<script src="app/people/filters/ItemStatusShortLabelFilter.js"></script>
 	<script src="app/flow/module.js"></script>
 	<script src="app/flow/services/FlowService.js"></script>
+	<script src="app/flow/directives/FlowIcon.js"></script>
+	<script src="app/flow/filters/FlowTypeLabel.js"></script>
 	<script src="app/flow/controllers/FlowController.js"></script>
 	<!-- /build -->
 </head>
-<body layout="column" ng-controller="AppController">
+<body layout="column" style="overflow-y: hidden;" ng-controller="AppController">
 	<section layout="row" flex ng-controller="IdentityController" data-ng-cloak>
-		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md') && identity.isAuthenticated()">
-			<md-toolbar id="identityBox" class="md-tall md-hue-2">
-				<div layout="column" class="md-toolbar-tools-bottom inset" layout-align="center center">
-					<img ng-if="identity.getAvatar()" ng-src="{{ identity.getAvatar() }}" style="width: 80px; height: 80px; border-radius: 40px">
-					<div>{{ identity.getFirstname() + ' ' + identity.getLastname() }}</div>
-				</div>
-			</md-toolbar>
-			<md-content flex layout-padding layout-fill ng-controller="LeftController">
-				<md-list>
-					<md-list-item>
-						<md-button ui-sref="flow" ui-sref-active="md-primary" ng-click="toggleLeft()">Flow</md-button>
-					</md-list-item>
-					<md-divider></md-divider>
-	    			<md-subheader class="md-no-sticky">My Organizations</md-subheader>
-					<md-list-item ng-repeat="membership in identity.getMemberships()">
-						<md-button ui-sref="org.collaboration({ orgId: membership.organization.id })" ui-sref-active="md-primary" ng-click="toggleLeft()">{{membership.organization.name}}</md-button>
-					</md-list-item>
-					<md-divider></md-divider>
-					<md-list-item>
-						<md-button ui-sref="organizations" ui-sref-active="md-primary" ng-click="toggleLeft()">Organizations</md-button>
-					</md-list-item>
-					<md-list-item>
-						<md-button ng-if="identity.isAuthenticated()" ng-click="signOut()">Logout</md-button>
-					</md-list-item>
-				</md-list>
-			</md-content>
-		</md-sidenav>
-		<md-content layout="column" flex ui-view></md-content>
+		<left-menu></left-menu>
+		<md-content layout="column"   flex ui-view></md-content>
 	</section>
 	<script>
 	//Manual Angular Bootstrap after google plus initialization

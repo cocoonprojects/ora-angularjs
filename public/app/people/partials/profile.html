@@ -6,11 +6,23 @@
 			<p style="margin-top: -14px; font-size: 14px; color: gray;">({{profile.role}})</p>
 		</center>
 	</div>
-	<div layout="column" layout-padding>
-		<div layout="row">
-			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
-			<p style="font-size: 14px; color: gray; margin-left: 2px;">{{profile.email}}</p>
-		</div>
+	<div layout="column">
+
+		<md-list>
+			<md-list-item style="padding-left:20px;">
+				<div class="profile-info-icon">
+					<i style="font-size:10px;" class="material-icons">mail_outline</i>
+				</div>
+				<p>
+					<a
+						class="profile-basic-info"
+						data-ng-href="mailto:{{profile.email}}" target="_top">
+						{{profile.email}}
+					</a>
+				</p>
+			</md-list-item>
+		</md-list>
+		<!-- TODO: Add additional profile informations
 		<div layout="row" style="margin-top: -34px;">
 			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
 			<p style="font-size: 14px; color: gray; margin-left: 2px;">@{{ profile.firstname }}{{ profile.lastname}}</p>
@@ -23,30 +35,29 @@
 			<img style="max-width: 16px; max-height: 16px; border-radius: 50%; margin-top:14px; margin-left: 4px;" ng-src="img/immagine.png">
 			<p style="font-size: 14px; color: gray; margin-left: 2px;">CITY</p>
 		</div>
-		<div layout="row" style="margin-top: -34px;">
-			<md-button data-ng-if="shouldShowAskForMembership" data-ng-click="proposeMembership($event)">Ask for membership</md-button>
-			<md-button data-ng-if="shouldShowProposeMembership" data-ng-click="proposeMembership($event)">Propose for membership</md-button>
-		</div>
+		-->
 	</div>
 </div>
-<div layout="row" style="padding-left: 8px; margin-top: -16px;">
+<!-- TODO: skill management -->
+<div layout="row" style="padding-left: 8px; margin-top: -16px;" data-ng-if="false">
 	<p style="font-size: 14px; font-weight: bold; display: table;">Very good at</p>
 	<p style="font-size: 14px; margin-left: 6px">
 		XXXXX
 	</p>
 </div>
-<div layout="row" style="padding-left: 8px; margin-top: -24px;">
+<div layout="row" style="padding-left: 8px; margin-top: -24px;" data-ng-if="false">
 	<p style="font-size: 14px; font-weight: bold;">Passion </p>
 	<p style="font-size: 14px; margin-left: 6px">
 		XXXXX
 	</p>
 </div>
 <md-tabs
-	 style="width: 100%;"
-	 class="md-primary"
-	 md-dynamic-height
-	 md-selected="currentTab"
-	 md-stretch-tabs="always">
+	data-ng-if="false"
+	style="width: 100%;"
+	class="md-primary"
+	md-dynamic-height
+	md-selected="currentTab"
+	md-stretch-tabs="always">
 		<md-tab label="Skills">
 			<div layout="column" style="margin-top: 32px;">
 				<div layout="row"  style="margin-top: -32px;">
@@ -249,80 +260,88 @@
 			<md-divider></md-divider>
 		</md-tab>
 </md-tabs>
-	<md-subheader style="color: black; font-weight: normal; font-size: 12px; z-index: 0;">
-		<br> Member since {{profile.createdAt | date:'dd/MM/yyyy'}} <br> First activity was XXXX
+	<md-subheader class="member-since-label" data-ng-if="profile.createdAt">
+		{{organization.name}} joined on {{profile.createdAt | date:'dd/MM/yyyy'}}
 	</md-subheader>
 	<md-card>
 		<md-card-header>
 			<md-card-header-text>
-				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAIBLE CREDIT
+				<span class="md-subheader" style="color: black; font-weight: 300;"> AVAILABLE CREDITS
 					<span class="md-title" style="margin-left: 10px;"> {{credits.balance}}
 				 </span>
-				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDIT
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> TOTAL GENERATED CREDITS
  					<span class="md-title" style="margin-left: 10px;"> {{credits.total}}
  				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> ITEM CONTRIBUTIONS
+				   <span class="md-title" style="margin-left: 10px;"> {{ stats.membershipsCount | number : 0 }}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> ITEM OWNERSHIPS
+				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.ownershipsCount | number : 0 }}
+				 </span>
+				 <span data-ng-if="false" class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> EARNED CREDITS
+				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.creditsCount | number : 2 }}
+				 </span>
+				 <span class="md-subheader" style="color: black; font-weight: 300; margin-top: 14px;"> AUTO-ASSESSMENT AVG GAP
+				  	<span class="md-title" style="margin-left: 10px;"> {{ stats.averageDelta | percentage:2:true }}
+				 </span>
 			</md-card-header-text>
 		</md-card-header>
 				<md-card-content layout="row" style="margin-top: -12px; padding-left:5px; padding-right: 5px;">
 					<div flex="33" layout="column">
 						<center>
-							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 3 MONTHS</span>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 3 <br/> MONTHS</span>
 							<span class="md-title">{{credits.last3M}}</span>
 						</center>
 					</div>
 					<div flex="33" layout="column">
 						<center>
-							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 6 MONTHS</span>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 6 <br/> MONTHS</span>
 							<span class="md-title">{{credits.last6M}}</span>
 						</center>
 					</div>
 					<div flex="33" layout="column">
 						<center>
-							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 12 MONTHS</span>
+							<span class="md-subheader" style="color: black; font-weight: 300;">LAST 12 <br/> MONTHS</span>
 							<span class="md-title">{{credits.last1Y}}</span>
 						</center>
 					</div>
 				</md-card-content>
 	</md-card>
+	<md-card data-ng-if="isChangeUserAllowed()">
+		<md-button class="md-raised md-primary" data-ng-if="canChangeTo('contributor')" ng-click="askChangeRole($event,'contributor')">Change User Role to contributor</md-button>
+		<md-button class="md-raised md-primary" data-ng-if="canChangeTo('member')" ng-click="askChangeRole($event,'member')">Change User Role to member</md-button>
+		<md-button class="md-raised md-primary" data-ng-if="canChangeTo('admin')" ng-click="askChangeRole($event,'admin')">Change User Role to admin</md-button>
+	</md-card>
+	<md-card data-ng-if="isMakeAdminAllowed()">
+		<md-button class="md-raised md-primary" ng-click="askMakeAdmine($event)">Make Member Admin</md-button>
+	</md-card>
+	<md-card data-ng-if="isBackToMemberAllowed()">
+		<md-button class="md-raised md-primary" ng-click="askBackToMemberRole($event)">Release Admin to Member</md-button>
+	</md-card>
 	<md-card>
 		<md-card-header>
 			<md-card-header-text>
-					<span class="md-subheader" style="color: black; font-weight: 200;"> ITEM CONTRIBUTION </span>
-					<div layout="row" style="margin-top: -14px;">
-							<span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> FROM</span>
-							 <md-select style="z-index: 0;" ng-model="fromdate" placeholder="insert date">
-								 <md-option> XXXX </md-option>
-								 <md-option> XXXX </md-option>
-							 </md-select>
-							 <span flex></span>
-							 <span class="md-subheader" style="color: black; font-weight: 200; margin-top: 30px; margin-right: 2px;"> TO</span>
- 							 <md-select ng-model="todate" style="z-index: 0;" placeholder="insert date">
- 								 <md-option> XXXX </md-option>
- 								 <md-option> XXXX </md-option>
- 							 </md-select>
-					</div>
-					<div layout="row" style="margin-right: 10%; margin-top: -6px;" >
-						<span style="font-size: 14px; font-weight: 500;" flex><center>owned</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>item id</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>status</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>credit</center></span>
-						<span style="font-size: 14px; font-weight: 500;" flex><center>distance</center></span>
-					</div>
-					<md-divider style="margin-right:16px; margin-top: 8px"></md-divider>
-					<div layout="row" style="margin-right: 10%; margin-top: 8px;" > <!--dati da inserire-->
-						<span style="font-weight: 300; font-size: 12px;" flex><center>&#x2713;</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-						<span  style="line-height: 12px; font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-					</div>
-					<div layout="row" style="margin-right: 10%; margin-top: 8px;" > <!--dati da inserire-->
-						<span style="font-weight: 300; font-size: 12px;" flex><center>-</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>XXXX</center></span>
-						<span  style="line-height: 12px; font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-						<span style="font-weight: 300; font-size: 12px;" flex><center>XXX</center></span>
-					</div>
+					<span class="md-subheader" style="color: black; font-weight: 200;">ITEM CONTRIBUTION</span>
+					<table class="profile-item-table">
+						<thead class="profile-item-table-header">
+							<tr>
+								<th>owned</th>
+								<th class="subject-column">subject</th>
+								<th>status</th>
+								<th>credits</th>
+								<th>gap</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="profile-item-table-row" data-ng-repeat="task in tasks">
+								<td class="col-20">{{isOwned(task) ? '&#x2713;' : '-'}}</td>
+								<td class="col-20 subject-column">{{task.subject}}</td>
+								<td class="col-20">{{task.status | itemStatusShortLabel}}</td>
+								<td class="col-20">{{getCredits(task)}}</td>
+								<td class="col-20" data-ng-show="getDelta(task)">{{(getDelta(task) * 100 | number:2) + ' %'}}</td>
+							</tr>
+						</tbody>
+					</table>
 			</md-card-header-text>
 		</md-card-header>
 	</md-card>

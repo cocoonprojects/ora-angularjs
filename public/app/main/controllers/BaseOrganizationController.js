@@ -5,13 +5,22 @@ angular.module('app')
 		'$stateParams',
 		'members',
         'streams',
+		'SelectedOrganizationId',
+		'$state',
         function(
             $scope,
             $log,
             $stateParams,
             members,
-            streams) {
-                $scope.organization = $scope.identity.getMembership($stateParams.orgId);
+            streams,
+			SelectedOrganizationId,
+			$state) {
+				if(!SelectedOrganizationId.get()){
+					$state.go("organizations");
+					return;
+				}
+
+				$scope.organization = $scope.identity.getMembership($stateParams.orgId);
                 $scope.members = members;
                 $scope.stream = streams[0];
                 $scope.user = function(member) {
@@ -20,6 +29,9 @@ angular.module('app')
                     }
                     return null;
                 };
+				$scope.goBack = function() {
+					window.history.back();
+				};
                 $scope.pillar = {};
                 $scope.$on('$stateChangeSuccess',
                     function(event, toState) {
@@ -28,6 +40,15 @@ angular.module('app')
                         }
                         if(toState.data && toState.data.selectedTab){
                             $scope.currentTab = toState.data.selectedTab;
+                        }
+						if(toState.data && toState.data.showBack) {
+							$scope.showBack = true;
+						} else {
+							$scope.showBack = false;
+						}
+
+						if(toState.data){
+                            $scope.fullHeight = toState.data.fullHeight;
                         }
                     }
                 );

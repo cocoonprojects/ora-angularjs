@@ -1,16 +1,8 @@
 <md-dialog aria-label="New Incoming Transfer">
 	<form name="form" ng-submit="dialogCtrl.submit()" novalidate>
-		<md-toolbar>
-			<div class="md-toolbar-tools">
-				<h2>New Incoming Transfer</h2>
-				<span flex></span>
-				<md-button type="button" class="md-icon-button" ng-click="dialogCtrl.cancel()">
-					<md-icon class="material-icons" aria-label="Close dialog">&#xE5CD;</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
 		<md-dialog-content>
 			<div class="md-dialog-content" layout="column">
+				<h4>New Incoming Transfer</h4>
 				<md-input-container>
 					<label>Payer e-mail</label>
 					<input name="payer" type="email" required data-ng-model="transfer.payer"/>

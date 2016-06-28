@@ -22,6 +22,7 @@ angular.module('app')
 							);
 							break;
 						default:
+							alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 							$log.warn(httpResponse);
 					}
 				}
@@ -44,6 +45,7 @@ angular.module('app')
 								});
 								break;
 							default:
+								alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
 								$log.warn(httpResponse);
 						}
 					}

@@ -6,7 +6,7 @@ angular.module('app.collaboration')
 		30: 'Completed',
 		40: 'Accepted',
 		50: 'Closed',
-		'-20': 'Archived'
+		'-20': 'Rejected'
 	})
 	.filter('itemStatusLabel', ['TASK_STATUS_LABEL', function(TASK_STATUS_LABEL) {
 		return function(status) {
