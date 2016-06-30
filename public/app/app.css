@@ -466,6 +466,15 @@ div:focus {
     overflow-y: scroll;
 }
 
+.full-content-wrapper {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    overflow-y: scroll;
+}
+
 .navigation-wrapper {
     position: fixed;
     left: 0;
