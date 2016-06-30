@@ -73,11 +73,7 @@
 		data-ng-click="goToDetail($event,item)"
 		class="card-item" ng-repeat="item in items._embedded['ora:task']"
 		ng-init="owner = ctrl.getOwner(item)"
-		infinite-scroll="ctrl.loadMore()"
-		infinite-scroll-distance="1"
-		infinite-scroll-parent="true"
-		infinite-scroll-disabled="items.total == items.count || isLoadingMore"
-		infinite-scroll-immediate-check="false">
+		>
 		<md-card-header  item-card-color card="item" class="margin-top-10">
 			<md-card-header-text>
 				<div layout="row">
@@ -139,4 +135,7 @@
 			<md-button class="md-button md-warn md-ink-ripple">VIEW ITEM</md-button>
 		</md-card-action>
 </md-card>
+<div ng-if="!loadingItems && items.total != items.count  " Layout="row" layout-align="center start"">
+	<md-button class="md-raised md-primary" ng-click="ctrl.loadMore()">Load more items</md-button>
+</div>
 <div class="space-at-end"></div>
