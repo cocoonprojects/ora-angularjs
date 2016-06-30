@@ -16,6 +16,7 @@
 		<span flex></span>
 	</div>
 </md-toolbar>
-<div class="bkg-color-secondary content-wrapper" data-ng-if="!fullHeight" flex ui-view></div>
-<div class="bkg-color-secondary content-wrapper" data-ng-if="fullHeight" layout="row" flex ui-view></div>
+<div class="bkg-color-secondary content-wrapper" data-ng-class="{'full-content-wrapper':!(organizationId && selectedIndex>=0)}" data-ng-if="!fullHeight" flex ui-view></div>
+<div class="bkg-color-secondary content-wrapper" data-ng-class="{'full-content-wrapper':!(organizationId && selectedIndex>=0)}" data-ng-if="fullHeight" layout="row" flex ui-view></div>
 <navigation-bar class="navigation-wrapper"><navigation-bar/>
+
