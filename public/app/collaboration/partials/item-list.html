@@ -1,88 +1,79 @@
 <div data-ng-if="menu.open" class="tooltip" style=" width: 120px;right:85px;bottom: 142px;">
-	Create Working Item
+    Create Working Item
 </div>
 <div data-ng-if="menu.open" class="tooltip" style=" width: 120px;right:85px;bottom: 194px;">
-	Create Decision Item
+    Create Decision Item
 </div>
 <md-fab-speed-dial
-		md-open="menu.open"
-		md-direction="up"
-		class="md-scale ora-fab"
-		ng-if="lanes && !decisions">
-	<md-fab-trigger>
-		<md-button aria-label="Item Menu" class="md-fab md-warn md-hue-1">
-			<md-icon md-svg-icon="add"></md-icon>
-		</md-button>
-	</md-fab-trigger>
-	<md-fab-actions>
-		<md-button aria-label="New Item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, false)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<md-icon md-svg-icon="addItem" title="New Item" style="color: black"></md-icon>
-		</md-button>
-		<md-button aria-label="New Decision" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, true)" ng-if="ctrl.isAllowed('createItem', organization)">
-			<i class="material-icons" title="New Item" style="margin-top: 6px; color: black">&#xE90E;</i>
-		</md-button>
-	</md-fab-actions>
+        md-open="menu.open"
+        md-direction="up"
+        class="md-scale ora-fab"
+        ng-if="lanes && !decisions">
+    <md-fab-trigger>
+        <md-button aria-label="Item Menu" class="md-fab md-warn md-hue-1">
+            <md-icon md-svg-icon="add"></md-icon>
+        </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button aria-label="New Item" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, false)"
+                   ng-if="ctrl.isAllowed('createItem', organization)">
+            <md-icon md-svg-icon="addItem" title="New Item" style="color: black"></md-icon>
+        </md-button>
+        <md-button aria-label="New Decision" class="md-fab md-raised md-mini" ng-click="ctrl.openNewItem($event, true)"
+                   ng-if="ctrl.isAllowed('createItem', organization)">
+            <i class="material-icons" title="New Item" style="margin-top: 6px; color: black">&#xE90E;</i>
+        </md-button>
+    </md-fab-actions>
 </md-fab-speed-dial>
 <md-toolbar class="filterBar" style="min-height:37px">
-	<div class="md-toolbar-tools" style="height:37px" >
-		<md-button   ng-click="showFilter=!showFilter" style="width:100%">
-			<span style="text-transform: uppercase;font-size: 10px;font-weight:600" >Filter items by:</span>
+    <div class="md-toolbar-tools" style="height:37px">
+        <md-button ng-click="showFilter=!showFilter" style="width:100%">
+            <span style="text-transform: uppercase;font-size: 10px;font-weight:600">Filter items by:</span>
 
-			<md-icon style="font-size: 18px;margin-top:5px" class="material-icons">&#xE5C5;</md-icon>
-		</md-button>
-	</div>
+            <md-icon style="font-size: 18px;margin-top:5px" class="material-icons">&#xE5C5;</md-icon>
+        </md-button>
+    </div>
 </md-toolbar>
-<md-content  ng-show="showFilter" class="filterBar" layout-padding>
-	<div layout="row"  layout-align="space-around center" class="no-padding">
+<md-content ng-show="showFilter" class="filterBar" layout-padding>
+    <div layout="row" layout-align="space-around center" class="no-padding">
 
-		<md-select class="font-size12" style=" margin: 0px;" placeholder="Status" ng-model="filters.status">
-			<md-option selected ng-value="All">All</md-option>
-			<md-option ng-repeat="status in ITEM_STATUS" ng-value="{{status}}">{{ status | itemStatusLabel }}</md-option>
-		</md-select>
+        <md-select class="font-size12" style=" margin: 0px;" placeholder="Status" ng-model="filters.status">
+            <md-option selected ng-value="All">All</md-option>
+            <md-option ng-repeat="status in ITEM_STATUS" ng-value="{{status}}">{{ status | itemStatusLabel }}
+            </md-option>
+        </md-select>
 
-		<md-select class="font-size12" style="margin: 0px;" placeholder="All Item" ng-model="filters.memberId">
-			<md-option value="" selected>All Items</md-option>
-			<md-option ng-value="currentUserId">My Items</md-option>
-	</md-select>
-	<div layout="row">
-		<p  class="font-size12" ng-click="ctrl.invertUpdateTime()">Update Time</p>
-		<md-button class="md-icon-button" ng-click="ctrl.invertUpdateTime()">
-			<md-icon data-ng-if="!changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-			<md-icon data-ng-if="changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
-		</md-button>
-	</div>
-
-	</div>
-	<!-- <div layout="row">
-		<span flex></span>
-			<span flex></span>
-			<p  class="font-size12" ng-click="ctrl.invertUpdateTime()">Update Time</p>
-			<md-button style="" class="md-icon-button" ng-click="ctrl.invertUpdateTime()">
-				<md-icon data-ng-if="!changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-				<md-icon data-ng-if="changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
-			</md-button>
-		<!--<p style="margin-top: 25px; text-decoration: underline; color: black; font-size: 14px;">Status change time</p>
-			<md-button style="margin-left: -10px; margin-top: 18px;" class="md-icon-button" ng-click="ctrl.invertStatusTime()">
-				<md-icon data-ng-if="!changeStatusTime" style="font-size: 18px; color: black;" class="material-icons">&#xE313;</md-icon>
-				<md-icon data-ng-if="changeStatusTime" style="font-size: 18px; color: black;" class="material-icons">&#xE316;</md-icon>
-			</md-button>
-	</div> -->
+        <md-select class="font-size12" style="margin: 0px;" placeholder="All Item" ng-model="filters.memberId">
+            <md-option value="" selected>All Items</md-option>
+            <md-option ng-value="currentUserId">My Items</md-option>
+        </md-select>
+        <div layout="row">
+            <p class="font-size12" ng-click="ctrl.invertUpdateTime()">Update Time</p>
+            <md-button class="md-icon-button" ng-click="ctrl.invertUpdateTime()">
+                <md-icon data-ng-if="!changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">
+                    &#xE313;</md-icon>
+                <md-icon data-ng-if="changeUpdateTime" style="font-size: 18px; color: black;" class="material-icons">
+                    &#xE316;</md-icon>
+            </md-button>
+        </div>
+    </div>
 </md-content>
 <md-progress-linear data-ng-if="loadingItems" md-mode="query"></md-progress-linear>
 <md-card
-		data-ng-click="goToDetail($event,item)"
-		class="card-item" ng-repeat="item in items._embedded['ora:task']"
-		ng-init="owner = ctrl.getOwner(item)"
-		infinite-scroll="ctrl.loadMore()"
-		infinite-scroll-distance="1"
-		infinite-scroll-parent="true"
-		infinite-scroll-disabled="items.total == items.count || isLoadingMore"
-		infinite-scroll-immediate-check="false">
-		<md-card-header  item-card-color card="item" class="margin-top-10">
-			<md-card-header-text>
-				<div layout="row">
-					<span style="font-size: 13px; color:#5f6b76; margin-bottom:5px;" data-ng-show="item.decision === 'true'">Decision</span>
-				</div>
+        data-ng-click="goToDetail($event,item)"
+        class="card-item" ng-repeat="item in items._embedded['ora:task']"
+        ng-init="owner = ctrl.getOwner(item)"
+        infinite-scroll="ctrl.loadMore()"
+        infinite-scroll-distance="1"
+        infinite-scroll-parent="true"
+        infinite-scroll-disabled="items.total == items.count || isLoadingMore"
+        infinite-scroll-immediate-check="false">
+    <md-card-header item-card-color card="item" class="margin-top-10">
+        <md-card-header-text>
+            <div layout="row">
+                <span style="font-size: 13px; color:#5f6b76; margin-bottom:5px;"
+                      data-ng-show="item.decision === 'true'">Decision</span>
+            </div>
 				<span class="padding-right-20 padding-top-10 padding-bottom-5 item-title">
 					{{ item.subject }}
 				</span>
@@ -92,51 +83,57 @@
 				<span style="font-size: 13px; line-height: 14px;" class="md-subhead padding-right-20 justify">
 					{{item.description}}
 				</span>
-				<div layout="row" class="padding-right-20">
-					<p style="font-size: 14px;">
-						Status:
+            <div layout="row" class="padding-right-20">
+                <p style="font-size: 14px;">
+                    Status:
 						<span style="line-height: 16px" class="md-subhead">
 							{{item.status | itemStatusLabel}}
 						</span>
-					</p>
-					<!-- TODO: print current value for item -->
-					<p style=" font-size: 14px; padding-left:20px;" >
-						Current Value:
-						<span data-ng-if="item.estimation" style="line-height: 16px;" class="md-subhead">{{item.estimation}}&nbspCredits</span>
-						<span data-ng-if="!item.estimation" style="line-height: 16px;" class="md-subhead">To Be estimated</span>
-					</p>
-				</div>
-			</md-card-header-text>
-			<md-card-media layout="column" layout-align="start end" class="margin-top-10" ng-if="item.status != ITEM_STATUS.OPEN">
-				<div>
-					<img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}" alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}" >
-				</div>
-				<p class="margin-top-10 no-margin" style="font-size: 14px; font-weight: bold">{{item.status | ownerLabel}}:</p>
-				<p class="font-size12 no-margin" style="text-align:right;">{{ owner.firstname }} {{ owner.lastname}} </p>
-			</md-card-media>
-		</md-card-header>
-		<div layout="row" style="margin-top: -32px;">
-			<p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
-				Last activity:
+                </p>
+                <!-- TODO: print current value for item -->
+                <p style=" font-size: 14px; padding-left:20px;">
+                    Current Value:
+                    <span data-ng-if="item.estimation" style="line-height: 16px;" class="md-subhead">{{item.estimation}}&nbspCredits</span>
+                    <span data-ng-if="!item.estimation" style="line-height: 16px;"
+                          class="md-subhead">To Be estimated</span>
+                </p>
+            </div>
+        </md-card-header-text>
+        <md-card-media layout="column" layout-align="start end" class="margin-top-10"
+                       ng-if="item.status != ITEM_STATUS.OPEN">
+            <div>
+                <img style="max-width: 40px; border-radius: 50%" ng-src="{{ owner.picture || 'img/account.jpg' }}"
+                     alt="{{ owner.firstname }} {{ owner.lastname}}" title="{{ owner.firstname }} {{ owner.lastname}}">
+            </div>
+            <p class="margin-top-10 no-margin" style="font-size: 14px; font-weight: bold">{{item.status |
+                ownerLabel}}:</p>
+            <p class="font-size12 no-margin" style="text-align:right;">{{ owner.firstname }} {{ owner.lastname}} </p>
+        </md-card-media>
+    </md-card-header>
+    <div layout="row" style="margin-top: -32px;">
+        <p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
+            Last activity:
 				<span style="letter-spacing: .010em; color: rgba(0,0,0,0.54);">
 					{{item.mostRecentEditAt | date:'dd/MM/yyyy'}}
 				</span>
-			</p>
-		</div>
-		<div layout="row">
-			<p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
-				{{printVote(item)}}
-			</p>
-		</div>
-		<md-card-action layout="row"  layout-align="end center">
-			<div data-ng-if="ctrl.checkImIn(item)" class="md-toolbar-tools padding-left-16" style="height: 40px; width: 150px;  ">
-				<div class="im-in-icon">
-					<i style="font-size:16px;" class="material-icons">person</i>
-				</div>
-				<p class="margin-left-10" style="font-size: 14px; margin-top: 25px; color: #607D8B;; margin-bottom: 25px;">I'm involved</p>
-			</div>
-			 <span flex></span>
-			<md-button class="md-button md-warn md-ink-ripple">VIEW ITEM</md-button>
-		</md-card-action>
+        </p>
+    </div>
+    <div layout="row">
+        <p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">
+            {{printVote(item)}}
+        </p>
+    </div>
+    <md-card-action layout="row" layout-align="end center">
+        <div data-ng-if="ctrl.checkImIn(item)" class="md-toolbar-tools padding-left-16"
+             style="height: 40px; width: 150px;  ">
+            <div class="im-in-icon">
+                <i style="font-size:16px;" class="material-icons">person</i>
+            </div>
+            <p class="margin-left-10" style="font-size: 14px; margin-top: 25px; color: #607D8B;; margin-bottom: 25px;">
+                I'm involved</p>
+        </div>
+        <span flex></span>
+        <md-button class="md-button md-warn md-ink-ripple">VIEW ITEM</md-button>
+    </md-card-action>
 </md-card>
 <div class="space-at-end"></div>
