@@ -109,6 +109,10 @@
                 ownerLabel}}:</p>
             <p class="font-size12 no-margin" style="text-align:right;">{{ owner.firstname }} {{ owner.lastname}} </p>
         </md-card-media>
+        <div layout="column" layout-align="start end" class="margin-top-10" ng-if="showPriority(item)">
+            <p class="margin-top-10 no-margin priority-title-label">Priority</p>
+            <p class="font-size20 no-margin priority-value">{{item.position}}</p>
+        </div>
     </md-card-header>
     <div layout="row" style="margin-top: -32px;">
         <p style=" font-size: 12px; margin-top: 12px; margin-left: 16px;">

@@ -282,4 +282,8 @@ angular.module('app.collaboration')
 				$state.go("org.profile",{ memberId: ownerId });
 			};
 
+			$scope.showPriority = function(item){
+				return item.status == itemService.ITEM_STATUS.OPEN && !_.isNull(item.position);
+			};
+
 		}]);

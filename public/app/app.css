@@ -505,3 +505,14 @@ div:focus {
     font-size: 20pt;
     font-weight: 500;
 }
+
+.priority-value {
+    text-align: center;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.priority-title-label {
+    font-size: 14px;
+    font-weight: bold;
+}
