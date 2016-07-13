@@ -308,6 +308,10 @@ angular.module('app.collaboration')
 				itemService.setAttachments($stateParams.orgId,$stateParams.itemId,$scope.attachments).then($log.info,onHttpGenericError);
 			};
 
+			$scope.showPriority = function(item){
+				return item.status == itemService.ITEM_STATUS.OPEN && !_.isNull(item.position);
+			};
+
 			var that = this;
 
 			this.changeOwner = function(ev, item) {
