@@ -2,7 +2,7 @@
 	<md-card-content>
 		<h1 flex>Organization Settings</h1>
 		<form name="orgSettingsForm" ng-submit="ctrl.updateSettings()" novalidate>
-			<div layout="row">
+			<div layout="row" data-ng-if="false">
 				<md-input-container>
 					<label class="md-container-ignore">Assign shares timeboxing (days)</label>
 					<input type="text"
@@ -15,7 +15,7 @@
 					</div>
 				</md-input-container>
 			</div>
-			<div layout="row">
+			<div layout="row" data-ng-if="false">
 				<md-input-container>
 					<label class="md-container-ignore">Assign shares remind interval (days)</label>
 					<input type="text"
