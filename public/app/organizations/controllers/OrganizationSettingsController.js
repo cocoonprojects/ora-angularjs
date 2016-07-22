@@ -148,9 +148,13 @@ angular.module('app')
 				function(httpResponse) {
 					switch(httpResponse.status) {
 						case 400:
-							httpResponse.data.errors.forEach(function(error) {
-								$scope.form[error.field].$error.remote = error.message;
-							});
+							try{
+								httpResponse.data.errors.forEach(function(error) {
+									$scope.form[error.field].$error.remote = error.message;
+								});
+							}catch(err){
+								alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
+							}
 							break;
 						default:
 							alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
