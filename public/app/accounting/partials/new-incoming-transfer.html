@@ -8,7 +8,7 @@
 					<input name="payer" type="email" required data-ng-model="transfer.payer"/>
 					<div ng-messages="form.payer.$error" role="alert">
 						<div ng-message="required">Payer e-mail is required</div>
-						<div ng-message="remote">{{ form.payer.$error.remote }}</div>
+						<span class="md-warn">{{ form.payer.$error.remote }}</span>
 					</div>
 				</md-input-container>
 				<md-input-container>
