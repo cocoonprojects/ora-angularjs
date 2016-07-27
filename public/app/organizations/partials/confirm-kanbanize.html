@@ -1,0 +1,18 @@
+<md-dialog aria-label="Confirm Kanbanize Settings" ng-cloak>
+    <form name="form" ng-submit="ok()" novalidate>
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column">
+                <h2>Confirm Kanbanize Settings</h2>
+                <p>
+                    Great you're connecting a Kanbanize board to your organization!
+                    <br />
+                    VERY IMPORTANT: due to current Kanbanize APIs, you won't be able to change name to the lanes or columns in the connected Kanbanize board without causing sync malfunctioning. Thus, please make sure the names of your columns and lanes are final, before completing the connection.
+                </p>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" layout-align="end center">
+            <md-button type="button" ng-click="cancel()">Cancel</md-button>
+            <md-button type="submit" style="margin-right:20px;" class="md-primary">Ok</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

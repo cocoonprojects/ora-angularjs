@@ -192,7 +192,7 @@
 <md-card data-ng-show="kanbanizeSectionAllowed('editKanbanizeSettings', organization) && !loadingKanbanize && projects.length">
 	<md-card-content>
 		<h1 flex>Board Settings</h1>
-		<form name="boardList" ng-submit="ctrl.saveKanbanizeBoards()" novalidate>
+		<form name="boardList" ng-submit="ctrl.saveKanbanizeBoards($event)" novalidate>
 			<div layout="row">
 				<md-input-container>
 					<label class="md-container-ignore">Board</label>

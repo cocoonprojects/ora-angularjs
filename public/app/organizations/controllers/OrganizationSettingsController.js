@@ -111,7 +111,7 @@ angular.module('app')
 				}
 			};
 
-			this.saveKanbanizeBoards = function(){
+			var executeSaveKanbanizeBoard = function(){
 				$scope.updatingKanbanize = true;
 				kanbanizeService.saveBoardSettings($stateParams.orgId, $scope.board, $scope.boardSetting,
 					function(data) {
@@ -140,6 +140,17 @@ angular.module('app')
 						}
 					}
 				);
+			};
+
+			this.saveKanbanizeBoards = function($event){
+				$mdDialog.show({
+					controller: "ConfirmSavaKanbanizeSettingsController",
+					templateUrl: "app/organizations/partials/confirm-kanbanize.html",
+					targetEvent: $event,
+					clickOutsideToClose: true
+				}).then(function(){
+					executeSaveKanbanizeBoard();
+				});
 			};
 
 			kanbanizeService.query($stateParams.orgId,
