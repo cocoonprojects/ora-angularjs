@@ -173,6 +173,7 @@ angular.module('app.collaboration')
 			};
 
 			this.onItemAdded = function(newItem){
+				restartPollingItems();
 				$mdDialog.show({
 					controller: "OnItemAddedDialogController",
 					templateUrl: "app/collaboration/partials/on-item-added-dialog.html",
