@@ -68,7 +68,6 @@ angular.module('app')
 				$scope.projects = [];
 				$scope.boards = [];
 				$scope.updatingKanbanize = true;
-				$scope.settings.subdomain = $scope.settings.subdomain || "welo";
 				kanbanizeService.updateSettings($stateParams.orgId, $scope.settings,
 					function(data) {
                         $scope.projects = data.projects;
@@ -79,13 +78,9 @@ angular.module('app')
 						$scope.updatingKanbanize = false;
 						switch(httpResponse.status) {
 							case 400:
-								try{
-									httpResponse.data.errors.forEach(function(error) {
-										$scope.form[error.field].$error.remote = error.message;
-									});
-								}catch(err){
-									alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
-								}
+								httpResponse.data.errors.forEach(function(error) {
+									$scope.form[error.field].$error.remote = error.message;
+								});
 								break;
 							default:
 								alert('Generic Error during server communication (error: ' + httpResponse.status + ' ' + httpResponse.statusText + ') ');
